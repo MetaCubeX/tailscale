@@ -9,8 +9,8 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"slices"
 	"strings"
+	slices "tailscale.com/util/go120/slices"
 
 	"go.uber.org/zap"
 	corev1 "k8s.io/api/core/v1"

@@ -9,9 +9,9 @@ import (
 	"log"
 	"net/netip"
 	"strings"
-	"sync"
 
 	"tailscale.com/envknob"
+	"tailscale.com/syncs"
 )
 
 // Various debugging and experimental tweakables, set by environment
@@ -83,7 +83,7 @@ func inTest() bool { return envknob.Bool("IN_TS_TEST") }
 // https://github.com/tailscale/tailscale/pull/12735.
 //
 // It can be between 0 and 3 comma-separated AddrPorts.
-var pretendpoints = sync.OnceValue(func() (ret []netip.AddrPort) {
+var pretendpoints = syncs.OnceValue(func() (ret []netip.AddrPort) {
 	all := envknob.String("TS_DEBUG_PRETENDPOINT")
 	const max = 3
 	remain := all

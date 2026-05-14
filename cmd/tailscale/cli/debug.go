@@ -6,7 +6,6 @@ package cli
 import (
 	"bufio"
 	"bytes"
-	"cmp"
 	"context"
 	"encoding/binary"
 	"encoding/json"
@@ -26,6 +25,7 @@ import (
 	"runtime/debug"
 	"strconv"
 	"strings"
+	cmp "tailscale.com/util/go120/cmp"
 	"time"
 
 	"github.com/peterbourgon/ff/v3/ffcli"

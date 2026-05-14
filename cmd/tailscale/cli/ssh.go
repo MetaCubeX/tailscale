@@ -14,8 +14,8 @@ import (
 	"os/user"
 	"path/filepath"
 	"runtime"
-	"slices"
 	"strings"
+	slices "tailscale.com/util/go120/slices"
 
 	"github.com/peterbourgon/ff/v3/ffcli"
 	"tailscale.com/envknob"

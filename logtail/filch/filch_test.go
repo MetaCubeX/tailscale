@@ -1,3 +1,5 @@
+//go:build ignore
+
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
@@ -9,17 +11,17 @@ import (
 	"fmt"
 	"io"
 	"math"
-	"math/rand/v2"
 	"os"
 	"path/filepath"
 	"runtime"
 	"strings"
 	"sync"
 	"sync/atomic"
+	"tailscale.com/util/go120/randv2"
 	"testing"
 	"time"
 
-	jsonv2 "github.com/go-json-experiment/json"
+	jsonv2 "github.com/metacubex/jsonv2"
 	"tailscale.com/tstest"
 	"tailscale.com/util/must"
 )

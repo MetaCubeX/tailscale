@@ -1,10 +1,12 @@
+//go:build ignore
+
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
 package source
 
 import (
-	"cmp"
+	cmp "tailscale.com/util/go120/cmp"
 	"testing"
 	"time"
 

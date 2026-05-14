@@ -8,8 +8,8 @@ package ipnext
 import (
 	"errors"
 	"fmt"
-	"iter"
 	"net/netip"
+	iter "tailscale.com/util/go120/iter"
 
 	"tailscale.com/control/controlclient"
 	"tailscale.com/feature"

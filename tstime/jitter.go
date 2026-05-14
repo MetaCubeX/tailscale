@@ -4,7 +4,7 @@
 package tstime
 
 import (
-	"math/rand/v2"
+	"tailscale.com/util/go120/randv2"
 	"time"
 )
 

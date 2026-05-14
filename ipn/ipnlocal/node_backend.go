@@ -4,13 +4,13 @@
 package ipnlocal
 
 import (
-	"cmp"
 	"context"
 	"fmt"
 	"net/netip"
-	"slices"
 	"sync"
 	"sync/atomic"
+	cmp "tailscale.com/util/go120/cmp"
+	slices "tailscale.com/util/go120/slices"
 
 	"go4.org/netipx"
 	"tailscale.com/appc"
@@ -318,7 +318,7 @@ func (nb *nodeBackend) peerCapsLocked(src netip.Addr) tailcfg.PeerCapMap {
 		return nil
 	}
 	addrs := nb.netMap.GetAddresses()
-	for i := range addrs.Len() {
+	for i := 0; i < addrs.Len(); i++ {
 		a := addrs.At(i)
 		if !a.IsSingleIP() {
 			continue
@@ -380,12 +380,15 @@ func (nb *nodeBackend) PeerHasCap(peer tailcfg.NodeView, wantCap tailcfg.PeerCap
 
 	nb.mu.Lock()
 	defer nb.mu.Unlock()
-	for _, ap := range peer.Addresses().All() {
+	var ok bool
+	peer.Addresses().All()(func(_ int, ap netip.Prefix) bool {
 		if nb.peerHasCapLocked(ap.Addr(), wantCap) {
-			return true
+			ok = true
+			return false
 		}
-	}
-	return false
+		return true
+	})
+	return ok
 }
 
 func (nb *nodeBackend) peerHasCapLocked(addr netip.Addr, wantCap tailcfg.PeerCapability) bool {
@@ -440,12 +443,15 @@ func (nb *nodeBackend) peerIsReachable(ctx context.Context, p tailcfg.NodeView) 
 }
 
 func nodeIP(n tailcfg.NodeView, pred func(netip.Addr) bool) netip.Addr {
-	for _, pfx := range n.Addresses().All() {
+	var ip netip.Addr
+	n.Addresses().All()(func(_ int, pfx netip.Prefix) bool {
 		if pfx.IsSingleIP() && pred(pfx.Addr()) {
-			return pfx.Addr()
+			ip = pfx.Addr()
+			return false
 		}
-	}
-	return netip.Addr{}
+		return true
+	})
+	return ip
 }
 
 func (nb *nodeBackend) NetMap() *netmap.NetworkMap {
@@ -460,12 +466,12 @@ func (nb *nodeBackend) netMapWithPeers() *netmap.NetworkMap {
 	if nb.netMap == nil {
 		return nil
 	}
-	nm := new(*nb.netMap) // shallow clone
+	nm := *nb.netMap // shallow clone
 	nm.Peers = slicesx.MapValues(nb.peers)
 	slices.SortFunc(nm.Peers, func(a, b tailcfg.NodeView) int {
 		return cmp.Compare(a.ID(), b.ID())
 	})
-	return nm
+	return &nm
 }
 
 func (nb *nodeBackend) SetNetMap(nm *netmap.NetworkMap) {
@@ -536,11 +542,12 @@ func (nb *nodeBackend) updateNodeByAddrLocked() {
 		nb.nodeByAddr[k] = 0
 	}
 	addNode := func(n tailcfg.NodeView) {
-		for _, ipp := range n.Addresses().All() {
+		n.Addresses().All()(func(_ int, ipp netip.Prefix) bool {
 			if ipp.IsSingleIP() {
 				nb.nodeByAddr[ipp.Addr()] = n.ID()
 			}
-		}
+			return true
+		})
 	}
 	if nm.SelfNode.Valid() {
 		addNode(nm.SelfNode)
@@ -820,19 +827,20 @@ func dnsConfigForNetmap(nm *netmap.NetworkMap, peers map[tailcfg.NodeID]tailcfg.
 			return // TODO: propagate error?
 		}
 		var have4 bool
-		for _, addr := range addrs.All() {
+		addrs.All()(func(_ int, addr netip.Prefix) bool {
 			if addr.Addr().Is4() {
 				have4 = true
-				break
+				return false
 			}
-		}
+			return true
+		})
 		var ips []netip.Addr
-		for _, addr := range addrs.All() {
+		addrs.All()(func(_ int, addr netip.Prefix) bool {
 			if selfV6Only {
 				if addr.Addr().Is6() {
 					ips = append(ips, addr.Addr())
 				}
-				continue
+				return true
 			}
 			// If this node has an IPv4 address, then
 			// remove peers' IPv6 addresses for now, as we
@@ -843,10 +851,11 @@ func dnsConfigForNetmap(nm *netmap.NetworkMap, peers map[tailcfg.NodeID]tailcfg.
 			// tracks adding the right capability reporting to
 			// enable AAAA in MagicDNS.
 			if addr.Addr().Is6() && have4 && !wantAAAA {
-				continue
+				return true
 			}
 			ips = append(ips, addr.Addr())
-		}
+			return true
+		})
 		dcfg.Hosts[fqdn] = ips
 	}
 	set(nm.SelfName(), nm.GetAddresses())

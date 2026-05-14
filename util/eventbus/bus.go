@@ -7,7 +7,7 @@ import (
 	"context"
 	"log"
 	"reflect"
-	"slices"
+	slices "tailscale.com/util/go120/slices"
 
 	"tailscale.com/syncs"
 	"tailscale.com/types/logger"
@@ -145,7 +145,7 @@ func (b *Bus) pump(ctx context.Context) {
 
 			if b.routeDebug.active() {
 				clients := make([]*Client, len(dests))
-				for i := range len(dests) {
+				for i := 0; i < len(dests); i++ {
 					clients[i] = dests[i].client
 				}
 				b.routeDebug.run(RoutedEvent{

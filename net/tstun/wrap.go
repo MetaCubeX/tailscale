@@ -11,16 +11,16 @@ import (
 	"os"
 	"reflect"
 	"runtime"
-	"slices"
 	"strings"
 	"sync"
 	"sync/atomic"
+	slices "tailscale.com/util/go120/slices"
 	"time"
 
-	"github.com/gaissmai/bart"
-	"github.com/tailscale/wireguard-go/conn"
-	"github.com/tailscale/wireguard-go/device"
-	"github.com/tailscale/wireguard-go/tun"
+	"github.com/metacubex/bart"
+	"github.com/metacubex/tailscale-wireguard-go/conn"
+	"github.com/metacubex/tailscale-wireguard-go/device"
+	"github.com/metacubex/tailscale-wireguard-go/tun"
 	"go4.org/mem"
 	"tailscale.com/disco"
 	"tailscale.com/envknob"
@@ -1399,11 +1399,11 @@ func (t *Wrapper) InjectInboundPacketBuffer(pkt *netstack_PacketBuffer, buffs []
 			return err
 		}
 	}
-	for i := range n {
+	for i := 0; i < n; i++ {
 		buffs[i] = buffs[i][:PacketStartOffset+sizes[i]]
 	}
 	defer func() {
-		for i := range n {
+		for i := 0; i < n; i++ {
 			buffs[i] = buffs[i][:cap(buffs[i])]
 		}
 	}()

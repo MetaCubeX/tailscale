@@ -6,7 +6,7 @@
 package kube
 
 import (
-	"slices"
+	slices "tailscale.com/util/go120/slices"
 	"time"
 
 	"go.uber.org/zap"

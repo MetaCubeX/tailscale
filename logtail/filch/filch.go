@@ -9,20 +9,41 @@ package filch
 
 import (
 	"bytes"
-	"cmp"
 	"errors"
 	"expvar"
 	"fmt"
 	"io"
 	"os"
-	"slices"
 	"sync"
+	cmp "tailscale.com/util/go120/cmp"
+	slices "tailscale.com/util/go120/slices"
 
 	"tailscale.com/metrics"
 	"tailscale.com/util/must"
 )
 
 var stderrFD = 2 // a variable for testing
+
+func maxInt[T ~int | ~int64](a, b T) T {
+	if a > b {
+		return a
+	}
+	return b
+}
+
+func byteLines(b []byte, yield func([]byte) bool) {
+	for len(b) > 0 {
+		i := bytes.IndexByte(b, '\n')
+		if i < 0 {
+			yield(b)
+			return
+		}
+		if !yield(b[:i+1]) {
+			return
+		}
+		b = b[i+1:]
+	}
+}
 
 var errTooLong = errors.New("filch: line too long")
 var errClosed = errors.New("filch: buffer is closed")
@@ -148,7 +169,7 @@ func (f *Filch) consumeReadBuffer(n int) {
 }
 func (f *Filch) appendReadBuffer(n int) {
 	f.rdBuf = f.rdBuf[:len(f.rdBuf)+n]
-	f.rdBufMaxLen = max(f.rdBufMaxLen, len(f.rdBuf))
+	f.rdBufMaxLen = maxInt(f.rdBufMaxLen, len(f.rdBuf))
 }
 
 // TryReadline implements the logtail.Buffer interface.
@@ -256,14 +277,20 @@ func (f *Filch) Write(b []byte) (n int, err error) {
 	if len(b) == 0 || b[len(b)-1] != '\n' {
 		newline = "\n"
 		f.wrBuf = append(append(f.wrBuf[:0], b...), newline...)
-		f.wrBufMaxLen = max(f.wrBufMaxLen, len(f.wrBuf))
+		f.wrBufMaxLen = maxInt(f.wrBufMaxLen, len(f.wrBuf))
 		b = f.wrBuf
 	}
 	if len(b) > f.maxLineSize {
-		for line := range bytes.Lines(b) {
+		tooLongLine := false
+		byteLines(b, func(line []byte) bool {
 			if len(line) > f.maxLineSize {
-				return 0, errTooLong
+				tooLongLine = true
+				return false
 			}
+			return true
+		})
+		if tooLongLine {
+			return 0, errTooLong
 		}
 	}
 	n, err = f.newer.Write(b)
@@ -276,7 +303,7 @@ func (f *Filch) Write(b []byte) (n int, err error) {
 func (f *Filch) statAndUpdateBytes() {
 	if fi, err := f.newer.Stat(); err == nil {
 		prevSize := f.newlyWrittenBytes + f.newlyFilchedBytes
-		filchedBytes := max(0, fi.Size()-prevSize)
+		filchedBytes := maxInt(0, fi.Size()-prevSize)
 		f.writeBytes.Add(filchedBytes)
 		f.filchedBytes.Add(filchedBytes)
 		f.storedBytes.Add(filchedBytes)
@@ -321,7 +348,7 @@ func (f *Filch) rotateLocked() error {
 		// Update dropped bytes.
 		if pos, err := f.older.Seek(0, io.SeekCurrent); err == nil {
 			rdPos := pos - int64(len(f.unreadReadBuffer())) // adjust for data already read into the read buffer
-			f.droppedBytes.Add(max(0, fi.Size()-rdPos))
+			f.droppedBytes.Add(maxInt(0, fi.Size()-rdPos))
 		}
 
 		// Truncate the older file and write relative to the start.
@@ -375,7 +402,7 @@ func (f *Filch) rotateLocked() error {
 	if err != nil {
 		return err
 	}
-	filchedBytes := max(0, fi.Size()-prevSize)
+	filchedBytes := maxInt(0, fi.Size()-prevSize)
 	f.writeBytes.Add(filchedBytes)
 	f.filchedBytes.Add(filchedBytes)
 	f.storedBytes.Set(fi.Size()) // newer has been truncated, so only older matters
@@ -456,8 +483,8 @@ func New(filePrefix string, opts Options) (f *Filch, err error) {
 	}
 
 	f = new(Filch)
-	f.maxLineSize = int(cmp.Or(max(0, opts.MaxLineSize), DefaultMaxLineSize))
-	f.maxFileSize = int64(cmp.Or(max(0, opts.MaxFileSize), DefaultMaxFileSize))
+	f.maxLineSize = int(cmp.Or(maxInt(0, opts.MaxLineSize), DefaultMaxLineSize))
+	f.maxFileSize = int64(cmp.Or(maxInt(0, opts.MaxFileSize), DefaultMaxFileSize))
 	f.maxFileSize /= 2 // since there are two log files that combine to equal MaxFileSize
 
 	// Neither, either, or both files may exist and contain logs from

@@ -6,8 +6,8 @@
 package tests
 
 import (
-	"maps"
 	"net/netip"
+	maps "tailscale.com/util/go120/maps"
 
 	"golang.org/x/exp/constraints"
 	"tailscale.com/types/views"
@@ -22,13 +22,13 @@ func (src *StructWithPtrs) Clone() *StructWithPtrs {
 	dst := new(StructWithPtrs)
 	*dst = *src
 	if dst.Value != nil {
-		dst.Value = new(*src.Value)
+		dst.Value = func() *Value { v := *src.Value; return &v }()
 	}
 	if dst.Int != nil {
-		dst.Int = new(*src.Int)
+		dst.Int = func() *Int { v := *src.Int; return &v }()
 	}
 	if dst.NoView != nil {
-		dst.NoView = new(*src.NoView)
+		dst.NoView = func() *NoView { v := *src.NoView; return &v }()
 	}
 	return dst
 }
@@ -277,7 +277,7 @@ func (src *GenericIntStruct[T]) Clone() *GenericIntStruct[T] {
 	dst := new(GenericIntStruct[T])
 	*dst = *src
 	if dst.Pointer != nil {
-		dst.Pointer = new(*src.Pointer)
+		dst.Pointer = func() *Pointer { v := *src.Pointer; return &v }()
 	}
 	dst.Slice = append(src.Slice[:0:0], src.Slice...)
 	dst.Map = maps.Clone(src.Map)
@@ -334,7 +334,7 @@ func (src *GenericNoPtrsStruct[T]) Clone() *GenericNoPtrsStruct[T] {
 	dst := new(GenericNoPtrsStruct[T])
 	*dst = *src
 	if dst.Pointer != nil {
-		dst.Pointer = new(*src.Pointer)
+		dst.Pointer = func() *Pointer { v := *src.Pointer; return &v }()
 	}
 	dst.Slice = append(src.Slice[:0:0], src.Slice...)
 	dst.Map = maps.Clone(src.Map)
@@ -492,7 +492,7 @@ func (src *StructWithTypeAliasFields) Clone() *StructWithTypeAliasFields {
 	dst.WithPtr = *src.WithPtr.Clone()
 	dst.WithPtrByPtr = src.WithPtrByPtr.Clone()
 	if dst.WithoutPtrByPtr != nil {
-		dst.WithoutPtrByPtr = new(*src.WithoutPtrByPtr)
+		dst.WithoutPtrByPtr = func() *WithoutPtrByPtr { v := *src.WithoutPtrByPtr; return &v }()
 	}
 	if src.SliceWithPtrs != nil {
 		dst.SliceWithPtrs = make([]*StructWithPtrsAlias, len(src.SliceWithPtrs))

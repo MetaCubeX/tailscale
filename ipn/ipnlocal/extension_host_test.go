@@ -1,19 +1,21 @@
+//go:build ignore
+
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
 package ipnlocal
 
 import (
-	"cmp"
 	"context"
 	"errors"
 	"net/netip"
 	"reflect"
-	"slices"
 	"strconv"
 	"strings"
 	"sync"
 	"sync/atomic"
+	cmp "tailscale.com/util/go120/cmp"
+	slices "tailscale.com/util/go120/slices"
 	"testing"
 
 	deepcmp "github.com/google/go-cmp/cmp"

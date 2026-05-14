@@ -6,7 +6,6 @@
 package localapi
 
 import (
-	"cmp"
 	"context"
 	"encoding/json"
 	"errors"
@@ -16,9 +15,10 @@ import (
 	"net/http"
 	"net/netip"
 	"reflect"
-	"slices"
 	"strconv"
 	"sync"
+	cmp "tailscale.com/util/go120/cmp"
+	slices "tailscale.com/util/go120/slices"
 	"time"
 
 	"tailscale.com/client/tailscale/apitype"
@@ -143,15 +143,17 @@ func (h *Handler) serveDebugDialTypes(w http.ResponseWriter, r *http.Request) {
 
 	var wg sync.WaitGroup
 	for _, dialer := range dialers {
-
-		wg.Go(func() {
+		dialer := dialer
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
 			conn, err := dialer.dial(ctx, network, addr)
 			results <- result{dialer.name, conn, err}
-		})
+		}()
 	}
 
 	wg.Wait()
-	for range len(dialers) {
+	for i := 0; i < len(dialers); i++ {
 		res := <-results
 		fmt.Fprintf(w, "[%s] connected=%v err=%v\n", res.name, res.conn != nil, res.err)
 		if res.conn != nil {

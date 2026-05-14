@@ -208,7 +208,7 @@ type Sum struct {
 }
 
 func (s1 *Sum) xor(s2 Sum) {
-	for i := range sha256.Size {
+	for i := 0; i < sha256.Size; i++ {
 		s1.sum[i] ^= s2.sum[i]
 	}
 }
@@ -248,7 +248,7 @@ func Hash[T any](v *T) Sum {
 	// Always treat the Hash input as if it were an interface by including
 	// a hash of the type. This ensures that hashing of two different types
 	// but with the same value structure produces different hashes.
-	t := reflect.TypeFor[T]()
+	t := reflect.TypeOf((*T)(nil)).Elem()
 	h.hashType(t)
 	if v == nil {
 		h.HashUint8(0) // indicates nil
@@ -300,7 +300,7 @@ func ExcludeFields[T any](fields ...string) Option {
 }
 
 func newFieldFilter[T any](include bool, fields []string) Option {
-	t := reflect.TypeFor[T]()
+	t := reflect.TypeOf((*T)(nil)).Elem()
 	fieldSet := set.Set[string]{}
 	for _, f := range fields {
 		if _, ok := t.FieldByName(f); !ok {
@@ -324,7 +324,7 @@ func HasherForType[T any](opts ...Option) func(*T) Sum {
 	if len(opts) > 1 {
 		panic("HasherForType only accepts one optional argument") // for now
 	}
-	t := reflect.TypeFor[T]()
+	t := reflect.TypeOf((*T)(nil)).Elem()
 	var hash typeHasherFunc
 	for _, o := range opts {
 		switch o := o.(type) {
@@ -492,7 +492,7 @@ func makeArrayHasher(t reflect.Type) typeHasherFunc {
 	nb := t.Elem().Size() // byte size of each array element
 	return func(h *hasher, p pointer) {
 		once.Do(init)
-		for i := range n {
+		for i := 0; i < n; i++ {
 			hashElem(h, p.arrayIndex(i, nb))
 		}
 	}
@@ -545,7 +545,7 @@ func makeSliceHasher(t reflect.Type) typeHasherFunc {
 		h.HashUint8(1) // indicates visiting slice
 		n := p.sliceLen()
 		h.HashUint64(uint64(n))
-		for i := range n {
+		for i := 0; i < n; i++ {
 			pe := pa.arrayIndex(i, nb)
 			hashElem(h, pe)
 		}

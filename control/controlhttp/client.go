@@ -20,7 +20,6 @@
 package controlhttp
 
 import (
-	"cmp"
 	"context"
 	"crypto/tls"
 	"encoding/base64"
@@ -34,6 +33,7 @@ import (
 	"net/url"
 	"runtime"
 	"sync/atomic"
+	cmp "tailscale.com/util/go120/cmp"
 	"time"
 
 	"tailscale.com/control/controlbase"

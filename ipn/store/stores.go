@@ -9,14 +9,14 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"iter"
-	"maps"
 	"os"
 	"path/filepath"
 	"runtime"
-	"slices"
 	"strings"
 	"sync"
+	iter "tailscale.com/util/go120/iter"
+	maps "tailscale.com/util/go120/maps"
+	slices "tailscale.com/util/go120/slices"
 
 	"tailscale.com/atomicfile"
 	"tailscale.com/ipn"
@@ -322,10 +322,16 @@ func maybeMigrateLocalStateFile(logf logger.Logf, path string) error {
 	// Copy all the items. This is pretty inefficient, because both stores
 	// write the file to disk for each WriteState, but that's ok for a one-time
 	// migration.
-	for k, v := range fromExp.All() {
+	var copyErr error
+	fromExp.All()(func(k ipn.StateKey, v []byte) bool {
 		if err := to.WriteState(k, v); err != nil {
-			return err
+			copyErr = err
+			return false
 		}
+		return true
+	})
+	if copyErr != nil {
+		return copyErr
 	}
 
 	// Finally, overwrite the state file with the new one we created at

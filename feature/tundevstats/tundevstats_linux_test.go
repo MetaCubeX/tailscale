@@ -1,3 +1,5 @@
+//go:build ignore
+
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
@@ -14,7 +16,7 @@ import (
 
 	"github.com/mdlayher/netlink"
 	"github.com/mdlayher/netlink/nltest"
-	"github.com/tailscale/wireguard-go/tun"
+	"github.com/metacubex/tailscale-wireguard-go/tun"
 	"golang.org/x/sys/unix"
 )
 

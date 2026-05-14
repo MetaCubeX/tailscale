@@ -170,11 +170,11 @@ var (
 // https://github.com/tailscale/tailscale/issues/3824
 func (c *Conn) listenRawDisco(family string) (io.Closer, error) {
 	if !envknobEnableRawDisco() {
-		// Return an 'errors.ErrUnsupported' to prevent the callee from
+		// Return an 'errUnsupported' to prevent the callee from
 		// logging; when we switch this to an opt-out (vs. an opt-in),
 		// drop the ErrUnsupported so that the callee logs that it was
 		// disabled.
-		return nil, fmt.Errorf("raw disco not enabled: %w", errors.ErrUnsupported)
+		return nil, fmt.Errorf("raw disco not enabled: %w", errUnsupported)
 	}
 
 	// https://github.com/tailscale/tailscale/issues/5607

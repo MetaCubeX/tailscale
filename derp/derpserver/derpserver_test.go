@@ -1,3 +1,5 @@
+//go:build ignore
+
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
@@ -5,7 +7,6 @@ package derpserver
 
 import (
 	"bufio"
-	"cmp"
 	"context"
 	"crypto/x509"
 	"encoding/asn1"
@@ -19,6 +20,7 @@ import (
 	"reflect"
 	"strconv"
 	"sync"
+	cmp "tailscale.com/util/go120/cmp"
 	"testing"
 	"testing/synctest"
 	"time"

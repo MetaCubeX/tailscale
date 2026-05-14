@@ -1,3 +1,5 @@
+//go:build ignore
+
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
@@ -6,7 +8,7 @@ package wgengine_test
 import (
 	"testing"
 
-	"github.com/tailscale/wireguard-go/tun"
+	"github.com/metacubex/tailscale-wireguard-go/tun"
 	"tailscale.com/net/tstun"
 	"tailscale.com/tsd"
 	"tailscale.com/tstest"

@@ -4,8 +4,8 @@
 package prober
 
 import (
-	"slices"
 	"sync"
+	slices "tailscale.com/util/go120/slices"
 )
 
 // histogram serves as an adapter to the Prometheus histogram datatype.

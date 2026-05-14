@@ -152,13 +152,13 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
-	"slices"
 	"strconv"
 	"strings"
 	"sync"
+	slices "tailscale.com/util/go120/slices"
 	"time"
 
-	"github.com/tailscale/wireguard-go/tun"
+	"github.com/metacubex/tailscale-wireguard-go/tun"
 	"tailscale.com/client/local"
 	"tailscale.com/control/controlclient"
 	"tailscale.com/envknob"
@@ -626,7 +626,9 @@ func (s *Server) close() {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 	var wg sync.WaitGroup
-	wg.Go(func() {
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
 		// Perform a best-effort final flush.
 		if s.logtail != nil {
 			s.logtail.Shutdown(ctx)
@@ -634,12 +636,14 @@ func (s *Server) close() {
 		if s.logbuffer != nil {
 			s.logbuffer.Close()
 		}
-	})
-	wg.Go(func() {
+	}()
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
 		if s.localAPIServer != nil {
 			s.localAPIServer.Shutdown(ctx)
 		}
-	})
+	}()
 
 	if s.shutdownCancel != nil {
 		s.shutdownCancel()
@@ -695,7 +699,7 @@ func (s *Server) TailscaleIPs() (ip4, ip6 netip.Addr) {
 		return
 	}
 	addrs := nm.GetAddresses()
-	for _, addr := range addrs.All() {
+	addrs.All()(func(_ int, addr netip.Prefix) bool {
 		ip := addr.Addr()
 		if ip.Is6() {
 			ip6 = ip
@@ -703,7 +707,8 @@ func (s *Server) TailscaleIPs() (ip4, ip6 netip.Addr) {
 		if ip.Is4() {
 			ip4 = ip
 		}
-	}
+		return true
+	})
 
 	return ip4, ip6
 }
@@ -933,7 +938,7 @@ func (s *Server) start() (reterr error) {
 	}
 	lb.SetTCPHandlerForFunnelFlow(s.getTCPHandlerForFunnelFlow)
 	lb.SetVarRoot(s.rootPath)
-	s.logf("tsnet starting with hostname %q, varRoot %q", s.hostname, s.rootPath)
+	s.logf("tsnet starting with hostname: %s, varRoot: %s", s.hostname, s.rootPath)
 	s.lb = lb
 	if err := ns.Start(lb); err != nil {
 		return fmt.Errorf("failed to start netstack: %w", err)
@@ -1750,12 +1755,13 @@ func (s *Server) decrementServiceAdvertisementLocked(name tailcfg.ServiceName) e
 			return nil
 		}
 		newAdvertised := make([]string, 0, advertised.Len()-1)
-		for _, svc := range advertised.All() {
+		advertised.All()(func(_ int, svc string) bool {
 			if svc == name.String() {
-				continue
+				return true
 			}
 			newAdvertised = append(newAdvertised, svc)
-		}
+			return true
+		})
 		_, err := s.lb.EditPrefs(&ipn.MaskedPrefs{
 			AdvertiseServicesSet: true,
 			Prefs: ipn.Prefs{

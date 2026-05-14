@@ -13,11 +13,11 @@ import (
 	"log"
 	"math/big"
 	"net/netip"
-	"slices"
 	"sort"
 	"strconv"
 	"strings"
 	"sync"
+	slices "tailscale.com/util/go120/slices"
 
 	"tailscale.com/feature/buildfeatures"
 	"tailscale.com/util/testenv"

@@ -1,3 +1,5 @@
+//go:build ignore
+
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
@@ -5,7 +7,6 @@ package ipnlocal
 
 import (
 	"bytes"
-	"cmp"
 	"crypto/x509"
 	"encoding/json"
 	"net/http/httptest"
@@ -13,6 +14,7 @@ import (
 	"os"
 	"path/filepath"
 	"reflect"
+	cmp "tailscale.com/util/go120/cmp"
 	"testing"
 	"time"
 

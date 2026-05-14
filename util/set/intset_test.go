@@ -1,12 +1,14 @@
+//go:build ignore
+
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
 package set
 
 import (
-	"maps"
 	"math"
-	"slices"
+	maps "tailscale.com/util/go120/maps"
+	slices "tailscale.com/util/go120/slices"
 	"testing"
 
 	"golang.org/x/exp/constraints"

@@ -12,9 +12,9 @@ import (
 	"net/http/httputil"
 	"net/url"
 	"path"
-	"slices"
 	"strings"
 	"sync"
+	slices "tailscale.com/util/go120/slices"
 
 	"github.com/tailscale/xnet/webdav"
 	"tailscale.com/drive/driveimpl/dirfs"

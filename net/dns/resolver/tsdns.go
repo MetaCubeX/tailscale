@@ -16,10 +16,10 @@ import (
 	"net/netip"
 	"os"
 	"runtime"
-	"slices"
 	"strconv"
 	"strings"
 	"sync"
+	slices "tailscale.com/util/go120/slices"
 	"time"
 
 	dns "golang.org/x/net/dns/dnsmessage"

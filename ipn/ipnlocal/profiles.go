@@ -4,7 +4,6 @@
 package ipnlocal
 
 import (
-	"cmp"
 	"crypto"
 	"crypto/rand"
 	"encoding/json"
@@ -12,8 +11,9 @@ import (
 	"fmt"
 	"io"
 	"runtime"
-	"slices"
 	"strings"
+	cmp "tailscale.com/util/go120/cmp"
+	slices "tailscale.com/util/go120/slices"
 
 	"tailscale.com/envknob"
 	"tailscale.com/feature"

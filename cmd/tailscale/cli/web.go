@@ -6,7 +6,6 @@
 package cli
 
 import (
-	"cmp"
 	"context"
 	"crypto/tls"
 	_ "embed"
@@ -20,6 +19,7 @@ import (
 	"os"
 	"os/signal"
 	"strings"
+	cmp "tailscale.com/util/go120/cmp"
 
 	"github.com/peterbourgon/ff/v3/ffcli"
 	"tailscale.com/client/web"

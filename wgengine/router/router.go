@@ -11,9 +11,9 @@ import (
 	"net/netip"
 	"reflect"
 	"runtime"
-	"slices"
+	slices "tailscale.com/util/go120/slices"
 
-	"github.com/tailscale/wireguard-go/tun"
+	"github.com/metacubex/tailscale-wireguard-go/tun"
 	"tailscale.com/feature"
 	"tailscale.com/feature/buildfeatures"
 	"tailscale.com/health"

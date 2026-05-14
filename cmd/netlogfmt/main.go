@@ -25,7 +25,6 @@
 package main
 
 import (
-	"cmp"
 	"encoding/base64"
 	"encoding/json"
 	"flag"
@@ -36,14 +35,15 @@ import (
 	"net/http"
 	"net/netip"
 	"os"
-	"slices"
 	"strconv"
 	"strings"
+	cmp "tailscale.com/util/go120/cmp"
+	slices "tailscale.com/util/go120/slices"
 	"time"
 
 	"github.com/dsnet/try"
-	jsonv2 "github.com/go-json-experiment/json"
-	"github.com/go-json-experiment/json/jsontext"
+	jsonv2 "github.com/metacubex/jsonv2"
+	"github.com/metacubex/jsonv2/jsontext"
 	"tailscale.com/tailcfg"
 	"tailscale.com/types/bools"
 	"tailscale.com/types/logid"

@@ -4,13 +4,13 @@
 package vnet
 
 import (
-	"cmp"
 	"context"
 	"fmt"
-	"iter"
 	"net/netip"
 	"os"
-	"slices"
+	cmp "tailscale.com/util/go120/cmp"
+	iter "tailscale.com/util/go120/iter"
+	slices "tailscale.com/util/go120/slices"
 	"time"
 
 	"github.com/google/gopacket/layers"

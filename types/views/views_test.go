@@ -1,3 +1,5 @@
+//go:build ignore
+
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
@@ -8,15 +10,15 @@ import (
 	"fmt"
 	"net/netip"
 	"reflect"
-	"slices"
 	"strings"
+	slices "tailscale.com/util/go120/slices"
 	"testing"
 	"unsafe"
 
 	qt "github.com/frankban/quicktest"
-	jsonv2 "github.com/go-json-experiment/json"
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
+	jsonv2 "github.com/metacubex/jsonv2"
 	"tailscale.com/types/structs"
 )
 

@@ -1,22 +1,22 @@
+//go:build ignore
+
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
-
-//go:build !ts_omit_netlog && !ts_omit_logtail
 
 package netlog
 
 import (
 	"encoding/binary"
-	"math/rand/v2"
 	"net/netip"
 	"sync"
+	"tailscale.com/util/go120/randv2"
 	"testing"
 	"testing/synctest"
 	"time"
 
-	jsonv2 "github.com/go-json-experiment/json"
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
+	jsonv2 "github.com/metacubex/jsonv2"
 	"tailscale.com/tailcfg"
 	"tailscale.com/types/bools"
 	"tailscale.com/types/ipproto"

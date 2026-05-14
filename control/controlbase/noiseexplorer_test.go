@@ -1,3 +1,5 @@
+//go:build ignore
+
 // This file contains the implementation of Noise IK from
 // https://noiseexplorer.com/ . Unlike the rest of this repository,
 // this file is licensed under the terms of the GNU GPL v3. See

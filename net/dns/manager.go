@@ -13,10 +13,10 @@ import (
 	"net"
 	"net/netip"
 	"runtime"
-	"slices"
 	"strings"
 	"sync"
 	"sync/atomic"
+	slices "tailscale.com/util/go120/slices"
 	"time"
 
 	"tailscale.com/control/controlknobs"

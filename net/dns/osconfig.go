@@ -8,8 +8,8 @@ import (
 	"errors"
 	"fmt"
 	"net/netip"
-	"slices"
 	"strings"
+	slices "tailscale.com/util/go120/slices"
 
 	"tailscale.com/feature/buildfeatures"
 	"tailscale.com/types/logger"

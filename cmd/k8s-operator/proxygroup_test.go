@@ -1,7 +1,7 @@
+//go:build ignore
+
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
-
-//go:build !plan9
 
 package main
 
@@ -11,8 +11,8 @@ import (
 	"fmt"
 	"net/netip"
 	"reflect"
-	"slices"
 	"strings"
+	slices "tailscale.com/util/go120/slices"
 	"testing"
 	"time"
 

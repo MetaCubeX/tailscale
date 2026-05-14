@@ -5,13 +5,13 @@
 package main
 
 import (
-	"cmp"
 	"context"
 	"errors"
 	"flag"
 	"log"
 	"os"
-	"slices"
+	cmp "tailscale.com/util/go120/cmp"
+	slices "tailscale.com/util/go120/slices"
 
 	"tailscale.com/release/dist"
 	"tailscale.com/release/dist/cli"

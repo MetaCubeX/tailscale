@@ -10,9 +10,9 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
-	"slices"
 	"strings"
 	"sync/atomic"
+	slices "tailscale.com/util/go120/slices"
 	"time"
 
 	"go.uber.org/zap"

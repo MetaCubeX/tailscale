@@ -1,9 +1,9 @@
+//go:build ignore
+
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
 // Build on Windows, Linux and *BSD
-
-//go:build windows || (linux && !android) || freebsd || openbsd || dragonfly || netbsd
 
 package posture
 

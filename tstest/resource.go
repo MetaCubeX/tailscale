@@ -7,8 +7,8 @@ import (
 	"bytes"
 	"runtime"
 	"runtime/pprof"
-	"slices"
 	"strings"
+	slices "tailscale.com/util/go120/slices"
 	"testing"
 	"time"
 )
@@ -54,7 +54,9 @@ func ResourceCheck(tb testing.TB) {
 		}
 
 		// Print goroutine diff, omitting tstest.ResourceCheck goroutines.
-		self := func(g goroutine) bool { return bytes.Contains(g.stack, []byte("\ttailscale.com/tstest.goroutines+")) }
+		self := func(g goroutine) bool {
+			return bytes.Contains(g.stack, []byte("\ttailscale.com/tstest.goroutines+"))
+		}
 		start.goroutines = slices.DeleteFunc(start.goroutines, self)
 		end.goroutines = slices.DeleteFunc(end.goroutines, self)
 		tb.Logf("goroutine diff (-start +end):\n%s", diffGoroutines(start, end))
@@ -80,20 +82,20 @@ func goroutines() (int, []byte) {
 //
 //	goroutine profile: total 408
 //	48 @ 0x47bc0e 0x136c6b9 0x136c69e 0x136c7ab 0x1379809 0x13797fa 0x483da1
-//	#   0x136c6b8   gvisor.dev/gvisor/pkg/sync.Gopark+0x78                  gvisor.dev/gvisor@v0.0.0-20250205023644-9414b50a5633/pkg/sync/runtime_unsafe.go:33
-//	#   0x136c69d   gvisor.dev/gvisor/pkg/sleep.(*Sleeper).nextWaker+0x5d           gvisor.dev/gvisor@v0.0.0-20250205023644-9414b50a5633/pkg/sleep/sleep_unsafe.go:210
-//	#   0x136c7aa   gvisor.dev/gvisor/pkg/sleep.(*Sleeper).fetch+0x2a           gvisor.dev/gvisor@v0.0.0-20250205023644-9414b50a5633/pkg/sleep/sleep_unsafe.go:257
-//	#   0x1379808   gvisor.dev/gvisor/pkg/sleep.(*Sleeper).Fetch+0xa8           gvisor.dev/gvisor@v0.0.0-20250205023644-9414b50a5633/pkg/sleep/sleep_unsafe.go:280
-//	#   0x13797f9   gvisor.dev/gvisor/pkg/tcpip/transport/tcp.(*processor).start+0x99   gvisor.dev/gvisor@v0.0.0-20250205023644-9414b50a5633/pkg/tcpip/transport/tcp/dispatcher.go:291
+//	#   0x136c6b8   github.com/metacubex/gvisor/pkg/sync.Gopark+0x78                  github.com/metacubex/gvisor@v0.0.0-20250205023644-9414b50a5633/pkg/sync/runtime_unsafe.go:33
+//	#   0x136c69d   github.com/metacubex/gvisor/pkg/sleep.(*Sleeper).nextWaker+0x5d           github.com/metacubex/gvisor@v0.0.0-20250205023644-9414b50a5633/pkg/sleep/sleep_unsafe.go:210
+//	#   0x136c7aa   github.com/metacubex/gvisor/pkg/sleep.(*Sleeper).fetch+0x2a           github.com/metacubex/gvisor@v0.0.0-20250205023644-9414b50a5633/pkg/sleep/sleep_unsafe.go:257
+//	#   0x1379808   github.com/metacubex/gvisor/pkg/sleep.(*Sleeper).Fetch+0xa8           github.com/metacubex/gvisor@v0.0.0-20250205023644-9414b50a5633/pkg/sleep/sleep_unsafe.go:280
+//	#   0x13797f9   github.com/metacubex/gvisor/pkg/tcpip/transport/tcp.(*processor).start+0x99   github.com/metacubex/gvisor@v0.0.0-20250205023644-9414b50a5633/pkg/tcpip/transport/tcp/dispatcher.go:291
 //
 //	48 @ 0x47bc0e 0x413705 0x4132b2 0x10fc905 0x483da1
-//	#   0x10fc904   github.com/tailscale/wireguard-go/device.(*Device).RoutineDecryption+0x184  github.com/tailscale/wireguard-go@v0.0.0-20250107165329-0b8b35511f19/device/receive.go:245
+//	#   0x10fc904   github.com/metacubex/tailscale-wireguard-go/device.(*Device).RoutineDecryption+0x184  github.com/metacubex/tailscale-wireguard-go@v0.0.0-20250107165329-0b8b35511f19/device/receive.go:245
 //
 //	48 @ 0x47bc0e 0x413705 0x4132b2 0x10fcd2a 0x483da1
-//	#   0x10fcd29   github.com/tailscale/wireguard-go/device.(*Device).RoutineHandshake+0x169   github.com/tailscale/wireguard-go@v0.0.0-20250107165329-0b8b35511f19/device/receive.go:279
+//	#   0x10fcd29   github.com/metacubex/tailscale-wireguard-go/device.(*Device).RoutineHandshake+0x169   github.com/metacubex/tailscale-wireguard-go@v0.0.0-20250107165329-0b8b35511f19/device/receive.go:279
 //
 //	48 @ 0x47bc0e 0x413705 0x4132b2 0x1100ba7 0x483da1
-//	#   0x1100ba6   github.com/tailscale/wireguard-go/device.(*Device).RoutineEncryption+0x186  github.com/tailscale/wireguard-go@v0.0.0-20250107165329-0b8b35511f19/device/send.go:451
+//	#   0x1100ba6   github.com/metacubex/tailscale-wireguard-go/device.(*Device).RoutineEncryption+0x186  github.com/metacubex/tailscale-wireguard-go@v0.0.0-20250107165329-0b8b35511f19/device/send.go:451
 //
 //	26 @ 0x47bc0e 0x458e57 0x847587 0x483da1
 //	#   0x847586    database/sql.(*DB).connectionOpener+0x86    database/sql/sql.go:1261
@@ -102,7 +104,7 @@ func goroutines() (int, []byte) {
 //	#   0x754926    net/http.(*persistConn).writeLoop+0xe6  net/http/transport.go:2596
 //
 //	7 @ 0x47bc0e 0x413705 0x4132b2 0x10fda4d 0x483da1
-//	#   0x10fda4c   github.com/tailscale/wireguard-go/device.(*Peer).RoutineSequentialReceiver+0x16c    github.com/tailscale/wireguard-go@v0.0.0-20250107165329-0b8b35511f19/device/receive.go:443
+//	#   0x10fda4c   github.com/metacubex/tailscale-wireguard-go/device.(*Peer).RoutineSequentialReceiver+0x16c    github.com/metacubex/tailscale-wireguard-go@v0.0.0-20250107165329-0b8b35511f19/device/receive.go:443
 func parseGoroutines(g []byte) goroutineDump {
 	head, tail, ok := bytes.Cut(g, []byte("\n"))
 	if !ok {

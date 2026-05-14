@@ -10,11 +10,11 @@ import (
 	"errors"
 	"fmt"
 	"log"
-	"maps"
 	"os"
 	"path/filepath"
-	"slices"
 	"sync"
+	maps "tailscale.com/util/go120/maps"
+	slices "tailscale.com/util/go120/slices"
 	"time"
 
 	"github.com/fxamacker/cbor/v2"
@@ -709,7 +709,7 @@ func markActiveChain(storage Chonk, verdict map[AUMHash]retainState, minChain in
 		return AUMHash{}, err
 	}
 
-	for i := range minChain {
+	for i := 0; i < minChain; i++ {
 		h := next.Hash()
 		verdict[h] |= retainStateActive
 

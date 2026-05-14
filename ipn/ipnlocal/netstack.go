@@ -10,7 +10,7 @@ import (
 	"net/netip"
 	"time"
 
-	"gvisor.dev/gvisor/pkg/tcpip"
+	"github.com/metacubex/gvisor/pkg/tcpip"
 )
 
 // TCPHandlerForDst returns a TCP handler for connections to dst, or nil if
@@ -51,7 +51,8 @@ func (b *LocalBackend) TCPHandlerForDst(src, dst netip.AddrPort) (handler func(c
 		// tell the difference between a long lived connection that is idle
 		// vs a connection that is dead because the peer has gone away.
 		// We pick 72h as that is typically sufficient for a long weekend.
-		opts = append(opts, new(tcpip.KeepaliveIdleOption(72*time.Hour)))
+		keepaliveIdle := tcpip.KeepaliveIdleOption(72 * time.Hour)
+		opts = append(opts, &keepaliveIdle)
 		return b.handleSSHConn, opts
 	}
 	// TODO(will,sonia): allow customizing web client port ?

@@ -9,9 +9,9 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"math/rand/v2"
 	"os"
 	"reflect"
+	"tailscale.com/util/go120/randv2"
 	"time"
 
 	"tailscale.com/syncs"

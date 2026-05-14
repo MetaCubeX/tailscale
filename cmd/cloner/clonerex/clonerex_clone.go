@@ -6,7 +6,7 @@
 package clonerex
 
 import (
-	"maps"
+	maps "tailscale.com/util/go120/maps"
 )
 
 // Clone makes a deep copy of SliceContainer.

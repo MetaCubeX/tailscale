@@ -9,8 +9,8 @@ import (
 	"context"
 	"fmt"
 	"net"
-	"slices"
 	"sync"
+	slices "tailscale.com/util/go120/slices"
 	"time"
 
 	"tailscale.com/ipn"

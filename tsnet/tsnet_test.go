@@ -1,3 +1,5 @@
+//go:build ignore
+
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
@@ -29,18 +31,18 @@ import (
 	"path/filepath"
 	"reflect"
 	"runtime"
-	"slices"
 	"strconv"
 	"strings"
 	"sync"
 	"sync/atomic"
+	slices "tailscale.com/util/go120/slices"
 	"testing"
 	"time"
 
 	"github.com/google/go-cmp/cmp"
+	"github.com/metacubex/tailscale-wireguard-go/tun"
 	dto "github.com/prometheus/client_model/go"
 	"github.com/prometheus/common/expfmt"
-	"github.com/tailscale/wireguard-go/tun"
 	"golang.org/x/net/proxy"
 
 	"tailscale.com/client/local"

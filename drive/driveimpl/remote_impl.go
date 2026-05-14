@@ -17,9 +17,9 @@ import (
 	"os"
 	"os/exec"
 	"os/user"
-	"slices"
 	"strings"
 	"sync"
+	slices "tailscale.com/util/go120/slices"
 	"time"
 
 	"github.com/tailscale/xnet/webdav"

@@ -10,8 +10,8 @@ import (
 	"io"
 	"os"
 
-	"github.com/dblohm7/wingoes"
 	"golang.org/x/sys/windows"
+	"tailscale.com/util/wingoes"
 	"tailscale.com/util/winutil"
 )
 

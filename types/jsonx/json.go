@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: BSD-3-Clause
 
 // Package jsonx contains helper types and functionality to use with
-// [github.com/go-json-experiment/json], which is positioned to be
+// [github.com/metacubex/jsonv2], which is positioned to be
 // merged into the Go standard library as [encoding/json/v2].
 //
 // See https://go.dev/issues/71497
@@ -13,8 +13,8 @@ import (
 	"fmt"
 	"reflect"
 
-	"github.com/go-json-experiment/json"
-	"github.com/go-json-experiment/json/jsontext"
+	"github.com/metacubex/jsonv2"
+	"github.com/metacubex/jsonv2/jsontext"
 )
 
 var (

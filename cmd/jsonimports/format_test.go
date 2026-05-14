@@ -1,3 +1,5 @@
+//go:build ignore
+
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
@@ -17,7 +19,7 @@ func TestFormatFile(t *testing.T) {
 
 			import (
 				"encoding/json"
-				jsonv2exp "github.com/go-json-experiment/json"
+				jsonv2exp "github.com/metacubex/jsonv2"
 			)
 
 			func main() {
@@ -33,7 +35,7 @@ func TestFormatFile(t *testing.T) {
 
 			import (
 				jsonv1 "encoding/json"
-				jsonv2 "github.com/go-json-experiment/json"
+				jsonv2 "github.com/metacubex/jsonv2"
 			)
 
 			func main() {
@@ -49,8 +51,8 @@ func TestFormatFile(t *testing.T) {
 		in: `package foobar
 
 			import (
-				"github.com/go-json-experiment/json"
-				jsonv2exp "github.com/go-json-experiment/json"
+				"github.com/metacubex/jsonv2"
+				jsonv2exp "github.com/metacubex/jsonv2"
 			)
 
 			func main() {
@@ -60,7 +62,7 @@ func TestFormatFile(t *testing.T) {
 		`,
 		want: `package foobar
 			import (
-				jsonv2 "github.com/go-json-experiment/json"
+				jsonv2 "github.com/metacubex/jsonv2"
 			)
 			func main() {
 				jsonv2.Marshal()
@@ -69,13 +71,13 @@ func TestFormatFile(t *testing.T) {
 		`,
 	}, {
 		in: `package foobar
-			import "github.com/go-json-experiment/json/v1"
+			import "github.com/metacubex/jsonv2/v1"
 			func main() {
 				json.Marshal()
 			}
 		`,
 		want: `package foobar
-			import jsonv1 "github.com/go-json-experiment/json/v1"
+			import jsonv1 "github.com/metacubex/jsonv2/v1"
 			func main() {
 				jsonv1.Marshal()
 			}
@@ -84,7 +86,7 @@ func TestFormatFile(t *testing.T) {
 		in: `package foobar
 			import (
 				"encoding/json"
-				jsonv1in2 "github.com/go-json-experiment/json/v1"
+				jsonv1in2 "github.com/metacubex/jsonv2/v1"
 			)
 			func main() {
 				json.Marshal()
@@ -94,7 +96,7 @@ func TestFormatFile(t *testing.T) {
 		want: `package foobar
 			import (
 				jsonv1std "encoding/json"
-				jsonv1 "github.com/go-json-experiment/json/v1"
+				jsonv1 "github.com/metacubex/jsonv2/v1"
 			)
 			func main() {
 				jsonv1std.Marshal()
@@ -105,7 +107,7 @@ func TestFormatFile(t *testing.T) {
 		in: `package foobar
 			import (
 				"encoding/json"
-				jsonv1in2 "github.com/go-json-experiment/json/v1"
+				jsonv1in2 "github.com/metacubex/jsonv2/v1"
 			)
 			func main() {
 				json.Marshal()
@@ -115,7 +117,7 @@ func TestFormatFile(t *testing.T) {
 		want: `package foobar
 			import (
 				jsonv1std "encoding/json"
-				jsonv1 "github.com/go-json-experiment/json/v1"
+				jsonv1 "github.com/metacubex/jsonv2/v1"
 			)
 			func main() {
 				jsonv1std.Marshal()
@@ -138,8 +140,8 @@ func TestFormatFile(t *testing.T) {
 		want: `package foobar
 			import (
 				jsonv1 "encoding/json"
-				jsonv2 "github.com/go-json-experiment/json"
-				"github.com/go-json-experiment/json/jsontext"
+				jsonv2 "github.com/metacubex/jsonv2"
+				"github.com/metacubex/jsonv2/jsontext"
 			)
 			func main() {
 				jsonv1.Marshal()

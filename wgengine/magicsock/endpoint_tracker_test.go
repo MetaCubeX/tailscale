@@ -1,3 +1,5 @@
+//go:build ignore
+
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
@@ -6,8 +8,8 @@ package magicsock
 import (
 	"net/netip"
 	"reflect"
-	"slices"
 	"strings"
+	slices "tailscale.com/util/go120/slices"
 	"testing"
 	"time"
 

@@ -7,7 +7,6 @@ package eventbus
 
 import (
 	"bytes"
-	"cmp"
 	"embed"
 	"fmt"
 	"html/template"
@@ -17,11 +16,12 @@ import (
 	"net/http"
 	"path/filepath"
 	"reflect"
-	"slices"
 	"strings"
-	"sync"
+	cmp "tailscale.com/util/go120/cmp"
+	slices "tailscale.com/util/go120/slices"
 
 	"github.com/coder/websocket"
+	"tailscale.com/syncs"
 	"tailscale.com/tsweb"
 )
 
@@ -41,7 +41,7 @@ func (d *Debugger) RegisterHTTP(td *tsweb.DebugHandler) {
 //go:embed assets/*.html
 var templatesSrc embed.FS
 
-var templates = sync.OnceValue(func() *template.Template {
+var templates = syncs.OnceValue(func() *template.Template {
 	d, err := fs.Sub(templatesSrc, "assets")
 	if err != nil {
 		panic(fmt.Errorf("getting eventbus debughttp templates subdir: %w", err))

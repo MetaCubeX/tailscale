@@ -25,12 +25,12 @@ import (
 	"os/exec"
 	"path/filepath"
 	"runtime"
-	"slices"
 	"sort"
 	"strconv"
 	"strings"
 	"sync/atomic"
 	"syscall"
+	slices "tailscale.com/util/go120/slices"
 	"time"
 
 	"github.com/creack/pty"

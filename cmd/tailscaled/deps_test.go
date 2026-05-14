@@ -1,12 +1,14 @@
+//go:build ignore
+
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
 package main
 
 import (
-	"maps"
-	"slices"
 	"strings"
+	maps "tailscale.com/util/go120/maps"
+	slices "tailscale.com/util/go120/slices"
 	"testing"
 
 	"tailscale.com/feature/featuretags"
@@ -208,7 +210,7 @@ func TestOmitGRO(t *testing.T) {
 		GOARCH: "amd64",
 		Tags:   "ts_omit_gro,ts_include_cli",
 		BadDeps: map[string]string{
-			"gvisor.dev/gvisor/pkg/tcpip/stack/gro": "unexpected dep with ts_omit_gro",
+			"github.com/metacubex/gvisor/pkg/tcpip/stack/gro": "unexpected dep with ts_omit_gro",
 		},
 	}.Check(t)
 }

@@ -1,12 +1,12 @@
+//go:build ignore
+
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
-
-//go:build !plan9
 
 package reconciler_test
 
 import (
-	"slices"
+	slices "tailscale.com/util/go120/slices"
 	"testing"
 
 	corev1 "k8s.io/api/core/v1"

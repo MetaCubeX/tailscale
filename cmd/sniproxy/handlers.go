@@ -7,10 +7,10 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"math/rand/v2"
 	"net"
 	"net/netip"
-	"slices"
+	"tailscale.com/util/go120/randv2"
+	slices "tailscale.com/util/go120/slices"
 
 	"github.com/inetaf/tcpproxy"
 	"tailscale.com/net/netutil"

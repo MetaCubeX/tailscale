@@ -9,7 +9,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"maps"
 	"mime"
 	"mime/multipart"
 	"net/http"
@@ -17,6 +16,7 @@ import (
 	"net/url"
 	"strconv"
 	"strings"
+	maps "tailscale.com/util/go120/maps"
 	"time"
 
 	"tailscale.com/client/tailscale/apitype"

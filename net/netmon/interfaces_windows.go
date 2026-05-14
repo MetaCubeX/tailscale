@@ -12,9 +12,9 @@ import (
 	"unsafe"
 
 	"golang.org/x/sys/windows"
-	"golang.zx2c4.com/wireguard/windows/tunnel/winipcfg"
 	"tailscale.com/feature/buildfeatures"
 	"tailscale.com/tsconst"
+	"tailscale.com/util/winipcfg"
 )
 
 const (

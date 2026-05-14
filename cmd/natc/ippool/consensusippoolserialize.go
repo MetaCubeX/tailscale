@@ -7,8 +7,8 @@ import (
 	"encoding/json"
 	"io"
 	"log"
-	"maps"
 	"net/netip"
+	maps "tailscale.com/util/go120/maps"
 
 	"github.com/hashicorp/raft"
 	"go4.org/netipx"

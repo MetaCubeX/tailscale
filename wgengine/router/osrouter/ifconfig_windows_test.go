@@ -1,3 +1,5 @@
+//go:build ignore
+
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
@@ -11,7 +13,7 @@ import (
 	"strings"
 	"testing"
 
-	"golang.zx2c4.com/wireguard/windows/tunnel/winipcfg"
+	"tailscale.com/util/winipcfg"
 )
 
 func randIP() netip.Addr {

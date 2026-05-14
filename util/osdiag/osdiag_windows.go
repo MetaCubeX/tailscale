@@ -12,11 +12,11 @@ import (
 	"unicode/utf16"
 	"unsafe"
 
-	"github.com/dblohm7/wingoes/com"
-	"github.com/dblohm7/wingoes/pe"
 	"golang.org/x/sys/windows"
 	"golang.org/x/sys/windows/registry"
 	"tailscale.com/util/osdiag/internal/wsc"
+	"tailscale.com/util/wingoes/com"
+	"tailscale.com/util/wingoes/pe"
 	"tailscale.com/util/winutil"
 	"tailscale.com/util/winutil/authenticode"
 )
@@ -541,7 +541,7 @@ func getSecurityInfo() map[string]any {
 			continue
 		}
 
-		n = min(n, maxProvCount)
+		n = minInt32(n, maxProvCount)
 		values := make([]any, 0, n)
 
 		for i := int32(0); i < n; i++ {
@@ -652,4 +652,11 @@ func getEffectivePageFileValue() ([]string, error) {
 	// Otherwise we use this value (yes, the above value uses "Page" and this one uses "Paging").
 	entries, _, err := key.GetStringsValue("PagingFiles")
 	return entries, err
+}
+
+func minInt32(a, b int32) int32 {
+	if a < b {
+		return a
+	}
+	return b
 }

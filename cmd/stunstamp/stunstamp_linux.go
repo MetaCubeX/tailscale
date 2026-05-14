@@ -11,9 +11,9 @@ import (
 	"fmt"
 	"io"
 	"math"
-	"math/rand/v2"
 	"net/netip"
 	"syscall"
+	"tailscale.com/util/go120/randv2"
 	"time"
 
 	"github.com/mdlayher/socket"

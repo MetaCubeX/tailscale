@@ -18,7 +18,7 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/gaissmai/bart"
+	"github.com/metacubex/bart"
 	"tailscale.com/feature"
 	"tailscale.com/feature/buildfeatures"
 	"tailscale.com/net/dnscache"

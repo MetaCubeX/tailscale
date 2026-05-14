@@ -11,11 +11,11 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"math/rand/v2"
 	"reflect"
-	"slices"
 	"strings"
 	"sync"
+	"tailscale.com/util/go120/randv2"
+	slices "tailscale.com/util/go120/slices"
 
 	"go.uber.org/zap"
 	corev1 "k8s.io/api/core/v1"

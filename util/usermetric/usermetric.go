@@ -29,7 +29,9 @@ type Registry struct {
 
 // MultiLabelMap is an alias for metrics.MultiLabelMap in the common case,
 // or an alias to a lighter type when usermetrics are omitted from the build.
-type MultiLabelMap[T comparable] = metrics.MultiLabelMap[T]
+type MultiLabelMap[T comparable] struct {
+	metrics.MultiLabelMap[T]
+}
 
 // NewMultiLabelMapWithRegistry creates and register a new
 // MultiLabelMap[T] variable with the given name and returns it.
@@ -38,11 +40,11 @@ type MultiLabelMap[T comparable] = metrics.MultiLabelMap[T]
 // Note that usermetric are not protected against duplicate
 // metrics name. It is the caller's responsibility to ensure that
 // the name is unique.
-func NewMultiLabelMapWithRegistry[T comparable](m *Registry, name string, promType, helpText string) *metrics.MultiLabelMap[T] {
-	ml := &metrics.MultiLabelMap[T]{
+func NewMultiLabelMapWithRegistry[T comparable](m *Registry, name string, promType, helpText string) *MultiLabelMap[T] {
+	ml := &MultiLabelMap[T]{MultiLabelMap: metrics.MultiLabelMap[T]{
 		Type: promType,
 		Help: helpText,
-	}
+	}}
 	var zero T
 	_ = metrics.LabelString(zero) // panic early if T is invalid
 	m.vars.Set(name, ml)

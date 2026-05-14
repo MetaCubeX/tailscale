@@ -17,6 +17,7 @@ import (
 	"sync"
 	"time"
 
+	"tailscale.com/types/result"
 	"tailscale.com/util/lineiter"
 )
 
@@ -76,22 +77,29 @@ func synologyProxiesFromConfig() (*url.URL, *url.URL, error) {
 func parseSynologyConfig(r io.Reader) (*url.URL, *url.URL, error) {
 	cfg := map[string]string{}
 
-	for lr := range lineiter.Reader(r) {
+	var parseErr error
+	lineiter.Reader(r)(func(lr result.Of[[]byte]) bool {
 		line, err := lr.Value()
 		if err != nil {
-			return nil, nil, err
+			parseErr = err
+			return false
 		}
 		// accept and skip over empty lines
 		line = bytes.TrimSpace(line)
 		if len(line) == 0 {
-			continue
+			return true
 		}
 
 		key, value, ok := strings.Cut(string(line), "=")
 		if !ok {
-			return nil, nil, fmt.Errorf("missing \"=\" in proxy.conf line: %q", line)
+			parseErr = fmt.Errorf("missing \"=\" in proxy.conf line: %q", line)
+			return false
 		}
 		cfg[string(key)] = string(value)
+		return true
+	})
+	if parseErr != nil {
+		return nil, nil, parseErr
 	}
 
 	if cfg["proxy_enabled"] != "yes" {

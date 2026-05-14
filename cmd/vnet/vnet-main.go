@@ -18,7 +18,7 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
-	"slices"
+	slices "tailscale.com/util/go120/slices"
 	"time"
 
 	"github.com/coder/websocket"

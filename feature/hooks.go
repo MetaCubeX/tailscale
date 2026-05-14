@@ -7,8 +7,8 @@ import (
 	"net/http"
 	"net/url"
 	"os"
-	"sync"
 
+	"tailscale.com/syncs"
 	"tailscale.com/types/logger"
 	"tailscale.com/types/persist"
 )
@@ -17,7 +17,7 @@ import (
 // to conditionally initialize.
 var HookCanAutoUpdate Hook[func() bool]
 
-var testAllowAutoUpdate = sync.OnceValue(func() bool {
+var testAllowAutoUpdate = syncs.OnceValue(func() bool {
 	return os.Getenv("TS_TEST_ALLOW_AUTO_UPDATE") == "1"
 })
 

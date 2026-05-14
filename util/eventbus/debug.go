@@ -4,14 +4,14 @@
 package eventbus
 
 import (
-	"cmp"
 	"fmt"
 	"path/filepath"
 	"reflect"
 	"runtime"
-	"slices"
 	"strings"
 	"sync/atomic"
+	cmp "tailscale.com/util/go120/cmp"
+	slices "tailscale.com/util/go120/slices"
 	"time"
 
 	"tailscale.com/syncs"
@@ -231,7 +231,7 @@ func logfForCaller(logf logger.Logf) logger.Logf {
 }
 
 func funcPackageName(funcName string) string {
-	ls := max(strings.LastIndex(funcName, "/"), 0)
+	ls := maxInt(strings.LastIndex(funcName, "/"), 0)
 	for {
 		i := strings.LastIndex(funcName, ".")
 		if i <= ls {
@@ -239,4 +239,11 @@ func funcPackageName(funcName string) string {
 		}
 		funcName = funcName[:i]
 	}
+}
+
+func maxInt(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
 }

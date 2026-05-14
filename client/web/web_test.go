@@ -1,3 +1,5 @@
+//go:build ignore
+
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
@@ -14,8 +16,8 @@ import (
 	"net/http/httptest"
 	"net/netip"
 	"net/url"
-	"slices"
 	"strings"
+	slices "tailscale.com/util/go120/slices"
 	"testing"
 	"time"
 

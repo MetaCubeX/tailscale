@@ -6,9 +6,9 @@ package syncs
 
 import (
 	"context"
-	"iter"
 	"sync"
 	"sync/atomic"
+	iter "tailscale.com/util/go120/iter"
 
 	"tailscale.com/util/mak"
 )
@@ -396,7 +396,9 @@ func (m *Map[K, V]) Len() int {
 func (m *Map[K, V]) Clear() {
 	m.mu.Lock()
 	defer m.mu.Unlock()
-	clear(m.m)
+	for k := range m.m {
+		delete(m.m, k)
+	}
 }
 
 // Swap stores the value for the provided key, and returns the previous value

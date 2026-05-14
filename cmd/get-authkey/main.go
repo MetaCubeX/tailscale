@@ -7,13 +7,13 @@
 package main
 
 import (
-	"cmp"
 	"context"
 	"flag"
 	"fmt"
 	"log"
 	"os"
 	"strings"
+	cmp "tailscale.com/util/go120/cmp"
 
 	"golang.org/x/oauth2/clientcredentials"
 	"tailscale.com/internal/client/tailscale"

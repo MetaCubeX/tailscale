@@ -13,14 +13,14 @@ import (
 	"math"
 	"net/netip"
 	"runtime"
-	"slices"
 	"sync"
 	"sync/atomic"
+	slices "tailscale.com/util/go120/slices"
 	"time"
 
-	"github.com/gaissmai/bart"
-	"github.com/tailscale/wireguard-go/device"
-	"github.com/tailscale/wireguard-go/tun"
+	"github.com/metacubex/bart"
+	"github.com/metacubex/tailscale-wireguard-go/device"
+	"github.com/metacubex/tailscale-wireguard-go/tun"
 	"tailscale.com/control/controlknobs"
 	"tailscale.com/drive"
 	"tailscale.com/envknob"
@@ -740,12 +740,15 @@ func (e *userspaceEngine) SetPeerByIPPacketFunc(fn func(netip.Addr) (_ key.NodeP
 // hasOverlap checks if there is a IPPrefix which is common amongst the two
 // provided slices.
 func hasOverlap(aips, rips views.Slice[netip.Prefix]) bool {
-	for _, aip := range aips.All() {
+	overlap := false
+	aips.All()(func(_ int, aip netip.Prefix) bool {
 		if views.SliceContains(rips, aip) {
-			return true
+			overlap = true
+			return false
 		}
-	}
-	return false
+		return true
+	})
+	return overlap
 }
 
 // ResetAndStop resets the engine to a clean state (like calling Reconfig
@@ -1127,11 +1130,12 @@ func (e *userspaceEngine) getStatus() (*Status, error) {
 	}
 
 	peers := make([]ipnstate.PeerStatusLite, 0, peerKeys.Len())
-	for _, key := range peerKeys.All() {
+	peerKeys.All()(func(_ int, key key.NodePublic) bool {
 		if status, ok := e.getPeerStatusLite(key); ok {
 			peers = append(peers, status)
 		}
-	}
+		return true
+	})
 
 	return &Status{
 		AsOf:       time.Now(),
@@ -1354,10 +1358,16 @@ func (e *userspaceEngine) mySelfIPMatchingFamily(dst netip.Addr) (src netip.Addr
 	if addrs.Len() == 0 {
 		return zero, errors.New("no self address in netmap")
 	}
-	for _, p := range addrs.All() {
+	var retAddr netip.Addr
+	addrs.All()(func(_ int, p netip.Prefix) bool {
 		if p.IsSingleIP() && p.Addr().BitLen() == dst.BitLen() {
-			return p.Addr(), nil
+			retAddr = p.Addr()
+			return false
 		}
+		return true
+	})
+	if retAddr.IsValid() {
+		return retAddr, nil
 	}
 	return zero, errors.New("no self address in netmap matching address family")
 }
@@ -1523,7 +1533,7 @@ func (e *userspaceEngine) PeerForIP(ip netip.Addr) (ret PeerForIP, ok bool) {
 	// Check for exact matches before looking for subnet matches.
 	// TODO(bradfitz): add maps for these. on NetworkMap?
 	for _, p := range nm.Peers {
-		for i := range p.Addresses().Len() {
+		for i := 0; i < p.Addresses().Len(); i++ {
 			a := p.Addresses().At(i)
 			if a.Addr() == ip && a.IsSingleIP() && tsaddr.IsTailscaleIP(ip) {
 				return PeerForIP{Node: p, Route: a}, true
@@ -1531,7 +1541,7 @@ func (e *userspaceEngine) PeerForIP(ip netip.Addr) (ret PeerForIP, ok bool) {
 		}
 	}
 	addrs := nm.GetAddresses()
-	for i := range addrs.Len() {
+	for i := 0; i < addrs.Len(); i++ {
 		if a := addrs.At(i); a.Addr() == ip && a.IsSingleIP() && tsaddr.IsTailscaleIP(ip) {
 			return PeerForIP{Node: nm.SelfNode, IsSelf: true, Route: a}, true
 		}

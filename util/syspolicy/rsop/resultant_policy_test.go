@@ -1,3 +1,5 @@
+//go:build ignore
+
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
@@ -5,10 +7,10 @@ package rsop
 
 import (
 	"errors"
-	"slices"
 	"sort"
 	"strconv"
 	"sync"
+	slices "tailscale.com/util/go120/slices"
 	"testing"
 	"time"
 

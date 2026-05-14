@@ -87,7 +87,7 @@ func (rh *Race[T]) Start(ctx context.Context) (T, error) {
 
 	// For each possible result, get it off the channel.
 	var errs []error
-	for range 2 {
+	for i := 0; i < 2; i++ {
 		res := <-rh.results
 
 		// If this was an error, store it and hope that the other

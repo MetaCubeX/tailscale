@@ -1,14 +1,16 @@
+//go:build ignore
+
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
 package source
 
 import (
-	"cmp"
 	"errors"
 	"math"
 	"reflect"
 	"strconv"
+	cmp "tailscale.com/util/go120/cmp"
 	"testing"
 
 	"tailscale.com/util/syspolicy/pkey"

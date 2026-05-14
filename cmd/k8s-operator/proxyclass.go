@@ -8,9 +8,9 @@ package main
 import (
 	"context"
 	"fmt"
-	"slices"
 	"strings"
 	"sync"
+	slices "tailscale.com/util/go120/slices"
 
 	dockerref "github.com/distribution/reference"
 	"go.uber.org/zap"

@@ -1,11 +1,13 @@
+//go:build ignore
+
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
 package proxygrouppolicy_test
 
 import (
-	"slices"
 	"strings"
+	slices "tailscale.com/util/go120/slices"
 	"testing"
 
 	admr "k8s.io/api/admissionregistration/v1"

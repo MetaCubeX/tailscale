@@ -20,10 +20,10 @@ import (
 	"os/exec"
 	"os/signal"
 	"path/filepath"
-	"slices"
 	"strings"
 	"sync"
 	"syscall"
+	slices "tailscale.com/util/go120/slices"
 	"testing"
 	"time"
 

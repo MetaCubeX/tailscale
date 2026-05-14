@@ -17,10 +17,10 @@ import (
 	"net/netip"
 	"os"
 	"runtime"
-	"slices"
 	"strconv"
 	"strings"
 	"sync"
+	slices "tailscale.com/util/go120/slices"
 	"time"
 
 	"golang.org/x/net/dns/dnsmessage"
@@ -103,7 +103,7 @@ func (s *peerAPIServer) listen(ip netip.Addr, tunIfIndex int) (ln net.Listener, 
 	// deterministic that people will bake this into clients.
 	// We try a few times just in case something's already
 	// listening on that port (on all interfaces, probably).
-	for try := range uint8(5) {
+	for try := uint8(0); try < 5; try++ {
 		a16 := ip.As16()
 		hashData := a16[len(a16)-3:]
 		hashData[0] += try
@@ -207,11 +207,8 @@ func (pln *peerAPIListener) ServeConn(src netip.AddrPort, c net.Conn) {
 		peerUser:   peerUser,
 	}
 	httpServer := &http.Server{
-		Handler:   h,
-		Protocols: new(http.Protocols),
+		Handler: h,
 	}
-	httpServer.Protocols.SetHTTP1(true)
-	httpServer.Protocols.SetUnencryptedHTTP2(true) // over WireGuard; "unencrypted" means no TLS
 	go httpServer.Serve(netutil.NewOneConnListener(c, nil))
 }
 
@@ -973,9 +970,9 @@ func peerAPIBase(nm *netmap.NetworkMap, peer tailcfg.NodeView) string {
 
 	var have4, have6 bool
 	addrs := nm.GetAddresses()
-	for _, a := range addrs.All() {
+	addrs.All()(func(_ int, a netip.Prefix) bool {
 		if !a.IsSingleIP() {
-			continue
+			return true
 		}
 		switch {
 		case a.Addr().Is4():
@@ -983,7 +980,8 @@ func peerAPIBase(nm *netmap.NetworkMap, peer tailcfg.NodeView) string {
 		case a.Addr().Is6():
 			have6 = true
 		}
-	}
+		return true
+	})
 	p4, p6 := peerAPIPorts(peer)
 	switch {
 	case have4 && p4 != 0:

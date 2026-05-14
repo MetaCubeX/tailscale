@@ -7,17 +7,17 @@ package views
 
 import (
 	"bytes"
-	"cmp"
 	jsonv1 "encoding/json"
 	"errors"
 	"fmt"
-	"iter"
-	"maps"
 	"reflect"
-	"slices"
+	cmp "tailscale.com/util/go120/cmp"
+	iter "tailscale.com/util/go120/iter"
+	maps "tailscale.com/util/go120/maps"
+	slices "tailscale.com/util/go120/slices"
 
-	jsonv2 "github.com/go-json-experiment/json"
-	"github.com/go-json-experiment/json/jsontext"
+	jsonv2 "github.com/metacubex/jsonv2"
+	"github.com/metacubex/jsonv2/jsontext"
 	"go4.org/mem"
 )
 
@@ -348,7 +348,7 @@ func (v Slice[T]) AsSlice() []T {
 //
 // As it runs in O(n) time, use with care.
 func (v Slice[T]) IndexFunc(f func(T) bool) int {
-	for i := range v.Len() {
+	for i := 0; i < v.Len(); i++ {
 		if f(v.At(i)) {
 			return i
 		}
@@ -486,7 +486,7 @@ func unorderedSliceEqualAnyOrder[T any, V comparable](a, b Slice[T], cmp func(T)
 		return true
 	}
 	m := make(map[V]int)
-	for i := range a.Len() {
+	for i := 0; i < a.Len(); i++ {
 		m[cmp(a.At(i))]++
 		m[cmp(b.At(i))]--
 	}
@@ -515,10 +515,10 @@ func unorderedSliceEqualAnyOrderSmall[T any, V comparable](a, b Slice[T], cmp fu
 	var aMatched, bMatched [shortOOOLen]bool
 
 	// Compare each element in a to each element in b
-	for i := range a.Len() {
+	for i := 0; i < a.Len(); i++ {
 		av := cmp(a.At(i))
 		found := false
-		for j := range a.Len() {
+		for j := 0; j < a.Len(); j++ {
 			// Skip elements in b that have already been
 			// used to match an item in a.
 			if bMatched[j] {
@@ -543,7 +543,7 @@ func unorderedSliceEqualAnyOrderSmall[T any, V comparable](a, b Slice[T], cmp fu
 	}
 
 	// Verify all elements were matched exactly once.
-	for i := range a.Len() {
+	for i := 0; i < a.Len(); i++ {
 		if !aMatched[i] || !bMatched[i] {
 			return false
 		}
@@ -746,13 +746,16 @@ func MapViewsEqual[K, V comparable](a, b Map[K, V]) bool {
 		return true // both nil; can exit early
 	}
 
-	for k, v := range a.All() {
+	okAll := true
+	a.All()(func(k K, v V) bool {
 		bv, ok := b.GetOk(k)
 		if !ok || v != bv {
+			okAll = false
 			return false
 		}
-	}
-	return true
+		return true
+	})
+	return okAll
 }
 
 // MapViewsEqualFunc returns whether the two given [Map]s are equal, using the
@@ -765,13 +768,16 @@ func MapViewsEqualFunc[K comparable, V1, V2 any](a Map[K, V1], b Map[K, V2], eq 
 		return true // both nil; can exit early
 	}
 
-	for k, v := range a.All() {
+	okAll := true
+	a.All()(func(k K, v V1) bool {
 		bv, ok := b.GetOk(k)
 		if !ok || !eq(v, bv) {
+			okAll = false
 			return false
 		}
-	}
-	return true
+		return true
+	})
+	return okAll
 }
 
 // MapRangeFn is the func called from a Map.Range call.
@@ -900,7 +906,8 @@ func (p ValuePointer[T]) Clone() *T {
 	if p.ж == nil {
 		return nil
 	}
-	return new(*p.ж)
+	v := *p.ж
+	return &v
 }
 
 // String implements [fmt.Stringer].
@@ -951,7 +958,7 @@ func (p *ValuePointer[T]) UnmarshalJSONFrom(dec *jsontext.Decoder) error {
 // It has special handling for some types that contain pointers
 // that we know are free from memory aliasing/mutation concerns.
 func ContainsPointers[T any]() bool {
-	return containsPointers(reflect.TypeFor[T]())
+	return containsPointers(reflect.TypeOf((*T)(nil)).Elem())
 }
 
 func containsPointers(typ reflect.Type) bool {
@@ -968,8 +975,8 @@ func containsPointers(typ reflect.Type) bool {
 		if isWellKnownImmutableStruct(typ) {
 			return false
 		}
-		for field := range typ.Fields() {
-			if containsPointers(field.Type) {
+		for i := 0; i < typ.NumField(); i++ {
+			if containsPointers(typ.Field(i).Type) {
 				return true
 			}
 		}

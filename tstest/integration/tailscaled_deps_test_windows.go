@@ -10,14 +10,12 @@ import (
 	// Otherwise cmd/go never sees that we depend on these packages'
 	// transitive deps when we run "go install tailscaled" in a child
 	// process and can cache a prior success when a dependency changes.
-	_ "github.com/dblohm7/wingoes/com"
-	_ "github.com/tailscale/wireguard-go/tun"
+	_ "github.com/metacubex/tailscale-wireguard-go/tun"
 	_ "golang.org/x/sys/windows"
 	_ "golang.org/x/sys/windows/svc"
 	_ "golang.org/x/sys/windows/svc/eventlog"
 	_ "golang.org/x/sys/windows/svc/mgr"
 	_ "golang.zx2c4.com/wintun"
-	_ "golang.zx2c4.com/wireguard/windows/tunnel/winipcfg"
 	_ "tailscale.com/client/local"
 	_ "tailscale.com/cmd/tailscaled/childproc"
 	_ "tailscale.com/cmd/tailscaled/tailscaledhooks"
@@ -64,6 +62,8 @@ import (
 	_ "tailscale.com/util/osshare"
 	_ "tailscale.com/util/syspolicy/pkey"
 	_ "tailscale.com/util/syspolicy/policyclient"
+	_ "tailscale.com/util/wingoes/com"
+	_ "tailscale.com/util/winipcfg"
 	_ "tailscale.com/util/winutil"
 	_ "tailscale.com/util/winutil/gp"
 	_ "tailscale.com/version"

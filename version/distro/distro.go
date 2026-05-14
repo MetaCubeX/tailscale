@@ -12,6 +12,7 @@ import (
 	"strings"
 
 	"tailscale.com/types/lazy"
+	"tailscale.com/types/result"
 	"tailscale.com/util/lineiter"
 )
 
@@ -150,18 +151,25 @@ func DSMVersion() int {
 			return v
 		}
 		// But when run from the command line, we have to read it from the file:
-		for lr := range lineiter.File("/etc/VERSION") {
+		var found int
+		lineiter.File("/etc/VERSION")(func(lr result.Of[[]byte]) bool {
 			line, err := lr.Value()
 			if err != nil {
-				break // but otherwise ignore
+				return false // but otherwise ignore
 			}
 			line = bytes.TrimSpace(line)
 			if string(line) == `majorversion="7"` {
-				return 7
+				found = 7
+				return false
 			}
 			if string(line) == `majorversion="6"` {
-				return 6
+				found = 6
+				return false
 			}
+			return true
+		})
+		if found != 0 {
+			return found
 		}
 		return 0
 	})

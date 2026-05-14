@@ -12,9 +12,9 @@ import (
 	"fmt"
 	"net/netip"
 	"reflect"
-	"slices"
 	"strings"
 	"sync"
+	slices "tailscale.com/util/go120/slices"
 
 	"go.uber.org/zap"
 	corev1 "k8s.io/api/core/v1"

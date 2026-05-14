@@ -1,3 +1,5 @@
+//go:build ignore
+
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
@@ -9,13 +11,13 @@ import (
 	"errors"
 	"flag"
 	"fmt"
-	"iter"
-	"maps"
 	"net/netip"
 	"os"
 	"reflect"
-	"slices"
 	"strings"
+	iter "tailscale.com/util/go120/iter"
+	maps "tailscale.com/util/go120/maps"
+	slices "tailscale.com/util/go120/slices"
 	"testing"
 
 	"github.com/creachadair/mds/mtest"

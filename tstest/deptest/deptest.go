@@ -13,9 +13,9 @@ import (
 	"path/filepath"
 	"regexp"
 	"runtime"
-	"slices"
 	"strings"
 	"sync"
+	slices "tailscale.com/util/go120/slices"
 	"testing"
 
 	"tailscale.com/util/set"

@@ -9,8 +9,8 @@ package setting
 
 import (
 	"fmt"
-	"slices"
 	"strings"
+	slices "tailscale.com/util/go120/slices"
 	"time"
 
 	"tailscale.com/syncs"

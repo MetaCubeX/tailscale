@@ -8,8 +8,8 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	"slices"
 	"strings"
+	slices "tailscale.com/util/go120/slices"
 
 	"github.com/peterbourgon/ff/v3/ffcli"
 	"tailscale.com/types/appctype"

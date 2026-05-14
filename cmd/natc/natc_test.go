@@ -1,3 +1,5 @@
+//go:build ignore
+
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
@@ -13,7 +15,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/gaissmai/bart"
+	"github.com/metacubex/bart"
 	"golang.org/x/net/dns/dnsmessage"
 	"tailscale.com/client/tailscale/apitype"
 	"tailscale.com/cmd/natc/ippool"

@@ -5,11 +5,11 @@ package prefs
 
 import (
 	"net/netip"
-	"slices"
+	slices "tailscale.com/util/go120/slices"
 	"time"
 
-	jsonv2 "github.com/go-json-experiment/json"
-	"github.com/go-json-experiment/json/jsontext"
+	jsonv2 "github.com/metacubex/jsonv2"
+	"github.com/metacubex/jsonv2/jsontext"
 	"golang.org/x/exp/constraints"
 	"tailscale.com/types/opt"
 	"tailscale.com/types/views"

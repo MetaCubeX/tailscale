@@ -14,7 +14,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"maps"
 	"net"
 	"net/http"
 	"net/netip"
@@ -28,6 +27,7 @@ import (
 	"sync"
 	"sync/atomic"
 	"syscall"
+	maps "tailscale.com/util/go120/maps"
 	"time"
 
 	gliderssh "github.com/tailscale/gliderssh"

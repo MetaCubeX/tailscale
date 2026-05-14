@@ -14,8 +14,8 @@ import (
 	"path"
 	"path/filepath"
 	"runtime"
-	"slices"
 	"strconv"
+	slices "tailscale.com/util/go120/slices"
 	"time"
 
 	esbuild "github.com/evanw/esbuild/pkg/api"

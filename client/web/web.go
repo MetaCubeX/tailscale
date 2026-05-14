@@ -5,7 +5,6 @@
 package web
 
 import (
-	"cmp"
 	"context"
 	"encoding/json"
 	"errors"
@@ -17,9 +16,10 @@ import (
 	"net/url"
 	"os"
 	"path"
-	"slices"
 	"strings"
 	"sync"
+	cmp "tailscale.com/util/go120/cmp"
+	slices "tailscale.com/util/go120/slices"
 	"time"
 
 	"tailscale.com/client/local"
@@ -540,7 +540,8 @@ func handleJSON[data any](h func(ctx context.Context, data data) error) http.Han
 			return
 		}
 		if err := h(r.Context(), body); err != nil {
-			if httpErr, ok := errors.AsType[tsweb.HTTPError](err); ok {
+			var httpErr tsweb.HTTPError
+			if ok := errors.As(err, &httpErr); ok {
 				tsweb.WriteHTTPError(w, r, httpErr)
 			} else {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -1214,7 +1215,7 @@ func (s *Server) tailscaleUp(ctx context.Context, st *ipnstate.Status, opt tails
 
 type tailscaleUpOptions struct {
 	// If true, force reauthentication of the client.
-	// Otherwise simply reconnect, the same as running `tailscale up`.
+	// Otherwise simply reconnect, the same as running 	ailscale up`.
 	Reauthenticate bool
 
 	ControlURL string

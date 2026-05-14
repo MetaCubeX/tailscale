@@ -1,3 +1,5 @@
+//go:build ignore
+
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
@@ -5,8 +7,8 @@ package tka
 
 import (
 	"crypto/ed25519"
-	"maps"
 	"sort"
+	maps "tailscale.com/util/go120/maps"
 	"testing"
 )
 

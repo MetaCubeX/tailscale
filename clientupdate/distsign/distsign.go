@@ -53,10 +53,10 @@ import (
 	"os"
 	"time"
 
-	"github.com/hdevalence/ed25519consensus"
 	"golang.org/x/crypto/blake2s"
 	"tailscale.com/feature"
 	"tailscale.com/types/logger"
+	"tailscale.com/util/ed25519consensus"
 	"tailscale.com/util/httpm"
 	"tailscale.com/util/must"
 )

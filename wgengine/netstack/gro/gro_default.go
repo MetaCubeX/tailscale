@@ -8,8 +8,8 @@ package gro
 import (
 	"sync"
 
-	"gvisor.dev/gvisor/pkg/tcpip/stack"
-	nsgro "gvisor.dev/gvisor/pkg/tcpip/stack/gro"
+	"github.com/metacubex/gvisor/pkg/tcpip/stack"
+	nsgro "github.com/metacubex/gvisor/pkg/tcpip/stack/gro"
 	"tailscale.com/net/packet"
 )
 

@@ -5,8 +5,8 @@ package rsop
 
 import (
 	"reflect"
-	"slices"
 	"sync"
+	slices "tailscale.com/util/go120/slices"
 	"time"
 
 	"tailscale.com/syncs"
@@ -110,7 +110,9 @@ func (c *policyChangeCallbacks) Close() {
 	c.mu.Lock()
 	defer c.mu.Unlock()
 	if c.cbs != nil {
-		clear(c.cbs)
+		for h := range c.cbs {
+			delete(c.cbs, h)
+		}
 		c.cbs = nil
 	}
 }

@@ -6,10 +6,10 @@
 package netlog
 
 import (
-	"cmp"
 	"net/netip"
-	"slices"
 	"strings"
+	cmp "tailscale.com/util/go120/cmp"
+	slices "tailscale.com/util/go120/slices"
 	"time"
 	"unicode/utf8"
 
@@ -130,8 +130,8 @@ func (r record) toMessage(excludeNodeInfo, anonymizeExitTraffic bool) netlogtype
 
 func compareConnCnts(x, y netlogtype.ConnectionCounts) int {
 	return cmp.Or(
-		netip.AddrPort.Compare(x.Src, y.Src),
-		netip.AddrPort.Compare(x.Dst, y.Dst),
+		compareAddrPort(x.Src, y.Src),
+		compareAddrPort(x.Dst, y.Dst),
 		cmp.Compare(x.Proto, y.Proto))
 }
 
@@ -147,18 +147,20 @@ func (nu nodeUser) jsonLen() (n int) {
 	}
 	if nu.Addresses().Len() > 0 {
 		n += len(`"addresses":[]`)
-		for _, addr := range nu.Addresses().All() {
+		nu.Addresses().All()(func(_ int, addr netip.Prefix) bool {
 			n += bools.IfElse(addr.Addr().Is4(), len(`"255.255.255.255"`), len(`"ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff"`)) + len(",")
-		}
+			return true
+		})
 	}
 	if nu.Hostinfo().Valid() && len(nu.Hostinfo().OS()) > 0 {
 		n += len(`"os":`) + jsonQuotedLen(nu.Hostinfo().OS()) + len(`,`)
 	}
 	if nu.Tags().Len() > 0 {
 		n += len(`"tags":[]`)
-		for _, tag := range nu.Tags().All() {
+		nu.Tags().All()(func(_ int, tag string) bool {
 			n += jsonQuotedLen(tag) + len(",")
-		}
+			return true
+		})
 	} else if nu.user.Valid() && nu.user.ID() == nu.User() && len(nu.user.LoginName()) > 0 {
 		n += len(`"user":`) + jsonQuotedLen(nu.user.LoginName()) + len(",")
 	}
@@ -175,14 +177,15 @@ func (nu nodeUser) toNode() netlogtype.Node {
 		Name:   strings.TrimSuffix(nu.Name(), "."),
 	}
 	var ipv4, ipv6 netip.Addr
-	for _, addr := range nu.Addresses().All() {
+	nu.Addresses().All()(func(_ int, addr netip.Prefix) bool {
 		switch {
 		case addr.IsSingleIP() && addr.Addr().Is4():
 			ipv4 = addr.Addr()
 		case addr.IsSingleIP() && addr.Addr().Is6():
 			ipv6 = addr.Addr()
 		}
-	}
+		return true
+	})
 	n.Addresses = []netip.Addr{ipv4, ipv6}
 	n.Addresses = slices.DeleteFunc(n.Addresses, func(a netip.Addr) bool { return !a.IsValid() })
 	if nu.Hostinfo().Valid() {
@@ -215,4 +218,8 @@ func jsonQuotedLen(s string) int {
 		}
 	}
 	return n
+}
+
+func compareAddrPort(a, b netip.AddrPort) int {
+	return cmp.Or(a.Addr().Compare(b.Addr()), cmp.Compare(a.Port(), b.Port()))
 }

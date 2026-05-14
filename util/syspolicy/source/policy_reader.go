@@ -7,9 +7,9 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"slices"
 	"sort"
 	"sync"
+	slices "tailscale.com/util/go120/slices"
 	"time"
 
 	"tailscale.com/util/mak"
@@ -113,8 +113,8 @@ func (r *Reader) GetSettings() *setting.Snapshot {
 }
 
 // ReadSettings reads policy settings from the underlying [Store] even if no
-// changes were detected. It returns the new [*setting.Snapshot],nil on
-// success or an undefined snapshot (possibly `nil`) along with a non-`nil`
+// changes were detected. It returns the new [*setting.Snapshot], nil on
+// success or an undefined snapshot (possibly nil) along with a non-nil
 // error in case of failure.
 func (r *Reader) ReadSettings() (*setting.Snapshot, error) {
 	return r.reload(true)
@@ -195,7 +195,8 @@ func (r *Reader) OpenSession() (*ReadingSession, error) {
 		reader:          r,
 		policyChangedCh: make(chan struct{}, 1),
 	}
-	session.closeInternal = sync.OnceFunc(func() { close(session.policyChangedCh) })
+	var closeOnce sync.Once
+	session.closeInternal = func() { closeOnce.Do(func() { close(session.policyChangedCh) }) }
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	if r.closing {

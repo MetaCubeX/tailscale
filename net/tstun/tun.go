@@ -16,7 +16,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/tailscale/wireguard-go/tun"
+	"github.com/metacubex/tailscale-wireguard-go/tun"
 	"tailscale.com/feature"
 	"tailscale.com/feature/buildfeatures"
 	"tailscale.com/types/logger"
@@ -61,7 +61,7 @@ func New(logf logger.Logf, tunName string) (tun.Device, string, error) {
 		// Try to create the TUN device up to two times. If it fails
 		// the first time and we're on Linux, try a desperate
 		// "modprobe tun" to load the tun module and try again.
-		for try := range 2 {
+		for try := 0; try < 2; try++ {
 			dev, err = tun.CreateTUN(tunName, int(DefaultTUNMTU()))
 			if err == nil || !modprobeTunHook.IsSet() {
 				if try > 0 {

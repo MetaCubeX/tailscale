@@ -1,3 +1,5 @@
+//go:build ignore
+
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
@@ -12,7 +14,7 @@ import (
 	"unsafe"
 
 	qt "github.com/frankban/quicktest"
-	"github.com/tailscale/wireguard-go/conn"
+	"github.com/metacubex/tailscale-wireguard-go/conn"
 	"golang.org/x/net/ipv6"
 	"golang.org/x/sys/unix"
 	"tailscale.com/net/packet"

@@ -9,9 +9,9 @@ import (
 	"flag"
 	"fmt"
 	"log"
-	"maps"
-	"slices"
 	"strings"
+	maps "tailscale.com/util/go120/maps"
+	slices "tailscale.com/util/go120/slices"
 
 	"tailscale.com/feature/featuretags"
 	"tailscale.com/util/set"

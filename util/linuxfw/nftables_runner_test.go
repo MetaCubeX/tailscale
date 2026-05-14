@@ -1,7 +1,7 @@
+//go:build ignore
+
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
-
-//go:build linux
 
 package linuxfw
 
@@ -11,8 +11,8 @@ import (
 	"fmt"
 	"net/netip"
 	"runtime"
-	"slices"
 	"strings"
+	slices "tailscale.com/util/go120/slices"
 	"testing"
 
 	"github.com/google/nftables"

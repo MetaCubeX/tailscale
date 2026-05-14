@@ -16,7 +16,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"maps"
 	"mime"
 	"net"
 	"net/http"
@@ -25,11 +24,12 @@ import (
 	"net/url"
 	"os"
 	"path"
-	"slices"
 	"strconv"
 	"strings"
 	"sync"
 	"sync/atomic"
+	maps "tailscale.com/util/go120/maps"
+	slices "tailscale.com/util/go120/slices"
 	"time"
 	"unicode/utf8"
 
@@ -287,7 +287,7 @@ func (b *LocalBackend) updateServeTCPPortNetMapAddrListenersLocked(ports []uint1
 	}
 
 	addrs := nm.GetAddresses()
-	for _, a := range addrs.All() {
+	addrs.All()(func(_ int, a netip.Prefix) bool {
 		for _, p := range ports {
 			addrPort := netip.AddrPortFrom(a.Addr(), p)
 			if _, ok := b.serveListeners[addrPort]; ok {
@@ -299,7 +299,8 @@ func (b *LocalBackend) updateServeTCPPortNetMapAddrListenersLocked(ports []uint1
 
 			go sl.Run()
 		}
-	}
+		return true
+	})
 }
 
 func generateServeConfigETag(sc ipn.ServeConfigView) (string, error) {
@@ -382,7 +383,7 @@ func (b *LocalBackend) setServeConfigLocked(config *ipn.ServeConfig, etag string
 		if b.serveConfig.Valid() {
 			has = b.serveConfig.Foreground().Contains
 		}
-		for k := range prevConfig.Foreground().All() {
+		prevConfig.Foreground().All()(func(k string, _ ipn.ServeConfigView) bool {
 			if !has(k) {
 				for _, sess := range b.notifyWatchers {
 					if sess.sessionID == k {
@@ -390,7 +391,8 @@ func (b *LocalBackend) setServeConfigLocked(config *ipn.ServeConfig, etag string
 					}
 				}
 			}
-		}
+			return true
+		})
 	}
 
 	return nil
@@ -506,15 +508,16 @@ func (b *LocalBackend) vipServicesFromPrefsLocked(prefs ipn.PrefsView) []*tailcf
 	// keyed by service name
 	var services map[tailcfg.ServiceName]*tailcfg.VIPService
 	if b.serveConfig.Valid() {
-		for svc, config := range b.serveConfig.Services().All() {
+		b.serveConfig.Services().All()(func(svc tailcfg.ServiceName, config ipn.ServiceConfigView) bool {
 			mak.Set(&services, svc, &tailcfg.VIPService{
 				Name:  svc,
 				Ports: config.ServicePortRange(),
 			})
-		}
+			return true
+		})
 	}
 
-	for _, s := range prefs.AdvertiseServices().All() {
+	prefs.AdvertiseServices().All()(func(_ int, s string) bool {
 		sn := tailcfg.ServiceName(s)
 		if services == nil || services[sn] == nil {
 			mak.Set(&services, sn, &tailcfg.VIPService{
@@ -522,7 +525,8 @@ func (b *LocalBackend) vipServicesFromPrefsLocked(prefs ipn.PrefsView) []*tailcf
 			})
 		}
 		services[sn].Active = true
-	}
+		return true
+	})
 
 	servicesList := slicesx.MapValues(services)
 	// [slicesx.MapValues] provides the values in an indeterminate order, but since we'll
@@ -996,10 +1000,7 @@ func (rp *reverseProxy) getTransport() *http.Transport {
 // The Transport gets created lazily, at most once.
 func (rp *reverseProxy) getH2CTransport() http.RoundTripper {
 	return rp.h2cTransport.Get(func() *http.Transport {
-		var p http.Protocols
-		p.SetUnencryptedHTTP2(true)
 		tr := &http.Transport{
-			Protocols: &p,
 			DialTLSContext: func(ctx context.Context, network string, addr string) (net.Conn, error) {
 				if rp.socketPath != "" {
 					var d net.Dialer
@@ -1281,7 +1282,7 @@ func expandProxyArg(s string) (targetURL string, insecureSkipVerify bool) {
 }
 
 func allNumeric(s string) bool {
-	for i := range len(s) {
+	for i := 0; i < len(s); i++ {
 		if s[i] < '0' || s[i] > '9' {
 			return false
 		}
@@ -1338,16 +1339,16 @@ func (b *LocalBackend) setServeProxyHandlersLocked() {
 		return
 	}
 	var backends map[string]bool
-	for _, conf := range b.serveConfig.Webs() {
-		for _, h := range conf.Handlers().All() {
+	b.serveConfig.Webs()(func(_ ipn.HostPort, conf ipn.WebServerConfigView) bool {
+		conf.Handlers().All()(func(_ string, h ipn.HTTPHandlerView) bool {
 			backend := h.Proxy()
 			if backend == "" {
 				// Only create proxy handlers for servers with a proxy backend.
-				continue
+				return true
 			}
 			mak.Set(&backends, backend, true)
 			if _, ok := b.serveProxyHandlers.Load(backend); ok {
-				continue
+				return true
 			}
 
 			b.logf("serve: creating a new proxy handler for %s", backend)
@@ -1356,11 +1357,13 @@ func (b *LocalBackend) setServeProxyHandlersLocked() {
 				// The backend endpoint (h.Proxy) should have been validated by expandProxyTarget
 				// in the CLI, so just log the error here.
 				b.logf("[unexpected] could not create proxy for %v: %s", backend, err)
-				continue
+				return true
 			}
 			b.serveProxyHandlers.Store(backend, p)
-		}
-	}
+			return true
+		})
+		return true
+	})
 
 	// Clean up handlers for proxy backends that are no longer present
 	// in configuration.
@@ -1497,26 +1500,29 @@ func serveSetTCPPortsInterceptedFromNetmapAndPrefsLocked(b *LocalBackend, prefs 
 	b.reloadServeConfigLocked(prefs)
 	if b.serveConfig.Valid() {
 		servePorts := make([]uint16, 0, 3)
-		for port := range b.serveConfig.TCPs() {
+		b.serveConfig.TCPs()(func(port uint16, _ ipn.TCPPortHandlerView) bool {
 			if port > 0 {
 				servePorts = append(servePorts, uint16(port))
 			}
-		}
+			return true
+		})
 		handlePorts = append(handlePorts, servePorts...)
 
-		for svc, cfg := range b.serveConfig.Services().All() {
+		b.serveConfig.Services().All()(func(svc tailcfg.ServiceName, cfg ipn.ServiceConfigView) bool {
 			servicePorts := make([]uint16, 0, 3)
-			for port := range cfg.TCP().All() {
+			cfg.TCP().All()(func(port uint16, _ ipn.TCPPortHandlerView) bool {
 				if port > 0 {
 					servicePorts = append(servicePorts, uint16(port))
 				}
-			}
+				return true
+			})
 			if _, ok := vipServicesPorts[svc]; !ok {
 				mak.Set(&vipServicesPorts, svc, servicePorts)
 			} else {
 				mak.Set(&vipServicesPorts, svc, append(vipServicesPorts[svc], servicePorts...))
 			}
-		}
+			return true
+		})
 
 		b.setServeProxyHandlersLocked()
 
@@ -1665,12 +1671,18 @@ func validateServeConfigUpdate(existing, incoming ipn.ServeConfigView) error {
 	}
 
 	// For Services, TUN mode is mutually exclusive with L4 or L7 handlers.
-	for svcName, svcCfg := range incoming.Services().All() {
+	var err error
+	incoming.Services().All()(func(svcName tailcfg.ServiceName, svcCfg ipn.ServiceConfigView) bool {
 		hasTCP := svcCfg.TCP().Len() > 0
 		hasWeb := svcCfg.Web().Len() > 0
 		if svcCfg.Tun() && (hasTCP || hasWeb) {
-			return fmt.Errorf("cannot configure TUN mode in combination with TCP or web handlers for %s", svcName)
+			err = fmt.Errorf("cannot configure TUN mode in combination with TCP or web handlers for %s", svcName)
+			return false
 		}
+		return true
+	})
+	if err != nil {
+		return err
 	}
 
 	if !existing.Valid() {
@@ -1678,57 +1690,78 @@ func validateServeConfigUpdate(existing, incoming ipn.ServeConfigView) error {
 	}
 
 	// New foreground listeners must be on open ports.
-	for sessionID, incomingFg := range incoming.Foreground().All() {
+	incoming.Foreground().All()(func(sessionID string, incomingFg ipn.ServeConfigView) bool {
 		if !existing.Foreground().Has(sessionID) {
 			// This is a new session.
-			for port := range incomingFg.TCPs() {
+			incomingFg.TCPs()(func(port uint16, _ ipn.TCPPortHandlerView) bool {
 				if _, exists := existing.FindTCP(port); exists {
-					return fmt.Errorf("listener already exists for port %d", port)
+					err = fmt.Errorf("listener already exists for port %d", port)
+					return false
 				}
-			}
+				return true
+			})
 		}
+		return err == nil
+	})
+	if err != nil {
+		return err
 	}
 
 	// New background listeners cannot overwrite existing foreground listeners.
-	for port := range incoming.TCP().All() {
+	incoming.TCP().All()(func(port uint16, _ ipn.TCPPortHandlerView) bool {
 		if _, exists := existing.FindForegroundTCP(port); exists {
-			return fmt.Errorf("foreground listener already exists for port %d", port)
+			err = fmt.Errorf("foreground listener already exists for port %d", port)
+			return false
 		}
+		return true
+	})
+	if err != nil {
+		return err
 	}
 
 	// Incoming configuration cannot change the serve type in use by a port.
-	for port, incomingHandler := range incoming.TCP().All() {
+	incoming.TCP().All()(func(port uint16, incomingHandler ipn.TCPPortHandlerView) bool {
 		existingHandler, exists := existing.FindTCP(port)
 		if !exists {
-			continue
+			return true
 		}
 
 		existingServeType := serveTypeFromPortHandler(existingHandler)
 		incomingServeType := serveTypeFromPortHandler(incomingHandler)
 		if incomingServeType != existingServeType {
-			return fmt.Errorf("want to serve %q, but port %d is already serving %q", incomingServeType, port, existingServeType)
+			err = fmt.Errorf("want to serve %q, but port %d is already serving %q", incomingServeType, port, existingServeType)
+			return false
 		}
+		return true
+	})
+	if err != nil {
+		return err
 	}
 
 	// Validations for Tailscale Services.
-	for svcName, incomingSvcCfg := range incoming.Services().All() {
+	incoming.Services().All()(func(svcName tailcfg.ServiceName, incomingSvcCfg ipn.ServiceConfigView) bool {
 		existingSvcCfg, exists := existing.Services().GetOk(svcName)
 		if !exists {
-			continue
+			return true
 		}
 
 		// Incoming configuration cannot change the serve type in use by a port.
-		for port, incomingHandler := range incomingSvcCfg.TCP().All() {
+		incomingSvcCfg.TCP().All()(func(port uint16, incomingHandler ipn.TCPPortHandlerView) bool {
 			existingHandler, exists := existingSvcCfg.TCP().GetOk(port)
 			if !exists {
-				continue
+				return true
 			}
 
 			existingServeType := serveTypeFromPortHandler(existingHandler)
 			incomingServeType := serveTypeFromPortHandler(incomingHandler)
 			if incomingServeType != existingServeType {
-				return fmt.Errorf("want to serve %q, but port %d is already serving %q for %s", incomingServeType, port, existingServeType, svcName)
+				err = fmt.Errorf("want to serve %q, but port %d is already serving %q for %s", incomingServeType, port, existingServeType, svcName)
+				return false
 			}
+			return true
+		})
+		if err != nil {
+			return false
 		}
 
 		existingHasTCP := existingSvcCfg.TCP().Len() > 0
@@ -1736,7 +1769,8 @@ func validateServeConfigUpdate(existing, incoming ipn.ServeConfigView) error {
 
 		// A Service cannot turn on TUN mode if TCP or web handlers exist.
 		if incomingSvcCfg.Tun() && (existingHasTCP || existingHasWeb) {
-			return fmt.Errorf("cannot turn on TUN mode with existing TCP or web handlers for %s", svcName)
+			err = fmt.Errorf("cannot turn on TUN mode with existing TCP or web handlers for %s", svcName)
+			return false
 		}
 
 		incomingHasTCP := incomingSvcCfg.TCP().Len() > 0
@@ -1744,8 +1778,13 @@ func validateServeConfigUpdate(existing, incoming ipn.ServeConfigView) error {
 
 		// A Service cannot add TCP or web handlers if TUN mode is enabled.
 		if (incomingHasTCP || incomingHasWeb) && existingSvcCfg.Tun() {
-			return fmt.Errorf("cannot add TCP or web handlers as TUN mode is enabled for %s", svcName)
+			err = fmt.Errorf("cannot add TCP or web handlers as TUN mode is enabled for %s", svcName)
+			return false
 		}
+		return true
+	})
+	if err != nil {
+		return err
 	}
 
 	return nil

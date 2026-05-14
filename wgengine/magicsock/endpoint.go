@@ -9,15 +9,15 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
-	"iter"
 	"math"
-	"math/rand/v2"
 	"net"
 	"net/netip"
 	"reflect"
 	"runtime"
-	"slices"
 	"sync/atomic"
+	iter "tailscale.com/util/go120/iter"
+	"tailscale.com/util/go120/randv2"
+	slices "tailscale.com/util/go120/slices"
 	"time"
 
 	"golang.org/x/net/ipv4"
@@ -298,7 +298,7 @@ func (p *ProbeUDPLifetimeConfig) Valid() bool {
 		return false
 	}
 	for i, c := range p.Cliffs {
-		if c <= max(udpLifetimeProbeCliffSlack*2, heartbeatInterval) {
+		if c <= maxDuration(udpLifetimeProbeCliffSlack*2, heartbeatInterval) {
 			// A timeout cliff less than or equal to twice
 			// udpLifetimeProbeCliffSlack is invalid due to being effectively
 			// zero when the cliff slack is subtracted from the cliff value at
@@ -782,7 +782,7 @@ func (de *endpoint) heartbeatForLifetime() {
 		p.resetCycleEndpointLocked()
 		return
 	}
-	inactiveFor := mono.Now().Sub(max(de.lastRecvUDPAny.LoadAtomic(), de.lastSendAny))
+	inactiveFor := mono.Now().Sub(maxMonoTime(de.lastRecvUDPAny.LoadAtomic(), de.lastSendAny))
 	delta := afterInactivityFor - inactiveFor
 	if delta.Abs() > udpLifetimeProbeSchedulingTolerance {
 		if delta < 0 {
@@ -850,7 +850,7 @@ func (de *endpoint) heartbeat() {
 			// a WireGuard keepalive may have fallen somewhere within the
 			// sessionActiveTimeout window. heartbeatForLifetime will also
 			// perform a similar check, and reschedule as necessary.
-			inactiveFor := now.Sub(max(de.lastSendAny, de.lastRecvUDPAny.LoadAtomic()))
+			inactiveFor := now.Sub(maxMonoTime(de.lastSendAny, de.lastRecvUDPAny.LoadAtomic()))
 			after := afterInactivityFor - inactiveFor
 			if after < 0 {
 				// shouldn't happen
@@ -1243,8 +1243,8 @@ const discoPingSize = len(disco.Magic) + key.DiscoPublicRawLen + disco.NonceLen 
 // The caller should use de.discoKey as the discoKey argument.
 // It is passed in so that sendDiscoPing doesn't need to lock de.mu.
 func (de *endpoint) sendDiscoPing(ep epAddr, discoKey key.DiscoPublic, txid stun.TxID, size int, logLevel discoLogLevel) {
-	size = min(size, MaxDiscoPingSize)
-	padding := max(size-discoPingSize, 0)
+	size = minInt(size, MaxDiscoPingSize)
+	padding := maxInt(size-discoPingSize, 0)
 
 	sent, _ := de.c.sendDiscoMessage(ep, de.publicKey, discoKey, &disco.Ping{
 		TxID:    [12]byte(txid),
@@ -1551,14 +1551,14 @@ func (de *endpoint) setEndpointsLocked(eps interface {
 	}
 
 	var newIpps []netip.AddrPort
-	for i, ipp := range eps.All() {
+	eps.All()(func(i int, ipp netip.AddrPort) bool {
 		if i > math.MaxInt16 {
 			// Seems unlikely.
-			break
+			return false
 		}
 		if !ipp.IsValid() {
 			de.c.logf("magicsock: bogus netmap endpoint from %v", eps)
-			continue
+			return true
 		}
 		if st, ok := de.endpointState[ipp]; ok {
 			st.index = int16(i)
@@ -1566,7 +1566,8 @@ func (de *endpoint) setEndpointsLocked(eps interface {
 			de.endpointState[ipp] = &endpointState{index: int16(i)}
 			newIpps = append(newIpps, ipp)
 		}
-	}
+		return true
+	})
 	if len(newIpps) > 0 {
 		de.debugUpdates.Add(EndpointChange{
 			When: time.Now(),
@@ -2098,4 +2099,32 @@ func (de *endpoint) setDERPHome(regionID uint16) {
 	if de.c.relayManager.hasPeerRelayServers.Load() {
 		de.c.relayManager.handleDERPHomeChange(de.publicKey, regionID)
 	}
+}
+
+func minInt(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
+}
+
+func maxInt(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
+
+func maxDuration(a, b time.Duration) time.Duration {
+	if a > b {
+		return a
+	}
+	return b
+}
+
+func maxMonoTime(a, b mono.Time) mono.Time {
+	if a.After(b) {
+		return a
+	}
+	return b
 }

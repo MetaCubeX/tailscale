@@ -1,3 +1,5 @@
+//go:build ignore
+
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
@@ -5,11 +7,11 @@ package zstdframe
 
 import (
 	"math/bits"
-	"math/rand/v2"
 	"os"
 	"runtime"
 	"strings"
 	"sync"
+	"tailscale.com/util/go120/randv2"
 	"testing"
 
 	"github.com/klauspost/compress/zstd"

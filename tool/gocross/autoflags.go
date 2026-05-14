@@ -4,10 +4,10 @@
 package main
 
 import (
-	"cmp"
 	"fmt"
 	"runtime"
 	"strings"
+	cmp "tailscale.com/util/go120/cmp"
 
 	"tailscale.com/version/mkversion"
 )

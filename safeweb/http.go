@@ -70,19 +70,19 @@
 package safeweb
 
 import (
-	"cmp"
 	"context"
 	crand "crypto/rand"
 	"fmt"
 	"html/template"
 	"log"
-	"maps"
 	"net"
 	"net/http"
 	"net/url"
 	"path"
-	"slices"
 	"strings"
+	cmp "tailscale.com/util/go120/cmp"
+	maps "tailscale.com/util/go120/maps"
+	slices "tailscale.com/util/go120/slices"
 
 	"github.com/gorilla/csrf"
 )

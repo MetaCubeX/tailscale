@@ -5,12 +5,12 @@
 package netmap
 
 import (
-	"cmp"
 	"encoding/json"
 	"fmt"
 	"net/netip"
 	"sort"
 	"strings"
+	cmp "tailscale.com/util/go120/cmp"
 	"time"
 
 	"tailscale.com/net/tsaddr"
@@ -159,18 +159,19 @@ func (nm *NetworkMap) Services() map[tailcfg.ServiceName]tailcfg.ServiceDetails 
 		return nil
 	}
 	result := make(map[tailcfg.ServiceName]tailcfg.ServiceDetails)
-	for cap := range nm.SelfNode.CapMap().All() {
+	nm.SelfNode.CapMap().All()(func(cap tailcfg.NodeCapability, _ views.Slice[tailcfg.RawMessage]) bool {
 		if !strings.HasPrefix(string(cap), string(tailcfg.NodeAttrPrefixServices)) {
-			continue
+			return true
 		}
 		svcs, err := tailcfg.UnmarshalNodeCapViewJSON[tailcfg.ServiceDetails](nm.SelfNode.CapMap(), cap)
 		if err != nil || len(svcs) < 1 {
-			continue
+			return true
 		}
 		// NOTE(adrianosela): the NodeCapMap key suffix is opaque and MUST not
 		// be parsed or relied upon (so we extract name from the inner field).
 		result[svcs[0].Name] = svcs[0]
-	}
+		return true
+	})
 	return result
 }
 
@@ -186,10 +187,16 @@ func (nm *NetworkMap) SelfNodeOrZero() tailcfg.NodeView {
 func (nm *NetworkMap) AnyPeersAdvertiseRoutes() bool {
 	for _, p := range nm.Peers {
 		// NOTE: (ChaosInTheCRD) if the peer being advertised is a tailscale ip, we ignore it in this check
-		for _, r := range p.PrimaryRoutes().All() {
+		found := false
+		p.PrimaryRoutes().All()(func(_ int, r netip.Prefix) bool {
 			if !tsaddr.IsTailscaleIP(r.Addr()) || !r.IsSingleIP() {
-				return true
+				found = true
+				return false
 			}
+			return true
+		})
+		if found {
+			return true
 		}
 	}
 	return false
@@ -221,7 +228,7 @@ func (nm *NetworkMap) PeerByTailscaleIP(ip netip.Addr) (peer tailcfg.NodeView, o
 	}
 	for _, n := range nm.Peers {
 		ad := n.Addresses()
-		for i := range ad.Len() {
+		for i := 0; i < ad.Len(); i++ {
 			a := ad.At(i)
 			if a.Addr() == ip {
 				return n, true
@@ -382,13 +389,14 @@ func (a *NetworkMap) equalConciseHeader(b *NetworkMap) bool {
 // in nodeConciseEqual in sync.
 func printPeerConcise(buf *strings.Builder, p tailcfg.NodeView) {
 	aip := make([]string, p.AllowedIPs().Len())
-	for i, a := range p.AllowedIPs().All() {
+	p.AllowedIPs().All()(func(i int, a netip.Prefix) bool {
 		s := strings.TrimSuffix(a.String(), "/32")
 		aip[i] = s
-	}
+		return true
+	})
 
 	epStrs := make([]string, p.Endpoints().Len())
-	for i, ep := range p.Endpoints().All() {
+	p.Endpoints().All()(func(i int, ep netip.AddrPort) bool {
 		e := ep.String()
 		// Align vertically on the ':' between IP and port
 		colon := strings.IndexByte(e, ':')
@@ -398,7 +406,8 @@ func printPeerConcise(buf *strings.Builder, p tailcfg.NodeView) {
 			colon--
 		}
 		epStrs[i] = fmt.Sprintf("%21v", e+strings.Repeat(" ", spaces))
-	}
+		return true
+	})
 
 	derp := fmt.Sprintf("D%d", p.HomeDERP())
 

@@ -21,8 +21,8 @@ import (
 	"io"
 	"log"
 	"net"
-	"slices"
 	"strconv"
+	slices "tailscale.com/util/go120/slices"
 	"time"
 
 	"tailscale.com/types/logger"

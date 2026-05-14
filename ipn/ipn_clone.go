@@ -6,8 +6,8 @@
 package ipn
 
 import (
-	"maps"
 	"net/netip"
+	maps "tailscale.com/util/go120/maps"
 
 	"tailscale.com/drive"
 	"tailscale.com/tailcfg"
@@ -62,7 +62,7 @@ func (src *Prefs) Clone() *Prefs {
 		}
 	}
 	if dst.RelayServerPort != nil {
-		dst.RelayServerPort = new(*src.RelayServerPort)
+		dst.RelayServerPort = func() *uint16 { v := *src.RelayServerPort; return &v }()
 	}
 	dst.RelayServerStaticEndpoints = append(src.RelayServerStaticEndpoints[:0:0], src.RelayServerStaticEndpoints...)
 	dst.Persist = src.Persist.Clone()
@@ -122,7 +122,8 @@ func (src *ServeConfig) Clone() *ServeConfig {
 			if v == nil {
 				dst.TCP[k] = nil
 			} else {
-				dst.TCP[k] = new(*v)
+				vv := *v
+				dst.TCP[k] = &vv
 			}
 		}
 	}
@@ -184,7 +185,8 @@ func (src *ServiceConfig) Clone() *ServiceConfig {
 			if v == nil {
 				dst.TCP[k] = nil
 			} else {
-				dst.TCP[k] = new(*v)
+				vv := *v
+				dst.TCP[k] = &vv
 			}
 		}
 	}

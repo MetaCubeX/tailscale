@@ -10,9 +10,9 @@ import (
 	"net/http"
 	"net/netip"
 	"runtime"
-	"slices"
 	"sort"
 	"strings"
+	slices "tailscale.com/util/go120/slices"
 
 	"tailscale.com/envknob"
 	"tailscale.com/feature"

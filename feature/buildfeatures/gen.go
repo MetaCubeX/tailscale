@@ -8,10 +8,10 @@
 package main
 
 import (
-	"cmp"
 	"fmt"
 	"os"
 	"strings"
+	cmp "tailscale.com/util/go120/cmp"
 
 	"tailscale.com/feature/featuretags"
 	"tailscale.com/util/must"

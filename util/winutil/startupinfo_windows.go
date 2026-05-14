@@ -7,11 +7,11 @@ import (
 	"errors"
 	"fmt"
 	"os"
-	"slices"
+	slices "tailscale.com/util/go120/slices"
 	"unsafe"
 
-	"github.com/dblohm7/wingoes"
 	"golang.org/x/sys/windows"
+	"tailscale.com/util/wingoes"
 )
 
 var (

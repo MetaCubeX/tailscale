@@ -5,13 +5,13 @@ package tsp
 
 import (
 	"bytes"
-	"cmp"
 	"context"
 	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
 	"strings"
+	cmp "tailscale.com/util/go120/cmp"
 
 	"tailscale.com/control/ts2021"
 	"tailscale.com/tailcfg"

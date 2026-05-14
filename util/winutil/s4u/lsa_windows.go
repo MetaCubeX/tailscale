@@ -13,9 +13,9 @@ import (
 	"unicode"
 	"unsafe"
 
-	"github.com/dblohm7/wingoes"
 	"golang.org/x/sys/windows"
 	"tailscale.com/types/lazy"
+	"tailscale.com/util/wingoes"
 	"tailscale.com/util/winutil"
 	"tailscale.com/util/winutil/winenv"
 )

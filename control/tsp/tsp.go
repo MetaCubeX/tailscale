@@ -8,7 +8,6 @@ package tsp
 import (
 	"bufio"
 	"bytes"
-	"cmp"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -17,6 +16,7 @@ import (
 	"net/http"
 	"strconv"
 	"sync"
+	cmp "tailscale.com/util/go120/cmp"
 
 	"tailscale.com/control/ts2021"
 	"tailscale.com/health"

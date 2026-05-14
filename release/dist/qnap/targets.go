@@ -4,7 +4,7 @@
 package qnap
 
 import (
-	"slices"
+	slices "tailscale.com/util/go120/slices"
 
 	"tailscale.com/release/dist"
 )

@@ -7,7 +7,7 @@ package groupmember
 
 import (
 	"os/user"
-	"slices"
+	slices "tailscale.com/util/go120/slices"
 )
 
 // IsMemberOfGroup reports whether the provided user is a member of

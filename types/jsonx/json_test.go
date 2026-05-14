@@ -1,3 +1,5 @@
+//go:build ignore
+
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
@@ -7,9 +9,9 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/go-json-experiment/json"
-	"github.com/go-json-experiment/json/jsontext"
 	"github.com/google/go-cmp/cmp"
+	"github.com/metacubex/jsonv2"
+	"github.com/metacubex/jsonv2/jsontext"
 )
 
 type Interface interface {

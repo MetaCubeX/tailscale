@@ -163,7 +163,7 @@ func convertPolicySettingValueTo[T setting.ValueType](value any, def T) (T, erro
 	// Convert [PreferenceOption], [Visibility], or [time.Duration] back to a string
 	// if someone requests a string instead of the actual setting's value.
 	// TODO(nickkhyl): check if this behavior is relied upon anywhere besides the old tests.
-	if reflect.TypeFor[T]().Kind() == reflect.String {
+	if reflect.TypeOf((*T)(nil)).Elem().Kind() == reflect.String {
 		if str, ok := value.(fmt.Stringer); ok {
 			return any(str.String()).(T), nil
 		}

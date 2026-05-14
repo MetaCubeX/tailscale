@@ -8,7 +8,7 @@ package internal
 import (
 	"bytes"
 
-	"github.com/go-json-experiment/json/jsontext"
+	"github.com/metacubex/jsonv2/jsontext"
 	"tailscale.com/types/lazy"
 	"tailscale.com/util/testenv"
 	"tailscale.com/version"
@@ -45,10 +45,10 @@ func EqualJSONForTest(tb testenv.TB, j1, j2 jsontext.Value) (s1, s2 string, equa
 		return "", "", true
 	}
 	// Otherwise, format the values for display and return false.
-	if err := j1.Indent(); err != nil {
+	if err := j1.Indent(jsontext.WithIndent("  ")); err != nil {
 		tb.Fatal(err)
 	}
-	if err := j2.Indent(); err != nil {
+	if err := j2.Indent(jsontext.WithIndent("  ")); err != nil {
 		tb.Fatal(err)
 	}
 	return j1.String(), j2.String(), false

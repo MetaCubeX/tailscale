@@ -10,7 +10,7 @@ import (
 	"io"
 	"log"
 	"net/http"
-	"slices"
+	slices "tailscale.com/util/go120/slices"
 
 	"tailscale.com/ipn/ipnstate"
 	"tailscale.com/tsnet"

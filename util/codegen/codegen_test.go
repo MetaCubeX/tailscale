@@ -1,14 +1,16 @@
+//go:build ignore
+
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
 package codegen
 
 import (
-	"cmp"
 	"go/types"
 	"net/netip"
 	"strings"
 	"sync"
+	cmp "tailscale.com/util/go120/cmp"
 	"testing"
 	"time"
 	"unique"

@@ -7,13 +7,13 @@ import (
 	"fmt"
 	"reflect"
 
-	jsonv2 "github.com/go-json-experiment/json"
-	"github.com/go-json-experiment/json/jsontext"
+	jsonv2 "github.com/metacubex/jsonv2"
+	"github.com/metacubex/jsonv2/jsontext"
 )
 
 // Value is an optional value to be JSON-encoded.
 // With [encoding/json], a zero Value is marshaled as a JSON null.
-// With [github.com/go-json-experiment/json], a zero Value is omitted from the
+// With [github.com/metacubex/jsonv2], a zero Value is omitted from the
 // JSON object if the Go struct field specified with omitzero.
 // The omitempty tag option should never be used with Value fields.
 type Value[T any] struct {
@@ -94,7 +94,7 @@ func (o Value[T]) Equal(v Value[T]) bool {
 	if eq, ok := ov.(equatable[T]); ok {
 		return eq.Equal(v.value)
 	}
-	if reflect.TypeFor[T]().Comparable() {
+	if reflect.TypeOf((*T)(nil)).Elem().Comparable() {
 		return ov == any(v.value)
 	}
 	return false

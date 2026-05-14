@@ -6,7 +6,7 @@ package wgcfg
 
 import (
 	"net/netip"
-	"slices"
+	slices "tailscale.com/util/go120/slices"
 
 	"tailscale.com/types/key"
 	"tailscale.com/types/logid"

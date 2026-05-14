@@ -6,14 +6,12 @@ package netcheck
 
 import (
 	"bufio"
-	"cmp"
 	"context"
 	"crypto/tls"
 	"errors"
 	"fmt"
 	"io"
 	"log"
-	"maps"
 	"net"
 	"net/http"
 	"net/netip"
@@ -21,6 +19,8 @@ import (
 	"sort"
 	"sync"
 	"syscall"
+	cmp "tailscale.com/util/go120/cmp"
+	maps "tailscale.com/util/go120/maps"
 	"time"
 
 	"tailscale.com/derp"
@@ -33,6 +33,7 @@ import (
 	"tailscale.com/net/neterror"
 	"tailscale.com/net/netmon"
 	"tailscale.com/net/netns"
+	"tailscale.com/net/netx"
 	"tailscale.com/net/ping"
 	"tailscale.com/net/portmapper/portmappertype"
 	"tailscale.com/net/sockstats"
@@ -201,6 +202,10 @@ type Client struct {
 	// Logf optionally specifies where to log to.
 	// If nil, log.Printf is used.
 	Logf logger.Logf
+
+	// Dialer optionally specifies how TCP probes are dialed.
+	// If nil, the default netns dialer is used.
+	Dialer netx.DialFunc
 
 	// TimeNow, if non-nil, is used instead of time.Now.
 	TimeNow func() time.Time
@@ -545,7 +550,7 @@ func makeProbePlanInitial(dm *tailcfg.DERPMap, ifState *netmon.State) (plan prob
 
 		var p4 []probe
 		var p6 []probe
-		for try := range 3 {
+		for try := 0; try < 3; try++ {
 			n := reg.Nodes[try%len(reg.Nodes)]
 			delay := time.Duration(try) * defaultInitialRetransmitTime
 			if n.IPv4 != "none" && ((ifState.HaveV4 && nodeMight4(n)) || n.IsTestNode()) {
@@ -975,11 +980,13 @@ func (c *Client) GetReport(ctx context.Context, dm *tailcfg.DERPMap, opts *GetRe
 				// need to close the underlying Pinger after a timeout
 				// or when all ICMP probes are done, regardless of
 				// whether the HTTPS probes have finished.
-				wg.Go(func() {
+				wg.Add(1)
+				go func() {
+					defer wg.Done()
 					if err := c.measureAllICMPLatency(ctx, rs, need); err != nil {
 						c.logf("[v1] measureAllICMPLatency: %v", err)
 					}
-				})
+				}()
 			}
 			wg.Add(len(need))
 			c.logf("netcheck: UDP is blocked, trying HTTPS")
@@ -1070,7 +1077,9 @@ func (c *Client) runHTTPOnlyChecks(ctx context.Context, last *Report, rs *report
 		if len(rg.Nodes) == 0 {
 			continue
 		}
-		wg.Go(func() {
+		wg.Add(1)
+		go func(rg *tailcfg.DERPRegion) {
+			defer wg.Done()
 			node := rg.Nodes[0]
 			req, _ := http.NewRequestWithContext(ctx, "HEAD", "https://"+node.HostName+"/derp/probe", nil)
 			// One warm-up one to get HTTP connection set
@@ -1095,7 +1104,7 @@ func (c *Client) runHTTPOnlyChecks(ctx context.Context, last *Report, rs *report
 			}
 			d := c.timeNow().Sub(t0)
 			rs.addNodeLatency(node, netip.AddrPort{}, d)
-		})
+		}(rg)
 	}
 	wg.Wait()
 	return nil
@@ -1111,6 +1120,7 @@ func (c *Client) measureHTTPSLatency(ctx context.Context, reg *tailcfg.DERPRegio
 	var ip netip.Addr
 
 	dc := derphttp.NewNetcheckClient(c.logf, c.NetMon)
+	dc.SetURLDialer(c.Dialer)
 	defer dc.Close()
 
 	// DialRegionTLS may dial multiple times if a node is not available, as such

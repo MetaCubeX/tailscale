@@ -6,7 +6,6 @@ package main
 
 import (
 	"bytes"
-	"cmp"
 	"context"
 	"crypto/tls"
 	"encoding/json"
@@ -16,7 +15,6 @@ import (
 	"io"
 	"log"
 	"math"
-	"math/rand/v2"
 	"net"
 	"net/http"
 	"net/netip"
@@ -24,11 +22,13 @@ import (
 	"os"
 	"os/signal"
 	"runtime"
-	"slices"
 	"strconv"
 	"strings"
 	"sync"
 	"syscall"
+	cmp "tailscale.com/util/go120/cmp"
+	"tailscale.com/util/go120/randv2"
+	slices "tailscale.com/util/go120/slices"
 	"time"
 
 	"github.com/golang/snappy"

@@ -11,9 +11,9 @@ import (
 	"go/token"
 	"go/types"
 	"path"
-	"slices"
 	"strconv"
 	"strings"
+	slices "tailscale.com/util/go120/slices"
 
 	"tailscale.com/util/must"
 )
@@ -22,10 +22,10 @@ import (
 // It panics if there are any parsing errors.
 //
 //   - "encoding/json" is imported under the name "jsonv1" or "jsonv1std"
-//   - "encoding/json/v2" is rewritten to import "github.com/go-json-experiment/json" instead
-//   - "encoding/json/jsontext" is rewritten to import "github.com/go-json-experiment/json/jsontext" instead
-//   - "github.com/go-json-experiment/json" is imported under the name "jsonv2"
-//   - "github.com/go-json-experiment/json/v1" is imported under the name "jsonv1"
+//   - "encoding/json/v2" is rewritten to import "github.com/metacubex/jsonv2" instead
+//   - "encoding/json/jsontext" is rewritten to import "github.com/metacubex/jsonv2/jsontext" instead
+//   - "github.com/metacubex/jsonv2" is imported under the name "jsonv2"
+//   - "github.com/metacubex/jsonv2/v1" is imported under the name "jsonv1"
 //
 // If no changes to the file is made, it returns input.
 func mustFormatFile(in []byte) (out []byte) {
@@ -40,9 +40,9 @@ func mustFormatFile(in []byte) (out []byte) {
 			"encoding/json",
 			"encoding/json/v2",
 			"encoding/json/jsontext",
-			"github.com/go-json-experiment/json",
-			"github.com/go-json-experiment/json/v1",
-			"github.com/go-json-experiment/json/jsontext":
+			"github.com/metacubex/jsonv2",
+			"github.com/metacubex/jsonv2/v1",
+			"github.com/metacubex/jsonv2/jsontext":
 			jsonImports[pkgPath] = append(jsonImports[pkgPath], imp)
 		}
 	}
@@ -57,15 +57,15 @@ func mustFormatFile(in []byte) (out []byte) {
 		Error: func(err error) {},
 	}).Check("", fset, []*ast.File{f}, typeInfo)
 
-	// Rewrite imports to instead use "github.com/go-json-experiment/json".
+	// Rewrite imports to instead use "github.com/metacubex/jsonv2".
 	// This ensures that code continues to build even if
 	// goexperiment.jsonv2 is *not* specified.
-	// As of https://github.com/go-json-experiment/json/pull/186,
-	// imports to "github.com/go-json-experiment/json" are identical
+	// As of https://github.com/metacubex/jsonv2/pull/186,
+	// imports to "github.com/metacubex/jsonv2" are identical
 	// to the standard library if built with goexperiment.jsonv2.
 	for fromPath, toPath := range map[string]string{
-		"encoding/json/v2":       "github.com/go-json-experiment/json",
-		"encoding/json/jsontext": "github.com/go-json-experiment/json/jsontext",
+		"encoding/json/v2":       "github.com/metacubex/jsonv2",
+		"encoding/json/jsontext": "github.com/metacubex/jsonv2/jsontext",
 	} {
 		for _, imp := range jsonImports[fromPath] {
 			imp.Path.Value = strconv.Quote(toPath)
@@ -85,14 +85,14 @@ func mustFormatFile(in []byte) (out []byte) {
 		switch pkgPath {
 		case "encoding/json":
 			newName = "jsonv1"
-			// If "github.com/go-json-experiment/json/v1" is also imported,
+			// If "github.com/metacubex/jsonv2/v1" is also imported,
 			// then use jsonv1std for "encoding/json" to avoid a conflict.
-			if len(jsonImports["github.com/go-json-experiment/json/v1"]) > 0 {
+			if len(jsonImports["github.com/metacubex/jsonv2/v1"]) > 0 {
 				newName += "std"
 			}
-		case "github.com/go-json-experiment/json":
+		case "github.com/metacubex/jsonv2":
 			newName = "jsonv2"
-		case "github.com/go-json-experiment/json/v1":
+		case "github.com/metacubex/jsonv2/v1":
 			newName = "jsonv1"
 		}
 

@@ -6,8 +6,8 @@ package ippool
 import (
 	"math/big"
 	"math/bits"
-	"math/rand/v2"
 	"net/netip"
+	"tailscale.com/util/go120/randv2"
 
 	"go4.org/netipx"
 )
