@@ -12,8 +12,8 @@ import (
 	"syscall"
 	"unsafe"
 
-	"tailscale.com/util/wingoes"
-	"tailscale.com/util/wingoes/internal"
+	"github.com/metacubex/tailscale/util/wingoes"
+	"github.com/metacubex/tailscale/util/wingoes/internal"
 	"golang.org/x/sys/windows"
 )
 

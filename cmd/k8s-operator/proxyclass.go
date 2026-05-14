@@ -8,11 +8,16 @@ package main
 import (
 	"context"
 	"fmt"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"strings"
 	"sync"
-	slices "tailscale.com/util/go120/slices"
 
 	dockerref "github.com/distribution/reference"
+	tsoperator "github.com/metacubex/tailscale/k8s-operator"
+	tsapi "github.com/metacubex/tailscale/k8s-operator/apis/v1alpha1"
+	"github.com/metacubex/tailscale/tstime"
+	"github.com/metacubex/tailscale/util/clientmetric"
+	"github.com/metacubex/tailscale/util/set"
 	"go.uber.org/zap"
 	corev1 "k8s.io/api/core/v1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
@@ -26,11 +31,6 @@ import (
 	"k8s.io/client-go/tools/record"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
-	tsoperator "tailscale.com/k8s-operator"
-	tsapi "tailscale.com/k8s-operator/apis/v1alpha1"
-	"tailscale.com/tstime"
-	"tailscale.com/util/clientmetric"
-	"tailscale.com/util/set"
 )
 
 const (

@@ -7,9 +7,9 @@ import (
 	"crypto/ed25519"
 	"errors"
 	"fmt"
-	maps "tailscale.com/util/go120/maps"
+	maps "github.com/metacubex/tailscale/util/go120/maps"
 
-	"tailscale.com/types/tkatype"
+	"github.com/metacubex/tailscale/types/tkatype"
 )
 
 // KeyKind describes the different varieties of a Key.

@@ -9,9 +9,9 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/metacubex/tailscale/tempfork/spf13/cobra"
 	"github.com/peterbourgon/ff/v3"
 	"github.com/peterbourgon/ff/v3/ffcli"
-	"tailscale.com/tempfork/spf13/cobra"
 )
 
 var (

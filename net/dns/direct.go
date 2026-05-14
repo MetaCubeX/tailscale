@@ -11,6 +11,7 @@ import (
 	"crypto/rand"
 	"errors"
 	"fmt"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"io"
 	"io/fs"
 	"net/netip"
@@ -21,17 +22,16 @@ import (
 	"strings"
 	"sync"
 	"sync/atomic"
-	slices "tailscale.com/util/go120/slices"
 	"time"
 
-	"tailscale.com/feature"
-	"tailscale.com/health"
-	"tailscale.com/net/dns/resolvconffile"
-	"tailscale.com/net/tsaddr"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/dnsname"
-	"tailscale.com/util/eventbus"
-	"tailscale.com/version/distro"
+	"github.com/metacubex/tailscale/feature"
+	"github.com/metacubex/tailscale/health"
+	"github.com/metacubex/tailscale/net/dns/resolvconffile"
+	"github.com/metacubex/tailscale/net/tsaddr"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/util/dnsname"
+	"github.com/metacubex/tailscale/util/eventbus"
+	"github.com/metacubex/tailscale/version/distro"
 )
 
 // writeResolvConf writes DNS configuration in resolv.conf format to the given writer.
@@ -454,7 +454,7 @@ var resolvTrampleWarnable = health.Register(&health.Warnable{
 	Code:     "resolv-conf-overwritten",
 	Severity: health.SeverityMedium,
 	Title:    "DNS configuration issue",
-	Text:     health.StaticMessage("System DNS config not ideal. /etc/resolv.conf overwritten. See https://tailscale.com/s/dns-fight"),
+	Text:     health.StaticMessage("System DNS config not ideal. /etc/resolv.conf overwritten. See https://github.com/metacubex/tailscale/s/dns-fight"),
 })
 
 // checkForFileTrample checks whether /etc/resolv.conf has been trampled

@@ -6,9 +6,9 @@ package ipnauth
 import (
 	"context"
 	"errors"
-	cmp "tailscale.com/util/go120/cmp"
+	cmp "github.com/metacubex/tailscale/util/go120/cmp"
 
-	"tailscale.com/ipn"
+	"github.com/metacubex/tailscale/ipn"
 )
 
 var _ Actor = (*TestActor)(nil)

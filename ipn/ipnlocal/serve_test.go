@@ -12,6 +12,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	cmp "github.com/metacubex/tailscale/util/go120/cmp"
 	"io"
 	"mime"
 	"net/http"
@@ -22,26 +23,25 @@ import (
 	"path/filepath"
 	"reflect"
 	"strings"
-	cmp "tailscale.com/util/go120/cmp"
 	"testing"
 	"time"
 
-	"tailscale.com/control/controlclient"
-	"tailscale.com/health"
-	"tailscale.com/ipn"
-	"tailscale.com/ipn/store/mem"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tsd"
-	"tailscale.com/tstest"
-	"tailscale.com/types/logger"
-	"tailscale.com/types/logid"
-	"tailscale.com/types/netmap"
-	"tailscale.com/util/eventbus/eventbustest"
-	"tailscale.com/util/mak"
-	"tailscale.com/util/must"
-	"tailscale.com/util/syspolicy/policyclient"
-	"tailscale.com/wgengine"
-	"tailscale.com/wgengine/filter"
+	"github.com/metacubex/tailscale/control/controlclient"
+	"github.com/metacubex/tailscale/health"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/ipn/store/mem"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/tsd"
+	"github.com/metacubex/tailscale/tstest"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/types/logid"
+	"github.com/metacubex/tailscale/types/netmap"
+	"github.com/metacubex/tailscale/util/eventbus/eventbustest"
+	"github.com/metacubex/tailscale/util/mak"
+	"github.com/metacubex/tailscale/util/must"
+	"github.com/metacubex/tailscale/util/syspolicy/policyclient"
+	"github.com/metacubex/tailscale/wgengine"
+	"github.com/metacubex/tailscale/wgengine/filter"
 )
 
 func TestExpandProxyArg(t *testing.T) {
@@ -748,7 +748,7 @@ func TestServeHTTPProxyHeaders(t *testing.T) {
 				{"Tailscale-User-Login", "someone@example.com"},
 				{"Tailscale-User-Name", "Some One"},
 				{"Tailscale-User-Profile-Pic", "https://example.com/photo.jpg"},
-				{"Tailscale-Headers-Info", "https://tailscale.com/s/serve-headers"},
+				{"Tailscale-Headers-Info", "https://github.com/metacubex/tailscale/s/serve-headers"},
 			},
 		},
 		{
@@ -888,7 +888,7 @@ func TestServeHTTPProxyGrantHeader(t *testing.T) {
 				{"Tailscale-User-Login", "someone@example.com"},
 				{"Tailscale-User-Name", "Some One"},
 				{"Tailscale-User-Profile-Pic", "https://example.com/photo.jpg"},
-				{"Tailscale-Headers-Info", "https://tailscale.com/s/serve-headers"},
+				{"Tailscale-Headers-Info", "https://github.com/metacubex/tailscale/s/serve-headers"},
 				{"Tailscale-App-Capabilities", `{"example.com/cap/interesting":[{"role":"🐿"}]}`},
 			},
 		},

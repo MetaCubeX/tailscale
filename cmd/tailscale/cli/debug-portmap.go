@@ -14,8 +14,8 @@ import (
 	"os"
 	"time"
 
+	"github.com/metacubex/tailscale/client/local"
 	"github.com/peterbourgon/ff/v3/ffcli"
-	"tailscale.com/client/local"
 )
 
 func init() {

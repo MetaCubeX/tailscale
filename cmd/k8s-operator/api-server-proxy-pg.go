@@ -10,9 +10,9 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	maps "github.com/metacubex/tailscale/util/go120/maps"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"strings"
-	maps "tailscale.com/util/go120/maps"
-	slices "tailscale.com/util/go120/slices"
 
 	"go.uber.org/zap"
 	corev1 "k8s.io/api/core/v1"
@@ -25,17 +25,17 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 	"tailscale.com/client/tailscale/v2"
 
-	tsoperator "tailscale.com/k8s-operator"
-	tsapi "tailscale.com/k8s-operator/apis/v1alpha1"
-	"tailscale.com/k8s-operator/tsclient"
-	"tailscale.com/kube/k8s-proxy/conf"
-	"tailscale.com/kube/kubetypes"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tstime"
+	tsoperator "github.com/metacubex/tailscale/k8s-operator"
+	tsapi "github.com/metacubex/tailscale/k8s-operator/apis/v1alpha1"
+	"github.com/metacubex/tailscale/k8s-operator/tsclient"
+	"github.com/metacubex/tailscale/kube/k8s-proxy/conf"
+	"github.com/metacubex/tailscale/kube/kubetypes"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/tstime"
 )
 
 const (
-	proxyPGFinalizerName = "tailscale.com/kube-apiserver-finalizer"
+	proxyPGFinalizerName = "github.com/metacubex/tailscale/kube-apiserver-finalizer"
 
 	// Reasons for KubeAPIServerProxyValid condition.
 	reasonKubeAPIServerProxyInvalid = "KubeAPIServerProxyInvalid"

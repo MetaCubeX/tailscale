@@ -9,12 +9,12 @@ package portlist
 import (
 	"errors"
 	"fmt"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"runtime"
 	"sync"
-	slices "tailscale.com/util/go120/slices"
 	"time"
 
-	"tailscale.com/envknob"
+	"github.com/metacubex/tailscale/envknob"
 )
 
 var (

@@ -10,8 +10,8 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
+	"github.com/metacubex/tailscale/util/dnsname"
 	"github.com/miekg/dns"
-	"tailscale.com/util/dnsname"
 )
 
 func TestNameserver(t *testing.T) {

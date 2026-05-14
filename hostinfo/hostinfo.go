@@ -18,17 +18,17 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/metacubex/tailscale/envknob"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/types/lazy"
+	"github.com/metacubex/tailscale/types/opt"
+	"github.com/metacubex/tailscale/types/result"
+	"github.com/metacubex/tailscale/util/cloudenv"
+	"github.com/metacubex/tailscale/util/dnsname"
+	"github.com/metacubex/tailscale/util/lineiter"
+	"github.com/metacubex/tailscale/version"
+	"github.com/metacubex/tailscale/version/distro"
 	"go4.org/mem"
-	"tailscale.com/envknob"
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/lazy"
-	"tailscale.com/types/opt"
-	"tailscale.com/types/result"
-	"tailscale.com/util/cloudenv"
-	"tailscale.com/util/dnsname"
-	"tailscale.com/util/lineiter"
-	"tailscale.com/version"
-	"tailscale.com/version/distro"
 )
 
 var started = time.Now()

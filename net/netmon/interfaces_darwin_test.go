@@ -11,9 +11,9 @@ import (
 	"os/exec"
 	"testing"
 
+	"github.com/metacubex/tailscale/util/lineiter"
+	"github.com/metacubex/tailscale/version"
 	"go4.org/mem"
-	"tailscale.com/util/lineiter"
-	"tailscale.com/version"
 )
 
 func TestLikelyHomeRouterIPSyscallExec(t *testing.T) {

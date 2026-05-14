@@ -21,15 +21,15 @@ import (
 	"text/tabwriter"
 	"time"
 
+	"github.com/metacubex/tailscale/client/local"
+	"github.com/metacubex/tailscale/cmd/tailscale/cli/ffcomplete"
+	"github.com/metacubex/tailscale/envknob"
+	"github.com/metacubex/tailscale/feature"
+	"github.com/metacubex/tailscale/paths"
+	"github.com/metacubex/tailscale/util/slicesx"
+	"github.com/metacubex/tailscale/util/testenv"
+	"github.com/metacubex/tailscale/version/distro"
 	"github.com/peterbourgon/ff/v3/ffcli"
-	"tailscale.com/client/local"
-	"tailscale.com/cmd/tailscale/cli/ffcomplete"
-	"tailscale.com/envknob"
-	"tailscale.com/feature"
-	"tailscale.com/paths"
-	"tailscale.com/util/slicesx"
-	"tailscale.com/util/testenv"
-	"tailscale.com/version/distro"
 )
 
 var Stderr io.Writer = os.Stderr

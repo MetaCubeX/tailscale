@@ -8,9 +8,9 @@ import (
 	"net/url"
 	"os"
 
-	"tailscale.com/syncs"
-	"tailscale.com/types/logger"
-	"tailscale.com/types/persist"
+	"github.com/metacubex/tailscale/syncs"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/types/persist"
 )
 
 // HookCanAutoUpdate is a hook for the clientupdate package

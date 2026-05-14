@@ -12,8 +12,8 @@
 // non-preference fields that will be marshalled and unmarshalled but are
 // otherwise ignored by the prefs package.
 //
-// The preference types are compatible with the [tailscale.com/cmd/viewer] and
-// [tailscale.com/cmd/cloner] utilities. It is recommended to generate a read-only view
+// The preference types are compatible with the [github.com/metacubex/tailscale/cmd/viewer] and
+// [github.com/metacubex/tailscale/cmd/cloner] utilities. It is recommended to generate a read-only view
 // of the user-defined prefs structure and use it in place of prefs whenever the prefs
 // should not be modified.
 package prefs
@@ -23,7 +23,7 @@ import (
 
 	jsonv2 "github.com/metacubex/jsonv2"
 	"github.com/metacubex/jsonv2/jsontext"
-	"tailscale.com/types/opt"
+	"github.com/metacubex/tailscale/types/opt"
 )
 
 var (

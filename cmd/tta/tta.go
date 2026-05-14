@@ -32,13 +32,13 @@ import (
 	"sync"
 	"time"
 
-	"tailscale.com/atomicfile"
-	"tailscale.com/client/local"
-	"tailscale.com/hostinfo"
-	"tailscale.com/util/mak"
-	"tailscale.com/util/must"
-	"tailscale.com/util/set"
-	"tailscale.com/version/distro"
+	"github.com/metacubex/tailscale/atomicfile"
+	"github.com/metacubex/tailscale/client/local"
+	"github.com/metacubex/tailscale/hostinfo"
+	"github.com/metacubex/tailscale/util/mak"
+	"github.com/metacubex/tailscale/util/must"
+	"github.com/metacubex/tailscale/util/set"
+	"github.com/metacubex/tailscale/version/distro"
 )
 
 // connContextKeyType is the type of connContextKey, which isn't of type

@@ -15,11 +15,11 @@ import (
 	"testing"
 	"time"
 
-	. "tailscale.com/tailcfg"
-	"tailscale.com/tstest/deptest"
-	"tailscale.com/types/key"
-	"tailscale.com/types/opt"
-	"tailscale.com/util/must"
+	. "github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/tstest/deptest"
+	"github.com/metacubex/tailscale/types/key"
+	"github.com/metacubex/tailscale/types/opt"
+	"github.com/metacubex/tailscale/util/must"
 )
 
 func fieldsOf(t reflect.Type) (fields []string) {
@@ -876,9 +876,9 @@ func TestDeps(t *testing.T) {
 		BadDeps: map[string]string{
 			// Make sure we don't again accidentally bring in a dependency on
 			// drive or its transitive dependencies
-			"testing":                        "do not use testing package in production code",
-			"tailscale.com/drive/driveimpl":  "https://github.com/tailscale/tailscale/pull/10631",
-			"github.com/studio-b12/gowebdav": "https://github.com/tailscale/tailscale/pull/10631",
+			"testing": "do not use testing package in production code",
+			"github.com/metacubex/tailscale/drive/driveimpl": "https://github.com/tailscale/tailscale/pull/10631",
+			"github.com/studio-b12/gowebdav":                 "https://github.com/tailscale/tailscale/pull/10631",
 		},
 	}.Check(t)
 }

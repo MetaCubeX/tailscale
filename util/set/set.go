@@ -6,9 +6,9 @@ package set
 
 import (
 	"encoding/json"
+	maps "github.com/metacubex/tailscale/util/go120/maps"
 	"reflect"
 	"sort"
-	maps "tailscale.com/util/go120/maps"
 )
 
 // Set is a set of T.

@@ -9,26 +9,26 @@ import (
 	"context"
 	"crypto/tls"
 
-	"tailscale.com/client/local"
+	"github.com/metacubex/tailscale/client/local"
 )
 
-// GetCertificate is an alias for [tailscale.com/client/local.GetCertificate].
+// GetCertificate is an alias for [github.com/metacubex/tailscale/client/local.GetCertificate].
 //
-// Deprecated: import [tailscale.com/client/local] instead and use [local.Client.GetCertificate].
+// Deprecated: import [github.com/metacubex/tailscale/client/local] instead and use [local.Client.GetCertificate].
 func GetCertificate(hi *tls.ClientHelloInfo) (*tls.Certificate, error) {
 	return local.GetCertificate(hi)
 }
 
-// CertPair is an alias for [tailscale.com/client/local.CertPair].
+// CertPair is an alias for [github.com/metacubex/tailscale/client/local.CertPair].
 //
-// Deprecated: import [tailscale.com/client/local] instead and use [local.Client.CertPair].
+// Deprecated: import [github.com/metacubex/tailscale/client/local] instead and use [local.Client.CertPair].
 func CertPair(ctx context.Context, domain string) (certPEM, keyPEM []byte, err error) {
 	return local.CertPair(ctx, domain)
 }
 
-// ExpandSNIName is an alias for [tailscale.com/client/local.ExpandSNIName].
+// ExpandSNIName is an alias for [github.com/metacubex/tailscale/client/local.ExpandSNIName].
 //
-// Deprecated: import [tailscale.com/client/local] instead and use [local.Client.ExpandSNIName].
+// Deprecated: import [github.com/metacubex/tailscale/client/local] instead and use [local.Client.ExpandSNIName].
 func ExpandSNIName(ctx context.Context, name string) (fqdn string, ok bool) {
 	return local.ExpandSNIName(ctx, name)
 }

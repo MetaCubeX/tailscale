@@ -9,15 +9,15 @@ package qnap
 import (
 	"embed"
 	"fmt"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"io/fs"
 	"log"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"sync"
-	slices "tailscale.com/util/go120/slices"
 
-	"tailscale.com/release/dist"
+	"github.com/metacubex/tailscale/release/dist"
 )
 
 type target struct {
@@ -168,7 +168,7 @@ var buildFiles embed.FS
 // The qnapBuilds.tmpDir is filled with the contents of the buildFiles embedded
 // FS for building.
 //
-// We do this to allow for this tailscale.com/release/dist/qnap package to be
+// We do this to allow for this github.com/metacubex/tailscale/release/dist/qnap package to be
 // used from both the corp and OSS repos. When built from OSS source directly,
 // this is a superfluous extra step, but when imported as a go module to another
 // repo (such as corp), we must do this to allow for the module's build files
@@ -220,11 +220,11 @@ func (m *qnapBuilds) buildInnerPackage(b *dist.Build, goenv map[string]string) (
 		if err := b.BuildWebClientAssets(); err != nil {
 			return nil, err
 		}
-		ts, err := b.BuildGoBinary("tailscale.com/cmd/tailscale", goenv)
+		ts, err := b.BuildGoBinary("github.com/metacubex/tailscale/cmd/tailscale", goenv)
 		if err != nil {
 			return nil, err
 		}
-		tsd, err := b.BuildGoBinary("tailscale.com/cmd/tailscaled", goenv)
+		tsd, err := b.BuildGoBinary("github.com/metacubex/tailscale/cmd/tailscaled", goenv)
 		if err != nil {
 			return nil, err
 		}

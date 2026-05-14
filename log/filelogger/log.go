@@ -16,7 +16,7 @@ import (
 	"sync"
 	"time"
 
-	"tailscale.com/types/logger"
+	"github.com/metacubex/tailscale/types/logger"
 )
 
 const (

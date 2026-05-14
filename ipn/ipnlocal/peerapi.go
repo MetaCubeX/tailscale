@@ -9,6 +9,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"hash/crc32"
 	"html"
 	"io"
@@ -20,25 +21,24 @@ import (
 	"strconv"
 	"strings"
 	"sync"
-	slices "tailscale.com/util/go120/slices"
 	"time"
 
+	"github.com/metacubex/tailscale/envknob"
+	"github.com/metacubex/tailscale/feature"
+	"github.com/metacubex/tailscale/feature/buildfeatures"
+	"github.com/metacubex/tailscale/health"
+	"github.com/metacubex/tailscale/hostinfo"
+	"github.com/metacubex/tailscale/net/netaddr"
+	"github.com/metacubex/tailscale/net/netmon"
+	"github.com/metacubex/tailscale/net/netutil"
+	"github.com/metacubex/tailscale/net/sockstats"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/types/netmap"
+	"github.com/metacubex/tailscale/types/views"
+	"github.com/metacubex/tailscale/util/clientmetric"
+	"github.com/metacubex/tailscale/wgengine/filter"
 	"golang.org/x/net/dns/dnsmessage"
 	"golang.org/x/net/http/httpguts"
-	"tailscale.com/envknob"
-	"tailscale.com/feature"
-	"tailscale.com/feature/buildfeatures"
-	"tailscale.com/health"
-	"tailscale.com/hostinfo"
-	"tailscale.com/net/netaddr"
-	"tailscale.com/net/netmon"
-	"tailscale.com/net/netutil"
-	"tailscale.com/net/sockstats"
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/netmap"
-	"tailscale.com/types/views"
-	"tailscale.com/util/clientmetric"
-	"tailscale.com/wgengine/filter"
 )
 
 // initListenConfig, if non-nil, is called during peerAPIListener setup.  It is used only
@@ -223,7 +223,7 @@ type peerAPIHandler struct {
 }
 
 // PeerAPIHandler is the interface implemented by [peerAPIHandler] and needed by
-// module features registered via tailscale.com/feature/*.
+// module features registered via github.com/metacubex/tailscale/feature/*.
 type PeerAPIHandler interface {
 	Peer() tailcfg.NodeView
 	PeerCaps() tailcfg.PeerCapMap

@@ -13,7 +13,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"tailscale.com/tstest"
+	"github.com/metacubex/tailscale/tstest"
 )
 
 // test the specific /proc/net/route path as found on Google Cloud Run instances

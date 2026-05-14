@@ -9,13 +9,13 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/metacubex/tailscale/util/go120/randv2"
 	"os"
 	"reflect"
-	"tailscale.com/util/go120/randv2"
 	"time"
 
-	"tailscale.com/syncs"
-	"tailscale.com/types/logger"
+	"github.com/metacubex/tailscale/syncs"
+	"github.com/metacubex/tailscale/types/logger"
 )
 
 // DefaultInterval is the default value for ReloadOpts.Interval if none is

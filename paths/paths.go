@@ -11,8 +11,8 @@ import (
 	"path/filepath"
 	"runtime"
 
-	"tailscale.com/syncs"
-	"tailscale.com/version/distro"
+	"github.com/metacubex/tailscale/syncs"
+	"github.com/metacubex/tailscale/version/distro"
 )
 
 // AppSharedDir is a string set by the iOS or Android app on start

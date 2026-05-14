@@ -73,6 +73,9 @@ import (
 	"context"
 	crand "crypto/rand"
 	"fmt"
+	cmp "github.com/metacubex/tailscale/util/go120/cmp"
+	maps "github.com/metacubex/tailscale/util/go120/maps"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"html/template"
 	"log"
 	"net"
@@ -80,9 +83,6 @@ import (
 	"net/url"
 	"path"
 	"strings"
-	cmp "tailscale.com/util/go120/cmp"
-	maps "tailscale.com/util/go120/maps"
-	slices "tailscale.com/util/go120/slices"
 
 	"github.com/gorilla/csrf"
 )

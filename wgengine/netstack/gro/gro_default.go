@@ -10,7 +10,7 @@ import (
 
 	"github.com/metacubex/gvisor/pkg/tcpip/stack"
 	nsgro "github.com/metacubex/gvisor/pkg/tcpip/stack/gro"
-	"tailscale.com/net/packet"
+	"github.com/metacubex/tailscale/net/packet"
 )
 
 var (

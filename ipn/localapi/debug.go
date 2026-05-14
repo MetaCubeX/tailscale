@@ -10,6 +10,8 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	cmp "github.com/metacubex/tailscale/util/go120/cmp"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"io"
 	"net"
 	"net/http"
@@ -17,17 +19,15 @@ import (
 	"reflect"
 	"strconv"
 	"sync"
-	cmp "tailscale.com/util/go120/cmp"
-	slices "tailscale.com/util/go120/slices"
 	"time"
 
-	"tailscale.com/client/tailscale/apitype"
-	"tailscale.com/feature"
-	"tailscale.com/feature/buildfeatures"
-	"tailscale.com/ipn"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/eventbus"
-	"tailscale.com/util/httpm"
+	"github.com/metacubex/tailscale/client/tailscale/apitype"
+	"github.com/metacubex/tailscale/feature"
+	"github.com/metacubex/tailscale/feature/buildfeatures"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/util/eventbus"
+	"github.com/metacubex/tailscale/util/httpm"
 )
 
 func init() {

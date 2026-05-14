@@ -11,6 +11,7 @@ import (
 	"errors"
 	"flag"
 	"fmt"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"io"
 	"log"
 	"math"
@@ -25,21 +26,20 @@ import (
 	"sort"
 	"strconv"
 	"strings"
-	slices "tailscale.com/util/go120/slices"
 
+	"github.com/metacubex/tailscale/client/local"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/ipn/conffile"
+	"github.com/metacubex/tailscale/ipn/ipnstate"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/types/ipproto"
+	"github.com/metacubex/tailscale/util/dnsname"
+	"github.com/metacubex/tailscale/util/mak"
+	"github.com/metacubex/tailscale/util/prompt"
+	"github.com/metacubex/tailscale/util/set"
+	"github.com/metacubex/tailscale/util/slicesx"
+	"github.com/metacubex/tailscale/version"
 	"github.com/peterbourgon/ff/v3/ffcli"
-	"tailscale.com/client/local"
-	"tailscale.com/ipn"
-	"tailscale.com/ipn/conffile"
-	"tailscale.com/ipn/ipnstate"
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/ipproto"
-	"tailscale.com/util/dnsname"
-	"tailscale.com/util/mak"
-	"tailscale.com/util/prompt"
-	"tailscale.com/util/set"
-	"tailscale.com/util/slicesx"
-	"tailscale.com/version"
 )
 
 type execFunc func(ctx context.Context, args []string) error
@@ -153,7 +153,7 @@ EXAMPLES
   - Expose a service listening on a Unix socket (Linux/macOS/BSD only):
     $ tailscale %[1]s unix:/var/run/myservice.sock
 
-For more examples and use cases visit our docs site https://tailscale.com/kb/1247/funnel-serve-use-cases
+For more examples and use cases visit our docs site https://github.com/metacubex/tailscale/kb/1247/funnel-serve-use-cases
 `)
 
 type serveMode int
@@ -320,7 +320,7 @@ func newServeV2Command(e *serveEnv, subcmd serveMode) *ffcli.Command {
 							"for either a single service, or for all services that this node is hosting. If --service is specified,\n" +
 							"all endpoint handlers for that service are overwritten. If --all is specified, all endpoint handlers for\n" +
 							"all services are overwritten.\n\n" +
-							"For information on the file format, see tailscale.com/kb/1589/tailscale-services-configuration-file",
+							"For information on the file format, see github.com/metacubex/tailscale/kb/1589/tailscale-services-configuration-file",
 						Exec: e.runServeSetConfig,
 						FlagSet: e.newFlags("serve-set-config", func(fs *flag.FlagSet) {
 							fs.BoolVar(&e.allServices, "all", false, "apply config to all services")
@@ -341,7 +341,7 @@ func (e *serveEnv) validateArgs(subcmd serveMode, args []string) error {
 			fmt.Fprint(e.stderr(), " You can run the following command instead:\n")
 			fmt.Fprintf(e.stderr(), "\t- %s\n", translation)
 		}
-		fmt.Fprint(e.stderr(), "\nPlease see https://tailscale.com/kb/1242/tailscale-serve for more information.\n")
+		fmt.Fprint(e.stderr(), "\nPlease see https://github.com/metacubex/tailscale/kb/1242/tailscale-serve for more information.\n")
 		return errHelpFunc(subcmd)
 	}
 	if len(args) == 0 && e.tun {
@@ -956,7 +956,7 @@ var (
 	msgDisableServiceProxy         = "To disable the proxy, run: tailscale serve --service=%s --%s=%d off"
 	msgDisableServiceTun           = "To disable the service in TUN mode, run: tailscale serve --service=%s --tun off"
 	msgDisableService              = "To remove config for the service, run: tailscale serve clear %s"
-	msgWarnRemoteDestCompatibility = "Warning: %s doesn't support connecting to remote destinations from non-default route, see tailscale.com/kb/1552/tailscale-services for detail."
+	msgWarnRemoteDestCompatibility = "Warning: %s doesn't support connecting to remote destinations from non-default route, see github.com/metacubex/tailscale/kb/1552/tailscale-services for detail."
 	msgToExit                      = "Press Ctrl+C to exit."
 )
 
@@ -1166,7 +1166,7 @@ func (e *serveEnv) applyWebServe(sc *ipn.ServeConfig, dnsName string, srvPort ui
 	case filepath.IsAbs(target):
 		if version.IsMacAppStore() || version.IsMacSys() {
 			// The Tailscale network extension cannot serve arbitrary paths on macOS due to sandbox restrictions (2024-03-26)
-			return errors.New("Path serving is not supported on macOS due to sandbox restrictions. To use Tailscale Serve on macOS, switch to the open-source tailscaled distribution. See https://tailscale.com/kb/1065/macos-variants for more information.")
+			return errors.New("Path serving is not supported on macOS due to sandbox restrictions. To use Tailscale Serve on macOS, switch to the open-source tailscaled distribution. See https://github.com/metacubex/tailscale/kb/1065/macos-variants for more information.")
 		}
 
 		target = filepath.Clean(target)

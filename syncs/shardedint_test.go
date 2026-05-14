@@ -10,8 +10,8 @@ import (
 	"sync"
 	"testing"
 
-	. "tailscale.com/syncs"
-	"tailscale.com/tstest"
+	. "github.com/metacubex/tailscale/syncs"
+	"github.com/metacubex/tailscale/tstest"
 )
 
 var (

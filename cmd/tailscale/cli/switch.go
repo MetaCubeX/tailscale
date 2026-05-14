@@ -13,9 +13,9 @@ import (
 	"text/tabwriter"
 	"time"
 
+	"github.com/metacubex/tailscale/cmd/tailscale/cli/ffcomplete"
+	"github.com/metacubex/tailscale/ipn"
 	"github.com/peterbourgon/ff/v3/ffcli"
-	"tailscale.com/cmd/tailscale/cli/ffcomplete"
-	"tailscale.com/ipn"
 )
 
 var switchCmd = &ffcli.Command{

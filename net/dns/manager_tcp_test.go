@@ -16,14 +16,14 @@ import (
 	"time"
 
 	"github.com/google/go-cmp/cmp"
+	"github.com/metacubex/tailscale/control/controlknobs"
+	"github.com/metacubex/tailscale/health"
+	"github.com/metacubex/tailscale/net/netmon"
+	"github.com/metacubex/tailscale/net/tsdial"
+	"github.com/metacubex/tailscale/tstest"
+	"github.com/metacubex/tailscale/util/dnsname"
+	"github.com/metacubex/tailscale/util/eventbus/eventbustest"
 	dns "golang.org/x/net/dns/dnsmessage"
-	"tailscale.com/control/controlknobs"
-	"tailscale.com/health"
-	"tailscale.com/net/netmon"
-	"tailscale.com/net/tsdial"
-	"tailscale.com/tstest"
-	"tailscale.com/util/dnsname"
-	"tailscale.com/util/eventbus/eventbustest"
 )
 
 func mkDNSRequest(domain dnsname.FQDN, tp dns.Type, modify func(*dns.Builder)) []byte {

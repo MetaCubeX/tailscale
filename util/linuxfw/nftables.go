@@ -9,15 +9,15 @@ package linuxfw
 import (
 	"encoding/binary"
 	"fmt"
+	cmp "github.com/metacubex/tailscale/util/go120/cmp"
 	"sort"
 	"strings"
-	cmp "tailscale.com/util/go120/cmp"
 
+	"github.com/metacubex/tailscale/types/logger"
 	"github.com/google/nftables"
 	"github.com/google/nftables/expr"
 	"github.com/google/nftables/xt"
 	"golang.org/x/sys/unix"
-	"tailscale.com/types/logger"
 )
 
 // DebugNetfilter prints debug information about netfilter rules to the

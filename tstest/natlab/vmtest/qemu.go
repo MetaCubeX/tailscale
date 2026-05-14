@@ -19,7 +19,7 @@ import (
 	"testing"
 	"time"
 
-	"tailscale.com/tstest/natlab/vnet"
+	"github.com/metacubex/tailscale/tstest/natlab/vnet"
 )
 
 // qemuAccelArgs returns QEMU command-line flags for hardware-accelerated

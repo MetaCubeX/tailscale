@@ -12,9 +12,9 @@ import (
 	"os"
 	"path"
 
+	"github.com/metacubex/tailscale/util/precompress"
+	"github.com/metacubex/tailscale/version"
 	"github.com/tailscale/hujson"
-	"tailscale.com/util/precompress"
-	"tailscale.com/version"
 )
 
 func runBuildPkg() {

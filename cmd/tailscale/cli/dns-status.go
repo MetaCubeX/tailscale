@@ -8,13 +8,13 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	maps "github.com/metacubex/tailscale/util/go120/maps"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"strings"
-	maps "tailscale.com/util/go120/maps"
-	slices "tailscale.com/util/go120/slices"
 
+	"github.com/metacubex/tailscale/cmd/tailscale/cli/jsonoutput"
+	"github.com/metacubex/tailscale/types/dnstype"
 	"github.com/peterbourgon/ff/v3/ffcli"
-	"tailscale.com/cmd/tailscale/cli/jsonoutput"
-	"tailscale.com/types/dnstype"
 )
 
 var dnsStatusCmd = &ffcli.Command{
@@ -68,7 +68,7 @@ and includes the following components:
   node DNS proxy, will not answer.
 
 For more information about the DNS functionality built into Tailscale, refer to
-https://tailscale.com/kb/1054/dns.
+https://github.com/metacubex/tailscale/kb/1054/dns.
 `),
 	FlagSet: (func() *flag.FlagSet {
 		fs := newFlagSet("status")

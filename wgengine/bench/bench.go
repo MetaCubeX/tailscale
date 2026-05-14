@@ -18,7 +18,7 @@ import (
 	"sync"
 	"time"
 
-	"tailscale.com/types/logger"
+	"github.com/metacubex/tailscale/types/logger"
 )
 
 const PayloadSize = 1000

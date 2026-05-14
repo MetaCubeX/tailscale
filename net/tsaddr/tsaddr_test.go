@@ -11,8 +11,8 @@ import (
 
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
-	"tailscale.com/net/netaddr"
-	"tailscale.com/types/views"
+	"github.com/metacubex/tailscale/net/netaddr"
+	"github.com/metacubex/tailscale/types/views"
 )
 
 func TestInCrostiniRange(t *testing.T) {

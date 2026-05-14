@@ -12,8 +12,8 @@ import (
 	"testing"
 	"testing/synctest"
 
-	"tailscale.com/util/eventbus"
-	"tailscale.com/util/eventbus/eventbustest"
+	"github.com/metacubex/tailscale/util/eventbus"
+	"github.com/metacubex/tailscale/util/eventbus/eventbustest"
 )
 
 var doDebug = flag.Bool("debug", false, "Enable debug logging")

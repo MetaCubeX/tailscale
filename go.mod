@@ -1,4 +1,4 @@
-module tailscale.com
+module github.com/metacubex/tailscale
 
 go 1.20
 

@@ -14,8 +14,8 @@ import (
 	"testing"
 	"time"
 
-	"tailscale.com/tstest"
-	"tailscale.com/types/key"
+	"github.com/metacubex/tailscale/tstest"
+	"github.com/metacubex/tailscale/types/key"
 )
 
 type dummyNetConn struct {

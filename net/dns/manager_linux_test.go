@@ -12,8 +12,8 @@ import (
 	"strings"
 	"testing"
 
-	"tailscale.com/tstest"
-	"tailscale.com/util/cmpver"
+	"github.com/metacubex/tailscale/tstest"
+	"github.com/metacubex/tailscale/util/cmpver"
 )
 
 func TestLinuxDNSMode(t *testing.T) {

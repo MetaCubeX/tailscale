@@ -15,9 +15,9 @@ import (
 	"os"
 	"strings"
 
+	"github.com/metacubex/tailscale/net/connectproxy"
+	"github.com/metacubex/tailscale/tempfork/acme"
 	"golang.org/x/crypto/acme/autocert"
-	"tailscale.com/net/connectproxy"
-	"tailscale.com/tempfork/acme"
 )
 
 var (

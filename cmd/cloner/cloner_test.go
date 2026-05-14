@@ -9,7 +9,7 @@ import (
 	"reflect"
 	"testing"
 
-	"tailscale.com/cmd/cloner/clonerex"
+	"github.com/metacubex/tailscale/cmd/cloner/clonerex"
 )
 
 func TestSliceContainer(t *testing.T) {

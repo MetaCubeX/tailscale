@@ -9,6 +9,8 @@ import (
 	"bytes"
 	"embed"
 	"fmt"
+	cmp "github.com/metacubex/tailscale/util/go120/cmp"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"html/template"
 	"io"
 	"io/fs"
@@ -17,12 +19,10 @@ import (
 	"path/filepath"
 	"reflect"
 	"strings"
-	cmp "tailscale.com/util/go120/cmp"
-	slices "tailscale.com/util/go120/slices"
 
 	"github.com/coder/websocket"
-	"tailscale.com/syncs"
-	"tailscale.com/tsweb"
+	"github.com/metacubex/tailscale/syncs"
+	"github.com/metacubex/tailscale/tsweb"
 )
 
 type httpDebugger struct {

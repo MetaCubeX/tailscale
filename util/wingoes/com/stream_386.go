@@ -11,7 +11,7 @@ import (
 	"syscall"
 	"unsafe"
 
-	"tailscale.com/util/wingoes"
+	"github.com/metacubex/tailscale/util/wingoes"
 )
 
 const maxStreamRWLen = math.MaxInt32

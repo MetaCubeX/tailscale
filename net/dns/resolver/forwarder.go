@@ -12,6 +12,7 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
+	maps "github.com/metacubex/tailscale/util/go120/maps"
 	"io"
 	"net"
 	"net/http"
@@ -22,32 +23,31 @@ import (
 	"strings"
 	"sync"
 	"sync/atomic"
-	maps "tailscale.com/util/go120/maps"
 	"time"
 
+	"github.com/metacubex/tailscale/control/controlknobs"
+	"github.com/metacubex/tailscale/envknob"
+	"github.com/metacubex/tailscale/feature"
+	"github.com/metacubex/tailscale/feature/buildfeatures"
+	"github.com/metacubex/tailscale/health"
+	"github.com/metacubex/tailscale/net/dns/publicdns"
+	"github.com/metacubex/tailscale/net/dnscache"
+	"github.com/metacubex/tailscale/net/neterror"
+	"github.com/metacubex/tailscale/net/netmon"
+	"github.com/metacubex/tailscale/net/netx"
+	"github.com/metacubex/tailscale/net/sockstats"
+	"github.com/metacubex/tailscale/net/tsdial"
+	"github.com/metacubex/tailscale/syncs"
+	"github.com/metacubex/tailscale/types/dnstype"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/types/nettype"
+	"github.com/metacubex/tailscale/types/views"
+	"github.com/metacubex/tailscale/util/cloudenv"
+	"github.com/metacubex/tailscale/util/dnsname"
+	"github.com/metacubex/tailscale/util/mak"
+	"github.com/metacubex/tailscale/util/race"
+	"github.com/metacubex/tailscale/version"
 	dns "golang.org/x/net/dns/dnsmessage"
-	"tailscale.com/control/controlknobs"
-	"tailscale.com/envknob"
-	"tailscale.com/feature"
-	"tailscale.com/feature/buildfeatures"
-	"tailscale.com/health"
-	"tailscale.com/net/dns/publicdns"
-	"tailscale.com/net/dnscache"
-	"tailscale.com/net/neterror"
-	"tailscale.com/net/netmon"
-	"tailscale.com/net/netx"
-	"tailscale.com/net/sockstats"
-	"tailscale.com/net/tsdial"
-	"tailscale.com/syncs"
-	"tailscale.com/types/dnstype"
-	"tailscale.com/types/logger"
-	"tailscale.com/types/nettype"
-	"tailscale.com/types/views"
-	"tailscale.com/util/cloudenv"
-	"tailscale.com/util/dnsname"
-	"tailscale.com/util/mak"
-	"tailscale.com/util/race"
-	"tailscale.com/version"
 )
 
 // headerBytes is the number of bytes in a DNS message header.
@@ -539,7 +539,7 @@ func (f *forwarder) getKnownDoHClientForProvider(urlBase string) (c *http.Client
 	})
 	tlsConfig := &tls.Config{
 		// Enforce TLS 1.3, as all of our supported DNS-over-HTTPS servers are compatible with it
-		// (see tailscale.com/net/dns/publicdns/publicdns.go).
+		// (see github.com/metacubex/tailscale/net/dns/publicdns/publicdns.go).
 		MinVersion: tls.VersionTLS13,
 	}
 	c = &http.Client{

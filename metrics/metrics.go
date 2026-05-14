@@ -8,11 +8,11 @@ package metrics
 import (
 	"expvar"
 	"fmt"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"io"
 	"strings"
-	slices "tailscale.com/util/go120/slices"
 
-	"tailscale.com/syncs"
+	"github.com/metacubex/tailscale/syncs"
 )
 
 // Set is a string-to-Var map variable that satisfies the expvar.Var

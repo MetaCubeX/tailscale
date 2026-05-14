@@ -20,8 +20,8 @@ import (
 	"os"
 	"strings"
 
+	"github.com/metacubex/tailscale/client/tailscale"
 	"github.com/coreos/go-systemd/activation"
-	"tailscale.com/client/tailscale"
 )
 
 var (

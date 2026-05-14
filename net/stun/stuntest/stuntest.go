@@ -14,10 +14,10 @@ import (
 	"sync"
 	"testing"
 
-	"tailscale.com/net/netaddr"
-	"tailscale.com/net/stun"
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/nettype"
+	"github.com/metacubex/tailscale/net/netaddr"
+	"github.com/metacubex/tailscale/net/stun"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/types/nettype"
 )
 
 type stunStats struct {

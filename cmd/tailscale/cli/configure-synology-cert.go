@@ -11,18 +11,18 @@ import (
 	"errors"
 	"flag"
 	"fmt"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"log"
 	"os"
 	"os/exec"
 	"path"
 	"runtime"
 	"strings"
-	slices "tailscale.com/util/go120/slices"
 
+	"github.com/metacubex/tailscale/hostinfo"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/version/distro"
 	"github.com/peterbourgon/ff/v3/ffcli"
-	"tailscale.com/hostinfo"
-	"tailscale.com/ipn"
-	"tailscale.com/version/distro"
 )
 
 func init() {
@@ -42,7 +42,7 @@ func synologyConfigureCertCmd() *ffcli.Command {
 This command is intended to run periodically as root on a Synology device to
 create or refresh the TLS certificate for the tailnet domain.
 
-See: https://tailscale.com/kb/1153/enabling-https
+See: https://github.com/metacubex/tailscale/kb/1153/enabling-https
 `),
 		FlagSet: (func() *flag.FlagSet {
 			fs := newFlagSet("synology-cert")

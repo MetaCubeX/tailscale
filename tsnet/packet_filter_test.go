@@ -12,14 +12,14 @@ import (
 	"testing"
 	"time"
 
-	"tailscale.com/ipn"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tstest"
-	"tailscale.com/types/ipproto"
-	"tailscale.com/types/key"
-	"tailscale.com/types/netmap"
-	"tailscale.com/util/must"
-	"tailscale.com/wgengine/filter"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/tstest"
+	"github.com/metacubex/tailscale/types/ipproto"
+	"github.com/metacubex/tailscale/types/key"
+	"github.com/metacubex/tailscale/types/netmap"
+	"github.com/metacubex/tailscale/util/must"
+	"github.com/metacubex/tailscale/wgengine/filter"
 )
 
 // waitFor blocks until a NetMap is seen on the IPN bus that satisfies the given

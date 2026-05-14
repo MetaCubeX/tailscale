@@ -17,14 +17,14 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/metacubex/tailscale/client/local"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/kube/certs"
+	"github.com/metacubex/tailscale/kube/kubetypes"
+	klc "github.com/metacubex/tailscale/kube/localclient"
+	"github.com/metacubex/tailscale/kube/services"
+	"github.com/metacubex/tailscale/types/netmap"
 	"github.com/fsnotify/fsnotify"
-	"tailscale.com/client/local"
-	"tailscale.com/ipn"
-	"tailscale.com/kube/certs"
-	"tailscale.com/kube/kubetypes"
-	klc "tailscale.com/kube/localclient"
-	"tailscale.com/kube/services"
-	"tailscale.com/types/netmap"
 )
 
 // watchServeConfigChanges watches path for changes, and when it sees one, reads
@@ -162,7 +162,7 @@ func isValidHTTPSConfig(certDomain string, sc *ipn.ServeConfig) bool {
 		log.Printf(
 			`serve proxy: this node is configured as a proxy that exposes an HTTPS endpoint to tailnet,
 		(perhaps a Kubernetes operator Ingress proxy) but it is not able to issue TLS certs, so this will likely not work.
-		To make it work, ensure that HTTPS is enabled for your tailnet, see https://tailscale.com/kb/1153/enabling-https for more details.`)
+		To make it work, ensure that HTTPS is enabled for your tailnet, see https://github.com/metacubex/tailscale/kb/1153/enabling-https for more details.`)
 		return false
 	}
 	return true

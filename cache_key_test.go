@@ -11,7 +11,7 @@ import (
 	"strings"
 	"testing"
 
-	"tailscale.com/util/cibuild"
+	"github.com/metacubex/tailscale/util/cibuild"
 )
 
 // TestTsgoRevInCacheKey verifies that the Tailscale Go toolchain's git

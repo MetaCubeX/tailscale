@@ -3,6 +3,7 @@
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
+
 package linuxfw
 
 import (
@@ -10,8 +11,8 @@ import (
 	"strings"
 	"testing"
 
-	"tailscale.com/net/tsaddr"
-	"tailscale.com/tsconst"
+	"github.com/metacubex/tailscale/net/tsaddr"
+	"github.com/metacubex/tailscale/tsconst"
 )
 
 var testIsNotExistErr = "exitcode:1"

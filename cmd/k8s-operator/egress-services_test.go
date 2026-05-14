@@ -22,15 +22,15 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
 
-	tsapi "tailscale.com/k8s-operator/apis/v1alpha1"
-	"tailscale.com/kube/egressservices"
-	"tailscale.com/tstest"
-	"tailscale.com/tstime"
+	tsapi "github.com/metacubex/tailscale/k8s-operator/apis/v1alpha1"
+	"github.com/metacubex/tailscale/kube/egressservices"
+	"github.com/metacubex/tailscale/tstest"
+	"github.com/metacubex/tailscale/tstime"
 )
 
 func TestTailscaleEgressServices(t *testing.T) {
 	pg := &tsapi.ProxyGroup{
-		TypeMeta: metav1.TypeMeta{Kind: "ProxyGroup", APIVersion: "tailscale.com/v1alpha1"},
+		TypeMeta: metav1.TypeMeta{Kind: "ProxyGroup", APIVersion: "github.com/metacubex/tailscale/v1alpha1"},
 		ObjectMeta: metav1.ObjectMeta{
 			Name: "foo",
 			UID:  types.UID("1234-UID"),
@@ -148,7 +148,7 @@ func validateReadyService(t *testing.T, fc client.WithWatch, esr *egressSvcsReco
 		condition(tsapi.EgressSvcValid, metav1.ConditionTrue, "EgressSvcValid", "EgressSvcValid", clock),
 		condition(tsapi.EgressSvcConfigured, metav1.ConditionTrue, r, r, clock),
 	}
-	svc.ObjectMeta.Finalizers = []string{"tailscale.com/finalizer"}
+	svc.ObjectMeta.Finalizers = []string{"github.com/metacubex/tailscale/finalizer"}
 	svc.Spec.ExternalName = fmt.Sprintf("%s.operator-ns.svc.cluster.local", name)
 	expectEqual(t, fc, svc)
 

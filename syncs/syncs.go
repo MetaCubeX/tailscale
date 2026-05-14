@@ -6,11 +6,11 @@ package syncs
 
 import (
 	"context"
+	iter "github.com/metacubex/tailscale/util/go120/iter"
 	"sync"
 	"sync/atomic"
-	iter "tailscale.com/util/go120/iter"
 
-	"tailscale.com/util/mak"
+	"github.com/metacubex/tailscale/util/mak"
 )
 
 // ClosedChan returns a channel that's already closed.

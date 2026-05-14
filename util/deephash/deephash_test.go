@@ -22,13 +22,13 @@ import (
 	"time"
 
 	qt "github.com/frankban/quicktest"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/types/key"
+	"github.com/metacubex/tailscale/util/deephash/testtype"
+	"github.com/metacubex/tailscale/util/hashx"
+	"github.com/metacubex/tailscale/version"
 	"go4.org/mem"
 	"go4.org/netipx"
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/key"
-	"tailscale.com/util/deephash/testtype"
-	"tailscale.com/util/hashx"
-	"tailscale.com/version"
 )
 
 type appendBytes []byte

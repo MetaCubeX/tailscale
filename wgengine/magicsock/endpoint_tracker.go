@@ -4,15 +4,15 @@
 package magicsock
 
 import (
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"net/netip"
-	slices "tailscale.com/util/go120/slices"
 	"time"
 
-	"tailscale.com/syncs"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tempfork/heap"
-	"tailscale.com/util/mak"
-	"tailscale.com/util/set"
+	"github.com/metacubex/tailscale/syncs"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/tempfork/heap"
+	"github.com/metacubex/tailscale/util/mak"
+	"github.com/metacubex/tailscale/util/set"
 )
 
 const (

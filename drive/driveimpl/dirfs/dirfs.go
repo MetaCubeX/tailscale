@@ -6,12 +6,12 @@
 package dirfs
 
 import (
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"strings"
-	slices "tailscale.com/util/go120/slices"
 	"time"
 
-	"tailscale.com/drive/driveimpl/shared"
-	"tailscale.com/tstime"
+	"github.com/metacubex/tailscale/drive/driveimpl/shared"
+	"github.com/metacubex/tailscale/tstime"
 )
 
 // Child is subdirectory of an FS.

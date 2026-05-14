@@ -12,8 +12,8 @@ import (
 	"runtime/debug"
 	"testing"
 
-	ts "tailscale.com"
-	"tailscale.com/version"
+	ts "github.com/metacubex/tailscale"
+	"github.com/metacubex/tailscale/version"
 )
 
 func TestAlpineTag(t *testing.T) {

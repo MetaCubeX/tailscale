@@ -13,11 +13,11 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/types/key"
+	"github.com/metacubex/tailscale/util/syspolicy/pkey"
+	"github.com/metacubex/tailscale/util/syspolicy/policyclient"
 	"github.com/tailscale/certstore"
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/key"
-	"tailscale.com/util/syspolicy/pkey"
-	"tailscale.com/util/syspolicy/policyclient"
 )
 
 // getMachineCertificateSubject returns the exact name of a Subject that needs

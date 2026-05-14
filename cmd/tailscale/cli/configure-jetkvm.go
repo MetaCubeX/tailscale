@@ -14,8 +14,8 @@ import (
 	"runtime"
 	"strings"
 
+	"github.com/metacubex/tailscale/version/distro"
 	"github.com/peterbourgon/ff/v3/ffcli"
-	"tailscale.com/version/distro"
 )
 
 func init() {

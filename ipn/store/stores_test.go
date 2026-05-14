@@ -6,14 +6,14 @@
 package store
 
 import (
+	maps "github.com/metacubex/tailscale/util/go120/maps"
 	"path/filepath"
-	maps "tailscale.com/util/go120/maps"
 	"testing"
 
-	"tailscale.com/ipn"
-	"tailscale.com/ipn/store/mem"
-	"tailscale.com/tstest"
-	"tailscale.com/types/logger"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/ipn/store/mem"
+	"github.com/metacubex/tailscale/tstest"
+	"github.com/metacubex/tailscale/types/logger"
 )
 
 func TestNewStore(t *testing.T) {

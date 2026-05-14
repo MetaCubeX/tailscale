@@ -11,8 +11,8 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/metacubex/tailscale/net/dns/publicdns"
 	"golang.org/x/net/dns/dnsmessage"
-	"tailscale.com/net/dns/publicdns"
 )
 
 var testDoH = flag.Bool("test-doh", false, "do real DoH tests against the network")

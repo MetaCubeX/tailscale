@@ -10,6 +10,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"net/netip"
 	"os"
 	"path/filepath"
@@ -17,15 +18,14 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
-	slices "tailscale.com/util/go120/slices"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/ipn/ipnstate"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/types/views"
 	"github.com/peterbourgon/ff/v3/ffcli"
-	"tailscale.com/ipn"
-	"tailscale.com/ipn/ipnstate"
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/views"
 )
 
 func TestServeDevConfigMutations(t *testing.T) {

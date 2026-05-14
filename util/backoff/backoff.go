@@ -6,11 +6,11 @@ package backoff
 
 import (
 	"context"
-	"tailscale.com/util/go120/randv2"
+	"github.com/metacubex/tailscale/util/go120/randv2"
 	"time"
 
-	"tailscale.com/tstime"
-	"tailscale.com/types/logger"
+	"github.com/metacubex/tailscale/tstime"
+	"github.com/metacubex/tailscale/types/logger"
 )
 
 // Backoff tracks state the history of consecutive failures and sleeps

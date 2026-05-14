@@ -8,21 +8,21 @@ package main
 import (
 	_ "embed"
 	"fmt"
+	maps "github.com/metacubex/tailscale/util/go120/maps"
 	"reflect"
 	"regexp"
 	"strings"
-	maps "tailscale.com/util/go120/maps"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
+	tsapi "github.com/metacubex/tailscale/k8s-operator/apis/v1alpha1"
+	"github.com/metacubex/tailscale/kube/kubetypes"
 	"go.uber.org/zap"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"sigs.k8s.io/yaml"
-	tsapi "tailscale.com/k8s-operator/apis/v1alpha1"
-	"tailscale.com/kube/kubetypes"
 )
 
 // Test_statefulSetNameBase tests that parent name portion in a StatefulSet name

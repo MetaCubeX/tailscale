@@ -7,19 +7,19 @@ package netmap
 import (
 	"encoding/json"
 	"fmt"
+	cmp "github.com/metacubex/tailscale/util/go120/cmp"
 	"net/netip"
 	"sort"
 	"strings"
-	cmp "tailscale.com/util/go120/cmp"
 	"time"
 
-	"tailscale.com/net/tsaddr"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tka"
-	"tailscale.com/types/key"
-	"tailscale.com/types/views"
-	"tailscale.com/util/set"
-	"tailscale.com/wgengine/filter/filtertype"
+	"github.com/metacubex/tailscale/net/tsaddr"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/tka"
+	"github.com/metacubex/tailscale/types/key"
+	"github.com/metacubex/tailscale/types/views"
+	"github.com/metacubex/tailscale/util/set"
+	"github.com/metacubex/tailscale/wgengine/filter/filtertype"
 )
 
 // NetworkMap is the current state of the world.

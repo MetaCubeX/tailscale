@@ -8,7 +8,7 @@ package linuxfw
 import (
 	"errors"
 
-	"tailscale.com/types/logger"
+	"github.com/metacubex/tailscale/types/logger"
 )
 
 func detectIptables() (int, error) {

@@ -9,9 +9,9 @@ import (
 
 	jsonv2 "github.com/metacubex/jsonv2"
 	"github.com/metacubex/jsonv2/jsontext"
-	"tailscale.com/types/opt"
-	"tailscale.com/types/structs"
-	"tailscale.com/util/syspolicy/pkey"
+	"github.com/metacubex/tailscale/types/opt"
+	"github.com/metacubex/tailscale/types/structs"
+	"github.com/metacubex/tailscale/util/syspolicy/pkey"
 )
 
 // RawItem contains a raw policy setting value as read from a policy store, or an

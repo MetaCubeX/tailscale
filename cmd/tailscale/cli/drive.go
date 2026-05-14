@@ -11,8 +11,8 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/metacubex/tailscale/drive"
 	"github.com/peterbourgon/ff/v3/ffcli"
-	"tailscale.com/drive"
 )
 
 const (
@@ -202,7 +202,7 @@ Permissions to access shares are controlled via ACLs. For example, to give the g
       "src": ["group:home"],
       "dst": ["mylaptop"],
       "app": {
-        "tailscale.com/cap/drive": [{
+        "github.com/metacubex/tailscale/cap/drive": [{
           "shares": ["docs"],
           "access": "ro"
         }]
@@ -218,7 +218,7 @@ On small tailnets, it may be convenient to categorically give all users full acc
 	  "src": ["autogroup:member"],
 	  "dst": ["autogroup:self"],
 	  "app": {
-	    "tailscale.com/cap/drive": [{
+	    "github.com/metacubex/tailscale/cap/drive": [{
 		  "shares": ["*"],
 		  "access": "rw"
 	    }]

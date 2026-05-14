@@ -14,12 +14,12 @@ import (
 	"sync"
 	"time"
 
+	"github.com/metacubex/tailscale/syncs"
+	"github.com/metacubex/tailscale/tstime"
+	"github.com/metacubex/tailscale/types/key"
+	"github.com/metacubex/tailscale/types/logger"
 	"go4.org/mem"
 	"golang.org/x/time/rate"
-	"tailscale.com/syncs"
-	"tailscale.com/tstime"
-	"tailscale.com/types/key"
-	"tailscale.com/types/logger"
 )
 
 // Client is a DERP client.

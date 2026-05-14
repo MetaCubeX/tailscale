@@ -6,17 +6,17 @@
 package netlog
 
 import (
+	cmp "github.com/metacubex/tailscale/util/go120/cmp"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"net/netip"
 	"strings"
-	cmp "tailscale.com/util/go120/cmp"
-	slices "tailscale.com/util/go120/slices"
 	"time"
 	"unicode/utf8"
 
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/bools"
-	"tailscale.com/types/netlogtype"
-	"tailscale.com/util/set"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/types/bools"
+	"github.com/metacubex/tailscale/types/netlogtype"
+	"github.com/metacubex/tailscale/util/set"
 )
 
 // maxLogSize is the maximum number of bytes for a log message.

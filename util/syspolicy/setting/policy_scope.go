@@ -7,8 +7,8 @@ import (
 	"fmt"
 	"strings"
 
-	"tailscale.com/types/lazy"
-	"tailscale.com/util/syspolicy/internal"
+	"github.com/metacubex/tailscale/types/lazy"
+	"github.com/metacubex/tailscale/util/syspolicy/internal"
 )
 
 var (

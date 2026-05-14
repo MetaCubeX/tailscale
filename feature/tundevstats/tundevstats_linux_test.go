@@ -14,9 +14,9 @@ import (
 	"time"
 	"unsafe"
 
+	"github.com/metacubex/tailscale-wireguard-go/tun"
 	"github.com/mdlayher/netlink"
 	"github.com/mdlayher/netlink/nltest"
-	"github.com/metacubex/tailscale-wireguard-go/tun"
 	"golang.org/x/sys/unix"
 )
 

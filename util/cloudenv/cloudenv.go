@@ -7,18 +7,18 @@ package cloudenv
 import (
 	"context"
 	"encoding/json"
+	"github.com/metacubex/tailscale/util/go120/randv2"
 	"log"
 	"net"
 	"net/http"
 	"os"
 	"runtime"
 	"strings"
-	"tailscale.com/util/go120/randv2"
 	"time"
 
-	"tailscale.com/feature/buildfeatures"
-	"tailscale.com/syncs"
-	"tailscale.com/types/lazy"
+	"github.com/metacubex/tailscale/feature/buildfeatures"
+	"github.com/metacubex/tailscale/syncs"
+	"github.com/metacubex/tailscale/types/lazy"
 )
 
 // CommonNonRoutableMetadataIP is the IP address of the metadata server

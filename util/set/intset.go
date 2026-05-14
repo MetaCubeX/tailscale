@@ -4,13 +4,13 @@
 package set
 
 import (
+	iter "github.com/metacubex/tailscale/util/go120/iter"
+	maps "github.com/metacubex/tailscale/util/go120/maps"
+	"github.com/metacubex/tailscale/util/go120/randv2"
 	"math/bits"
-	iter "tailscale.com/util/go120/iter"
-	maps "tailscale.com/util/go120/maps"
-	"tailscale.com/util/go120/randv2"
 
+	"github.com/metacubex/tailscale/util/mak"
 	"golang.org/x/exp/constraints"
-	"tailscale.com/util/mak"
 )
 
 // IntSet is a set optimized for integer values close to zero

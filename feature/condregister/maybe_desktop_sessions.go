@@ -5,4 +5,4 @@
 
 package condregister
 
-import _ "tailscale.com/ipn/desktop"
+import _ "github.com/metacubex/tailscale/ipn/desktop"

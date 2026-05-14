@@ -8,9 +8,9 @@ import (
 	"flag"
 	"fmt"
 
+	"github.com/metacubex/tailscale/client/tailscale/apitype"
+	"github.com/metacubex/tailscale/ipn"
 	"github.com/peterbourgon/ff/v3/ffcli"
-	"tailscale.com/client/tailscale/apitype"
-	"tailscale.com/ipn"
 )
 
 var downCmd = &ffcli.Command{

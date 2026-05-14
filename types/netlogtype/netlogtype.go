@@ -5,13 +5,13 @@
 package netlogtype
 
 import (
+	maps "github.com/metacubex/tailscale/util/go120/maps"
 	"net/netip"
 	"sync"
-	maps "tailscale.com/util/go120/maps"
 	"time"
 
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/ipproto"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/types/ipproto"
 )
 
 // Message is the log message that captures network traffic.

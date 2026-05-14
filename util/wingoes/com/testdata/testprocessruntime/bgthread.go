@@ -9,7 +9,7 @@ package main
 import (
 	"runtime"
 
-	"tailscale.com/util/wingoes/com"
+	"github.com/metacubex/tailscale/util/wingoes/com"
 )
 
 func bgThreadCheckMTA(c chan bool) {

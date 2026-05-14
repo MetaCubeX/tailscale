@@ -7,8 +7,8 @@ package tka
 
 import (
 	"crypto/ed25519"
+	maps "github.com/metacubex/tailscale/util/go120/maps"
 	"sort"
-	maps "tailscale.com/util/go120/maps"
 	"testing"
 )
 

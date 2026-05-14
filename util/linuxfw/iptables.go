@@ -14,9 +14,9 @@ import (
 	"strings"
 	"unicode"
 
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/version/distro"
 	"github.com/coreos/go-iptables/iptables"
-	"tailscale.com/types/logger"
-	"tailscale.com/version/distro"
 )
 
 func init() {

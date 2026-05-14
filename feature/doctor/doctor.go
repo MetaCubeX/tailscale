@@ -12,13 +12,13 @@ import (
 	"net/http"
 	"time"
 
-	"tailscale.com/doctor"
-	"tailscale.com/doctor/ethtool"
-	"tailscale.com/doctor/permissions"
-	"tailscale.com/doctor/routetable"
-	"tailscale.com/ipn/ipnlocal"
-	"tailscale.com/net/tsaddr"
-	"tailscale.com/types/logger"
+	"github.com/metacubex/tailscale/doctor"
+	"github.com/metacubex/tailscale/doctor/ethtool"
+	"github.com/metacubex/tailscale/doctor/permissions"
+	"github.com/metacubex/tailscale/doctor/routetable"
+	"github.com/metacubex/tailscale/ipn/ipnlocal"
+	"github.com/metacubex/tailscale/net/tsaddr"
+	"github.com/metacubex/tailscale/types/logger"
 )
 
 func init() {

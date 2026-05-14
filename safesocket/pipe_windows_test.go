@@ -9,7 +9,7 @@ import (
 	"fmt"
 	"testing"
 
-	"tailscale.com/util/winutil"
+	"github.com/metacubex/tailscale/util/winutil"
 )
 
 func init() {

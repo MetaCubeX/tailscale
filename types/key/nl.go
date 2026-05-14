@@ -7,9 +7,9 @@ import (
 	"crypto/ed25519"
 	"crypto/subtle"
 
+	"github.com/metacubex/tailscale/types/structs"
+	"github.com/metacubex/tailscale/types/tkatype"
 	"go4.org/mem"
-	"tailscale.com/types/structs"
-	"tailscale.com/types/tkatype"
 )
 
 const (

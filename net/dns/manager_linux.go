@@ -14,16 +14,16 @@ import (
 	"sync"
 	"time"
 
-	"tailscale.com/control/controlknobs"
-	"tailscale.com/feature"
-	"tailscale.com/feature/buildfeatures"
-	"tailscale.com/health"
-	"tailscale.com/net/netaddr"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/clientmetric"
-	"tailscale.com/util/eventbus"
-	"tailscale.com/util/syspolicy/policyclient"
-	"tailscale.com/version/distro"
+	"github.com/metacubex/tailscale/control/controlknobs"
+	"github.com/metacubex/tailscale/feature"
+	"github.com/metacubex/tailscale/feature/buildfeatures"
+	"github.com/metacubex/tailscale/health"
+	"github.com/metacubex/tailscale/net/netaddr"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/util/clientmetric"
+	"github.com/metacubex/tailscale/util/eventbus"
+	"github.com/metacubex/tailscale/util/syspolicy/policyclient"
+	"github.com/metacubex/tailscale/version/distro"
 )
 
 type kv struct {
@@ -329,7 +329,7 @@ func dnsMode(logf logger.Logf, health *health.Tracker, env newOSConfigEnv) (ret 
 			return "direct", nil
 		}
 
-		health.SetDNSManagerHealth(errors.New("systemd-resolved and NetworkManager are wired together incorrectly; MagicDNS will probably not work. For more info, see https://tailscale.com/s/resolved-nm"))
+		health.SetDNSManagerHealth(errors.New("systemd-resolved and NetworkManager are wired together incorrectly; MagicDNS will probably not work. For more info, see https://github.com/metacubex/tailscale/s/resolved-nm"))
 		dbg("nm-safe", "no")
 		return "systemd-resolved", nil
 	default:

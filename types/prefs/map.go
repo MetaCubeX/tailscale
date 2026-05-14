@@ -4,14 +4,14 @@
 package prefs
 
 import (
+	maps "github.com/metacubex/tailscale/util/go120/maps"
 	"net/netip"
-	maps "tailscale.com/util/go120/maps"
 
 	jsonv2 "github.com/metacubex/jsonv2"
 	"github.com/metacubex/jsonv2/jsontext"
+	"github.com/metacubex/tailscale/types/opt"
+	"github.com/metacubex/tailscale/types/views"
 	"golang.org/x/exp/constraints"
-	"tailscale.com/types/opt"
-	"tailscale.com/types/views"
 )
 
 // MapKeyType is a constraint allowing types that can be used as [Map] and [StructMap] keys.

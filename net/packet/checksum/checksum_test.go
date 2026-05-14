@@ -7,14 +7,14 @@ package checksum
 
 import (
 	"encoding/binary"
+	"github.com/metacubex/tailscale/util/go120/randv2"
 	"net/netip"
-	"tailscale.com/util/go120/randv2"
 	"testing"
 
 	"github.com/metacubex/gvisor/pkg/tcpip"
 	"github.com/metacubex/gvisor/pkg/tcpip/checksum"
 	"github.com/metacubex/gvisor/pkg/tcpip/header"
-	"tailscale.com/net/packet"
+	"github.com/metacubex/tailscale/net/packet"
 )
 
 func fullHeaderChecksumV4(b []byte) uint16 {

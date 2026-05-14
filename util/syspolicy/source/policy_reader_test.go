@@ -6,14 +6,14 @@
 package source
 
 import (
-	cmp "tailscale.com/util/go120/cmp"
+	cmp "github.com/metacubex/tailscale/util/go120/cmp"
 	"testing"
 	"time"
 
-	"tailscale.com/util/must"
-	"tailscale.com/util/syspolicy/pkey"
-	"tailscale.com/util/syspolicy/ptype"
-	"tailscale.com/util/syspolicy/setting"
+	"github.com/metacubex/tailscale/util/must"
+	"github.com/metacubex/tailscale/util/syspolicy/pkey"
+	"github.com/metacubex/tailscale/util/syspolicy/ptype"
+	"github.com/metacubex/tailscale/util/syspolicy/setting"
 )
 
 func TestReaderLifecycle(t *testing.T) {

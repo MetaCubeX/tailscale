@@ -13,12 +13,12 @@ import (
 	"testing"
 	"time"
 
+	"github.com/metacubex/tailscale/k8s-operator/sessionrecording/fakes"
+	"github.com/metacubex/tailscale/k8s-operator/sessionrecording/tsrecorder"
+	"github.com/metacubex/tailscale/sessionrecording"
+	"github.com/metacubex/tailscale/tstest"
 	"go.uber.org/zap"
 	"k8s.io/apimachinery/pkg/util/remotecommand"
-	"tailscale.com/k8s-operator/sessionrecording/fakes"
-	"tailscale.com/k8s-operator/sessionrecording/tsrecorder"
-	"tailscale.com/sessionrecording"
-	"tailscale.com/tstest"
 )
 
 func Test_conn_Read(t *testing.T) {

@@ -5,10 +5,10 @@
 //
 // For more information, see:
 //
-//   - About: https://tailscale.com/kb/1232/derp-servers
-//   - Protocol & Go docs: https://pkg.go.dev/tailscale.com/derp
+//   - About: https://github.com/metacubex/tailscale/kb/1232/derp-servers
+//   - Protocol & Go docs: https://pkg.go.dev/github.com/metacubex/tailscale/derp
 //   - Running a DERP server: https://github.com/tailscale/tailscale/tree/main/cmd/derper#derp
-package main // import "tailscale.com/cmd/derper"
+package main // import "github.com/metacubex/tailscale/cmd/derper"
 
 import (
 	"context"
@@ -18,6 +18,7 @@ import (
 	"expvar"
 	"flag"
 	"fmt"
+	cmp "github.com/metacubex/tailscale/util/go120/cmp"
 	"html/template"
 	"io"
 	"log"
@@ -34,23 +35,22 @@ import (
 	"strconv"
 	"strings"
 	"syscall"
-	cmp "tailscale.com/util/go120/cmp"
 	"time"
 
+	"github.com/metacubex/tailscale/atomicfile"
+	"github.com/metacubex/tailscale/derp/derpserver"
+	"github.com/metacubex/tailscale/metrics"
+	"github.com/metacubex/tailscale/net/ktimeout"
+	"github.com/metacubex/tailscale/net/stunserver"
+	"github.com/metacubex/tailscale/tsweb"
+	"github.com/metacubex/tailscale/types/key"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/version"
 	"github.com/tailscale/setec/client/setec"
 	"golang.org/x/time/rate"
-	"tailscale.com/atomicfile"
-	"tailscale.com/derp/derpserver"
-	"tailscale.com/metrics"
-	"tailscale.com/net/ktimeout"
-	"tailscale.com/net/stunserver"
-	"tailscale.com/tsweb"
-	"tailscale.com/types/key"
-	"tailscale.com/types/logger"
-	"tailscale.com/version"
 
 	// Support for prometheus varz in tsweb
-	_ "tailscale.com/tsweb/promvarz"
+	_ "github.com/metacubex/tailscale/tsweb/promvarz"
 )
 
 var (
@@ -560,7 +560,7 @@ type templateData struct {
 var homePageTemplate = template.Must(template.New("home").Parse(`<html><body>
 <h1>DERP</h1>
 <p>
-  This is a <a href="https://tailscale.com/">Tailscale</a> DERP server.
+  This is a <a href="https://github.com/metacubex/tailscale/">Tailscale</a> DERP server.
 </p>
 
 <p>
@@ -580,11 +580,11 @@ var homePageTemplate = template.Must(template.New("home").Parse(`<html><body>
 
 <ul>
 {{if .ShowAbuseInfo }}
-  <li><a href="https://tailscale.com/security-policies">Tailscale Security Policies</a></li>
-  <li><a href="https://tailscale.com/tailscale-aup">Tailscale Acceptable Use Policies</a></li>
+  <li><a href="https://github.com/metacubex/tailscale/security-policies">Tailscale Security Policies</a></li>
+  <li><a href="https://github.com/metacubex/tailscale/tailscale-aup">Tailscale Acceptable Use Policies</a></li>
 {{end}}
-  <li><a href="https://tailscale.com/kb/1232/derp-servers">About DERP</a></li>
-  <li><a href="https://pkg.go.dev/tailscale.com/derp">Protocol & Go docs</a></li>
+  <li><a href="https://github.com/metacubex/tailscale/kb/1232/derp-servers">About DERP</a></li>
+  <li><a href="https://pkg.go.dev/github.com/metacubex/tailscale/derp">Protocol & Go docs</a></li>
   <li><a href="https://github.com/tailscale/tailscale/tree/main/cmd/derper#derp">How to run a DERP server</a></li>
 </ul>
 

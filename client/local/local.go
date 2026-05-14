@@ -12,6 +12,8 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	cmp "github.com/metacubex/tailscale/util/go120/cmp"
+	iter "github.com/metacubex/tailscale/util/go120/iter"
 	"io"
 	"net"
 	"net/http"
@@ -23,28 +25,26 @@ import (
 	"strconv"
 	"strings"
 	"sync"
-	cmp "tailscale.com/util/go120/cmp"
-	iter "tailscale.com/util/go120/iter"
 	"time"
 
-	"tailscale.com/client/tailscale/apitype"
-	"tailscale.com/drive"
-	"tailscale.com/envknob"
-	"tailscale.com/feature"
-	"tailscale.com/feature/buildfeatures"
-	"tailscale.com/ipn"
-	"tailscale.com/ipn/ipnstate"
-	"tailscale.com/net/netutil"
-	"tailscale.com/net/udprelay/status"
-	"tailscale.com/paths"
-	"tailscale.com/safesocket"
-	"tailscale.com/syncs"
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/appctype"
-	"tailscale.com/types/dnstype"
-	"tailscale.com/types/key"
-	"tailscale.com/util/clientmetric"
-	"tailscale.com/util/eventbus"
+	"github.com/metacubex/tailscale/client/tailscale/apitype"
+	"github.com/metacubex/tailscale/drive"
+	"github.com/metacubex/tailscale/envknob"
+	"github.com/metacubex/tailscale/feature"
+	"github.com/metacubex/tailscale/feature/buildfeatures"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/ipn/ipnstate"
+	"github.com/metacubex/tailscale/net/netutil"
+	"github.com/metacubex/tailscale/net/udprelay/status"
+	"github.com/metacubex/tailscale/paths"
+	"github.com/metacubex/tailscale/safesocket"
+	"github.com/metacubex/tailscale/syncs"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/types/appctype"
+	"github.com/metacubex/tailscale/types/dnstype"
+	"github.com/metacubex/tailscale/types/key"
+	"github.com/metacubex/tailscale/util/clientmetric"
+	"github.com/metacubex/tailscale/util/eventbus"
 )
 
 // defaultClient is the default Client when using the legacy
@@ -870,7 +870,7 @@ func (lc *Client) CheckUDPGROForwarding(ctx context.Context) error {
 // SetUDPGROForwarding enables UDP GRO forwarding for the main interface of this
 // node. This can be done to improve performance of tailnet nodes acting as exit
 // nodes or subnet routers.
-// See https://tailscale.com/kb/1320/performance-best-practices#linux-optimizations-for-subnet-routers-and-exit-nodes
+// See https://github.com/metacubex/tailscale/kb/1320/performance-best-practices#linux-optimizations-for-subnet-routers-and-exit-nodes
 func (lc *Client) SetUDPGROForwarding(ctx context.Context) error {
 	body, err := lc.get200(ctx, "/localapi/v0/set-udp-gro-forwarding")
 	if err != nil {

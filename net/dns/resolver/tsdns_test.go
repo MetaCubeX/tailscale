@@ -23,18 +23,18 @@ import (
 	"testing"
 	"time"
 
+	"github.com/metacubex/tailscale/health"
+	"github.com/metacubex/tailscale/net/netaddr"
+	"github.com/metacubex/tailscale/net/netmon"
+	"github.com/metacubex/tailscale/net/tsdial"
+	"github.com/metacubex/tailscale/tstest"
+	"github.com/metacubex/tailscale/types/dnstype"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/util/dnsname"
+	"github.com/metacubex/tailscale/util/eventbus/eventbustest"
+	"github.com/metacubex/tailscale/util/set"
 	miekdns "github.com/miekg/dns"
 	dns "golang.org/x/net/dns/dnsmessage"
-	"tailscale.com/health"
-	"tailscale.com/net/netaddr"
-	"tailscale.com/net/netmon"
-	"tailscale.com/net/tsdial"
-	"tailscale.com/tstest"
-	"tailscale.com/types/dnstype"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/dnsname"
-	"tailscale.com/util/eventbus/eventbustest"
-	"tailscale.com/util/set"
 )
 
 var (

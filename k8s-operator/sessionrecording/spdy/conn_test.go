@@ -13,11 +13,11 @@ import (
 	"testing"
 	"time"
 
+	"github.com/metacubex/tailscale/k8s-operator/sessionrecording/fakes"
+	"github.com/metacubex/tailscale/k8s-operator/sessionrecording/tsrecorder"
+	"github.com/metacubex/tailscale/sessionrecording"
+	"github.com/metacubex/tailscale/tstest"
 	"go.uber.org/zap"
-	"tailscale.com/k8s-operator/sessionrecording/fakes"
-	"tailscale.com/k8s-operator/sessionrecording/tsrecorder"
-	"tailscale.com/sessionrecording"
-	"tailscale.com/tstest"
 )
 
 // Test_Writes tests that 1 or more Write calls to spdyRemoteConnRecorder

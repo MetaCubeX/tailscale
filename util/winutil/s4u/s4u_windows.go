@@ -9,6 +9,7 @@ import (
 	"errors"
 	"flag"
 	"fmt"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"io"
 	"math"
 	"os"
@@ -18,14 +19,13 @@ import (
 	"strings"
 	"sync"
 	"sync/atomic"
-	slices "tailscale.com/util/go120/slices"
 	"unsafe"
 
+	"github.com/metacubex/tailscale/cmd/tailscaled/childproc"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/util/winutil"
+	"github.com/metacubex/tailscale/util/winutil/conpty"
 	"golang.org/x/sys/windows"
-	"tailscale.com/cmd/tailscaled/childproc"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/winutil"
-	"tailscale.com/util/winutil/conpty"
 )
 
 func init() {

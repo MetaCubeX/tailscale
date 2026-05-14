@@ -72,7 +72,7 @@
 //     check endpoints if enabled via TS_ENABLE_METRICS and/or TS_ENABLE_HEALTH_CHECK.
 //     Defaults to [::]:9002, serving on all available interfaces.
 //   - TS_ENABLE_METRICS: if true, a metrics endpoint will be served at /metrics on
-//     the address specified by TS_LOCAL_ADDR_PORT. See https://tailscale.com/kb/1482/client-metrics
+//     the address specified by TS_LOCAL_ADDR_PORT. See https://github.com/metacubex/tailscale/kb/1482/client-metrics
 //     for more information on the metrics exposed.
 //   - TS_ENABLE_HEALTH_CHECK: if true, a health check endpoint will be served at /healthz on
 //     the address specified by TS_LOCAL_ADDR_PORT. The health endpoint will return 200
@@ -90,7 +90,7 @@
 //     TS_EXPERIMENTAL_ENABLE_FORWARDING_OPTIMIZATIONS: set to true to
 //     autoconfigure the default network interface for optimal performance for
 //     Tailscale subnet router/exit node.
-//     https://tailscale.com/kb/1320/performance-best-practices#linux-optimizations-for-subnet-routers-and-exit-nodes
+//     https://github.com/metacubex/tailscale/kb/1320/performance-best-practices#linux-optimizations-for-subnet-routers-and-exit-nodes
 //     NB: This env var is currently experimental and the logic will likely change!
 //   - EXPERIMENTAL_ALLOW_PROXYING_CLUSTER_TRAFFIC_VIA_INGRESS: if set to true
 //     and if this containerboot instance is an L7 ingress proxy (created by
@@ -119,6 +119,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"io/fs"
 	"log"
 	"math"
@@ -132,27 +133,26 @@ import (
 	"sync"
 	"sync/atomic"
 	"syscall"
-	slices "tailscale.com/util/go120/slices"
 	"time"
 
 	"golang.org/x/sys/unix"
 
-	"tailscale.com/client/local"
-	"tailscale.com/health"
-	"tailscale.com/ipn"
-	kubeutils "tailscale.com/k8s-operator"
-	"tailscale.com/kube/authkey"
-	healthz "tailscale.com/kube/health"
-	"tailscale.com/kube/kubetypes"
-	klc "tailscale.com/kube/localclient"
-	"tailscale.com/kube/metrics"
-	"tailscale.com/kube/services"
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/logger"
-	"tailscale.com/types/netmap"
-	"tailscale.com/util/deephash"
-	"tailscale.com/util/dnsname"
-	"tailscale.com/util/linuxfw"
+	"github.com/metacubex/tailscale/client/local"
+	"github.com/metacubex/tailscale/health"
+	"github.com/metacubex/tailscale/ipn"
+	kubeutils "github.com/metacubex/tailscale/k8s-operator"
+	"github.com/metacubex/tailscale/kube/authkey"
+	healthz "github.com/metacubex/tailscale/kube/health"
+	"github.com/metacubex/tailscale/kube/kubetypes"
+	klc "github.com/metacubex/tailscale/kube/localclient"
+	"github.com/metacubex/tailscale/kube/metrics"
+	"github.com/metacubex/tailscale/kube/services"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/types/netmap"
+	"github.com/metacubex/tailscale/util/deephash"
+	"github.com/metacubex/tailscale/util/dnsname"
+	"github.com/metacubex/tailscale/util/linuxfw"
 )
 
 func newNetfilterRunner(logf logger.Logf) (linuxfw.NetfilterRunner, error) {

@@ -13,7 +13,7 @@ import (
 	"path"
 	"path/filepath"
 
-	"tailscale.com/util/precompress"
+	"github.com/metacubex/tailscale/util/precompress"
 )
 
 func runBuild() {

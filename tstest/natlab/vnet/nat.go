@@ -5,12 +5,12 @@ package vnet
 
 import (
 	"errors"
+	"github.com/metacubex/tailscale/util/go120/randv2"
 	"log"
 	"net/netip"
-	"tailscale.com/util/go120/randv2"
 	"time"
 
-	"tailscale.com/util/mak"
+	"github.com/metacubex/tailscale/util/mak"
 )
 
 const (

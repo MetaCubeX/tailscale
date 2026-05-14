@@ -12,7 +12,7 @@ import (
 	"io"
 	"net/http"
 
-	tsclient "tailscale.com/client/tailscale"
+	tsclient "github.com/metacubex/tailscale/client/tailscale"
 )
 
 // maxSize is the maximum read size (10MB) of responses from the server.
@@ -22,46 +22,46 @@ func init() {
 	tsclient.I_Acknowledge_This_API_Is_Unstable = true
 }
 
-// AuthMethod is an alias to tailscale.com/client/tailscale.
+// AuthMethod is an alias to github.com/metacubex/tailscale/client/tailscale.
 type AuthMethod = tsclient.AuthMethod
 
-// APIKey is an alias to tailscale.com/client/tailscale.
+// APIKey is an alias to github.com/metacubex/tailscale/client/tailscale.
 type APIKey = tsclient.APIKey
 
-// Device is an alias to tailscale.com/client/tailscale.
+// Device is an alias to github.com/metacubex/tailscale/client/tailscale.
 type Device = tsclient.Device
 
-// DeviceFieldsOpts is an alias to tailscale.com/client/tailscale.
+// DeviceFieldsOpts is an alias to github.com/metacubex/tailscale/client/tailscale.
 type DeviceFieldsOpts = tsclient.DeviceFieldsOpts
 
-// Key is an alias to tailscale.com/client/tailscale.
+// Key is an alias to github.com/metacubex/tailscale/client/tailscale.
 type Key = tsclient.Key
 
-// KeyCapabilities is an alias to tailscale.com/client/tailscale.
+// KeyCapabilities is an alias to github.com/metacubex/tailscale/client/tailscale.
 type KeyCapabilities = tsclient.KeyCapabilities
 
-// KeyDeviceCapabilities is an alias to tailscale.com/client/tailscale.
+// KeyDeviceCapabilities is an alias to github.com/metacubex/tailscale/client/tailscale.
 type KeyDeviceCapabilities = tsclient.KeyDeviceCapabilities
 
-// KeyDeviceCreateCapabilities is an alias to tailscale.com/client/tailscale.
+// KeyDeviceCreateCapabilities is an alias to github.com/metacubex/tailscale/client/tailscale.
 type KeyDeviceCreateCapabilities = tsclient.KeyDeviceCreateCapabilities
 
-// ErrResponse is an alias to tailscale.com/client/tailscale.
+// ErrResponse is an alias to github.com/metacubex/tailscale/client/tailscale.
 type ErrResponse = tsclient.ErrResponse
 
-// NewClient is an alias to tailscale.com/client/tailscale.
+// NewClient is an alias to github.com/metacubex/tailscale/client/tailscale.
 func NewClient(tailnet string, auth AuthMethod) *Client {
 	return &Client{
 		Client: tsclient.NewClient(tailnet, auth),
 	}
 }
 
-// Client is a wrapper of tailscale.com/client/tailscale.
+// Client is a wrapper of github.com/metacubex/tailscale/client/tailscale.
 type Client struct {
 	*tsclient.Client
 }
 
-// HandleErrorResponse is an alias to tailscale.com/client/tailscale.
+// HandleErrorResponse is an alias to github.com/metacubex/tailscale/client/tailscale.
 func HandleErrorResponse(b []byte, resp *http.Response) error {
 	return tsclient.HandleErrorResponse(b, resp)
 }

@@ -12,8 +12,8 @@ import (
 	"net/http"
 	"time"
 
-	"tailscale.com/net/netx"
-	"tailscale.com/types/logger"
+	"github.com/metacubex/tailscale/net/netx"
+	"github.com/metacubex/tailscale/types/logger"
 )
 
 // Handler is an HTTP CONNECT proxy handler.

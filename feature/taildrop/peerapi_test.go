@@ -20,13 +20,13 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
-	"tailscale.com/client/tailscale/apitype"
-	"tailscale.com/ipn/ipnlocal"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tstest"
-	"tailscale.com/tstime"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/must"
+	"github.com/metacubex/tailscale/client/tailscale/apitype"
+	"github.com/metacubex/tailscale/ipn/ipnlocal"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/tstest"
+	"github.com/metacubex/tailscale/tstime"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/util/must"
 )
 
 // peerAPIHandler serves the PeerAPI for a source specific client.

@@ -20,17 +20,17 @@ import (
 	"net/netip"
 	"strings"
 
+	"github.com/metacubex/tailscale/client/tailscale/apitype"
+	"github.com/metacubex/tailscale/k8s-operator/sessionrecording/spdy"
+	"github.com/metacubex/tailscale/k8s-operator/sessionrecording/tsrecorder"
+	"github.com/metacubex/tailscale/k8s-operator/sessionrecording/ws"
+	"github.com/metacubex/tailscale/net/netx"
+	"github.com/metacubex/tailscale/sessionrecording"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/tsnet"
+	"github.com/metacubex/tailscale/tstime"
+	"github.com/metacubex/tailscale/util/clientmetric"
 	"go.uber.org/zap"
-	"tailscale.com/client/tailscale/apitype"
-	"tailscale.com/k8s-operator/sessionrecording/spdy"
-	"tailscale.com/k8s-operator/sessionrecording/tsrecorder"
-	"tailscale.com/k8s-operator/sessionrecording/ws"
-	"tailscale.com/net/netx"
-	"tailscale.com/sessionrecording"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tsnet"
-	"tailscale.com/tstime"
-	"tailscale.com/util/clientmetric"
 )
 
 const (

@@ -13,8 +13,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/metacubex/tailscale/types/key"
 	"go4.org/mem"
-	"tailscale.com/types/key"
 )
 
 func TestMarshalAndParse(t *testing.T) {

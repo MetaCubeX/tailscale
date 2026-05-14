@@ -13,12 +13,12 @@ import (
 	"time"
 
 	"github.com/hashicorp/raft"
+	"github.com/metacubex/tailscale/syncs"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/tsconsensus"
+	"github.com/metacubex/tailscale/tsnet"
+	"github.com/metacubex/tailscale/util/mak"
 	"go4.org/netipx"
-	"tailscale.com/syncs"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tsconsensus"
-	"tailscale.com/tsnet"
-	"tailscale.com/util/mak"
 )
 
 // ConsensusIPPool implements an [IPPool] that is distributed among members of a cluster for high availability.

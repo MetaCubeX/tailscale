@@ -38,19 +38,19 @@ import (
 	"time"
 
 	"github.com/google/gopacket/layers"
+	"github.com/metacubex/tailscale/client/local"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/ipn/ipnstate"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/tstest"
+	"github.com/metacubex/tailscale/tstest/integration/testcontrol"
+	"github.com/metacubex/tailscale/tstest/natlab/vnet"
+	"github.com/metacubex/tailscale/types/key"
+	"github.com/metacubex/tailscale/util/mak"
 	dto "github.com/prometheus/client_model/go"
 	"github.com/prometheus/common/expfmt"
 	"go4.org/mem"
 	"golang.org/x/sync/errgroup"
-	"tailscale.com/client/local"
-	"tailscale.com/ipn"
-	"tailscale.com/ipn/ipnstate"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tstest"
-	"tailscale.com/tstest/integration/testcontrol"
-	"tailscale.com/tstest/natlab/vnet"
-	"tailscale.com/types/key"
-	"tailscale.com/util/mak"
 )
 
 var (

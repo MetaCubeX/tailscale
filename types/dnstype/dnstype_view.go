@@ -12,10 +12,10 @@ import (
 
 	jsonv2 "github.com/metacubex/jsonv2"
 	"github.com/metacubex/jsonv2/jsontext"
-	"tailscale.com/types/views"
+	"github.com/metacubex/tailscale/types/views"
 )
 
-//go:generate go run tailscale.com/cmd/cloner  -clonefunc=true -type=Resolver
+//go:generate go run github.com/metacubex/tailscale/cmd/cloner  -clonefunc=true -type=Resolver
 
 // View returns a read-only view of Resolver.
 func (p *Resolver) View() ResolverView {

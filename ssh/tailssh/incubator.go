@@ -17,6 +17,7 @@ import (
 	"errors"
 	"flag"
 	"fmt"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"io"
 	"io/fs"
 	"log"
@@ -30,20 +31,19 @@ import (
 	"strings"
 	"sync/atomic"
 	"syscall"
-	slices "tailscale.com/util/go120/slices"
 	"time"
 
 	"github.com/creack/pty"
+	"github.com/metacubex/tailscale/cmd/tailscaled/childproc"
+	"github.com/metacubex/tailscale/hostinfo"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/version/distro"
 	"github.com/pkg/sftp"
 	gliderssh "github.com/tailscale/gliderssh"
 	"github.com/u-root/u-root/pkg/termios"
 	"golang.org/x/crypto/ssh"
 	"golang.org/x/sys/unix"
-	"tailscale.com/cmd/tailscaled/childproc"
-	"tailscale.com/hostinfo"
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/logger"
-	"tailscale.com/version/distro"
 )
 
 const (

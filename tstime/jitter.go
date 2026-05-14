@@ -4,7 +4,7 @@
 package tstime
 
 import (
-	"tailscale.com/util/go120/randv2"
+	"github.com/metacubex/tailscale/util/go120/randv2"
 	"time"
 )
 

@@ -15,13 +15,13 @@ import (
 	"testing"
 	"time"
 
-	"tailscale.com/hostinfo"
-	"tailscale.com/ipn/ipnstate"
-	"tailscale.com/net/netmon"
-	"tailscale.com/net/tsdial"
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/key"
-	"tailscale.com/util/eventbus/eventbustest"
+	"github.com/metacubex/tailscale/hostinfo"
+	"github.com/metacubex/tailscale/ipn/ipnstate"
+	"github.com/metacubex/tailscale/net/netmon"
+	"github.com/metacubex/tailscale/net/tsdial"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/types/key"
+	"github.com/metacubex/tailscale/util/eventbus/eventbustest"
 )
 
 func TestSetDiscoPublicKey(t *testing.T) {

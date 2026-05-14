@@ -20,11 +20,11 @@ import (
 	"strings"
 	"time"
 
+	"github.com/metacubex/tailscale/atomicfile"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/version"
 	"github.com/peterbourgon/ff/v3/ffcli"
 	"software.sslmate.com/src/go-pkcs12"
-	"tailscale.com/atomicfile"
-	"tailscale.com/ipn"
-	"tailscale.com/version"
 )
 
 func init() {

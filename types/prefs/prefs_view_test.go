@@ -16,7 +16,7 @@ import (
 	"github.com/metacubex/jsonv2/jsontext"
 )
 
-//go:generate go run tailscale.com/cmd/cloner  -clonefunc=false -type=TestPrefs,TestBundle,TestValueStruct,TestGenericStruct,TestPrefsGroup -tags=test
+//go:generate go run github.com/metacubex/tailscale/cmd/cloner  -clonefunc=false -type=TestPrefs,TestBundle,TestValueStruct,TestGenericStruct,TestPrefsGroup -tags=test
 
 // View returns a read-only view of TestPrefs.
 func (p *TestPrefs) View() TestPrefsView {

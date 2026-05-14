@@ -71,7 +71,7 @@ func (c *Client) httpClient() *http.Client {
 // be of type url.Values to add a query string to the URL.
 //
 // For example, BuildURL(devices, 5) with the default server URL would result in
-// https://api.tailscale.com/api/v2/devices/5.
+// https://api.github.com/metacubex/tailscale/api/v2/devices/5.
 func (c *Client) BuildURL(pathElements ...any) string {
 	elem := make([]string, 1, len(pathElements)+1)
 	elem[0] = "/api/v2"
@@ -96,7 +96,7 @@ func (c *Client) BuildURL(pathElements ...any) string {
 // be of type url.Values to add a query string to the URL.
 //
 // For example, BuildTailnetURL(policy, validate) with the default server URL and a tailnet of "example.com"
-// would result in https://api.tailscale.com/api/v2/tailnet/example.com/policy/validate.
+// would result in https://api.github.com/metacubex/tailscale/api/v2/tailnet/example.com/policy/validate.
 func (c *Client) BuildTailnetURL(pathElements ...any) string {
 	allElements := make([]any, 2, len(pathElements)+2)
 	allElements[0] = "tailnet"

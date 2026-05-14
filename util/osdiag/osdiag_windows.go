@@ -12,13 +12,13 @@ import (
 	"unicode/utf16"
 	"unsafe"
 
+	"github.com/metacubex/tailscale/util/osdiag/internal/wsc"
+	"github.com/metacubex/tailscale/util/wingoes/com"
+	"github.com/metacubex/tailscale/util/wingoes/pe"
+	"github.com/metacubex/tailscale/util/winutil"
+	"github.com/metacubex/tailscale/util/winutil/authenticode"
 	"golang.org/x/sys/windows"
 	"golang.org/x/sys/windows/registry"
-	"tailscale.com/util/osdiag/internal/wsc"
-	"tailscale.com/util/wingoes/com"
-	"tailscale.com/util/wingoes/pe"
-	"tailscale.com/util/winutil"
-	"tailscale.com/util/winutil/authenticode"
 )
 
 var (

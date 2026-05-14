@@ -6,20 +6,20 @@ package main
 import (
 	"context"
 	"fmt"
+	"github.com/metacubex/tailscale/util/go120/randv2"
 	"regexp"
 	"sort"
 	"strconv"
 	"strings"
-	"tailscale.com/util/go120/randv2"
 
+	k8soperator "github.com/metacubex/tailscale/k8s-operator"
+	tsapi "github.com/metacubex/tailscale/k8s-operator/apis/v1alpha1"
+	"github.com/metacubex/tailscale/kube/kubetypes"
 	"go.uber.org/zap"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/intstr"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-	k8soperator "tailscale.com/k8s-operator"
-	tsapi "tailscale.com/k8s-operator/apis/v1alpha1"
-	"tailscale.com/kube/kubetypes"
 )
 
 const (

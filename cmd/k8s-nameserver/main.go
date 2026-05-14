@@ -21,9 +21,9 @@ import (
 	"syscall"
 
 	"github.com/fsnotify/fsnotify"
+	operatorutils "github.com/metacubex/tailscale/k8s-operator"
+	"github.com/metacubex/tailscale/util/dnsname"
 	"github.com/miekg/dns"
-	operatorutils "tailscale.com/k8s-operator"
-	"tailscale.com/util/dnsname"
 )
 
 const (

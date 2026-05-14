@@ -9,10 +9,10 @@ import (
 	"flag"
 	"fmt"
 
+	"github.com/metacubex/tailscale/feature"
+	"github.com/metacubex/tailscale/ipn/ipnstate"
+	"github.com/metacubex/tailscale/version"
 	"github.com/peterbourgon/ff/v3/ffcli"
-	"tailscale.com/feature"
-	"tailscale.com/ipn/ipnstate"
-	"tailscale.com/version"
 )
 
 var versionCmd = &ffcli.Command{

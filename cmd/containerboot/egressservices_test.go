@@ -3,6 +3,7 @@
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
+
 package main
 
 import (
@@ -16,8 +17,8 @@ import (
 	"sync"
 	"testing"
 
-	"tailscale.com/kube/egressservices"
-	"tailscale.com/kube/kubetypes"
+	"github.com/metacubex/tailscale/kube/egressservices"
+	"github.com/metacubex/tailscale/kube/kubetypes"
 )
 
 func Test_updatesForSvc(t *testing.T) {

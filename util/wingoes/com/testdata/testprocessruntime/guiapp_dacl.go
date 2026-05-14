@@ -9,8 +9,8 @@ package main
 import (
 	"fmt"
 
-	"tailscale.com/util/wingoes"
-	"tailscale.com/util/wingoes/com"
+	"github.com/metacubex/tailscale/util/wingoes"
+	"github.com/metacubex/tailscale/util/wingoes/com"
 	"golang.org/x/sys/windows"
 )
 

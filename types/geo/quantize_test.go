@@ -9,7 +9,7 @@ import (
 	"testing"
 	"testing/quick"
 
-	"tailscale.com/types/geo"
+	"github.com/metacubex/tailscale/types/geo"
 )
 
 func TestPointAnonymize(t *testing.T) {

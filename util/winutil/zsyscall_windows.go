@@ -6,9 +6,9 @@ import (
 	"syscall"
 	"unsafe"
 
+	"github.com/metacubex/tailscale/util/wingoes"
 	"golang.org/x/sys/windows"
 	"golang.org/x/sys/windows/registry"
-	"tailscale.com/util/wingoes"
 )
 
 var _ unsafe.Pointer

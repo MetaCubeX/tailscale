@@ -9,20 +9,20 @@ package netmon
 import (
 	"errors"
 	"fmt"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"log"
 	"net/netip"
 	"runtime"
 	"strings"
 	"sync"
-	slices "tailscale.com/util/go120/slices"
 	"time"
 
-	"tailscale.com/feature/buildfeatures"
-	"tailscale.com/syncs"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/clientmetric"
-	"tailscale.com/util/eventbus"
-	"tailscale.com/util/set"
+	"github.com/metacubex/tailscale/feature/buildfeatures"
+	"github.com/metacubex/tailscale/syncs"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/util/clientmetric"
+	"github.com/metacubex/tailscale/util/eventbus"
+	"github.com/metacubex/tailscale/util/set"
 )
 
 // pollWallTimeInterval is how often we check the time to check

@@ -14,10 +14,10 @@ import (
 	"reflect"
 	"testing"
 
-	"tailscale.com/net/netmon"
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/eventbus"
+	"github.com/metacubex/tailscale/net/netmon"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/util/eventbus"
 )
 
 func TestGetDERPMap(t *testing.T) {

@@ -8,24 +8,24 @@ package ipnstate
 
 import (
 	"fmt"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"html"
 	"io"
 	"log"
 	"net/netip"
 	"sort"
 	"strings"
-	slices "tailscale.com/util/go120/slices"
 	"time"
 
-	"tailscale.com/tailcfg"
-	"tailscale.com/tka"
-	"tailscale.com/types/key"
-	"tailscale.com/types/views"
-	"tailscale.com/util/dnsname"
-	"tailscale.com/version"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/tka"
+	"github.com/metacubex/tailscale/types/key"
+	"github.com/metacubex/tailscale/types/views"
+	"github.com/metacubex/tailscale/util/dnsname"
+	"github.com/metacubex/tailscale/version"
 )
 
-//go:generate go run tailscale.com/cmd/cloner  -clonefunc=false -type=TKAPeer
+//go:generate go run github.com/metacubex/tailscale/cmd/cloner  -clonefunc=false -type=TKAPeer
 
 // Status represents the entire state of the IPN network.
 type Status struct {
@@ -242,7 +242,7 @@ type PeerStatus struct {
 	AllowedIPs *views.Slice[netip.Prefix] `json:",omitempty"`
 
 	// Tags are the list of ACL tags applied to this node.
-	// See tailscale.com/tailcfg#Node.Tags for more information.
+	// See github.com/metacubex/tailscale/tailcfg#Node.Tags for more information.
 	Tags *views.Slice[string] `json:",omitempty"`
 
 	// PrimaryRoutes are the routes this node is currently the primary
@@ -285,8 +285,8 @@ type PeerStatus struct {
 	// Capabilities are capabilities that the node has.
 	// They're free-form strings, but should be in the form of URLs/URIs
 	// such as:
-	//    "https://tailscale.com/cap/is-admin"
-	//    "https://tailscale.com/cap/file-sharing"
+	//    "https://github.com/metacubex/tailscale/cap/is-admin"
+	//    "https://github.com/metacubex/tailscale/cap/file-sharing"
 	//    "funnel"
 	//
 	// Deprecated: use CapMap instead. See https://github.com/tailscale/tailscale/issues/11508

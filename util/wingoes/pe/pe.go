@@ -20,7 +20,7 @@ import (
 	"strings"
 	"unsafe"
 
-	"tailscale.com/util/wingoes"
+	"github.com/metacubex/tailscale/util/wingoes"
 	"golang.org/x/exp/constraints"
 )
 

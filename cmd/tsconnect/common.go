@@ -7,6 +7,7 @@ package main
 
 import (
 	"fmt"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"log"
 	"net"
 	"os"
@@ -15,7 +16,6 @@ import (
 	"path/filepath"
 	"runtime"
 	"strconv"
-	slices "tailscale.com/util/go120/slices"
 	"time"
 
 	esbuild "github.com/evanw/esbuild/pkg/api"

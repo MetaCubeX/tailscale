@@ -15,9 +15,9 @@ import (
 
 	jsonv2 "github.com/metacubex/jsonv2"
 	"github.com/metacubex/jsonv2/jsontext"
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/opt"
-	"tailscale.com/util/mak"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/types/opt"
+	"github.com/metacubex/tailscale/util/mak"
 )
 
 // ServicesConfigFile is the config file format for services configuration.

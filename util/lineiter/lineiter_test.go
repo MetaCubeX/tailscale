@@ -6,8 +6,8 @@
 package lineiter
 
 import (
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"strings"
-	slices "tailscale.com/util/go120/slices"
 	"testing"
 )
 

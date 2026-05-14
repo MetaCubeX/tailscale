@@ -9,16 +9,16 @@ import (
 	"fmt"
 	"testing"
 
+	tsoperator "github.com/metacubex/tailscale/k8s-operator"
+	tsapi "github.com/metacubex/tailscale/k8s-operator/apis/v1alpha1"
+	"github.com/metacubex/tailscale/tstest"
+	"github.com/metacubex/tailscale/tstime"
 	"go.uber.org/zap"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 	discoveryv1 "k8s.io/api/discovery/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
-	tsoperator "tailscale.com/k8s-operator"
-	tsapi "tailscale.com/k8s-operator/apis/v1alpha1"
-	"tailscale.com/tstest"
-	"tailscale.com/tstime"
 )
 
 func TestEgressServiceReadiness(t *testing.T) {

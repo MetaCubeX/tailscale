@@ -2,13 +2,13 @@
 // SPDX-License-Identifier: BSD-3-Clause
 
 // netlogfmt parses a stream of JSON log messages from stdin and
-// formats the network traffic logs produced by "tailscale.com/wgengine/netlog"
-// according to the schema in "tailscale.com/types/netlogtype.Message"
+// formats the network traffic logs produced by "github.com/metacubex/tailscale/wgengine/netlog"
+// according to the schema in "github.com/metacubex/tailscale/types/netlogtype.Message"
 // in a more humanly readable format.
 //
 // Example usage:
 //
-//	$ cat netlog.json | go run tailscale.com/cmd/netlogfmt
+//	$ cat netlog.json | go run github.com/metacubex/tailscale/cmd/netlogfmt
 //	=========================================================================================
 //	NodeID: n123456CNTRL
 //	Logged: 2022-10-13T20:23:10.165Z
@@ -29,6 +29,8 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	cmp "github.com/metacubex/tailscale/util/go120/cmp"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"io"
 	"log"
 	"math"
@@ -37,18 +39,16 @@ import (
 	"os"
 	"strconv"
 	"strings"
-	cmp "tailscale.com/util/go120/cmp"
-	slices "tailscale.com/util/go120/slices"
 	"time"
 
 	"github.com/dsnet/try"
 	jsonv2 "github.com/metacubex/jsonv2"
 	"github.com/metacubex/jsonv2/jsontext"
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/bools"
-	"tailscale.com/types/logid"
-	"tailscale.com/types/netlogtype"
-	"tailscale.com/util/must"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/types/bools"
+	"github.com/metacubex/tailscale/types/logid"
+	"github.com/metacubex/tailscale/types/netlogtype"
+	"github.com/metacubex/tailscale/util/must"
 )
 
 var (
@@ -57,8 +57,8 @@ var (
 		"If network flow logs do not support embedded node information,\n"+
 		"then --api-key and --tailnet-name must also be provided.\n"+
 		"Valid values include \"nodeId\", \"name\", or \"user\".")
-	apiKey      = flag.String("api-key", "", "The API key to query the Tailscale API with.\nSee https://login.tailscale.com/admin/settings/keys")
-	tailnetName = flag.String("tailnet-name", "", "The Tailnet name to lookup nodes within.\nSee https://login.tailscale.com/admin/settings/general")
+	apiKey      = flag.String("api-key", "", "The API key to query the Tailscale API with.\nSee https://login.github.com/metacubex/tailscale/admin/settings/keys")
+	tailnetName = flag.String("tailnet-name", "", "The Tailnet name to lookup nodes within.\nSee https://login.github.com/metacubex/tailscale/admin/settings/general")
 )
 
 var (
@@ -352,7 +352,7 @@ func mustLoadTailnetNodes() {
 	}
 
 	// Query the Tailscale API for a list of devices in the tailnet.
-	const apiURL = "https://api.tailscale.com/api/v2"
+	const apiURL = "https://api.github.com/metacubex/tailscale/api/v2"
 	req := must.Get(http.NewRequest("GET", apiURL+"/tailnet/"+*tailnetName+"/devices", nil))
 	req.Header.Add("Authorization", "Basic "+base64.StdEncoding.EncodeToString([]byte(*apiKey+":")))
 	resp := must.Get(http.DefaultClient.Do(req))

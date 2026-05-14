@@ -6,8 +6,8 @@ import (
 	"syscall"
 	"unsafe"
 
+	"github.com/metacubex/tailscale/util/winipcfg"
 	"golang.org/x/sys/windows"
-	"tailscale.com/util/winipcfg"
 )
 
 var _ unsafe.Pointer

@@ -11,7 +11,7 @@ import (
 	"encoding/hex"
 	"fmt"
 
-	"tailscale.com/tailcfg"
+	"github.com/metacubex/tailscale/tailcfg"
 )
 
 const (

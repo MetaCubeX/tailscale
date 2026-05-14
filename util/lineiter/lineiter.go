@@ -7,11 +7,11 @@ package lineiter
 import (
 	"bufio"
 	"bytes"
+	iter "github.com/metacubex/tailscale/util/go120/iter"
 	"io"
 	"os"
-	iter "tailscale.com/util/go120/iter"
 
-	"tailscale.com/types/result"
+	"github.com/metacubex/tailscale/types/result"
 )
 
 // File returns an iterator that reads lines from the named file.

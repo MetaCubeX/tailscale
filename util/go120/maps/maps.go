@@ -4,7 +4,7 @@
 // Package maps backports the subset of Go's maps package used by Tailscale.
 package maps
 
-import "tailscale.com/util/go120/iter"
+import "github.com/metacubex/tailscale/util/go120/iter"
 
 func All[M ~map[K]V, K comparable, V any](m M) iter.Seq2[K, V] {
 	return func(yield func(K, V) bool) {

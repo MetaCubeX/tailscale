@@ -6,8 +6,8 @@
 package slicesx
 
 import (
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"reflect"
-	slices "tailscale.com/util/go120/slices"
 	"testing"
 
 	qt "github.com/frankban/quicktest"

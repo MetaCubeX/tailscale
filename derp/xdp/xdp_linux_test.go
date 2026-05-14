@@ -16,9 +16,9 @@ import (
 	"github.com/metacubex/gvisor/pkg/tcpip"
 	"github.com/metacubex/gvisor/pkg/tcpip/checksum"
 	"github.com/metacubex/gvisor/pkg/tcpip/header"
+	"github.com/metacubex/tailscale/net/stun"
+	"github.com/metacubex/tailscale/tstest"
 	"golang.org/x/sys/unix"
-	"tailscale.com/net/stun"
-	"tailscale.com/tstest"
 )
 
 type xdpAction uint32

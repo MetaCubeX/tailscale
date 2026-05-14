@@ -19,7 +19,7 @@
 //
 // Or run directly from the module, no checkout required:
 //
-//	go run tailscale.com/cmd/tsnet-proxy@latest myapp 8080
+//	go run github.com/metacubex/tailscale/cmd/tsnet-proxy@latest myapp 8080
 package main
 
 import (
@@ -36,8 +36,8 @@ import (
 	"strconv"
 	"unicode/utf8"
 
-	"tailscale.com/client/local"
-	"tailscale.com/tsnet"
+	"github.com/metacubex/tailscale/client/local"
+	"github.com/metacubex/tailscale/tsnet"
 )
 
 func main() {

@@ -9,21 +9,21 @@ import (
 	"errors"
 	"flag"
 	"fmt"
+	cmp "github.com/metacubex/tailscale/util/go120/cmp"
 	"net"
 	"net/http"
 	"net/netip"
 	"os"
 	"strings"
-	cmp "tailscale.com/util/go120/cmp"
 	"text/tabwriter"
 
+	"github.com/metacubex/tailscale/feature"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/ipn/ipnstate"
+	"github.com/metacubex/tailscale/net/netmon"
+	"github.com/metacubex/tailscale/util/dnsname"
 	"github.com/peterbourgon/ff/v3/ffcli"
 	"golang.org/x/net/idna"
-	"tailscale.com/feature"
-	"tailscale.com/ipn"
-	"tailscale.com/ipn/ipnstate"
-	"tailscale.com/net/netmon"
-	"tailscale.com/util/dnsname"
 )
 
 var statusCmd = &ffcli.Command{

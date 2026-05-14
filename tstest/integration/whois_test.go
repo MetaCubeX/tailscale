@@ -13,7 +13,7 @@ import (
 	"testing"
 	"time"
 
-	"tailscale.com/tstest"
+	"github.com/metacubex/tailscale/tstest"
 )
 
 // TestUserspaceWhoIsProxyMap verifies that WhoIs lookups work via the

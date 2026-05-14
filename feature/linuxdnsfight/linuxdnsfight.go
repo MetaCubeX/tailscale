@@ -11,8 +11,8 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/metacubex/tailscale/net/dns"
 	"github.com/illarion/gonotify/v3"
-	"tailscale.com/net/dns"
 )
 
 func init() {

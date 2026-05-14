@@ -4,11 +4,11 @@
 // Package dnstype defines types for working with DNS.
 package dnstype
 
-//go:generate go run tailscale.com/cmd/viewer --type=Resolver --clonefunc=true
+//go:generate go run github.com/metacubex/tailscale/cmd/viewer --type=Resolver --clonefunc=true
 
 import (
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"net/netip"
-	slices "tailscale.com/util/go120/slices"
 )
 
 // Resolver is the configuration for one DNS resolver.

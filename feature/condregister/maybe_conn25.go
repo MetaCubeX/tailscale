@@ -5,4 +5,4 @@
 
 package condregister
 
-import _ "tailscale.com/feature/conn25"
+import _ "github.com/metacubex/tailscale/feature/conn25"

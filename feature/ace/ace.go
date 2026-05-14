@@ -7,9 +7,9 @@ package ace
 import (
 	"net/netip"
 
-	"tailscale.com/control/controlhttp"
-	"tailscale.com/net/ace"
-	"tailscale.com/net/netx"
+	"github.com/metacubex/tailscale/control/controlhttp"
+	"github.com/metacubex/tailscale/net/ace"
+	"github.com/metacubex/tailscale/net/netx"
 )
 
 func init() {

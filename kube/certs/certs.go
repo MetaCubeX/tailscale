@@ -8,16 +8,16 @@ package certs
 import (
 	"context"
 	"fmt"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"net"
 	"sync"
-	slices "tailscale.com/util/go120/slices"
 	"time"
 
-	"tailscale.com/ipn"
-	"tailscale.com/kube/localclient"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/goroutines"
-	"tailscale.com/util/mak"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/kube/localclient"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/util/goroutines"
+	"github.com/metacubex/tailscale/util/mak"
 )
 
 // CertManager is responsible for issuing certificates for known domains and for

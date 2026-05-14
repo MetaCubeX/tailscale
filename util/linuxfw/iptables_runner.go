@@ -7,15 +7,15 @@ package linuxfw
 
 import (
 	"fmt"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"log"
 	"net/netip"
 	"os/exec"
 	"strconv"
 	"strings"
-	slices "tailscale.com/util/go120/slices"
 
-	"tailscale.com/net/tsaddr"
-	"tailscale.com/types/logger"
+	"github.com/metacubex/tailscale/net/tsaddr"
+	"github.com/metacubex/tailscale/types/logger"
 )
 
 // isNotExistError needs to be overridden in tests that rely on distinguishing

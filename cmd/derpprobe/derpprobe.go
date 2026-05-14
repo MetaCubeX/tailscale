@@ -16,14 +16,14 @@ import (
 	"sort"
 	"time"
 
+	"github.com/metacubex/tailscale/prober"
+	"github.com/metacubex/tailscale/tsweb"
+	"github.com/metacubex/tailscale/types/key"
+	"github.com/metacubex/tailscale/version"
 	"github.com/tailscale/setec/client/setec"
-	"tailscale.com/prober"
-	"tailscale.com/tsweb"
-	"tailscale.com/types/key"
-	"tailscale.com/version"
 
 	// Support for prometheus varz in tsweb
-	_ "tailscale.com/tsweb/promvarz"
+	_ "github.com/metacubex/tailscale/tsweb/promvarz"
 )
 
 const meshKeyEnvVar = "TAILSCALE_DERPER_MESH_KEY"
@@ -35,7 +35,7 @@ func defaultSetecCacheDir() string {
 
 var (
 	dev                = flag.Bool("dev", false, "run in localhost development mode")
-	derpMapURL         = flag.String("derp-map", "https://login.tailscale.com/derpmap/default", "URL to DERP map (https:// or file://) or 'local' to use the local tailscaled's DERP map")
+	derpMapURL         = flag.String("derp-map", "https://login.github.com/metacubex/tailscale/derpmap/default", "URL to DERP map (https:// or file://) or 'local' to use the local tailscaled's DERP map")
 	versionFlag        = flag.Bool("version", false, "print version and exit")
 	listen             = flag.String("listen", ":8030", "HTTP listen address")
 	probeOnce          = flag.Bool("once", false, "probe once and print results, then exit; ignores the listen flag")

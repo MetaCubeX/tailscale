@@ -9,7 +9,7 @@ package com
 import (
 	"unsafe"
 
-	"tailscale.com/util/wingoes"
+	"github.com/metacubex/tailscale/util/wingoes"
 	"golang.org/x/sys/windows"
 )
 

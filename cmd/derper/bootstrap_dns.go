@@ -8,6 +8,7 @@ import (
 	"encoding/binary"
 	"encoding/json"
 	"expvar"
+	"github.com/metacubex/tailscale/util/go120/randv2"
 	"log"
 	"net"
 	"net/http"
@@ -15,12 +16,11 @@ import (
 	"strconv"
 	"strings"
 	"sync/atomic"
-	"tailscale.com/util/go120/randv2"
 	"time"
 
-	"tailscale.com/syncs"
-	"tailscale.com/util/mak"
-	"tailscale.com/util/slicesx"
+	"github.com/metacubex/tailscale/syncs"
+	"github.com/metacubex/tailscale/util/mak"
+	"github.com/metacubex/tailscale/util/slicesx"
 )
 
 const refreshTimeout = time.Minute

@@ -12,8 +12,8 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/metacubex/tailscale/cmd/tailscale/cli/ffcomplete"
 	"github.com/peterbourgon/ff/v3/ffcli"
-	"tailscale.com/cmd/tailscale/cli/ffcomplete"
 )
 
 var ncCmd = &ffcli.Command{

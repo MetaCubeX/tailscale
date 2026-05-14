@@ -6,9 +6,9 @@
 package controlclient
 
 import (
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/key"
-	"tailscale.com/util/syspolicy/policyclient"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/types/key"
+	"github.com/metacubex/tailscale/util/syspolicy/policyclient"
 )
 
 // signRegisterRequest on non-supported platforms always returns errNoCertStore.

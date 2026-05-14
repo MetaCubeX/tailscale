@@ -8,6 +8,7 @@ import (
 	"context"
 	"encoding/hex"
 	"fmt"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"log"
 	"math"
 	"net"
@@ -19,16 +20,15 @@ import (
 	"os/user"
 	"strings"
 	"sync"
-	slices "tailscale.com/util/go120/slices"
 	"time"
 
+	"github.com/metacubex/tailscale/drive"
+	"github.com/metacubex/tailscale/drive/driveimpl/compositedav"
+	"github.com/metacubex/tailscale/drive/driveimpl/dirfs"
+	"github.com/metacubex/tailscale/drive/driveimpl/shared"
+	"github.com/metacubex/tailscale/safesocket"
+	"github.com/metacubex/tailscale/types/logger"
 	"github.com/tailscale/xnet/webdav"
-	"tailscale.com/drive"
-	"tailscale.com/drive/driveimpl/compositedav"
-	"tailscale.com/drive/driveimpl/dirfs"
-	"tailscale.com/drive/driveimpl/shared"
-	"tailscale.com/safesocket"
-	"tailscale.com/types/logger"
 )
 
 func NewFileSystemForRemote(logf logger.Logf) *FileSystemForRemote {

@@ -6,13 +6,13 @@
 package reconciler_test
 
 import (
-	slices "tailscale.com/util/go120/slices"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"testing"
 
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
-	"tailscale.com/k8s-operator/reconciler"
+	"github.com/metacubex/tailscale/k8s-operator/reconciler"
 )
 
 func TestFinalizers(t *testing.T) {

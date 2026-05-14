@@ -13,26 +13,26 @@ import (
 	"errors"
 	"flag"
 	"fmt"
+	maps "github.com/metacubex/tailscale/util/go120/maps"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"net"
 	"net/http"
 	"net/http/httptest"
 	"strings"
 	"sync"
-	maps "tailscale.com/util/go120/maps"
-	slices "tailscale.com/util/go120/slices"
 	"testing"
 	"testing/synctest"
 	"time"
 
-	"tailscale.com/derp"
-	"tailscale.com/derp/derphttp"
-	"tailscale.com/derp/derpserver"
-	"tailscale.com/net/memnet"
-	"tailscale.com/net/netmon"
-	"tailscale.com/net/netx"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tstest"
-	"tailscale.com/types/key"
+	"github.com/metacubex/tailscale/derp"
+	"github.com/metacubex/tailscale/derp/derphttp"
+	"github.com/metacubex/tailscale/derp/derpserver"
+	"github.com/metacubex/tailscale/net/memnet"
+	"github.com/metacubex/tailscale/net/netmon"
+	"github.com/metacubex/tailscale/net/netx"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/tstest"
+	"github.com/metacubex/tailscale/types/key"
 )
 
 func TestSendRecv(t *testing.T) {
@@ -567,7 +567,7 @@ func TestManualDial(t *testing.T) {
 		t.Skip("skipping live network test without --live-net-tests")
 	}
 	dm := &tailcfg.DERPMap{}
-	res, err := http.Get("https://controlplane.tailscale.com/derpmap/default")
+	res, err := http.Get("https://controlplane.github.com/metacubex/tailscale/derpmap/default")
 	if err != nil {
 		t.Fatalf("fetching DERPMap: %v", err)
 	}
@@ -594,7 +594,7 @@ func TestURLDial(t *testing.T) {
 		t.Skip("skipping live network test without --live-net-tests")
 	}
 	dm := &tailcfg.DERPMap{}
-	res, err := http.Get("https://controlplane.tailscale.com/derpmap/default")
+	res, err := http.Get("https://controlplane.github.com/metacubex/tailscale/derpmap/default")
 	if err != nil {
 		t.Fatalf("fetching DERPMap: %v", err)
 	}

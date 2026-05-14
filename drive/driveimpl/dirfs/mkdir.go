@@ -7,7 +7,7 @@ import (
 	"context"
 	"os"
 
-	"tailscale.com/drive/driveimpl/shared"
+	"github.com/metacubex/tailscale/drive/driveimpl/shared"
 )
 
 // Mkdir implements webdav.FileSystem. All attempts to Mkdir a directory that

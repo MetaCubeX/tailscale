@@ -11,28 +11,28 @@ import (
 	"errors"
 	"flag"
 	"fmt"
+	iter "github.com/metacubex/tailscale/util/go120/iter"
+	maps "github.com/metacubex/tailscale/util/go120/maps"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"net/netip"
 	"os"
 	"reflect"
 	"strings"
-	iter "tailscale.com/util/go120/iter"
-	maps "tailscale.com/util/go120/maps"
-	slices "tailscale.com/util/go120/slices"
 	"testing"
 
 	"github.com/creachadair/mds/mtest"
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
-	"tailscale.com/ipn/ipnlocal/netmapcache"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tka"
-	"tailscale.com/types/ipproto"
-	"tailscale.com/types/key"
-	"tailscale.com/types/netmap"
-	"tailscale.com/types/views"
-	"tailscale.com/util/set"
-	"tailscale.com/wgengine/filter"
-	"tailscale.com/wgengine/filter/filtertype"
+	"github.com/metacubex/tailscale/ipn/ipnlocal/netmapcache"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/tka"
+	"github.com/metacubex/tailscale/types/ipproto"
+	"github.com/metacubex/tailscale/types/key"
+	"github.com/metacubex/tailscale/types/netmap"
+	"github.com/metacubex/tailscale/types/views"
+	"github.com/metacubex/tailscale/util/set"
+	"github.com/metacubex/tailscale/wgengine/filter"
+	"github.com/metacubex/tailscale/wgengine/filter/filtertype"
 )
 
 // Input values for valid-looking placeholder values for keys, hashes, etc.
@@ -85,7 +85,7 @@ func init() {
 			CapGrant: []tailcfg.CapGrant{{
 				Dsts: []netip.Prefix{netip.MustParsePrefix("192.168.4.0/24")},
 				CapMap: tailcfg.PeerCapMap{
-					"tailscale.com/testcap": []tailcfg.RawMessage{`"apple"`, `"pear"`},
+					"github.com/metacubex/tailscale/testcap": []tailcfg.RawMessage{`"apple"`, `"pear"`},
 				},
 			}},
 		},

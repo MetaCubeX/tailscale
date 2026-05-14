@@ -8,7 +8,7 @@ package netns
 import (
 	"testing"
 
-	"tailscale.com/net/netmon"
+	"github.com/metacubex/tailscale/net/netmon"
 )
 
 func TestGetInterfaceIndex(t *testing.T) {

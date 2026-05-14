@@ -6,19 +6,19 @@ package source
 import (
 	"errors"
 	"fmt"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"io"
 	"sort"
 	"sync"
-	slices "tailscale.com/util/go120/slices"
 	"time"
 
-	"tailscale.com/util/mak"
-	"tailscale.com/util/set"
-	"tailscale.com/util/syspolicy/internal/loggerx"
-	"tailscale.com/util/syspolicy/internal/metrics"
-	"tailscale.com/util/syspolicy/pkey"
-	"tailscale.com/util/syspolicy/ptype"
-	"tailscale.com/util/syspolicy/setting"
+	"github.com/metacubex/tailscale/util/mak"
+	"github.com/metacubex/tailscale/util/set"
+	"github.com/metacubex/tailscale/util/syspolicy/internal/loggerx"
+	"github.com/metacubex/tailscale/util/syspolicy/internal/metrics"
+	"github.com/metacubex/tailscale/util/syspolicy/pkey"
+	"github.com/metacubex/tailscale/util/syspolicy/ptype"
+	"github.com/metacubex/tailscale/util/syspolicy/setting"
 )
 
 // Reader reads all configured policy settings from a given [Store].

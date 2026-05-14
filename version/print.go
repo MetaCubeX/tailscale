@@ -5,9 +5,9 @@ package version
 
 import (
 	"fmt"
+	"github.com/metacubex/tailscale/syncs"
 	"runtime"
 	"strings"
-	"tailscale.com/syncs"
 )
 
 var stringLazy = syncs.OnceValue(func() string {

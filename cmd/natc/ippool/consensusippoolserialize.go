@@ -5,15 +5,15 @@ package ippool
 
 import (
 	"encoding/json"
+	maps "github.com/metacubex/tailscale/util/go120/maps"
 	"io"
 	"log"
 	"net/netip"
-	maps "tailscale.com/util/go120/maps"
 
 	"github.com/hashicorp/raft"
+	"github.com/metacubex/tailscale/syncs"
+	"github.com/metacubex/tailscale/tailcfg"
 	"go4.org/netipx"
-	"tailscale.com/syncs"
-	"tailscale.com/tailcfg"
 )
 
 // Snapshot and Restore enable the raft lib to do log compaction.

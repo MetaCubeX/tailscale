@@ -6,16 +6,16 @@ package rsop
 import (
 	"errors"
 	"fmt"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"sync/atomic"
-	slices "tailscale.com/util/go120/slices"
 	"time"
 
-	"tailscale.com/syncs"
-	"tailscale.com/util/syspolicy/internal/loggerx"
-	"tailscale.com/util/syspolicy/setting"
-	"tailscale.com/util/testenv"
+	"github.com/metacubex/tailscale/syncs"
+	"github.com/metacubex/tailscale/util/syspolicy/internal/loggerx"
+	"github.com/metacubex/tailscale/util/syspolicy/setting"
+	"github.com/metacubex/tailscale/util/testenv"
 
-	"tailscale.com/util/syspolicy/source"
+	"github.com/metacubex/tailscale/util/syspolicy/source"
 )
 
 // ErrPolicyClosed is returned by [Policy.Reload], [Policy.addSource],

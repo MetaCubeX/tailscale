@@ -5,8 +5,8 @@
 package appctest
 
 import (
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"net/netip"
-	slices "tailscale.com/util/go120/slices"
 )
 
 // RouteCollector is a test helper that collects the list of routes advertised

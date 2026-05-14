@@ -12,7 +12,7 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
-	"tailscale.com/util/slicesx"
+	"github.com/metacubex/tailscale/util/slicesx"
 )
 
 func TestLRU(t *testing.T) {

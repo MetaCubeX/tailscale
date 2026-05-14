@@ -6,10 +6,10 @@
 package eventbus_test
 
 import (
-	"tailscale.com/util/go120/randv2"
+	"github.com/metacubex/tailscale/util/go120/randv2"
 	"testing"
 
-	"tailscale.com/util/eventbus"
+	"github.com/metacubex/tailscale/util/eventbus"
 )
 
 func BenchmarkBasicThroughput(b *testing.B) {

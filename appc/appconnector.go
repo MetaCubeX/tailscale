@@ -12,21 +12,21 @@ package appc
 import (
 	"context"
 	"fmt"
+	maps "github.com/metacubex/tailscale/util/go120/maps"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"net/netip"
 	"strings"
-	maps "tailscale.com/util/go120/maps"
-	slices "tailscale.com/util/go120/slices"
 	"time"
 
-	"tailscale.com/syncs"
-	"tailscale.com/types/appctype"
-	"tailscale.com/types/logger"
-	"tailscale.com/types/views"
-	"tailscale.com/util/clientmetric"
-	"tailscale.com/util/dnsname"
-	"tailscale.com/util/eventbus"
-	"tailscale.com/util/execqueue"
-	"tailscale.com/util/slicesx"
+	"github.com/metacubex/tailscale/syncs"
+	"github.com/metacubex/tailscale/types/appctype"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/types/views"
+	"github.com/metacubex/tailscale/util/clientmetric"
+	"github.com/metacubex/tailscale/util/dnsname"
+	"github.com/metacubex/tailscale/util/eventbus"
+	"github.com/metacubex/tailscale/util/execqueue"
+	"github.com/metacubex/tailscale/util/slicesx"
 )
 
 // rateLogger responds to calls to update by adding a count for the current period and

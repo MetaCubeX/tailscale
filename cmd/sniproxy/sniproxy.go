@@ -21,20 +21,20 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/metacubex/tailscale/client/local"
+	"github.com/metacubex/tailscale/hostinfo"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/tsnet"
+	"github.com/metacubex/tailscale/tsweb"
+	"github.com/metacubex/tailscale/types/appctype"
+	"github.com/metacubex/tailscale/types/ipproto"
+	"github.com/metacubex/tailscale/types/nettype"
+	"github.com/metacubex/tailscale/util/mak"
 	"github.com/peterbourgon/ff/v3"
-	"tailscale.com/client/local"
-	"tailscale.com/hostinfo"
-	"tailscale.com/ipn"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tsnet"
-	"tailscale.com/tsweb"
-	"tailscale.com/types/appctype"
-	"tailscale.com/types/ipproto"
-	"tailscale.com/types/nettype"
-	"tailscale.com/util/mak"
 )
 
-const configCapKey = "tailscale.com/sniproxy"
+const configCapKey = "github.com/metacubex/tailscale/sniproxy"
 
 // portForward is the state for a single port forwarding entry, as passed to the --forward flag.
 type portForward struct {

@@ -9,12 +9,12 @@ import (
 	"testing"
 
 	"github.com/metacubex/tailscale-wireguard-go/tun"
-	"tailscale.com/net/tstun"
-	"tailscale.com/tsd"
-	"tailscale.com/tstest"
-	"tailscale.com/types/logger"
-	"tailscale.com/wgengine"
-	"tailscale.com/wgengine/router"
+	"github.com/metacubex/tailscale/net/tstun"
+	"github.com/metacubex/tailscale/tsd"
+	"github.com/metacubex/tailscale/tstest"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/wgengine"
+	"github.com/metacubex/tailscale/wgengine/router"
 )
 
 func TestIsNetstack(t *testing.T) {

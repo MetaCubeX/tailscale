@@ -11,8 +11,8 @@ import (
 	"reflect"
 	"testing"
 
-	"tailscale.com/tstest"
-	"tailscale.com/util/dnsname"
+	"github.com/metacubex/tailscale/tstest"
+	"github.com/metacubex/tailscale/util/dnsname"
 )
 
 func TestOSConfigPrintable(t *testing.T) {

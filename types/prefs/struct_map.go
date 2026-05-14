@@ -4,12 +4,12 @@
 package prefs
 
 import (
-	maps "tailscale.com/util/go120/maps"
+	maps "github.com/metacubex/tailscale/util/go120/maps"
 
 	jsonv2 "github.com/metacubex/jsonv2"
 	"github.com/metacubex/jsonv2/jsontext"
-	"tailscale.com/types/opt"
-	"tailscale.com/types/views"
+	"github.com/metacubex/tailscale/types/opt"
+	"github.com/metacubex/tailscale/types/views"
 )
 
 // StructMap is a preference type that holds potentially mutable key-value pairs.
@@ -83,7 +83,7 @@ type StructMapView[K MapKeyType, T views.ViewCloner[T, V], V views.StructView[T]
 }
 
 // StructMapViewOf returns a read-only view of m.
-// It is used by [tailscale.com/cmd/viewer].
+// It is used by [github.com/metacubex/tailscale/cmd/viewer].
 func StructMapViewOf[K MapKeyType, T views.ViewCloner[T, V], V views.StructView[T]](m *StructMap[K, T]) StructMapView[K, T, V] {
 	return StructMapView[K, T, V]{m}
 }

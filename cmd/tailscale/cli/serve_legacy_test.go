@@ -19,13 +19,13 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/metacubex/tailscale/client/local"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/ipn/ipnstate"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/tstest"
+	"github.com/metacubex/tailscale/types/logger"
 	"github.com/peterbourgon/ff/v3/ffcli"
-	"tailscale.com/client/local"
-	"tailscale.com/ipn"
-	"tailscale.com/ipn/ipnstate"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tstest"
-	"tailscale.com/types/logger"
 )
 
 func TestCleanMountPoint(t *testing.T) {
@@ -791,18 +791,18 @@ func TestVerifyFunnelEnabled(t *testing.T) {
 		{
 			name:                 "fallback-to-non-interactive-flow",
 			queryFeatureResponse: mockQueryFeatureResponse{resp: nil, err: errors.New("not-allowed")},
-			wantErr:              "Funnel not available; HTTPS must be enabled. See https://tailscale.com/s/https.",
+			wantErr:              "Funnel not available; HTTPS must be enabled. See https://github.com/metacubex/tailscale/s/https.",
 		},
 		{
 			name:                 "fallback-flow-missing-acl-rule",
 			queryFeatureResponse: mockQueryFeatureResponse{resp: nil, err: errors.New("not-allowed")},
 			caps:                 []tailcfg.NodeCapability{tailcfg.CapabilityHTTPS},
-			wantErr:              `Funnel not available; "funnel" node attribute not set. See https://tailscale.com/s/no-funnel.`,
+			wantErr:              `Funnel not available; "funnel" node attribute not set. See https://github.com/metacubex/tailscale/s/no-funnel.`,
 		},
 		{
 			name:                 "fallback-flow-enabled",
 			queryFeatureResponse: mockQueryFeatureResponse{resp: nil, err: errors.New("not-allowed")},
-			caps:                 []tailcfg.NodeCapability{tailcfg.CapabilityHTTPS, tailcfg.NodeAttrFunnel, "https://tailscale.com/cap/funnel-ports?ports=80,443,8080-8090"},
+			caps:                 []tailcfg.NodeCapability{tailcfg.CapabilityHTTPS, tailcfg.NodeAttrFunnel, "https://github.com/metacubex/tailscale/cap/funnel-ports?ports=80,443,8080-8090"},
 			wantErr:              "", // no error, success
 		},
 		{

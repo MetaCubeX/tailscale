@@ -6,13 +6,13 @@ package version
 
 import (
 	"fmt"
+	"github.com/metacubex/tailscale/syncs"
 	"runtime/debug"
 	"strconv"
 	"strings"
-	"tailscale.com/syncs"
 
-	tailscaleroot "tailscale.com"
-	"tailscale.com/types/lazy"
+	tailscaleroot "github.com/metacubex/tailscale"
+	"github.com/metacubex/tailscale/types/lazy"
 )
 
 // Stamp vars can have their value set at build time by linker flags (see

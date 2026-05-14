@@ -13,18 +13,18 @@ import (
 	"net/netip"
 	"testing"
 
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/types/dnstype"
+	"github.com/metacubex/tailscale/types/ipproto"
+	"github.com/metacubex/tailscale/types/key"
+	"github.com/metacubex/tailscale/types/views"
+	"github.com/metacubex/tailscale/util/dnsname"
+	"github.com/metacubex/tailscale/wgengine/filter"
+	"github.com/metacubex/tailscale/wgengine/router"
+	"github.com/metacubex/tailscale/wgengine/wgcfg"
 	"go4.org/mem"
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/dnstype"
-	"tailscale.com/types/ipproto"
-	"tailscale.com/types/key"
-	"tailscale.com/types/views"
-	"tailscale.com/util/dnsname"
-	"tailscale.com/wgengine/filter"
-	"tailscale.com/wgengine/router"
-	"tailscale.com/wgengine/wgcfg"
 
-	. "tailscale.com/util/deephash"
+	. "github.com/metacubex/tailscale/util/deephash"
 )
 
 var sink Sum

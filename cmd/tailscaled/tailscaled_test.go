@@ -3,20 +3,20 @@
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
-package main // import "tailscale.com/cmd/tailscaled"
+package main // import "github.com/metacubex/tailscale/cmd/tailscaled"
 
 import (
 	"os"
 	"strings"
 	"testing"
 
-	"tailscale.com/envknob"
-	"tailscale.com/ipn"
-	"tailscale.com/net/netmon"
-	"tailscale.com/tsd"
-	"tailscale.com/tstest/deptest"
-	"tailscale.com/types/logid"
-	"tailscale.com/util/must"
+	"github.com/metacubex/tailscale/envknob"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/net/netmon"
+	"github.com/metacubex/tailscale/tsd"
+	"github.com/metacubex/tailscale/tstest/deptest"
+	"github.com/metacubex/tailscale/types/logid"
+	"github.com/metacubex/tailscale/util/must"
 )
 
 func TestNothing(t *testing.T) {
@@ -44,7 +44,7 @@ func TestDeps(t *testing.T) {
 			"testing": "do not use testing package in production code",
 			"github.com/metacubex/gvisor/pkg/hostarch":       "will crash on non-4K page sizes; see https://github.com/tailscale/tailscale/issues/8658",
 			"google.golang.org/protobuf/proto":               "unexpected",
-			"github.com/prometheus/client_golang/prometheus": "use tailscale.com/metrics in tailscaled",
+			"github.com/prometheus/client_golang/prometheus": "use github.com/metacubex/tailscale/metrics in tailscaled",
 		},
 	}.Check(t)
 }

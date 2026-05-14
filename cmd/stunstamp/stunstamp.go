@@ -12,6 +12,9 @@ import (
 	"errors"
 	"flag"
 	"fmt"
+	cmp "github.com/metacubex/tailscale/util/go120/cmp"
+	"github.com/metacubex/tailscale/util/go120/randv2"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"io"
 	"log"
 	"math"
@@ -26,22 +29,19 @@ import (
 	"strings"
 	"sync"
 	"syscall"
-	cmp "tailscale.com/util/go120/cmp"
-	"tailscale.com/util/go120/randv2"
-	slices "tailscale.com/util/go120/slices"
 	"time"
 
 	"github.com/golang/snappy"
+	"github.com/metacubex/tailscale/net/stun"
+	"github.com/metacubex/tailscale/net/tcpinfo"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/util/backoff"
 	"github.com/prometheus/prometheus/prompb"
 	"github.com/tcnksm/go-httpstat"
-	"tailscale.com/net/stun"
-	"tailscale.com/net/tcpinfo"
-	"tailscale.com/tailcfg"
-	"tailscale.com/util/backoff"
 )
 
 var (
-	flagDERPMap        = flag.String("derp-map", "https://login.tailscale.com/derpmap/default", "URL to DERP map")
+	flagDERPMap        = flag.String("derp-map", "https://login.github.com/metacubex/tailscale/derpmap/default", "URL to DERP map")
 	flagInterval       = flag.Duration("interval", time.Minute, "interval to probe at in time.ParseDuration() format")
 	flagIPv6           = flag.Bool("ipv6", false, "probe IPv6 addresses")
 	flagRemoteWriteURL = flag.String("rw-url", "", "prometheus remote write URL")

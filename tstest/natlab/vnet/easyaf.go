@@ -4,12 +4,12 @@
 package vnet
 
 import (
+	"github.com/metacubex/tailscale/util/go120/randv2"
 	"log"
 	"net/netip"
-	"tailscale.com/util/go120/randv2"
 	"time"
 
-	"tailscale.com/util/mak"
+	"github.com/metacubex/tailscale/util/mak"
 )
 
 // easyAFNAT is an "Endpoint Independent" NAT, like Linux and most home routers

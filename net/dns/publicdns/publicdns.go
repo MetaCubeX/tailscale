@@ -10,6 +10,7 @@ import (
 	"encoding/binary"
 	"encoding/hex"
 	"fmt"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"log"
 	"math/big"
 	"net/netip"
@@ -17,10 +18,9 @@ import (
 	"strconv"
 	"strings"
 	"sync"
-	slices "tailscale.com/util/go120/slices"
 
-	"tailscale.com/feature/buildfeatures"
-	"tailscale.com/util/testenv"
+	"github.com/metacubex/tailscale/feature/buildfeatures"
+	"github.com/metacubex/tailscale/util/testenv"
 )
 
 // dohOfIP maps from public DNS IPs to their DoH base URL.

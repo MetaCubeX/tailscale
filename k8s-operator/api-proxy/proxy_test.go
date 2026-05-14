@@ -12,10 +12,10 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
+	"github.com/metacubex/tailscale/client/tailscale/apitype"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/util/must"
 	"go.uber.org/zap"
-	"tailscale.com/client/tailscale/apitype"
-	"tailscale.com/tailcfg"
-	"tailscale.com/util/must"
 )
 
 func TestImpersonationHeaders(t *testing.T) {

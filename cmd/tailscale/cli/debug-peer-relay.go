@@ -9,12 +9,12 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	cmp "github.com/metacubex/tailscale/util/go120/cmp"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"net/netip"
-	cmp "tailscale.com/util/go120/cmp"
-	slices "tailscale.com/util/go120/slices"
 
+	"github.com/metacubex/tailscale/net/udprelay/status"
 	"github.com/peterbourgon/ff/v3/ffcli"
-	"tailscale.com/net/udprelay/status"
 )
 
 func init() {

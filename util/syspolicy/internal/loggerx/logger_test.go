@@ -11,7 +11,7 @@ import (
 	"strings"
 	"testing"
 
-	"tailscale.com/types/logger"
+	"github.com/metacubex/tailscale/types/logger"
 )
 
 func TestDebugLogging(t *testing.T) {

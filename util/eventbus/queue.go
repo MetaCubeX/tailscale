@@ -4,7 +4,7 @@
 package eventbus
 
 import (
-	slices "tailscale.com/util/go120/slices"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 )
 
 // queue is an ordered queue of length up to capacity,

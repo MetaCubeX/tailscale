@@ -23,9 +23,9 @@ import (
 
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
+	"github.com/metacubex/tailscale/tstest"
+	"github.com/metacubex/tailscale/tsweb"
 	"github.com/prometheus/client_golang/prometheus/testutil"
-	"tailscale.com/tstest"
-	"tailscale.com/tsweb"
 )
 
 const (

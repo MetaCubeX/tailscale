@@ -10,9 +10,9 @@ import (
 	"errors"
 	"time"
 
-	"tailscale.com/types/key"
-	"tailscale.com/types/logger"
-	"tailscale.com/types/tkatype"
+	"github.com/metacubex/tailscale/types/key"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/types/tkatype"
 )
 
 type Authority struct {

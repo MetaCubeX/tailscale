@@ -10,12 +10,12 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"os"
-	slices "tailscale.com/util/go120/slices"
 	"text/tabwriter"
 
+	"github.com/metacubex/tailscale/util/syspolicy/setting"
 	"github.com/peterbourgon/ff/v3/ffcli"
-	"tailscale.com/util/syspolicy/setting"
 )
 
 var syspolicyArgs struct {

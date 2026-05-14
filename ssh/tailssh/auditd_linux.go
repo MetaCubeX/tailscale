@@ -12,8 +12,8 @@ import (
 	"os"
 	"syscall"
 
+	"github.com/metacubex/tailscale/types/logger"
 	"golang.org/x/sys/unix"
-	"tailscale.com/types/logger"
 )
 
 const (

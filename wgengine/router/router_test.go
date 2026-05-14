@@ -10,7 +10,7 @@ import (
 	"reflect"
 	"testing"
 
-	"tailscale.com/types/preftype"
+	"github.com/metacubex/tailscale/types/preftype"
 )
 
 func TestConfigEqual(t *testing.T) {

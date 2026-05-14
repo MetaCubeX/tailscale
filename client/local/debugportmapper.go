@@ -8,15 +8,15 @@ package local
 import (
 	"context"
 	"fmt"
+	cmp "github.com/metacubex/tailscale/util/go120/cmp"
 	"io"
 	"net/http"
 	"net/netip"
 	"net/url"
 	"strconv"
-	cmp "tailscale.com/util/go120/cmp"
 	"time"
 
-	"tailscale.com/client/tailscale/apitype"
+	"github.com/metacubex/tailscale/client/tailscale/apitype"
 )
 
 // DebugPortmapOpts contains options for the [Client.DebugPortmap] command.

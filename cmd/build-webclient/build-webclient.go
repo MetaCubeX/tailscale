@@ -19,7 +19,7 @@ import (
 	"os/exec"
 	"path/filepath"
 
-	"tailscale.com/util/precompress"
+	"github.com/metacubex/tailscale/util/precompress"
 )
 
 var (

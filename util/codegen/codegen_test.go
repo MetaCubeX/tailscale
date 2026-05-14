@@ -6,11 +6,11 @@
 package codegen
 
 import (
+	cmp "github.com/metacubex/tailscale/util/go120/cmp"
 	"go/types"
 	"net/netip"
 	"strings"
 	"sync"
-	cmp "tailscale.com/util/go120/cmp"
 	"testing"
 	"time"
 	"unique"

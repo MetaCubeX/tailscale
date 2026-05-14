@@ -5,4 +5,4 @@
 
 package logpolicy
 
-import _ "tailscale.com/feature/syspolicy"
+import _ "github.com/metacubex/tailscale/feature/syspolicy"

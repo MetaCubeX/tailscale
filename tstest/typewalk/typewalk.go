@@ -5,9 +5,9 @@
 package typewalk
 
 import (
+	iter "github.com/metacubex/tailscale/util/go120/iter"
 	"reflect"
 	"strings"
-	iter "tailscale.com/util/go120/iter"
 )
 
 // Path describes a path via a type where a private key may be found,

@@ -24,11 +24,11 @@ import (
 
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
-	"tailscale.com/metrics"
-	"tailscale.com/tstest"
-	"tailscale.com/util/httpm"
-	"tailscale.com/util/must"
-	"tailscale.com/util/vizerror"
+	"github.com/metacubex/tailscale/metrics"
+	"github.com/metacubex/tailscale/tstest"
+	"github.com/metacubex/tailscale/util/httpm"
+	"github.com/metacubex/tailscale/util/must"
+	"github.com/metacubex/tailscale/util/vizerror"
 )
 
 type noopHijacker struct {
@@ -696,7 +696,7 @@ func TestStdHandler_Panic(t *testing.T) {
 		t.Errorf("got Err prefix %q, want %q", r.Err[:min(len(r.Err), len(p))], p)
 		logerr = true
 	}
-	if s := "\ntailscale.com/tsweb.panicElsewhere("; !strings.Contains(r.Err, s) {
+	if s := "\ngithub.com/metacubex/tailscale/tsweb.panicElsewhere("; !strings.Contains(r.Err, s) {
 		t.Errorf("want Err substr %q, not found", s)
 		logerr = true
 	}
@@ -1005,7 +1005,7 @@ func TestStdHandler_OnErrorPanic(t *testing.T) {
 		t.Errorf("got Err prefix %q, want %q", r.Err[:min(len(r.Err), len(p))], p)
 		logerr = true
 	}
-	if s := "\ntailscale.com/tsweb.panicElsewhere("; !strings.Contains(r.Err, s) {
+	if s := "\ngithub.com/metacubex/tailscale/tsweb.panicElsewhere("; !strings.Contains(r.Err, s) {
 		t.Errorf("want Err substr %q, not found", s)
 		logerr = true
 	}
@@ -1224,12 +1224,12 @@ func TestCleanRedirectURL(t *testing.T) {
 		want    string
 		wantErr bool
 	}{
-		{"http://tailscale.com/foo", tailscaleHost, "http://tailscale.com/foo", false},
-		{"http://tailscale.com/foo", tailscaleAndOtherHost, "http://tailscale.com/foo", false},
+		{"http://github.com/metacubex/tailscale/foo", tailscaleHost, "http://github.com/metacubex/tailscale/foo", false},
+		{"http://github.com/metacubex/tailscale/foo", tailscaleAndOtherHost, "http://github.com/metacubex/tailscale/foo", false},
 		{"http://microsoft.com/foo", tailscaleAndOtherHost, "http://microsoft.com/foo", false},
-		{"https://tailscale.com/foo", tailscaleHost, "https://tailscale.com/foo", false},
+		{"https://github.com/metacubex/tailscale/foo", tailscaleHost, "https://github.com/metacubex/tailscale/foo", false},
 		{"/foo", tailscaleHost, "/foo", false},
-		{"//tailscale.com/foo", tailscaleHost, "//tailscale.com/foo", false},
+		{"//github.com/metacubex/tailscale/foo", tailscaleHost, "//github.com/metacubex/tailscale/foo", false},
 		{"/a/foobar", tailscaleHost, "/a/foobar", false},
 		{"http://127.0.0.1/a/foobar", localHost, "http://127.0.0.1/a/foobar", false},
 		{"http://127.0.0.1:123/a/foobar", localHost, "http://127.0.0.1:123/a/foobar", false},

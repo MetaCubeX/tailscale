@@ -3,6 +3,7 @@
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
+
 package main
 
 import (
@@ -11,11 +12,11 @@ import (
 	"path/filepath"
 	"testing"
 
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/kube/kubetypes"
+	"github.com/metacubex/tailscale/kube/localclient"
+	"github.com/metacubex/tailscale/tailcfg"
 	"github.com/google/go-cmp/cmp"
-	"tailscale.com/ipn"
-	"tailscale.com/kube/kubetypes"
-	"tailscale.com/kube/localclient"
-	"tailscale.com/tailcfg"
 )
 
 func TestUpdateServeConfig(t *testing.T) {

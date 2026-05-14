@@ -14,7 +14,7 @@ import (
 	"strings"
 	"time"
 
-	"tailscale.com/util/rands"
+	"github.com/metacubex/tailscale/util/rands"
 )
 
 //go:embed ui-header.html

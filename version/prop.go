@@ -4,15 +4,15 @@
 package version
 
 import (
+	"github.com/metacubex/tailscale/syncs"
 	"os"
 	"path/filepath"
 	"runtime"
 	"strconv"
 	"strings"
-	"tailscale.com/syncs"
 
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/lazy"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/types/lazy"
 )
 
 // AppIdentifierFn, if non-nil, is a callback function that returns the

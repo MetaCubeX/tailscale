@@ -10,11 +10,11 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"net/netip"
 	"reflect"
 	"strings"
 	"sync"
-	slices "tailscale.com/util/go120/slices"
 
 	"go.uber.org/zap"
 	corev1 "k8s.io/api/core/v1"
@@ -28,21 +28,21 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 	"tailscale.com/client/tailscale/v2"
 
-	"tailscale.com/ipn"
-	tsoperator "tailscale.com/k8s-operator"
-	tsapi "tailscale.com/k8s-operator/apis/v1alpha1"
-	"tailscale.com/k8s-operator/tsclient"
-	"tailscale.com/kube/ingressservices"
-	"tailscale.com/kube/kubetypes"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tstime"
-	"tailscale.com/util/clientmetric"
-	"tailscale.com/util/mak"
-	"tailscale.com/util/set"
+	"github.com/metacubex/tailscale/ipn"
+	tsoperator "github.com/metacubex/tailscale/k8s-operator"
+	tsapi "github.com/metacubex/tailscale/k8s-operator/apis/v1alpha1"
+	"github.com/metacubex/tailscale/k8s-operator/tsclient"
+	"github.com/metacubex/tailscale/kube/ingressservices"
+	"github.com/metacubex/tailscale/kube/kubetypes"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/tstime"
+	"github.com/metacubex/tailscale/util/clientmetric"
+	"github.com/metacubex/tailscale/util/mak"
+	"github.com/metacubex/tailscale/util/set"
 )
 
 const (
-	svcPGFinalizerName                   = "tailscale.com/service-pg-finalizer"
+	svcPGFinalizerName                   = "github.com/metacubex/tailscale/service-pg-finalizer"
 	reasonIngressSvcInvalid              = "IngressSvcInvalid"
 	reasonIngressSvcConfigured           = "IngressSvcConfigured"
 	reasonIngressSvcNoBackendsConfigured = "IngressSvcNoBackendsConfigured"
@@ -72,7 +72,7 @@ type HAServiceReconciler struct {
 
 // Reconcile reconciles Services that should be exposed over Tailscale in HA
 // mode (on a ProxyGroup). It looks at all Services with
-// tailscale.com/proxy-group annotation. For each such Service, it ensures that
+// github.com/metacubex/tailscale/proxy-group annotation. For each such Service, it ensures that
 // a Tailscale Service named after the hostname of the Service exists and is up to
 // date.
 // HA Servicees support multi-cluster Service setup.

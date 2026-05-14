@@ -9,12 +9,12 @@ package main
 
 import (
 	"fmt"
+	cmp "github.com/metacubex/tailscale/util/go120/cmp"
 	"os"
 	"strings"
-	cmp "tailscale.com/util/go120/cmp"
 
-	"tailscale.com/feature/featuretags"
-	"tailscale.com/util/must"
+	"github.com/metacubex/tailscale/feature/featuretags"
+	"github.com/metacubex/tailscale/util/must"
 )
 
 const header = `// Copyright (c) Tailscale Inc & contributors

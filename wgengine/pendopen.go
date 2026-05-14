@@ -13,13 +13,13 @@ import (
 	"time"
 
 	"github.com/metacubex/bart"
-	"tailscale.com/net/flowtrack"
-	"tailscale.com/net/packet"
-	"tailscale.com/net/tstun"
-	"tailscale.com/syncs"
-	"tailscale.com/types/ipproto"
-	"tailscale.com/util/mak"
-	"tailscale.com/wgengine/filter"
+	"github.com/metacubex/tailscale/net/flowtrack"
+	"github.com/metacubex/tailscale/net/packet"
+	"github.com/metacubex/tailscale/net/tstun"
+	"github.com/metacubex/tailscale/syncs"
+	"github.com/metacubex/tailscale/types/ipproto"
+	"github.com/metacubex/tailscale/util/mak"
+	"github.com/metacubex/tailscale/wgengine/filter"
 )
 
 type flowtrackTuple = flowtrack.Tuple

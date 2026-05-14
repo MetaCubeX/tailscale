@@ -8,8 +8,8 @@ package ipn
 import (
 	"testing"
 
-	"tailscale.com/health"
-	"tailscale.com/types/empty"
+	"github.com/metacubex/tailscale/health"
+	"github.com/metacubex/tailscale/types/empty"
 )
 
 func TestNotifyString(t *testing.T) {

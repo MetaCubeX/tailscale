@@ -12,20 +12,20 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	cmp "github.com/metacubex/tailscale/util/go120/cmp"
+	maps "github.com/metacubex/tailscale/util/go120/maps"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"hash/fnv"
 	"log"
 	"math/rand"
 	"net/http"
 	"sync"
-	cmp "tailscale.com/util/go120/cmp"
-	maps "tailscale.com/util/go120/maps"
-	slices "tailscale.com/util/go120/slices"
 	"time"
 
+	"github.com/metacubex/tailscale/syncs"
+	"github.com/metacubex/tailscale/tsweb"
 	"github.com/prometheus/client_golang/prometheus"
 	"golang.org/x/sync/errgroup"
-	"tailscale.com/syncs"
-	"tailscale.com/tsweb"
 )
 
 // recentHistSize is the number of recent probe results and latencies to keep

@@ -14,11 +14,11 @@ import (
 	"crypto/tls"
 	"errors"
 	"fmt"
+	cmp "github.com/metacubex/tailscale/util/go120/cmp"
 	"net"
 	"net/http"
 	"net/netip"
 	"sync/atomic"
-	cmp "tailscale.com/util/go120/cmp"
 )
 
 // Dialer is an HTTP CONNECT proxy dialer to dial the control plane via an ACE

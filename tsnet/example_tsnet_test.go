@@ -15,7 +15,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"tailscale.com/tsnet"
+	"github.com/metacubex/tailscale/tsnet"
 )
 
 // ExampleServer shows you how to construct a ready-to-use tsnet instance.

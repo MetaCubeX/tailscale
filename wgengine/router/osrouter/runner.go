@@ -8,12 +8,12 @@ package osrouter
 import (
 	"errors"
 	"fmt"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"os"
 	"os/exec"
 	"strconv"
 	"strings"
 	"syscall"
-	slices "tailscale.com/util/go120/slices"
 
 	"golang.org/x/sys/unix"
 )

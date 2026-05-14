@@ -9,11 +9,11 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/metacubex/tailscale/types/key"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/wgengine/wgcfg"
+	"github.com/metacubex/tailscale/wgengine/wglog"
 	"go4.org/mem"
-	"tailscale.com/types/key"
-	"tailscale.com/types/logger"
-	"tailscale.com/wgengine/wgcfg"
-	"tailscale.com/wgengine/wglog"
 )
 
 func TestLogger(t *testing.T) {

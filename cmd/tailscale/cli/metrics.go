@@ -9,8 +9,8 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/metacubex/tailscale/atomicfile"
 	"github.com/peterbourgon/ff/v3/ffcli"
-	"tailscale.com/atomicfile"
 )
 
 var metricsCmd = &ffcli.Command{
@@ -22,7 +22,7 @@ The 'tailscale metrics' command shows Tailscale user-facing metrics (as opposed
 to internal metrics printed by 'tailscale debug metrics').
 
 For more information about Tailscale metrics, refer to
-https://tailscale.com/s/client-metrics
+https://github.com/metacubex/tailscale/s/client-metrics
 
 `),
 	ShortUsage: "tailscale metrics <subcommand> [flags]",

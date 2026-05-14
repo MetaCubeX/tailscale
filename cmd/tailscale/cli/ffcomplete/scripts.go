@@ -11,8 +11,8 @@ import (
 	"os"
 	"strings"
 
+	"github.com/metacubex/tailscale/tempfork/spf13/cobra"
 	"github.com/peterbourgon/ff/v3/ffcli"
-	"tailscale.com/tempfork/spf13/cobra"
 )
 
 func compCmd(fs *flag.FlagSet) string {

@@ -11,8 +11,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/metacubex/tailscale/util/must"
 	"golang.org/x/sys/unix"
-	"tailscale.com/util/must"
 )
 
 func TestSetUserTimeout(t *testing.T) {

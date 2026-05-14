@@ -13,13 +13,13 @@ import (
 	"sync"
 	"testing"
 
-	"tailscale.com/client/local"
-	"tailscale.com/envknob"
-	"tailscale.com/ipn"
-	"tailscale.com/ipn/lapitest"
-	"tailscale.com/tsd"
-	"tailscale.com/util/syspolicy/pkey"
-	"tailscale.com/util/syspolicy/policytest"
+	"github.com/metacubex/tailscale/client/local"
+	"github.com/metacubex/tailscale/envknob"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/ipn/lapitest"
+	"github.com/metacubex/tailscale/tsd"
+	"github.com/metacubex/tailscale/util/syspolicy/pkey"
+	"github.com/metacubex/tailscale/util/syspolicy/policytest"
 )
 
 func TestUserConnectDisconnectNonWindows(t *testing.T) {

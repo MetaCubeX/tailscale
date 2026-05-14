@@ -7,18 +7,18 @@ package tka
 
 import (
 	"bytes"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"os"
 	"path/filepath"
 	"sync"
-	slices "tailscale.com/util/go120/slices"
 	"testing"
 	"time"
 
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
+	"github.com/metacubex/tailscale/types/key"
+	"github.com/metacubex/tailscale/util/must"
 	"golang.org/x/crypto/blake2s"
-	"tailscale.com/types/key"
-	"tailscale.com/util/must"
 )
 
 // This package has implementation-specific tests for Mem and FS.

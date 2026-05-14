@@ -19,10 +19,10 @@ import (
 	"time"
 	"unsafe"
 
+	"github.com/metacubex/tailscale/util/dirwalk"
+	"github.com/metacubex/tailscale/util/mak"
 	"go4.org/mem"
 	"golang.org/x/sys/unix"
-	"tailscale.com/util/dirwalk"
-	"tailscale.com/util/mak"
 )
 
 func init() {

@@ -3,14 +3,13 @@
 // Copyright (c) Tailscale Inc & AUTHORS
 // SPDX-License-Identifier: BSD-3-Clause
 
-
 package pe
 
 //go:generate go run golang.org/x/sys/windows/mkwinsyscall -output zsyscall_windows_test.go mksyscall_test.go
 //go:generate go run golang.org/x/tools/cmd/goimports -w zsyscall_windows_test.go
 
 import (
-	"tailscale.com/util/wingoes"
+	"github.com/metacubex/tailscale/util/wingoes"
 	"golang.org/x/sys/windows"
 )
 

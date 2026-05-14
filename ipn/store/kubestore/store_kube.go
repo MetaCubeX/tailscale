@@ -14,16 +14,16 @@ import (
 	"strings"
 	"time"
 
-	"tailscale.com/envknob"
-	"tailscale.com/ipn"
-	"tailscale.com/ipn/store"
-	"tailscale.com/ipn/store/mem"
-	"tailscale.com/kube/kubeapi"
-	"tailscale.com/kube/kubeclient"
-	"tailscale.com/kube/kubetypes"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/dnsname"
-	"tailscale.com/util/mak"
+	"github.com/metacubex/tailscale/envknob"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/ipn/store"
+	"github.com/metacubex/tailscale/ipn/store/mem"
+	"github.com/metacubex/tailscale/kube/kubeapi"
+	"github.com/metacubex/tailscale/kube/kubeclient"
+	"github.com/metacubex/tailscale/kube/kubetypes"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/util/dnsname"
+	"github.com/metacubex/tailscale/util/mak"
 )
 
 func init() {
@@ -494,9 +494,9 @@ func (s *Store) certSecretSelector() map[string]string {
 	}
 	pgName := s.podName[:p]
 	return map[string]string{
-		kubetypes.LabelSecretType:   kubetypes.LabelSecretTypeCerts,
-		kubetypes.LabelManaged:      "true",
-		"tailscale.com/proxy-group": pgName,
+		kubetypes.LabelSecretType:                    kubetypes.LabelSecretTypeCerts,
+		kubetypes.LabelManaged:                       "true",
+		"github.com/metacubex/tailscale/proxy-group": pgName,
 	}
 }
 

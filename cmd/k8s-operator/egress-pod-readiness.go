@@ -9,12 +9,17 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"net/http"
 	"strings"
 	"sync/atomic"
-	slices "tailscale.com/util/go120/slices"
 	"time"
 
+	tsapi "github.com/metacubex/tailscale/k8s-operator/apis/v1alpha1"
+	"github.com/metacubex/tailscale/kube/kubetypes"
+	"github.com/metacubex/tailscale/tstime"
+	"github.com/metacubex/tailscale/util/backoff"
+	"github.com/metacubex/tailscale/util/httpm"
 	"go.uber.org/zap"
 	xslices "golang.org/x/exp/slices"
 	corev1 "k8s.io/api/core/v1"
@@ -23,16 +28,11 @@ import (
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
-	tsapi "tailscale.com/k8s-operator/apis/v1alpha1"
-	"tailscale.com/kube/kubetypes"
-	"tailscale.com/tstime"
-	"tailscale.com/util/backoff"
-	"tailscale.com/util/httpm"
 )
 
-const tsEgressReadinessGate = "tailscale.com/egress-services"
+const tsEgressReadinessGate = "github.com/metacubex/tailscale/egress-services"
 
-// egressPodsReconciler is responsible for setting tailscale.com/egress-services condition on egress ProxyGroup Pods.
+// egressPodsReconciler is responsible for setting github.com/metacubex/tailscale/egress-services condition on egress ProxyGroup Pods.
 // The condition is used as a readiness gate for the Pod, meaning that kubelet will not mark the Pod as ready before the
 // condition is set. The ProxyGroup StatefulSet updates are rolled out in such a way that no Pod is restarted, before
 // the previous Pod is marked as ready, so ensuring that the Pod does not get marked as ready when it is not yet able to
@@ -50,7 +50,7 @@ type egressPodsReconciler struct {
 
 // Reconcile reconciles an egress ProxyGroup Pods on changes to those Pods and ProxyGroup EndpointSlices. It ensures
 // that for each Pod who is ready to route traffic to all egress services for the ProxyGroup, the Pod has a
-// tailscale.com/egress-services condition to set, so that kubelet will mark the Pod as ready.
+// github.com/metacubex/tailscale/egress-services condition to set, so that kubelet will mark the Pod as ready.
 //
 // For the Pod to be ready
 // to route traffic to the egress service, the kube proxy needs to have set up the Pod's IP as an endpoint for the

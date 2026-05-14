@@ -11,13 +11,13 @@ import (
 
 	jsonv2 "github.com/metacubex/jsonv2"
 	"github.com/metacubex/jsonv2/jsontext"
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/key"
-	"tailscale.com/types/structs"
-	"tailscale.com/types/views"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/types/key"
+	"github.com/metacubex/tailscale/types/structs"
+	"github.com/metacubex/tailscale/types/views"
 )
 
-//go:generate go run tailscale.com/cmd/cloner  -clonefunc=false -type=Persist
+//go:generate go run github.com/metacubex/tailscale/cmd/cloner  -clonefunc=false -type=Persist
 
 // View returns a read-only view of Persist.
 func (p *Persist) View() PersistView {

@@ -14,8 +14,8 @@ import (
 	"sort"
 	"testing"
 
+	"github.com/metacubex/tailscale/tstest"
 	"go4.org/mem"
-	"tailscale.com/tstest"
 )
 
 func TestWalkShallowOSSpecific(t *testing.T) {

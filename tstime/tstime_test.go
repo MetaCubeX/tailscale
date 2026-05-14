@@ -10,7 +10,7 @@ import (
 	"testing"
 	"time"
 
-	"tailscale.com/util/must"
+	"github.com/metacubex/tailscale/util/must"
 )
 
 func TestParseDuration(t *testing.T) {

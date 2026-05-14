@@ -9,16 +9,16 @@ package setting
 
 import (
 	"fmt"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"strings"
-	slices "tailscale.com/util/go120/slices"
 	"time"
 
-	"tailscale.com/syncs"
-	"tailscale.com/types/lazy"
-	"tailscale.com/util/syspolicy/internal"
-	"tailscale.com/util/syspolicy/pkey"
-	"tailscale.com/util/syspolicy/ptype"
-	"tailscale.com/util/testenv"
+	"github.com/metacubex/tailscale/syncs"
+	"github.com/metacubex/tailscale/types/lazy"
+	"github.com/metacubex/tailscale/util/syspolicy/internal"
+	"github.com/metacubex/tailscale/util/syspolicy/pkey"
+	"github.com/metacubex/tailscale/util/syspolicy/ptype"
+	"github.com/metacubex/tailscale/util/testenv"
 )
 
 // Scope indicates the broadest scope at which a policy setting may apply,

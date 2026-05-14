@@ -4,15 +4,15 @@
 package prefs
 
 import (
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"net/netip"
-	slices "tailscale.com/util/go120/slices"
 	"time"
 
 	jsonv2 "github.com/metacubex/jsonv2"
 	"github.com/metacubex/jsonv2/jsontext"
+	"github.com/metacubex/tailscale/types/opt"
+	"github.com/metacubex/tailscale/types/views"
 	"golang.org/x/exp/constraints"
-	"tailscale.com/types/opt"
-	"tailscale.com/types/views"
 )
 
 // BasicType is a constraint that allows types whose underlying type is a predeclared

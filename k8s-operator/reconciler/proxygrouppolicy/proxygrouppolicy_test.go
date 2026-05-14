@@ -6,8 +6,8 @@
 package proxygrouppolicy_test
 
 import (
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"strings"
-	slices "tailscale.com/util/go120/slices"
 	"testing"
 
 	admr "k8s.io/api/admissionregistration/v1"
@@ -17,8 +17,8 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 
-	tsapi "tailscale.com/k8s-operator/apis/v1alpha1"
-	"tailscale.com/k8s-operator/reconciler/proxygrouppolicy"
+	tsapi "github.com/metacubex/tailscale/k8s-operator/apis/v1alpha1"
+	"github.com/metacubex/tailscale/k8s-operator/reconciler/proxygrouppolicy"
 )
 
 func TestReconciler_Reconcile(t *testing.T) {

@@ -7,7 +7,7 @@ package mapx
 
 import (
 	"fmt"
-	slices "tailscale.com/util/go120/slices"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"testing"
 )
 

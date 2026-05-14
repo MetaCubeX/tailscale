@@ -10,7 +10,7 @@ import (
 	"strings"
 	"testing"
 
-	"tailscale.com/client/tailscale"
+	"github.com/metacubex/tailscale/client/tailscale"
 )
 
 func TestEmbeddedTypeUnmarshal(t *testing.T) {

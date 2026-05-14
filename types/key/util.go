@@ -9,13 +9,13 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"io"
 	"reflect"
-	slices "tailscale.com/util/go120/slices"
 
+	"github.com/metacubex/tailscale/util/set"
+	"github.com/metacubex/tailscale/util/testenv"
 	"go4.org/mem"
-	"tailscale.com/util/set"
-	"tailscale.com/util/testenv"
 )
 
 // rand fills b with cryptographically strong random bytes. Panics if

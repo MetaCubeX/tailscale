@@ -9,6 +9,7 @@ import (
 	"bufio"
 	"flag"
 	"fmt"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"go/build/constraint"
 	"io/fs"
 	"log"
@@ -17,7 +18,6 @@ import (
 	"sort"
 	"strings"
 	"sync"
-	slices "tailscale.com/util/go120/slices"
 
 	"golang.org/x/tools/go/packages"
 )
@@ -203,7 +203,7 @@ func computeAffected(pkgs []*packages.Package, tag string) map[string]bool {
 }
 
 func isThirdParty(pkg string) bool {
-	return strings.HasPrefix(pkg, "tailscale.com/tempfork/")
+	return strings.HasPrefix(pkg, "github.com/metacubex/tailscale/tempfork/")
 }
 
 // hasBuildTag reports whether any source file in pkg mentions `tag`

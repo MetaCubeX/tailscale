@@ -9,8 +9,8 @@ import (
 	"fmt"
 	"time"
 
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/key"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/types/key"
 )
 
 var (

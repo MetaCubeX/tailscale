@@ -10,17 +10,17 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	cmp "github.com/metacubex/tailscale/util/go120/cmp"
 	"io"
 	"net/http"
 	"strings"
 	"sync"
 	"sync/atomic"
-	cmp "tailscale.com/util/go120/cmp"
 
 	"github.com/klauspost/compress/zstd"
-	"tailscale.com/control/ts2021"
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/key"
+	"github.com/metacubex/tailscale/control/ts2021"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/types/key"
 )
 
 // errSessionClosed is returned by [MapSession.Next] and

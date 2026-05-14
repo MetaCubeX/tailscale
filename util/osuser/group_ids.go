@@ -12,7 +12,7 @@ import (
 	"strings"
 	"time"
 
-	"tailscale.com/version/distro"
+	"github.com/metacubex/tailscale/version/distro"
 )
 
 // GetGroupIds returns the list of group IDs that the user is a member of, or

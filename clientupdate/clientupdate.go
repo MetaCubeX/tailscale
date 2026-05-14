@@ -14,6 +14,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	maps "github.com/metacubex/tailscale/util/go120/maps"
 	"io"
 	"io/fs"
 	"net/http"
@@ -25,16 +26,15 @@ import (
 	"runtime"
 	"strconv"
 	"strings"
-	maps "tailscale.com/util/go120/maps"
 
-	"tailscale.com/envknob"
-	"tailscale.com/feature"
-	"tailscale.com/hostinfo"
-	"tailscale.com/types/lazy"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/cmpver"
-	"tailscale.com/version"
-	"tailscale.com/version/distro"
+	"github.com/metacubex/tailscale/envknob"
+	"github.com/metacubex/tailscale/feature"
+	"github.com/metacubex/tailscale/hostinfo"
+	"github.com/metacubex/tailscale/types/lazy"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/util/cmpver"
+	"github.com/metacubex/tailscale/version"
+	"github.com/metacubex/tailscale/version/distro"
 )
 
 const (
@@ -519,7 +519,7 @@ func updateDebianAptSourcesList(dstTrack string) (rewrote bool, err error) {
 }
 
 func updateDebianAptSourcesListBytes(was []byte, dstTrack string) (newContent []byte, err error) {
-	trackURLPrefix := []byte("https://pkgs.tailscale.com/" + dstTrack + "/")
+	trackURLPrefix := []byte("https://pkgs.github.com/metacubex/tailscale/" + dstTrack + "/")
 	var buf bytes.Buffer
 	var changes int
 	bs := bufio.NewScanner(bytes.NewReader(was))
@@ -627,7 +627,7 @@ func updateYUMRepoTrack(repoFile, dstTrack string) (rewrote bool, err error) {
 	}
 
 	urlRe := regexp.MustCompile(`^(baseurl|gpgkey)=https://pkgs\.tailscale\.com/(stable|unstable|release-candidate)`)
-	urlReplacement := fmt.Sprintf("$1=https://pkgs.tailscale.com/%s", dstTrack)
+	urlReplacement := fmt.Sprintf("$1=https://pkgs.github.com/metacubex/tailscale/%s", dstTrack)
 
 	s := bufio.NewScanner(bytes.NewReader(was))
 	newContent := bytes.NewBuffer(make([]byte, 0, len(was)))

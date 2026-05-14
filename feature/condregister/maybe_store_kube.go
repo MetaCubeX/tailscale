@@ -5,4 +5,4 @@
 
 package condregister
 
-import _ "tailscale.com/ipn/store/kubestore"
+import _ "github.com/metacubex/tailscale/ipn/store/kubestore"

@@ -16,10 +16,10 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 
-	tsapi "tailscale.com/k8s-operator/apis/v1alpha1"
-	"tailscale.com/k8s-operator/reconciler/tailnet"
-	"tailscale.com/k8s-operator/tsclient"
-	"tailscale.com/tstest"
+	tsapi "github.com/metacubex/tailscale/k8s-operator/apis/v1alpha1"
+	"github.com/metacubex/tailscale/k8s-operator/reconciler/tailnet"
+	"github.com/metacubex/tailscale/k8s-operator/tsclient"
+	"github.com/metacubex/tailscale/tstest"
 )
 
 func TestReconciler_Reconcile(t *testing.T) {

@@ -6,12 +6,12 @@ package winutil
 import (
 	"errors"
 	"fmt"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"os"
-	slices "tailscale.com/util/go120/slices"
 	"unsafe"
 
+	"github.com/metacubex/tailscale/util/wingoes"
 	"golang.org/x/sys/windows"
-	"tailscale.com/util/wingoes"
 )
 
 var (

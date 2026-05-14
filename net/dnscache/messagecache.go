@@ -7,9 +7,9 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
+	cmp "github.com/metacubex/tailscale/util/go120/cmp"
 	"io"
 	"sync"
-	cmp "tailscale.com/util/go120/cmp"
 	"time"
 
 	"github.com/golang/groupcache/lru"

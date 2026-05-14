@@ -8,11 +8,11 @@ import (
 	"errors"
 	"flag"
 	"fmt"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"net/netip"
-	slices "tailscale.com/util/go120/slices"
 
+	"github.com/metacubex/tailscale/ipn/ipnstate"
 	"github.com/peterbourgon/ff/v3/ffcli"
-	"tailscale.com/ipn/ipnstate"
 )
 
 var ipCmd = &ffcli.Command{
