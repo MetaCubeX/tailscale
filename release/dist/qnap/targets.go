@@ -4,9 +4,9 @@
 package qnap
 
 import (
-	slices "tailscale.com/util/go120/slices"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 
-	"tailscale.com/release/dist"
+	"github.com/metacubex/tailscale/release/dist"
 )
 
 // Targets defines the dist.Targets for QNAP devices.

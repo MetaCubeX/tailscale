@@ -7,13 +7,13 @@ import (
 	"errors"
 	"net/netip"
 
-	"tailscale.com/envknob"
-	"tailscale.com/net/flowtrack"
-	"tailscale.com/net/packet"
-	"tailscale.com/net/packet/checksum"
-	"tailscale.com/types/ipproto"
-	"tailscale.com/types/logger"
-	"tailscale.com/wgengine/filter"
+	"github.com/metacubex/tailscale/envknob"
+	"github.com/metacubex/tailscale/net/flowtrack"
+	"github.com/metacubex/tailscale/net/packet"
+	"github.com/metacubex/tailscale/net/packet/checksum"
+	"github.com/metacubex/tailscale/types/ipproto"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/wgengine/filter"
 )
 
 var (

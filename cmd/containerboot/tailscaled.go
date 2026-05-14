@@ -19,8 +19,8 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/metacubex/tailscale/client/local"
 	"github.com/fsnotify/fsnotify"
-	"tailscale.com/client/local"
 )
 
 func startTailscaled(ctx context.Context, cfg *settings) (*local.Client, *os.Process, error) {

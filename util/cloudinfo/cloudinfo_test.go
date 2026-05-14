@@ -7,13 +7,13 @@ package cloudinfo
 
 import (
 	"context"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"net/http"
 	"net/http/httptest"
 	"net/netip"
-	slices "tailscale.com/util/go120/slices"
 	"testing"
 
-	"tailscale.com/util/cloudenv"
+	"github.com/metacubex/tailscale/util/cloudenv"
 )
 
 func TestCloudInfo_AWS(t *testing.T) {

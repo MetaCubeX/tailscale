@@ -10,12 +10,12 @@ import (
 	"os/exec"
 	"sync/atomic"
 
+	"github.com/metacubex/tailscale/net/netaddr"
+	"github.com/metacubex/tailscale/syncs"
+	"github.com/metacubex/tailscale/types/result"
+	"github.com/metacubex/tailscale/util/lineiter"
 	"go4.org/mem"
 	"golang.org/x/sys/unix"
-	"tailscale.com/net/netaddr"
-	"tailscale.com/syncs"
-	"tailscale.com/types/result"
-	"tailscale.com/util/lineiter"
 )
 
 var (

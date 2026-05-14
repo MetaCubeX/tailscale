@@ -15,7 +15,7 @@ import (
 	"strings"
 	"testing"
 
-	"tailscale.com/net/memnet"
+	"github.com/metacubex/tailscale/net/memnet"
 )
 
 func echoConnOnce(conn net.Conn) {

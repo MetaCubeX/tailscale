@@ -15,7 +15,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"tailscale.com/util/linuxfw"
+	"github.com/metacubex/tailscale/util/linuxfw"
 )
 
 // ensureIPForwarding enables IPv4/IPv6 forwarding for the container.

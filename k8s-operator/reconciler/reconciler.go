@@ -8,14 +8,14 @@
 package reconciler
 
 import (
-	slices "tailscale.com/util/go120/slices"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 const (
 	// FinalizerName is the common finalizer used across all Tailscale Kubernetes resources.
-	FinalizerName = "tailscale.com/finalizer"
+	FinalizerName = "github.com/metacubex/tailscale/finalizer"
 )
 
 // SetFinalizer adds the finalizer to the resource if not already present.

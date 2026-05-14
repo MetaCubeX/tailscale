@@ -14,17 +14,17 @@ import (
 	"encoding/base64"
 	"errors"
 	"fmt"
+	"github.com/metacubex/tailscale/util/go120/randv2"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"net"
 	"net/netip"
 	"os"
 	"sort"
 	"strconv"
 	"sync"
-	"tailscale.com/util/go120/randv2"
-	slices "tailscale.com/util/go120/slices"
 	"time"
 
-	"tailscale.com/net/netaddr"
+	"github.com/metacubex/tailscale/net/netaddr"
 )
 
 var traceOn, _ = strconv.ParseBool(os.Getenv("NATLAB_TRACE"))

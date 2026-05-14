@@ -8,18 +8,18 @@ import (
 	"encoding/base64"
 	"encoding/hex"
 	"fmt"
+	cmp "github.com/metacubex/tailscale/util/go120/cmp"
 	"log"
 	"net/http"
 	"os"
 	"os/exec"
 	"sync"
-	cmp "tailscale.com/util/go120/cmp"
 
 	"github.com/metacubex/tailscale-wireguard-go/conn"
 	"github.com/metacubex/tailscale-wireguard-go/device"
 	"github.com/metacubex/tailscale-wireguard-go/tun"
+	"github.com/metacubex/tailscale/wgengine/wgcfg"
 	"golang.org/x/crypto/curve25519"
-	"tailscale.com/wgengine/wgcfg"
 )
 
 func init() {

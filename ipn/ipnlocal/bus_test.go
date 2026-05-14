@@ -7,19 +7,19 @@ package ipnlocal
 
 import (
 	"context"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"reflect"
-	slices "tailscale.com/util/go120/slices"
 	"testing"
 	"time"
 
-	"tailscale.com/drive"
-	"tailscale.com/ipn"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tstest"
-	"tailscale.com/tstime"
-	"tailscale.com/types/logger"
-	"tailscale.com/types/netmap"
-	"tailscale.com/types/views"
+	"github.com/metacubex/tailscale/drive"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/tstest"
+	"github.com/metacubex/tailscale/tstime"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/types/netmap"
+	"github.com/metacubex/tailscale/types/views"
 )
 
 func TestIsNotableNotify(t *testing.T) {

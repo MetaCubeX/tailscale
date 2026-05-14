@@ -4,10 +4,10 @@
 package set
 
 import (
-	iter "tailscale.com/util/go120/iter"
-	maps "tailscale.com/util/go120/maps"
+	iter "github.com/metacubex/tailscale/util/go120/iter"
+	maps "github.com/metacubex/tailscale/util/go120/maps"
 
-	"tailscale.com/types/structs"
+	"github.com/metacubex/tailscale/types/structs"
 )
 
 // SmallSet is a set that is optimized for reducing memory overhead when the

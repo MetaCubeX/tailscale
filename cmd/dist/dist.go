@@ -8,16 +8,16 @@ import (
 	"context"
 	"errors"
 	"flag"
+	cmp "github.com/metacubex/tailscale/util/go120/cmp"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"log"
 	"os"
-	cmp "tailscale.com/util/go120/cmp"
-	slices "tailscale.com/util/go120/slices"
 
-	"tailscale.com/release/dist"
-	"tailscale.com/release/dist/cli"
-	"tailscale.com/release/dist/qnap"
-	"tailscale.com/release/dist/synology"
-	"tailscale.com/release/dist/unixpkgs"
+	"github.com/metacubex/tailscale/release/dist"
+	"github.com/metacubex/tailscale/release/dist/cli"
+	"github.com/metacubex/tailscale/release/dist/qnap"
+	"github.com/metacubex/tailscale/release/dist/synology"
+	"github.com/metacubex/tailscale/release/dist/unixpkgs"
 )
 
 var (

@@ -9,8 +9,8 @@ import (
 	"math"
 	"testing"
 
-	"tailscale.com/tstest"
-	"tailscale.com/util/must"
+	"github.com/metacubex/tailscale/tstest"
+	"github.com/metacubex/tailscale/util/must"
 )
 
 func TestIDs(t *testing.T) {

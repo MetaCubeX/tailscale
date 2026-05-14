@@ -29,15 +29,15 @@ import (
 
 	"github.com/bramvdbogaerde/go-scp"
 	"github.com/google/go-cmp/cmp"
+	"github.com/metacubex/tailscale/net/tsdial"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/types/key"
+	"github.com/metacubex/tailscale/types/netmap"
+	"github.com/metacubex/tailscale/util/set"
 	"github.com/pkg/sftp"
 	gliderssh "github.com/tailscale/gliderssh"
 	"golang.org/x/crypto/ssh"
 	"golang.org/x/crypto/ssh/agent"
-	"tailscale.com/net/tsdial"
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/key"
-	"tailscale.com/types/netmap"
-	"tailscale.com/util/set"
 )
 
 // This file contains integration tests of the SSH functionality. These tests

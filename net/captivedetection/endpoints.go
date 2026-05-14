@@ -5,16 +5,16 @@ package captivedetection
 
 import (
 	"fmt"
+	cmp "github.com/metacubex/tailscale/util/go120/cmp"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"io"
 	"net/http"
 	"net/url"
-	cmp "tailscale.com/util/go120/cmp"
-	slices "tailscale.com/util/go120/slices"
 
+	"github.com/metacubex/tailscale/net/dnsfallback"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/types/logger"
 	"go4.org/mem"
-	"tailscale.com/net/dnsfallback"
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/logger"
 )
 
 // EndpointProvider is an enum that represents the source of an Endpoint.
@@ -121,8 +121,8 @@ func availableEndpoints(derpMap *tailcfg.DERPMap, preferredDERPRegionID int, log
 		}
 		endpoints = append(endpoints, Endpoint{u, http.StatusNoContent, "", false, Tailscale})
 	}
-	appendTailscaleEndpoint("http://controlplane.tailscale.com/generate_204")
-	appendTailscaleEndpoint("http://login.tailscale.com/generate_204")
+	appendTailscaleEndpoint("http://controlplane.github.com/metacubex/tailscale/generate_204")
+	appendTailscaleEndpoint("http://login.github.com/metacubex/tailscale/generate_204")
 
 	// Sort the endpoints by provider so that we can prioritize DERP nodes in the preferred region, followed by
 	// any other DERP server elsewhere, then followed by Tailscale endpoints.

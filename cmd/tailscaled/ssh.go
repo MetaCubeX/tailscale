@@ -6,4 +6,4 @@
 package main
 
 // Register implementations of various SSH hooks.
-import _ "tailscale.com/feature/ssh"
+import _ "github.com/metacubex/tailscale/feature/ssh"

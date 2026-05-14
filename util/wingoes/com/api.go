@@ -9,7 +9,7 @@ package com
 import (
 	"unsafe"
 
-	"tailscale.com/util/wingoes"
+	"github.com/metacubex/tailscale/util/wingoes"
 )
 
 // MustGetAppID parses s, a string containing an app ID and returns a pointer to the

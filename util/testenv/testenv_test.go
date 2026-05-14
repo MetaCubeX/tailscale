@@ -8,7 +8,7 @@ package testenv
 import (
 	"testing"
 
-	"tailscale.com/tstest/deptest"
+	"github.com/metacubex/tailscale/tstest/deptest"
 )
 
 func TestDeps(t *testing.T) {

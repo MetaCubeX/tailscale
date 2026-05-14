@@ -7,15 +7,15 @@ package dns
 
 import (
 	"errors"
+	maps "github.com/metacubex/tailscale/util/go120/maps"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"net/netip"
 	"os"
 	"path/filepath"
-	maps "tailscale.com/util/go120/maps"
-	slices "tailscale.com/util/go120/slices"
 	"testing"
 
-	"tailscale.com/types/logger"
-	"tailscale.com/util/dnsname"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/util/dnsname"
 )
 
 func newTestConfigurator(t *testing.T) *darwinConfigurator {

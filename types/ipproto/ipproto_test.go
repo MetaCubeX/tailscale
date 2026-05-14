@@ -11,7 +11,7 @@ import (
 	"fmt"
 	"testing"
 
-	"tailscale.com/util/must"
+	"github.com/metacubex/tailscale/util/must"
 )
 
 // Ensure that the Proto type implements encoding.TextMarshaler and

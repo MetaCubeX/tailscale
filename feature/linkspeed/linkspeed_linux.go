@@ -9,8 +9,8 @@ import (
 	"github.com/mdlayher/genetlink"
 	"github.com/mdlayher/netlink"
 	"github.com/metacubex/tailscale-wireguard-go/tun"
+	"github.com/metacubex/tailscale/net/tstun"
 	"golang.org/x/sys/unix"
-	"tailscale.com/net/tstun"
 )
 
 func init() {

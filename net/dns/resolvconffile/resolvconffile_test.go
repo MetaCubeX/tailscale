@@ -11,7 +11,7 @@ import (
 	"strings"
 	"testing"
 
-	"tailscale.com/util/dnsname"
+	"github.com/metacubex/tailscale/util/dnsname"
 )
 
 func TestParse(t *testing.T) {

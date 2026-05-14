@@ -16,14 +16,14 @@ import (
 	"time"
 	"unsafe"
 
+	"github.com/metacubex/tailscale/hostinfo"
+	"github.com/metacubex/tailscale/net/neterror"
+	"github.com/metacubex/tailscale/net/packet"
+	"github.com/metacubex/tailscale/types/nettype"
+	"github.com/metacubex/tailscale/util/clientmetric"
 	"golang.org/x/net/ipv4"
 	"golang.org/x/net/ipv6"
 	"golang.org/x/sys/unix"
-	"tailscale.com/hostinfo"
-	"tailscale.com/net/neterror"
-	"tailscale.com/net/packet"
-	"tailscale.com/types/nettype"
-	"tailscale.com/util/clientmetric"
 )
 
 // xnetBatchReaderWriter defines the batching i/o methods of

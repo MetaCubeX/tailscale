@@ -12,13 +12,13 @@ import (
 
 	jsonv2 "github.com/metacubex/jsonv2"
 	"github.com/metacubex/jsonv2/jsontext"
-	"tailscale.com/types/dnstype"
-	"tailscale.com/types/views"
-	"tailscale.com/util/dnsname"
-	"tailscale.com/util/set"
+	"github.com/metacubex/tailscale/types/dnstype"
+	"github.com/metacubex/tailscale/types/views"
+	"github.com/metacubex/tailscale/util/dnsname"
+	"github.com/metacubex/tailscale/util/set"
 )
 
-//go:generate go run tailscale.com/cmd/cloner  -clonefunc=true -type=Config
+//go:generate go run github.com/metacubex/tailscale/cmd/cloner  -clonefunc=true -type=Config
 
 // View returns a read-only view of Config.
 func (p *Config) View() ConfigView {

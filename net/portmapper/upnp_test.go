@@ -9,6 +9,7 @@ import (
 	"context"
 	"encoding/xml"
 	"fmt"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"io"
 	"net"
 	"net/http"
@@ -17,11 +18,10 @@ import (
 	"reflect"
 	"regexp"
 	"sync/atomic"
-	slices "tailscale.com/util/go120/slices"
 	"testing"
 
-	"tailscale.com/net/portmapper/portmappertype"
-	"tailscale.com/tstest"
+	"github.com/metacubex/tailscale/net/portmapper/portmappertype"
+	"github.com/metacubex/tailscale/tstest"
 )
 
 // Google Wifi

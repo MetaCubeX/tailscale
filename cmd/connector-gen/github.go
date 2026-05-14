@@ -6,11 +6,11 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"log"
 	"net/http"
 	"net/netip"
 	"strings"
-	slices "tailscale.com/util/go120/slices"
 
 	"go4.org/netipx"
 )

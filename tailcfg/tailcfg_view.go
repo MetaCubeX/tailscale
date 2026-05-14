@@ -13,15 +13,15 @@ import (
 
 	jsonv2 "github.com/metacubex/jsonv2"
 	"github.com/metacubex/jsonv2/jsontext"
-	"tailscale.com/types/dnstype"
-	"tailscale.com/types/key"
-	"tailscale.com/types/opt"
-	"tailscale.com/types/structs"
-	"tailscale.com/types/tkatype"
-	"tailscale.com/types/views"
+	"github.com/metacubex/tailscale/types/dnstype"
+	"github.com/metacubex/tailscale/types/key"
+	"github.com/metacubex/tailscale/types/opt"
+	"github.com/metacubex/tailscale/types/structs"
+	"github.com/metacubex/tailscale/types/tkatype"
+	"github.com/metacubex/tailscale/types/views"
 )
 
-//go:generate go run tailscale.com/cmd/cloner  -clonefunc=true -type=User,Node,Hostinfo,NetInfo,Login,DNSConfig,RegisterResponse,RegisterResponseAuth,RegisterRequest,DERPHomeParams,DERPRegion,DERPMap,DERPNode,SSHRule,SSHAction,SSHPrincipal,ControlDialPlan,Location,UserProfile,VIPService,SSHPolicy
+//go:generate go run github.com/metacubex/tailscale/cmd/cloner  -clonefunc=true -type=User,Node,Hostinfo,NetInfo,Login,DNSConfig,RegisterResponse,RegisterResponseAuth,RegisterRequest,DERPHomeParams,DERPRegion,DERPMap,DERPNode,SSHRule,SSHAction,SSHPrincipal,ControlDialPlan,Location,UserProfile,VIPService,SSHPolicy
 
 // View returns a read-only view of User.
 func (p *User) View() UserView {
@@ -273,8 +273,8 @@ func (v NodeView) MachineAuthorized() bool { return v.ж.MachineAuthorized }
 // They're free-form strings, but should be in the form of URLs/URIs
 // such as:
 //
-//	"https://tailscale.com/cap/is-admin"
-//	"https://tailscale.com/cap/file-sharing"
+//	"https://github.com/metacubex/tailscale/cap/is-admin"
+//	"https://github.com/metacubex/tailscale/cap/file-sharing"
 //
 // Deprecated: use CapMap instead. See https://github.com/tailscale/tailscale/issues/11508
 func (v NodeView) Capabilities() views.Slice[NodeCapability] { return views.SliceOf(v.ж.Capabilities) }

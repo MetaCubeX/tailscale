@@ -5,10 +5,10 @@ package tstest
 
 import (
 	"bytes"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"runtime"
 	"runtime/pprof"
 	"strings"
-	slices "tailscale.com/util/go120/slices"
 	"testing"
 	"time"
 )
@@ -55,7 +55,7 @@ func ResourceCheck(tb testing.TB) {
 
 		// Print goroutine diff, omitting tstest.ResourceCheck goroutines.
 		self := func(g goroutine) bool {
-			return bytes.Contains(g.stack, []byte("\ttailscale.com/tstest.goroutines+"))
+			return bytes.Contains(g.stack, []byte("\tgithub.com/metacubex/tailscale/tstest.goroutines+"))
 		}
 		start.goroutines = slices.DeleteFunc(start.goroutines, self)
 		end.goroutines = slices.DeleteFunc(end.goroutines, self)

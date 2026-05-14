@@ -17,11 +17,11 @@ import (
 	"unicode"
 	"unicode/utf8"
 
-	"tailscale.com/ipn"
-	"tailscale.com/syncs"
-	"tailscale.com/tstime"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/multierr"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/syncs"
+	"github.com/metacubex/tailscale/tstime"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/util/multierr"
 )
 
 var (

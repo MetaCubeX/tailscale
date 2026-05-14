@@ -13,10 +13,10 @@ import (
 	"fmt"
 	"net/netip"
 
+	"github.com/metacubex/tailscale/kube/kubetypes"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/types/opt"
 	"github.com/tailscale/hujson"
-	"tailscale.com/kube/kubetypes"
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/opt"
 )
 
 const v1Alpha1 = "v1alpha1"

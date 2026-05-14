@@ -9,8 +9,8 @@ import (
 	"net/netip"
 
 	"github.com/metacubex/bart"
-	"tailscale.com/types/views"
-	"tailscale.com/util/set"
+	"github.com/metacubex/tailscale/types/views"
+	"github.com/metacubex/tailscale/util/set"
 )
 
 // FalseContainsIPFunc is shorthand for NewContainsIPFunc(views.Slice[netip.Prefix]{}).

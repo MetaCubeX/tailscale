@@ -20,8 +20,8 @@ import (
 	"sync"
 	"time"
 
+	"github.com/metacubex/tailscale/version"
 	"golang.org/x/sys/unix"
-	"tailscale.com/version"
 )
 
 func init() {

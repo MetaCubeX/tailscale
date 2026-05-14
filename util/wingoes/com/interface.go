@@ -10,7 +10,7 @@ import (
 	"syscall"
 	"unsafe"
 
-	"tailscale.com/util/wingoes"
+	"github.com/metacubex/tailscale/util/wingoes"
 )
 
 // IUnknown is the base COM interface.

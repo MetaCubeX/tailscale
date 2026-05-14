@@ -17,10 +17,10 @@ import (
 	"net"
 	"sync"
 
+	"github.com/metacubex/tailscale/k8s-operator/sessionrecording/tsrecorder"
+	"github.com/metacubex/tailscale/sessionrecording"
 	"go.uber.org/zap"
 	"k8s.io/apimachinery/pkg/util/remotecommand"
-	"tailscale.com/k8s-operator/sessionrecording/tsrecorder"
-	"tailscale.com/sessionrecording"
 )
 
 // New wraps the provided network connection and returns a connection whose reads and writes will get triggered as data is received on the hijacked connection.

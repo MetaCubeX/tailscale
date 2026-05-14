@@ -15,9 +15,9 @@ import (
 
 	qt "github.com/frankban/quicktest"
 	"github.com/metacubex/tailscale-wireguard-go/conn"
+	"github.com/metacubex/tailscale/net/packet"
 	"golang.org/x/net/ipv6"
 	"golang.org/x/sys/unix"
-	"tailscale.com/net/packet"
 )
 
 func Test_linuxBatchingConn_splitCoalescedMessages(t *testing.T) {

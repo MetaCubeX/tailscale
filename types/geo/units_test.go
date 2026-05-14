@@ -10,7 +10,7 @@ import (
 	"strings"
 	"testing"
 
-	"tailscale.com/types/geo"
+	"github.com/metacubex/tailscale/types/geo"
 )
 
 func TestDegrees(t *testing.T) {

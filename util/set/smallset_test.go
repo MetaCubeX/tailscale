@@ -7,10 +7,10 @@ package set
 
 import (
 	"fmt"
+	iter "github.com/metacubex/tailscale/util/go120/iter"
+	maps "github.com/metacubex/tailscale/util/go120/maps"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"reflect"
-	iter "tailscale.com/util/go120/iter"
-	maps "tailscale.com/util/go120/maps"
-	slices "tailscale.com/util/go120/slices"
 	"testing"
 )
 

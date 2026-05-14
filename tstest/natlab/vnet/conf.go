@@ -6,19 +6,19 @@ package vnet
 import (
 	"context"
 	"fmt"
+	cmp "github.com/metacubex/tailscale/util/go120/cmp"
+	iter "github.com/metacubex/tailscale/util/go120/iter"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"net/netip"
 	"os"
-	cmp "tailscale.com/util/go120/cmp"
-	iter "tailscale.com/util/go120/iter"
-	slices "tailscale.com/util/go120/slices"
 	"time"
 
 	"github.com/google/gopacket/layers"
 	"github.com/google/gopacket/pcapgo"
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/must"
-	"tailscale.com/util/set"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/util/must"
+	"github.com/metacubex/tailscale/util/set"
 )
 
 // Note: the exported Node and Network are the configuration types;

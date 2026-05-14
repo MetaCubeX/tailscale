@@ -5,17 +5,17 @@ package eventbus
 
 import (
 	"fmt"
+	cmp "github.com/metacubex/tailscale/util/go120/cmp"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"path/filepath"
 	"reflect"
 	"runtime"
 	"strings"
 	"sync/atomic"
-	cmp "tailscale.com/util/go120/cmp"
-	slices "tailscale.com/util/go120/slices"
 	"time"
 
-	"tailscale.com/syncs"
-	"tailscale.com/types/logger"
+	"github.com/metacubex/tailscale/syncs"
+	"github.com/metacubex/tailscale/types/logger"
 )
 
 // slowSubscriberTimeout is a timeout after which a subscriber that does not

@@ -12,14 +12,14 @@ import (
 	"errors"
 	"expvar"
 	"fmt"
+	cmp "github.com/metacubex/tailscale/util/go120/cmp"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"io"
 	"os"
 	"sync"
-	cmp "tailscale.com/util/go120/cmp"
-	slices "tailscale.com/util/go120/slices"
 
-	"tailscale.com/metrics"
-	"tailscale.com/util/must"
+	"github.com/metacubex/tailscale/metrics"
+	"github.com/metacubex/tailscale/util/must"
 )
 
 var stderrFD = 2 // a variable for testing

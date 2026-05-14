@@ -9,19 +9,19 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
+	"github.com/metacubex/tailscale/util/go120/randv2"
 	"io"
 	"math"
 	"net/netip"
 	"syscall"
-	"tailscale.com/util/go120/randv2"
 	"time"
 
 	"github.com/mdlayher/socket"
+	"github.com/metacubex/tailscale/net/stun"
 	"golang.org/x/net/icmp"
 	"golang.org/x/net/ipv4"
 	"golang.org/x/net/ipv6"
 	"golang.org/x/sys/unix"
-	"tailscale.com/net/stun"
 )
 
 const (

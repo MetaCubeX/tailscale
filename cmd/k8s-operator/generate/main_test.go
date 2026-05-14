@@ -16,8 +16,8 @@ import (
 	"testing"
 	"time"
 
-	"tailscale.com/tstest/nettest"
-	"tailscale.com/util/cibuild"
+	"github.com/metacubex/tailscale/tstest/nettest"
+	"github.com/metacubex/tailscale/util/cibuild"
 )
 
 func Test_generate(t *testing.T) {

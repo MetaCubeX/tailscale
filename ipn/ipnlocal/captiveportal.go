@@ -9,9 +9,9 @@ import (
 	"context"
 	"time"
 
-	"tailscale.com/health"
-	"tailscale.com/net/captivedetection"
-	"tailscale.com/util/clientmetric"
+	"github.com/metacubex/tailscale/health"
+	"github.com/metacubex/tailscale/net/captivedetection"
+	"github.com/metacubex/tailscale/util/clientmetric"
 )
 
 func init() {

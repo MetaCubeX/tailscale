@@ -9,8 +9,8 @@ import (
 	"flag"
 	"fmt"
 
+	"github.com/metacubex/tailscale/client/local"
 	"github.com/peterbourgon/ff/v3/ffcli"
-	"tailscale.com/client/local"
 )
 
 var bugReportCmd = &ffcli.Command{

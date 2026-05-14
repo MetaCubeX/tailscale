@@ -18,7 +18,7 @@ import (
 
 	"github.com/creachadair/taskgroup"
 	"github.com/google/go-cmp/cmp"
-	"tailscale.com/util/eventbus"
+	"github.com/metacubex/tailscale/util/eventbus"
 )
 
 type EventA struct {
@@ -136,7 +136,7 @@ func TestSubscriberFunc(t *testing.T) {
 			c.Close()
 
 			// Verify that the logger recorded that Close gave up on the slowpoke.
-			want := regexp.MustCompile(`^.* tailscale.com/util/eventbus_test bus_test.go:\d+: ` +
+			want := regexp.MustCompile(`^.* github.com/metacubex/tailscale/util/eventbus_test bus_test.go:\d+: ` +
 				`giving up on subscriber for eventbus_test.EventA after \d+s at close.*`)
 			if got := buf.String(); !want.MatchString(got) {
 				t.Errorf("Wrong log output\ngot:  %q\nwant %s", got, want)
@@ -521,7 +521,7 @@ func TestSlowSubs(t *testing.T) {
 			time.Sleep(7 * time.Second) // advance time...
 			synctest.Wait()             // subscriber is done
 
-			want := regexp.MustCompile(`^.* tailscale.com/util/eventbus_test bus_test.go:\d+: ` +
+			want := regexp.MustCompile(`^.* github.com/metacubex/tailscale/util/eventbus_test bus_test.go:\d+: ` +
 				`subscriber for eventbus_test.EventA is slow.*`)
 			if got := buf.String(); !want.MatchString(got) {
 				t.Errorf("Wrong log output\ngot:  %q\nwant: %s", got, want)
@@ -550,7 +550,7 @@ func TestSlowSubs(t *testing.T) {
 			time.Sleep(7 * time.Second) // advance time...
 			synctest.Wait()             // subscriber is done
 
-			want := regexp.MustCompile(`^.* tailscale.com/util/eventbus_test bus_test.go:\d+: ` +
+			want := regexp.MustCompile(`^.* github.com/metacubex/tailscale/util/eventbus_test bus_test.go:\d+: ` +
 				`subscriber for eventbus_test.EventB is slow.*`)
 			if got := buf.String(); !want.MatchString(got) {
 				t.Errorf("Wrong log output\ngot:  %q\nwant: %s", got, want)

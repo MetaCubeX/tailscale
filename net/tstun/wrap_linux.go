@@ -14,9 +14,9 @@ import (
 	"github.com/metacubex/gvisor/pkg/tcpip/checksum"
 	"github.com/metacubex/gvisor/pkg/tcpip/header"
 	"github.com/metacubex/tailscale-wireguard-go/tun"
+	"github.com/metacubex/tailscale/envknob"
+	"github.com/metacubex/tailscale/net/tsaddr"
 	"golang.org/x/sys/unix"
-	"tailscale.com/envknob"
-	"tailscale.com/net/tsaddr"
 )
 
 // SetLinkFeaturesPostUp configures link features on t based on select TS_TUN_

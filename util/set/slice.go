@@ -4,9 +4,9 @@
 package set
 
 import (
-	slices "tailscale.com/util/go120/slices"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 
-	"tailscale.com/types/views"
+	"github.com/metacubex/tailscale/types/views"
 )
 
 // Slice is a set of elements tracked in a slice of unique elements.

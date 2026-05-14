@@ -11,10 +11,10 @@ import (
 
 	jsonv2 "github.com/metacubex/jsonv2"
 	"github.com/metacubex/jsonv2/jsontext"
-	"tailscale.com/types/views"
+	"github.com/metacubex/tailscale/types/views"
 )
 
-//go:generate go run tailscale.com/cmd/cloner  -clonefunc=true -type=Share
+//go:generate go run github.com/metacubex/tailscale/cmd/cloner  -clonefunc=true -type=Share
 
 // View returns a read-only view of Share.
 func (p *Share) View() ShareView {

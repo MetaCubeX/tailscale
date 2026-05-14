@@ -5,11 +5,11 @@ package main
 
 import (
 	"flag"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"io"
 	"os"
 	"strconv"
 	"strings"
-	slices "tailscale.com/util/go120/slices"
 	"testing"
 )
 

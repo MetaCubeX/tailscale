@@ -10,9 +10,9 @@ import (
 	"io"
 	"os"
 
+	"github.com/metacubex/tailscale/util/wingoes"
+	"github.com/metacubex/tailscale/util/winutil"
 	"golang.org/x/sys/windows"
-	"tailscale.com/util/wingoes"
-	"tailscale.com/util/winutil"
 )
 
 var (

@@ -12,8 +12,8 @@ import (
 	"runtime"
 	"strings"
 
+	"github.com/metacubex/tailscale/version/distro"
 	ps "github.com/mitchellh/go-ps"
-	"tailscale.com/version/distro"
 )
 
 func init() {

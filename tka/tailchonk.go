@@ -9,18 +9,18 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	maps "github.com/metacubex/tailscale/util/go120/maps"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"log"
 	"os"
 	"path/filepath"
 	"sync"
-	maps "tailscale.com/util/go120/maps"
-	slices "tailscale.com/util/go120/slices"
 	"time"
 
 	"github.com/fxamacker/cbor/v2"
-	"tailscale.com/atomicfile"
-	"tailscale.com/tstime"
-	"tailscale.com/util/testenv"
+	"github.com/metacubex/tailscale/atomicfile"
+	"github.com/metacubex/tailscale/tstime"
+	"github.com/metacubex/tailscale/util/testenv"
 )
 
 // Chonk implementations provide durable storage for AUMs and other

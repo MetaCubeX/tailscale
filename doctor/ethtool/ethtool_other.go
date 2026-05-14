@@ -8,7 +8,7 @@ package ethtool
 import (
 	"runtime"
 
-	"tailscale.com/types/logger"
+	"github.com/metacubex/tailscale/types/logger"
 )
 
 func ethtoolImpl(logf logger.Logf) error {

@@ -7,10 +7,10 @@ package syncs
 
 import (
 	"context"
+	maps "github.com/metacubex/tailscale/util/go120/maps"
 	"io"
 	"os"
 	"sync"
-	maps "tailscale.com/util/go120/maps"
 	"testing"
 	"time"
 

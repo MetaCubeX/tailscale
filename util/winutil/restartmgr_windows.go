@@ -16,9 +16,9 @@ import (
 	"unicode/utf16"
 	"unsafe"
 
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/util/wingoes"
 	"golang.org/x/sys/windows"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/wingoes"
 )
 
 var (

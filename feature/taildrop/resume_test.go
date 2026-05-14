@@ -14,7 +14,7 @@ import (
 	"testing"
 	"testing/iotest"
 
-	"tailscale.com/util/must"
+	"github.com/metacubex/tailscale/util/must"
 )
 
 func TestResume(t *testing.T) {

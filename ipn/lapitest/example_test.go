@@ -9,7 +9,7 @@ import (
 	"context"
 	"testing"
 
-	"tailscale.com/ipn"
+	"github.com/metacubex/tailscale/ipn"
 )
 
 func TestClientServer(t *testing.T) {

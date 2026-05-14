@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"os"
 
-	"tailscale.com/types/key"
+	"github.com/metacubex/tailscale/types/key"
 )
 
 // ServerInfo identifies a coordination server by its URL and Noise public key.

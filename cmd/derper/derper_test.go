@@ -13,8 +13,8 @@ import (
 	"strings"
 	"testing"
 
-	"tailscale.com/derp/derpserver"
-	"tailscale.com/tstest/deptest"
+	"github.com/metacubex/tailscale/derp/derpserver"
+	"github.com/metacubex/tailscale/tstest/deptest"
 )
 
 func TestProdAutocertHostPolicy(t *testing.T) {
@@ -108,7 +108,7 @@ func TestDeps(t *testing.T) {
 			"github.com/metacubex/gvisor/pkg/cpuid":        "https://github.com/tailscale/tailscale/issues/9756",
 			"github.com/metacubex/gvisor/pkg/tcpip":        "https://github.com/tailscale/tailscale/issues/9756",
 			"github.com/metacubex/gvisor/pkg/tcpip/header": "https://github.com/tailscale/tailscale/issues/9756",
-			"tailscale.com/net/packet":                     "not needed in derper",
+			"github.com/metacubex/tailscale/net/packet":    "not needed in derper",
 			"github.com/metacubex/bart":                    "not needed in derper",
 			"database/sql/driver":                          "not needed in derper", // previously came in via github.com/google/uuid
 		},

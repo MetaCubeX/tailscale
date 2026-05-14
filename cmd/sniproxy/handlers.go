@@ -6,15 +6,15 @@ package main
 import (
 	"context"
 	"fmt"
+	"github.com/metacubex/tailscale/util/go120/randv2"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"log"
 	"net"
 	"net/netip"
-	"tailscale.com/util/go120/randv2"
-	slices "tailscale.com/util/go120/slices"
 
 	"github.com/inetaf/tcpproxy"
-	"tailscale.com/net/netutil"
-	"tailscale.com/net/netx"
+	"github.com/metacubex/tailscale/net/netutil"
+	"github.com/metacubex/tailscale/net/netx"
 )
 
 type tcpRoundRobinHandler struct {

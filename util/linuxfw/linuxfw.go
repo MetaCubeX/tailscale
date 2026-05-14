@@ -13,10 +13,10 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/metacubex/tailscale/feature"
+	"github.com/metacubex/tailscale/tsconst"
+	"github.com/metacubex/tailscale/types/logger"
 	"github.com/tailscale/netlink"
-	"tailscale.com/feature"
-	"tailscale.com/tsconst"
-	"tailscale.com/types/logger"
 )
 
 // MatchDecision is the decision made by the firewall for a packet matched by a rule.

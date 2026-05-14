@@ -1,18 +1,18 @@
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
-// Package tests serves a list of tests for tailscale.com/cmd/viewer.
+// Package tests serves a list of tests for github.com/metacubex/tailscale/cmd/viewer.
 package tests
 
 import (
 	"fmt"
 	"net/netip"
 
+	"github.com/metacubex/tailscale/types/views"
 	"golang.org/x/exp/constraints"
-	"tailscale.com/types/views"
 )
 
-//go:generate go run tailscale.com/cmd/viewer --type=StructWithPtrs,StructWithoutPtrs,Map,StructWithSlices,OnlyGetClone,StructWithEmbedded,GenericIntStruct,GenericNoPtrsStruct,GenericCloneableStruct,StructWithContainers,StructWithTypeAliasFields,GenericTypeAliasStruct,StructWithMapOfViews,StructWithNamedMap,StructWithNamedSlice --clone-only-type=OnlyGetClone
+//go:generate go run github.com/metacubex/tailscale/cmd/viewer --type=StructWithPtrs,StructWithoutPtrs,Map,StructWithSlices,OnlyGetClone,StructWithEmbedded,GenericIntStruct,GenericNoPtrsStruct,GenericCloneableStruct,StructWithContainers,StructWithTypeAliasFields,GenericTypeAliasStruct,StructWithMapOfViews,StructWithNamedMap,StructWithNamedSlice --clone-only-type=OnlyGetClone
 
 type StructWithoutPtrs struct {
 	Int int

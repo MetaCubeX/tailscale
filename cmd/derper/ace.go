@@ -12,8 +12,8 @@ import (
 	"net/http"
 	"strings"
 
-	"tailscale.com/derp/derpserver"
-	"tailscale.com/net/connectproxy"
+	"github.com/metacubex/tailscale/derp/derpserver"
+	"github.com/metacubex/tailscale/net/connectproxy"
 )
 
 // serveConnect handles a CONNECT request for ACE support.
@@ -56,8 +56,8 @@ func serveConnect(s *derpserver.Server, w http.ResponseWriter, r *http.Request) 
 				// encryption, varying by the request type:
 				//
 				//  1. TLS from client to ACE proxy (CONNECT)
-				//  2a. TLS from ACE proxy to https://controlplane.tailscale.com/key (port 443)
-				//  2b. ts2021 Noise from ACE proxy to http://controlplane.tailscale.com/ts2021 (port 80)
+				//  2a. TLS from ACE proxy to https://controlplane.github.com/metacubex/tailscale/key (port 443)
+				//  2b. ts2021 Noise from ACE proxy to http://controlplane.github.com/metacubex/tailscale/ts2021 (port 80)
 				//
 				// But nothing's stopping the client from doing its ts2021
 				// upgrade over https anyway and having three layers of

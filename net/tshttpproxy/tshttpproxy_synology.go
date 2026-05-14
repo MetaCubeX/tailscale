@@ -17,8 +17,8 @@ import (
 	"sync"
 	"time"
 
-	"tailscale.com/types/result"
-	"tailscale.com/util/lineiter"
+	"github.com/metacubex/tailscale/types/result"
+	"github.com/metacubex/tailscale/util/lineiter"
 )
 
 // These vars are overridden for tests.

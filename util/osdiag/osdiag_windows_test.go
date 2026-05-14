@@ -8,8 +8,8 @@ package osdiag
 import (
 	"errors"
 	"fmt"
+	maps "github.com/metacubex/tailscale/util/go120/maps"
 	"strings"
-	maps "tailscale.com/util/go120/maps"
 	"testing"
 
 	"golang.org/x/sys/windows/registry"

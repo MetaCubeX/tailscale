@@ -8,15 +8,15 @@ package tailssh
 import (
 	"bytes"
 	"encoding/json"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"net/http"
 	"os/exec"
 	"runtime"
-	slices "tailscale.com/util/go120/slices"
 
+	"github.com/metacubex/tailscale/ipn/ipnlocal"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/util/lineiter"
 	"go4.org/mem"
-	"tailscale.com/ipn/ipnlocal"
-	"tailscale.com/tailcfg"
-	"tailscale.com/util/lineiter"
 )
 
 func handleC2NSSHUsernames(b *ipnlocal.LocalBackend, w http.ResponseWriter, r *http.Request) {

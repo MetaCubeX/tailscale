@@ -10,9 +10,9 @@ import (
 	_ "embed"
 	"errors"
 	"fmt"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"strings"
 	"sync"
-	slices "tailscale.com/util/go120/slices"
 
 	"go.uber.org/zap"
 	xslices "golang.org/x/exp/slices"
@@ -27,12 +27,12 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 	"sigs.k8s.io/yaml"
 
-	tsoperator "tailscale.com/k8s-operator"
-	tsapi "tailscale.com/k8s-operator/apis/v1alpha1"
-	"tailscale.com/kube/kubetypes"
-	"tailscale.com/tstime"
-	"tailscale.com/util/clientmetric"
-	"tailscale.com/util/set"
+	tsoperator "github.com/metacubex/tailscale/k8s-operator"
+	tsapi "github.com/metacubex/tailscale/k8s-operator/apis/v1alpha1"
+	"github.com/metacubex/tailscale/kube/kubetypes"
+	"github.com/metacubex/tailscale/tstime"
+	"github.com/metacubex/tailscale/util/clientmetric"
+	"github.com/metacubex/tailscale/util/set"
 )
 
 const (
@@ -113,7 +113,7 @@ func (a *NameserverReconciler) Reconcile(ctx context.Context, req reconcile.Requ
 		return res, fmt.Errorf("error listing DNSConfigs: %w", err)
 	}
 	if len(dnsCfgs.Items) > 1 { // enforce DNSConfig to be a singleton
-		msg := "invalid cluster configuration: more than one tailscale.com/dnsconfigs found. Please ensure that no more than one is created."
+		msg := "invalid cluster configuration: more than one github.com/metacubex/tailscale/dnsconfigs found. Please ensure that no more than one is created."
 		logger.Error(msg)
 		a.recorder.Event(&dnsCfg, corev1.EventTypeWarning, reasonMultipleDNSConfigsPresent, messageMultipleDNSConfigsPresent)
 		setStatus(&dnsCfg, metav1.ConditionFalse, reasonMultipleDNSConfigsPresent, messageMultipleDNSConfigsPresent)

@@ -13,9 +13,9 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/tailcfg"
 	"github.com/peterbourgon/ff/v3/ffcli"
-	"tailscale.com/ipn"
-	"tailscale.com/tailcfg"
 )
 
 func init() {

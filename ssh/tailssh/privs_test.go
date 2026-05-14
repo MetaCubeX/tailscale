@@ -8,6 +8,7 @@ package tailssh
 import (
 	"encoding/json"
 	"errors"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"os"
 	"os/exec"
 	"os/user"
@@ -17,11 +18,10 @@ import (
 	"runtime"
 	"strconv"
 	"syscall"
-	slices "tailscale.com/util/go120/slices"
 	"testing"
 
-	"tailscale.com/tstest"
-	"tailscale.com/types/logger"
+	"github.com/metacubex/tailscale/tstest"
+	"github.com/metacubex/tailscale/types/logger"
 )
 
 func TestDoDropPrivileges(t *testing.T) {

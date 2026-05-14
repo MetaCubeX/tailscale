@@ -28,7 +28,7 @@
 //
 // # Usage
 //
-//	import "tailscale.com/tsnet"
+//	import "github.com/metacubex/tailscale/tsnet"
 //
 //	s := &tsnet.Server{
 //		Hostname: "my-service",
@@ -63,7 +63,7 @@
 //     [Server.IDToken] or [Server.Audience]). Available only if the
 //     program imports the feature:
 //
-//     import _ "tailscale.com/feature/identityfederation"
+//     import _ "github.com/metacubex/tailscale/feature/identityfederation"
 //
 //     The feature is not linked by default to keep the AWS SDK and
 //     other cloud-provider dependencies out of programs that don't
@@ -131,9 +131,9 @@
 //		srv.Start()
 //	}
 //
-// [Tailscale identity]: https://tailscale.com/docs/concepts/tailscale-identity
-// [Tailscale Funnel]: https://tailscale.com/docs/features/tailscale-funnel
-// [Tailscale Service]: https://tailscale.com/docs/features/tailscale-services
+// [Tailscale identity]: https://github.com/metacubex/tailscale/docs/concepts/tailscale-identity
+// [Tailscale Funnel]: https://github.com/metacubex/tailscale/docs/features/tailscale-funnel
+// [Tailscale Service]: https://github.com/metacubex/tailscale/docs/features/tailscale-services
 package tsnet
 
 import (
@@ -143,6 +143,7 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"io"
 	"log"
 	"math"
@@ -155,48 +156,47 @@ import (
 	"strconv"
 	"strings"
 	"sync"
-	slices "tailscale.com/util/go120/slices"
 	"time"
 
 	"github.com/metacubex/tailscale-wireguard-go/tun"
-	"tailscale.com/client/local"
-	"tailscale.com/control/controlclient"
-	"tailscale.com/envknob"
-	_ "tailscale.com/feature/c2n"
-	_ "tailscale.com/feature/condregister/oauthkey"
-	_ "tailscale.com/feature/condregister/portmapper"
-	_ "tailscale.com/feature/condregister/useproxy"
-	"tailscale.com/health"
-	"tailscale.com/hostinfo"
-	"tailscale.com/internal/client/tailscale"
-	"tailscale.com/ipn"
-	"tailscale.com/ipn/ipnauth"
-	"tailscale.com/ipn/ipnlocal"
-	"tailscale.com/ipn/ipnstate"
-	"tailscale.com/ipn/localapi"
-	"tailscale.com/ipn/store"
-	"tailscale.com/ipn/store/mem"
-	"tailscale.com/logpolicy"
-	"tailscale.com/logtail"
-	"tailscale.com/logtail/filch"
-	"tailscale.com/net/memnet"
-	"tailscale.com/net/netmon"
-	"tailscale.com/net/proxymux"
-	"tailscale.com/net/socks5"
-	"tailscale.com/net/tsdial"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tsd"
-	"tailscale.com/types/bools"
-	"tailscale.com/types/logger"
-	"tailscale.com/types/logid"
-	"tailscale.com/types/nettype"
-	"tailscale.com/types/views"
-	"tailscale.com/util/clientmetric"
-	"tailscale.com/util/mak"
-	"tailscale.com/util/set"
-	"tailscale.com/util/testenv"
-	"tailscale.com/wgengine"
-	"tailscale.com/wgengine/netstack"
+	"github.com/metacubex/tailscale/client/local"
+	"github.com/metacubex/tailscale/control/controlclient"
+	"github.com/metacubex/tailscale/envknob"
+	_ "github.com/metacubex/tailscale/feature/c2n"
+	_ "github.com/metacubex/tailscale/feature/condregister/oauthkey"
+	_ "github.com/metacubex/tailscale/feature/condregister/portmapper"
+	_ "github.com/metacubex/tailscale/feature/condregister/useproxy"
+	"github.com/metacubex/tailscale/health"
+	"github.com/metacubex/tailscale/hostinfo"
+	"github.com/metacubex/tailscale/internal/client/tailscale"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/ipn/ipnauth"
+	"github.com/metacubex/tailscale/ipn/ipnlocal"
+	"github.com/metacubex/tailscale/ipn/ipnstate"
+	"github.com/metacubex/tailscale/ipn/localapi"
+	"github.com/metacubex/tailscale/ipn/store"
+	"github.com/metacubex/tailscale/ipn/store/mem"
+	"github.com/metacubex/tailscale/logpolicy"
+	"github.com/metacubex/tailscale/logtail"
+	"github.com/metacubex/tailscale/logtail/filch"
+	"github.com/metacubex/tailscale/net/memnet"
+	"github.com/metacubex/tailscale/net/netmon"
+	"github.com/metacubex/tailscale/net/proxymux"
+	"github.com/metacubex/tailscale/net/socks5"
+	"github.com/metacubex/tailscale/net/tsdial"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/tsd"
+	"github.com/metacubex/tailscale/types/bools"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/types/logid"
+	"github.com/metacubex/tailscale/types/nettype"
+	"github.com/metacubex/tailscale/types/views"
+	"github.com/metacubex/tailscale/util/clientmetric"
+	"github.com/metacubex/tailscale/util/mak"
+	"github.com/metacubex/tailscale/util/set"
+	"github.com/metacubex/tailscale/util/testenv"
+	"github.com/metacubex/tailscale/wgengine"
+	"github.com/metacubex/tailscale/wgengine/netstack"
 )
 
 // Server is an embedded Tailscale server.
@@ -218,7 +218,7 @@ type Server struct {
 	// Store specifies the state store to use.
 	//
 	// If nil, a new FileStore is initialized at `Dir/tailscaled.state`.
-	// See tailscale.com/ipn/store for supported stores.
+	// See github.com/metacubex/tailscale/ipn/store for supported stores.
 	//
 	// Logs will automatically be uploaded to log.tailscale.com,
 	// where the configuration file for logging will be saved at
@@ -240,7 +240,7 @@ type Server struct {
 	Logf logger.Logf
 
 	// Ephemeral, if true, specifies that the instance should register
-	// as an Ephemeral node (https://tailscale.com/s/ephemeral-nodes).
+	// as an Ephemeral node (https://github.com/metacubex/tailscale/s/ephemeral-nodes).
 	Ephemeral bool
 
 	// AuthKey, if non-empty, is the auth key to create the node
@@ -1345,10 +1345,10 @@ func (s *Server) ListenTLS(network, addr string) (net.Listener, error) {
 		return nil, err
 	}
 	if !st.CurrentTailnet.MagicDNSEnabled {
-		return nil, errors.New("tsnet: you must enable MagicDNS in the DNS page of the admin panel to proceed. See https://tailscale.com/s/https")
+		return nil, errors.New("tsnet: you must enable MagicDNS in the DNS page of the admin panel to proceed. See https://github.com/metacubex/tailscale/s/https")
 	}
 	if len(st.CertDomains) == 0 {
-		return nil, errors.New("tsnet: you must enable HTTPS in the admin panel to proceed. See https://tailscale.com/s/https")
+		return nil, errors.New("tsnet: you must enable HTTPS in the admin panel to proceed. See https://github.com/metacubex/tailscale/s/https")
 	}
 
 	ln, err := s.listen(network, addr, listenOnTailnet)
@@ -1498,7 +1498,7 @@ func (s *Server) ListenFunnel(network, addr string, opts ...FunnelOption) (net.L
 		srvConfig = &ipn.ServeConfig{}
 	}
 	if len(st.CertDomains) == 0 {
-		return nil, errors.New("Funnel not available; HTTPS must be enabled. See https://tailscale.com/s/https")
+		return nil, errors.New("Funnel not available; HTTPS must be enabled. See https://github.com/metacubex/tailscale/s/https")
 	}
 	domain := st.CertDomains[0]
 	hp := ipn.HostPort(domain + ":" + portStr)
@@ -1601,7 +1601,7 @@ type ServiceModeHTTP struct {
 	// example.com/cap/foo only to paths beginning with /foo.
 	//
 	// For more information on app capabilities, see
-	// https://tailscale.com/kb/1537/grants-app-capabilities
+	// https://github.com/metacubex/tailscale/kb/1537/grants-app-capabilities
 	AcceptAppCaps map[string][]string
 
 	// PROXYProtocolVersion indicates whether to send a PROXY protocol header
@@ -1631,7 +1631,7 @@ func (m ServiceModeHTTP) capsMap() map[string][]tailcfg.PeerCapability {
 
 // A ServiceListener is a network listener for a Tailscale Service. For more
 // information about Services, see
-// https://tailscale.com/kb/1552/tailscale-services
+// https://github.com/metacubex/tailscale/kb/1552/tailscale-services
 type ServiceListener struct {
 	net.Listener
 	addr addr
@@ -1716,7 +1716,7 @@ func (sl *ServiceListener) Close() error {
 // ErrUntaggedServiceHost is returned by ListenService when run on a node
 // without any ACL tags. A node must use a tag-based identity to act as a
 // Service host. For more information, see:
-// https://tailscale.com/kb/1552/tailscale-services#prerequisites
+// https://github.com/metacubex/tailscale/kb/1552/tailscale-services#prerequisites
 var ErrUntaggedServiceHost = errors.New("service hosts must be tagged nodes")
 
 // advertiseService ensures the Service is advertised by this node.
@@ -1797,7 +1797,7 @@ func (s *Server) decrementServiceAdvertisementLocked(name tailcfg.ServiceName) e
 //
 // To advertise a Service with multiple ports, run ListenService multiple times.
 // For more information about Services, see
-// https://tailscale.com/kb/1552/tailscale-services
+// https://github.com/metacubex/tailscale/kb/1552/tailscale-services
 //
 // This function will start the server if it is not already started.
 func (s *Server) ListenService(name string, mode ServiceMode) (*ServiceListener, error) {
@@ -2187,7 +2187,7 @@ func (s *Server) GetRootPath() string {
 // Packets will be written to the pcap until the process exits. The pcap needs a Lua dissector
 // to be installed in Wireshark in order to decode properly: wgengine/capture/ts-dissector.lua
 // in this repository.
-// https://tailscale.com/docs/reference/troubleshooting/network-configuration/inspect-unencrypted-packets
+// https://github.com/metacubex/tailscale/docs/reference/troubleshooting/network-configuration/inspect-unencrypted-packets
 func (s *Server) CapturePcap(ctx context.Context, pcapFile string) error {
 	stream, err := s.localClient.StreamDebugCapture(ctx)
 	if err != nil {

@@ -18,14 +18,14 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"io"
 	"log"
 	"net"
 	"strconv"
-	slices "tailscale.com/util/go120/slices"
 	"time"
 
-	"tailscale.com/types/logger"
+	"github.com/metacubex/tailscale/types/logger"
 )
 
 // Authentication METHODs described in RFC 1928, section 3.

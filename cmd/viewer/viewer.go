@@ -9,6 +9,7 @@ import (
 	"bytes"
 	"flag"
 	"fmt"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"go/ast"
 	"go/token"
 	"go/types"
@@ -16,11 +17,10 @@ import (
 	"log"
 	"os"
 	"strings"
-	slices "tailscale.com/util/go120/slices"
 
-	"tailscale.com/util/codegen"
-	"tailscale.com/util/mak"
-	"tailscale.com/util/must"
+	"github.com/metacubex/tailscale/util/codegen"
+	"github.com/metacubex/tailscale/util/mak"
+	"github.com/metacubex/tailscale/util/must"
 )
 
 const viewTemplateStr = `{{define "common"}}
@@ -305,11 +305,11 @@ func genView(buf *bytes.Buffer, it *codegen.ImportTracker, typ *types.Named, fie
 			switch elem.String() {
 			case "byte":
 				args.FieldType = it.QualifiedName(fieldType)
-				it.Import("", "tailscale.com/types/views")
+				it.Import("", "github.com/metacubex/tailscale/types/views")
 				writeTemplateWithComment("byteSliceField", fname)
 			default:
 				args.FieldType = it.QualifiedName(elem)
-				it.Import("", "tailscale.com/types/views")
+				it.Import("", "github.com/metacubex/tailscale/types/views")
 				shallow, deep, base := requiresCloning(elem)
 				if deep {
 					switch elem.Underlying().(type) {
@@ -375,7 +375,7 @@ func genView(buf *bytes.Buffer, it *codegen.ImportTracker, typ *types.Named, fie
 				writeTemplateWithComment("unsupportedField", fname)
 				continue
 			}
-			it.Import("", "tailscale.com/types/views")
+			it.Import("", "github.com/metacubex/tailscale/types/views")
 			args.MapKeyType = it.QualifiedName(key)
 			mElem := m.Elem()
 			var template string
@@ -740,7 +740,7 @@ func main() {
 	}
 
 	buf := new(bytes.Buffer)
-	fmt.Fprintf(buf, "//go:generate go run tailscale.com/cmd/cloner  %s\n\n", strings.Join(flagArgs, " "))
+	fmt.Fprintf(buf, "//go:generate go run github.com/metacubex/tailscale/cmd/cloner  %s\n\n", strings.Join(flagArgs, " "))
 	runCloner := false
 	for _, typeName := range typeNames {
 		if cloneOnlyType[typeName] {
@@ -772,7 +772,7 @@ func main() {
 	}
 	if runCloner {
 		// When a new package is added or when existing generated files have
-		// been deleted, we might run into a case where tailscale.com/cmd/cloner
+		// been deleted, we might run into a case where github.com/metacubex/tailscale/cmd/cloner
 		// has not run yet. We detect this by verifying that all the structs we
 		// interacted with have had Clone method already generated. If they
 		// haven't we ask the caller to rerun generation again so that those get

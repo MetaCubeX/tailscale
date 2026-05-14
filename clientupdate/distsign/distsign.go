@@ -53,12 +53,12 @@ import (
 	"os"
 	"time"
 
+	"github.com/metacubex/tailscale/feature"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/util/ed25519consensus"
+	"github.com/metacubex/tailscale/util/httpm"
+	"github.com/metacubex/tailscale/util/must"
 	"golang.org/x/crypto/blake2s"
-	"tailscale.com/feature"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/ed25519consensus"
-	"tailscale.com/util/httpm"
-	"tailscale.com/util/must"
 )
 
 const (

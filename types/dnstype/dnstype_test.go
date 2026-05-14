@@ -6,10 +6,10 @@
 package dnstype
 
 import (
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"net/netip"
 	"reflect"
 	"sort"
-	slices "tailscale.com/util/go120/slices"
 	"testing"
 )
 

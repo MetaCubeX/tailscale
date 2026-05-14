@@ -16,9 +16,9 @@ import (
 	"strings"
 	"time"
 
+	"github.com/metacubex/tailscale/clientupdate/distsign"
+	"github.com/metacubex/tailscale/release/dist"
 	"github.com/peterbourgon/ff/v3/ffcli"
-	"tailscale.com/clientupdate/distsign"
-	"tailscale.com/release/dist"
 )
 
 // CLI returns a CLI root command to build release packages.

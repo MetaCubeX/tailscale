@@ -10,7 +10,7 @@ import (
 	"fmt"
 	"runtime"
 
-	"tailscale.com/util/wingoes/com"
+	"github.com/metacubex/tailscale/util/wingoes/com"
 )
 
 func init() {

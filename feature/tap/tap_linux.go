@@ -14,6 +14,14 @@ import (
 	"os/exec"
 	"sync"
 
+	"github.com/metacubex/tailscale-wireguard-go/tun"
+	"github.com/metacubex/tailscale/net/netaddr"
+	"github.com/metacubex/tailscale/net/packet"
+	"github.com/metacubex/tailscale/net/tsaddr"
+	"github.com/metacubex/tailscale/net/tstun"
+	"github.com/metacubex/tailscale/syncs"
+	"github.com/metacubex/tailscale/types/ipproto"
+	"github.com/metacubex/tailscale/types/logger"
 	"github.com/insomniacslk/dhcp/dhcpv4"
 	"github.com/metacubex/gvisor/pkg/tcpip"
 	"github.com/metacubex/gvisor/pkg/tcpip/checksum"
@@ -21,15 +29,7 @@ import (
 	"github.com/metacubex/gvisor/pkg/tcpip/network/ipv4"
 	"github.com/metacubex/gvisor/pkg/tcpip/network/ipv6"
 	"github.com/metacubex/gvisor/pkg/tcpip/transport/udp"
-	"github.com/metacubex/tailscale-wireguard-go/tun"
 	"golang.org/x/sys/unix"
-	"tailscale.com/net/netaddr"
-	"tailscale.com/net/packet"
-	"tailscale.com/net/tsaddr"
-	"tailscale.com/net/tstun"
-	"tailscale.com/syncs"
-	"tailscale.com/types/ipproto"
-	"tailscale.com/types/logger"
 )
 
 // TODO: this was randomly generated once. Maybe do it per process start? But

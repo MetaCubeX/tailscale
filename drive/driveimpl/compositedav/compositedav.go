@@ -7,6 +7,7 @@
 package compositedav
 
 import (
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"log"
 	"net/http"
 	"net/http/httputil"
@@ -14,13 +15,12 @@ import (
 	"path"
 	"strings"
 	"sync"
-	slices "tailscale.com/util/go120/slices"
 
+	"github.com/metacubex/tailscale/drive/driveimpl/dirfs"
+	"github.com/metacubex/tailscale/drive/driveimpl/shared"
+	"github.com/metacubex/tailscale/tstime"
+	"github.com/metacubex/tailscale/types/logger"
 	"github.com/tailscale/xnet/webdav"
-	"tailscale.com/drive/driveimpl/dirfs"
-	"tailscale.com/drive/driveimpl/shared"
-	"tailscale.com/tstime"
-	"tailscale.com/types/logger"
 )
 
 // Child is a child folder of this compositedav.

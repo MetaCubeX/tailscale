@@ -10,10 +10,10 @@ import (
 	"os"
 	"strings"
 
+	"github.com/metacubex/tailscale/types/result"
+	"github.com/metacubex/tailscale/util/lineiter"
+	"github.com/metacubex/tailscale/version/distro"
 	"golang.org/x/sys/unix"
-	"tailscale.com/types/result"
-	"tailscale.com/util/lineiter"
-	"tailscale.com/version/distro"
 )
 
 func init() {

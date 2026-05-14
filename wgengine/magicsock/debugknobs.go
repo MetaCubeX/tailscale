@@ -10,8 +10,8 @@ import (
 	"net/netip"
 	"strings"
 
-	"tailscale.com/envknob"
-	"tailscale.com/syncs"
+	"github.com/metacubex/tailscale/envknob"
+	"github.com/metacubex/tailscale/syncs"
 )
 
 // Various debugging and experimental tweakables, set by environment

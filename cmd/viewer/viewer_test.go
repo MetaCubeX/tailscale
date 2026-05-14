@@ -15,7 +15,7 @@ import (
 	"strings"
 	"testing"
 
-	"tailscale.com/util/codegen"
+	"github.com/metacubex/tailscale/util/codegen"
 )
 
 // TestNamedMapWithView tests that a named map type with a user-supplied
@@ -126,13 +126,13 @@ func TestViewerImports(t *testing.T) {
 			name:        "Map",
 			content:     `type Test struct { Map map[string]int }`,
 			typeNames:   []string{"Test"},
-			wantImports: [][2]string{{"", "tailscale.com/types/views"}},
+			wantImports: [][2]string{{"", "github.com/metacubex/tailscale/types/views"}},
 		},
 		{
 			name:        "Slice",
 			content:     `type Test struct { Slice []int }`,
 			typeNames:   []string{"Test"},
-			wantImports: [][2]string{{"", "tailscale.com/types/views"}},
+			wantImports: [][2]string{{"", "github.com/metacubex/tailscale/types/views"}},
 		},
 	}
 	for _, tt := range tests {

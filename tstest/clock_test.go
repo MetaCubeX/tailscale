@@ -6,12 +6,12 @@
 package tstest
 
 import (
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"sync/atomic"
-	slices "tailscale.com/util/go120/slices"
 	"testing"
 	"time"
 
-	"tailscale.com/tstime"
+	"github.com/metacubex/tailscale/tstime"
 )
 
 func TestClockWithDefinedStartTime(t *testing.T) {

@@ -11,11 +11,11 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/metacubex/tailscale/net/netaddr"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/tstest/typewalk"
+	"github.com/metacubex/tailscale/types/key"
 	"go4.org/mem"
-	"tailscale.com/net/netaddr"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tstest/typewalk"
-	"tailscale.com/types/key"
 )
 
 func testNodeKey(b byte) (ret key.NodePublic) {

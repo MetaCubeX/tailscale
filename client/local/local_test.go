@@ -11,9 +11,9 @@ import (
 	"net/http"
 	"testing"
 
-	"tailscale.com/tstest/deptest"
-	"tailscale.com/tstest/nettest"
-	"tailscale.com/types/key"
+	"github.com/metacubex/tailscale/tstest/deptest"
+	"github.com/metacubex/tailscale/tstest/nettest"
+	"github.com/metacubex/tailscale/types/key"
 )
 
 func TestGetServeConfigFromJSON(t *testing.T) {
@@ -117,9 +117,9 @@ func TestDeps(t *testing.T) {
 		BadDeps: map[string]string{
 			// Make sure we don't again accidentally bring in a dependency on
 			// drive or its transitive dependencies
-			"testing":                        "do not use testing package in production code",
-			"tailscale.com/drive/driveimpl":  "https://github.com/tailscale/tailscale/pull/10631",
-			"github.com/studio-b12/gowebdav": "https://github.com/tailscale/tailscale/pull/10631",
+			"testing": "do not use testing package in production code",
+			"github.com/metacubex/tailscale/drive/driveimpl": "https://github.com/tailscale/tailscale/pull/10631",
+			"github.com/studio-b12/gowebdav":                 "https://github.com/tailscale/tailscale/pull/10631",
 		},
 	}.Check(t)
 }

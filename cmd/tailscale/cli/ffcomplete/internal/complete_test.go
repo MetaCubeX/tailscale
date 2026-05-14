@@ -12,9 +12,9 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
+	"github.com/metacubex/tailscale/cmd/tailscale/cli/ffcomplete"
+	"github.com/metacubex/tailscale/cmd/tailscale/cli/ffcomplete/internal"
 	"github.com/peterbourgon/ff/v3/ffcli"
-	"tailscale.com/cmd/tailscale/cli/ffcomplete"
-	"tailscale.com/cmd/tailscale/cli/ffcomplete/internal"
 )
 
 func newFlagSet(name string, errh flag.ErrorHandling, flags func(fs *flag.FlagSet)) *flag.FlagSet {

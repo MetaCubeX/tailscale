@@ -4,10 +4,10 @@
 package posture
 
 import (
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"net/netip"
-	slices "tailscale.com/util/go120/slices"
 
-	"tailscale.com/net/netmon"
+	"github.com/metacubex/tailscale/net/netmon"
 )
 
 // GetHardwareAddrs returns the hardware addresses of all non-loopback

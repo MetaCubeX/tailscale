@@ -6,16 +6,16 @@
 package zstdframe
 
 import (
+	"github.com/metacubex/tailscale/util/go120/randv2"
 	"math/bits"
 	"os"
 	"runtime"
 	"strings"
 	"sync"
-	"tailscale.com/util/go120/randv2"
 	"testing"
 
 	"github.com/klauspost/compress/zstd"
-	"tailscale.com/util/must"
+	"github.com/metacubex/tailscale/util/must"
 )
 
 // Use the concatenation of all Go source files in zstdframe as testdata.

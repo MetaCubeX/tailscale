@@ -5,6 +5,7 @@ package main
 
 import (
 	"bytes"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"go/ast"
 	"go/format"
 	"go/parser"
@@ -13,9 +14,8 @@ import (
 	"path"
 	"strconv"
 	"strings"
-	slices "tailscale.com/util/go120/slices"
 
-	"tailscale.com/util/must"
+	"github.com/metacubex/tailscale/util/must"
 )
 
 // mustFormatFile formats a Go source file and adjust "json" imports.

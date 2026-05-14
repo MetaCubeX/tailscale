@@ -16,10 +16,10 @@ import (
 	"github.com/google/go-cmp/cmp"
 	jsonv2 "github.com/metacubex/jsonv2"
 	"github.com/metacubex/jsonv2/jsontext"
-	"tailscale.com/types/views"
+	"github.com/metacubex/tailscale/types/views"
 )
 
-//go:generate go run tailscale.com/cmd/viewer --tags=test --type=TestPrefs,TestBundle,TestValueStruct,TestGenericStruct,TestPrefsGroup
+//go:generate go run github.com/metacubex/tailscale/cmd/viewer --tags=test --type=TestPrefs,TestBundle,TestValueStruct,TestGenericStruct,TestPrefsGroup
 
 var (
 	_ jsonv2.MarshalerTo     = (*ItemView[*TestBundle, TestBundleView])(nil)

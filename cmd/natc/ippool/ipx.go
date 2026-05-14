@@ -4,10 +4,10 @@
 package ippool
 
 import (
+	"github.com/metacubex/tailscale/util/go120/randv2"
 	"math/big"
 	"math/bits"
 	"net/netip"
-	"tailscale.com/util/go120/randv2"
 
 	"go4.org/netipx"
 )

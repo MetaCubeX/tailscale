@@ -2,23 +2,23 @@
 // SPDX-License-Identifier: BSD-3-Clause
 
 // Package endpoint contains types relating to UDP relay server endpoints. It
-// does not import tailscale.com/net/udprelay.
+// does not import github.com/metacubex/tailscale/net/udprelay.
 package endpoint
 
 import (
 	"net/netip"
 	"time"
 
-	"tailscale.com/tstime"
-	"tailscale.com/types/key"
+	"github.com/metacubex/tailscale/tstime"
+	"github.com/metacubex/tailscale/types/key"
 )
 
 // ServerRetryAfter is the default
-// [tailscale.com/net/udprelay.ErrServerNotReady.RetryAfter] value.
+// [github.com/metacubex/tailscale/net/udprelay.ErrServerNotReady.RetryAfter] value.
 const ServerRetryAfter = time.Second * 3
 
 // ServerEndpoint contains details for an endpoint served by a
-// [tailscale.com/net/udprelay.Server].
+// [github.com/metacubex/tailscale/net/udprelay.Server].
 type ServerEndpoint struct {
 	// ServerDisco is the Server's Disco public key used as part of the 3-way
 	// bind handshake. Server will use the same ServerDisco for its lifetime.

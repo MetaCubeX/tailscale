@@ -9,10 +9,10 @@ import (
 	"crypto/x509"
 	"errors"
 	"fmt"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"io"
 	"net/http"
 	"net/netip"
-	slices "tailscale.com/util/go120/slices"
 	"time"
 )
 

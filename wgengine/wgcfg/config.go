@@ -5,14 +5,14 @@
 package wgcfg
 
 import (
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"net/netip"
-	slices "tailscale.com/util/go120/slices"
 
-	"tailscale.com/types/key"
-	"tailscale.com/types/logid"
+	"github.com/metacubex/tailscale/types/key"
+	"github.com/metacubex/tailscale/types/logid"
 )
 
-//go:generate go run tailscale.com/cmd/cloner -type=Config,Peer
+//go:generate go run github.com/metacubex/tailscale/cmd/cloner -type=Config,Peer
 
 // Config is a WireGuard configuration.
 // It only supports the set of things Tailscale uses.

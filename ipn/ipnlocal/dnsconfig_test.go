@@ -7,22 +7,22 @@ package ipnlocal
 
 import (
 	"encoding/json"
+	cmp "github.com/metacubex/tailscale/util/go120/cmp"
 	"net/netip"
 	"reflect"
-	cmp "tailscale.com/util/go120/cmp"
 	"testing"
 
-	"tailscale.com/appc"
-	"tailscale.com/ipn"
-	"tailscale.com/net/dns"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tstest"
-	"tailscale.com/types/dnstype"
-	"tailscale.com/types/netmap"
-	"tailscale.com/types/opt"
-	"tailscale.com/util/cloudenv"
-	"tailscale.com/util/dnsname"
-	"tailscale.com/util/set"
+	"github.com/metacubex/tailscale/appc"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/net/dns"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/tstest"
+	"github.com/metacubex/tailscale/types/dnstype"
+	"github.com/metacubex/tailscale/types/netmap"
+	"github.com/metacubex/tailscale/types/opt"
+	"github.com/metacubex/tailscale/util/cloudenv"
+	"github.com/metacubex/tailscale/util/dnsname"
+	"github.com/metacubex/tailscale/util/set"
 )
 
 func ipps(ippStrs ...string) (ipps []netip.Prefix) {

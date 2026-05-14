@@ -11,9 +11,9 @@ import (
 	"syscall"
 	"unsafe"
 
-	"tailscale.com/util/wingoes"
-	"tailscale.com/util/wingoes/com"
-	"tailscale.com/util/wingoes/com/automation"
+	"github.com/metacubex/tailscale/util/wingoes"
+	"github.com/metacubex/tailscale/util/wingoes/com"
+	"github.com/metacubex/tailscale/util/wingoes/com/automation"
 )
 
 var (

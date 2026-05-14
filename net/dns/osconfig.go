@@ -7,13 +7,13 @@ import (
 	"bufio"
 	"errors"
 	"fmt"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"net/netip"
 	"strings"
-	slices "tailscale.com/util/go120/slices"
 
-	"tailscale.com/feature/buildfeatures"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/dnsname"
+	"github.com/metacubex/tailscale/feature/buildfeatures"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/util/dnsname"
 )
 
 // An OSConfigurator applies DNS settings to the operating system.

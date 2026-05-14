@@ -32,26 +32,26 @@ import (
 	"testing"
 	"time"
 
+	"github.com/metacubex/tailscale/client/local"
+	"github.com/metacubex/tailscale/derp/derpserver"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/ipn/ipnlocal"
+	"github.com/metacubex/tailscale/ipn/ipnstate"
+	"github.com/metacubex/tailscale/ipn/store"
+	"github.com/metacubex/tailscale/net/stun/stuntest"
+	"github.com/metacubex/tailscale/safesocket"
+	"github.com/metacubex/tailscale/syncs"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/tstest"
+	"github.com/metacubex/tailscale/tstest/integration/testcontrol"
+	"github.com/metacubex/tailscale/types/key"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/types/logid"
+	"github.com/metacubex/tailscale/types/nettype"
+	"github.com/metacubex/tailscale/util/rands"
+	"github.com/metacubex/tailscale/util/zstdframe"
+	"github.com/metacubex/tailscale/version"
 	"go4.org/mem"
-	"tailscale.com/client/local"
-	"tailscale.com/derp/derpserver"
-	"tailscale.com/ipn"
-	"tailscale.com/ipn/ipnlocal"
-	"tailscale.com/ipn/ipnstate"
-	"tailscale.com/ipn/store"
-	"tailscale.com/net/stun/stuntest"
-	"tailscale.com/safesocket"
-	"tailscale.com/syncs"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tstest"
-	"tailscale.com/tstest/integration/testcontrol"
-	"tailscale.com/types/key"
-	"tailscale.com/types/logger"
-	"tailscale.com/types/logid"
-	"tailscale.com/types/nettype"
-	"tailscale.com/util/rands"
-	"tailscale.com/util/zstdframe"
-	"tailscale.com/version"
 )
 
 var (
@@ -204,7 +204,7 @@ func buildTestBinaries(dir string) error {
 		}
 		return bi, nil
 	}
-	err := build(dir, "tailscale.com/cmd/tailscaled", "tailscale.com/cmd/tailscale")
+	err := build(dir, "github.com/metacubex/tailscale/cmd/tailscaled", "github.com/metacubex/tailscale/cmd/tailscale")
 	if err != nil {
 		return err
 	}

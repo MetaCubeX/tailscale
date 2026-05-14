@@ -6,14 +6,14 @@
 package magicsock
 
 import (
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"net/netip"
 	"reflect"
 	"strings"
-	slices "tailscale.com/util/go120/slices"
 	"testing"
 	"time"
 
-	"tailscale.com/tailcfg"
+	"github.com/metacubex/tailscale/tailcfg"
 )
 
 func TestEndpointTracker(t *testing.T) {

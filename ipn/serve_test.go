@@ -8,13 +8,13 @@ package ipn
 import (
 	"testing"
 
-	"tailscale.com/ipn/ipnstate"
-	"tailscale.com/tailcfg"
+	"github.com/metacubex/tailscale/ipn/ipnstate"
+	"github.com/metacubex/tailscale/tailcfg"
 )
 
 func TestCheckFunnelAccess(t *testing.T) {
 	caps := func(c ...tailcfg.NodeCapability) []tailcfg.NodeCapability { return c }
-	const portAttr tailcfg.NodeCapability = "https://tailscale.com/cap/funnel-ports?ports=443,8080-8090,8443,"
+	const portAttr tailcfg.NodeCapability = "https://github.com/metacubex/tailscale/cap/funnel-ports?ports=443,8080-8090,8443,"
 	tests := []struct {
 		port    uint16
 		caps    []tailcfg.NodeCapability

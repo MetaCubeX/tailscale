@@ -24,13 +24,13 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/metacubex/tailscale/client/local"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/ipn/ipnstate"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/util/slicesx"
+	"github.com/metacubex/tailscale/version"
 	"github.com/peterbourgon/ff/v3/ffcli"
-	"tailscale.com/client/local"
-	"tailscale.com/ipn"
-	"tailscale.com/ipn/ipnstate"
-	"tailscale.com/tailcfg"
-	"tailscale.com/util/slicesx"
-	"tailscale.com/version"
 )
 
 func init() {
@@ -68,7 +68,7 @@ your tailnet.
 You can also choose to enable the Tailscale Funnel with:
 'tailscale funnel on'. Funnel allows you to publish
 a 'tailscale serve' server publicly, open to the entire
-internet. See https://tailscale.com/funnel.
+internet. See https://github.com/metacubex/tailscale/funnel.
 
 EXAMPLES
   - To proxy requests to a web server at 127.0.0.1:3000:

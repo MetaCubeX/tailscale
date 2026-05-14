@@ -9,8 +9,8 @@ import (
 	"time"
 
 	"github.com/metacubex/tailscale-wireguard-go/tun"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/winipcfg"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/util/winipcfg"
 )
 
 // ifaceWatcher waits for an interface to be up.

@@ -17,12 +17,12 @@ import (
 	"strings"
 	"unicode"
 
-	"tailscale.com/control/controlknobs"
-	"tailscale.com/health"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/eventbus"
-	"tailscale.com/util/set"
-	"tailscale.com/util/syspolicy/policyclient"
+	"github.com/metacubex/tailscale/control/controlknobs"
+	"github.com/metacubex/tailscale/health"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/util/eventbus"
+	"github.com/metacubex/tailscale/util/set"
+	"github.com/metacubex/tailscale/util/syspolicy/policyclient"
 )
 
 func NewOSConfigurator(logf logger.Logf, ht *health.Tracker, _ *eventbus.Bus, _ policyclient.Client, knobs *controlknobs.Knobs, interfaceName string) (OSConfigurator, error) {

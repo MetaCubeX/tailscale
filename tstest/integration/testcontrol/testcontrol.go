@@ -12,6 +12,10 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	cmp "github.com/metacubex/tailscale/util/go120/cmp"
+	maps "github.com/metacubex/tailscale/util/go120/maps"
+	"github.com/metacubex/tailscale/util/go120/randv2"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"io"
 	"log"
 	"net/http"
@@ -21,29 +25,25 @@ import (
 	"sort"
 	"strings"
 	"sync"
-	cmp "tailscale.com/util/go120/cmp"
-	maps "tailscale.com/util/go120/maps"
-	"tailscale.com/util/go120/randv2"
-	slices "tailscale.com/util/go120/slices"
 	"time"
 
+	"github.com/metacubex/tailscale/control/controlhttp/controlhttpserver"
+	"github.com/metacubex/tailscale/net/netaddr"
+	"github.com/metacubex/tailscale/net/tsaddr"
+	"github.com/metacubex/tailscale/syncs"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/tka"
+	"github.com/metacubex/tailscale/tstest/tkatest"
+	"github.com/metacubex/tailscale/types/key"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/types/opt"
+	"github.com/metacubex/tailscale/util/httpm"
+	"github.com/metacubex/tailscale/util/mak"
+	"github.com/metacubex/tailscale/util/must"
+	"github.com/metacubex/tailscale/util/rands"
+	"github.com/metacubex/tailscale/util/set"
+	"github.com/metacubex/tailscale/util/zstdframe"
 	"golang.org/x/net/http2"
-	"tailscale.com/control/controlhttp/controlhttpserver"
-	"tailscale.com/net/netaddr"
-	"tailscale.com/net/tsaddr"
-	"tailscale.com/syncs"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tka"
-	"tailscale.com/tstest/tkatest"
-	"tailscale.com/types/key"
-	"tailscale.com/types/logger"
-	"tailscale.com/types/opt"
-	"tailscale.com/util/httpm"
-	"tailscale.com/util/mak"
-	"tailscale.com/util/must"
-	"tailscale.com/util/rands"
-	"tailscale.com/util/set"
-	"tailscale.com/util/zstdframe"
 )
 
 const msgLimit = 1 << 20 // encrypted message length limit
@@ -73,11 +73,11 @@ type Server struct {
 	// Online=true. This is a coarse stand-in for the per-node
 	// online/offline tracking that production control servers do based
 	// on streaming map sessions: certain disco-key handling fast paths
-	// in [tailscale.com/control/controlclient] and
-	// [tailscale.com/wgengine/userspace] only fire when the peer is
+	// in [github.com/metacubex/tailscale/control/controlclient] and
+	// [github.com/metacubex/tailscale/wgengine/userspace] only fire when the peer is
 	// reported online, so without this flag they are silently skipped
 	// in tests, which can mask bugs and slow down recovery from disco
-	// rotations. See [tailscale.com/control/controlclient/map.go]
+	// rotations. See [github.com/metacubex/tailscale/control/controlclient/map.go]
 	// removeUnwantedDiscoUpdates and
 	// removeUnwantedDiscoUpdatesFromFullNetmapUpdate for callers that
 	// branch on Online.
@@ -719,7 +719,7 @@ func (s *Server) getUser(nodeKey key.NodePublic) (*tailcfg.User, *tailcfg.Login)
 		Provider:      "testcontrol",
 		LoginName:     loginName,
 		DisplayName:   displayName,
-		ProfilePicURL: "https://tailscale.com/static/images/marketing/team-carney.jpg",
+		ProfilePicURL: "https://github.com/metacubex/tailscale/static/images/marketing/team-carney.jpg",
 	}
 	user := &tailcfg.User{
 		ID:          id,

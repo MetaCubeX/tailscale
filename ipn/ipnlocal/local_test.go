@@ -11,6 +11,8 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	maps "github.com/metacubex/tailscale/util/go120/maps"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"math"
 	"net"
 	"net/http"
@@ -21,64 +23,62 @@ import (
 	"strings"
 	"sync"
 	"sync/atomic"
-	maps "tailscale.com/util/go120/maps"
-	slices "tailscale.com/util/go120/slices"
 	"testing"
 	"time"
 
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
+	"github.com/metacubex/tailscale/appc"
+	"github.com/metacubex/tailscale/appc/appctest"
+	"github.com/metacubex/tailscale/control/controlclient"
+	"github.com/metacubex/tailscale/control/controlknobs"
+	"github.com/metacubex/tailscale/drive"
+	"github.com/metacubex/tailscale/drive/driveimpl"
+	"github.com/metacubex/tailscale/feature"
+	_ "github.com/metacubex/tailscale/feature/condregister/portmapper"
+	"github.com/metacubex/tailscale/health"
+	"github.com/metacubex/tailscale/hostinfo"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/ipn/conffile"
+	"github.com/metacubex/tailscale/ipn/ipnauth"
+	"github.com/metacubex/tailscale/ipn/ipnlocal/netmapcache"
+	"github.com/metacubex/tailscale/ipn/store/mem"
+	"github.com/metacubex/tailscale/net/netcheck"
+	"github.com/metacubex/tailscale/net/netmon"
+	"github.com/metacubex/tailscale/net/tsaddr"
+	"github.com/metacubex/tailscale/net/tsdial"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/tsd"
+	"github.com/metacubex/tailscale/tstest"
+	"github.com/metacubex/tailscale/tstest/deptest"
+	"github.com/metacubex/tailscale/tstest/typewalk"
+	"github.com/metacubex/tailscale/types/appctype"
+	"github.com/metacubex/tailscale/types/dnstype"
+	"github.com/metacubex/tailscale/types/ipproto"
+	"github.com/metacubex/tailscale/types/key"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/types/logid"
+	"github.com/metacubex/tailscale/types/netmap"
+	"github.com/metacubex/tailscale/types/opt"
+	"github.com/metacubex/tailscale/types/persist"
+	"github.com/metacubex/tailscale/types/views"
+	"github.com/metacubex/tailscale/util/dnsname"
+	"github.com/metacubex/tailscale/util/eventbus"
+	"github.com/metacubex/tailscale/util/eventbus/eventbustest"
+	"github.com/metacubex/tailscale/util/mak"
+	"github.com/metacubex/tailscale/util/must"
+	"github.com/metacubex/tailscale/util/set"
+	"github.com/metacubex/tailscale/util/syspolicy"
+	"github.com/metacubex/tailscale/util/syspolicy/pkey"
+	"github.com/metacubex/tailscale/util/syspolicy/policytest"
+	"github.com/metacubex/tailscale/util/syspolicy/source"
+	"github.com/metacubex/tailscale/wgengine"
+	"github.com/metacubex/tailscale/wgengine/filter"
+	"github.com/metacubex/tailscale/wgengine/filter/filtertype"
+	"github.com/metacubex/tailscale/wgengine/wgcfg"
 	memro "go4.org/mem"
 	"go4.org/netipx"
 	"golang.org/x/net/dns/dnsmessage"
-	"tailscale.com/appc"
-	"tailscale.com/appc/appctest"
-	"tailscale.com/control/controlclient"
-	"tailscale.com/control/controlknobs"
-	"tailscale.com/drive"
-	"tailscale.com/drive/driveimpl"
-	"tailscale.com/feature"
-	_ "tailscale.com/feature/condregister/portmapper"
-	"tailscale.com/health"
-	"tailscale.com/hostinfo"
-	"tailscale.com/ipn"
-	"tailscale.com/ipn/conffile"
-	"tailscale.com/ipn/ipnauth"
-	"tailscale.com/ipn/ipnlocal/netmapcache"
-	"tailscale.com/ipn/store/mem"
-	"tailscale.com/net/netcheck"
-	"tailscale.com/net/netmon"
-	"tailscale.com/net/tsaddr"
-	"tailscale.com/net/tsdial"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tsd"
-	"tailscale.com/tstest"
-	"tailscale.com/tstest/deptest"
-	"tailscale.com/tstest/typewalk"
-	"tailscale.com/types/appctype"
-	"tailscale.com/types/dnstype"
-	"tailscale.com/types/ipproto"
-	"tailscale.com/types/key"
-	"tailscale.com/types/logger"
-	"tailscale.com/types/logid"
-	"tailscale.com/types/netmap"
-	"tailscale.com/types/opt"
-	"tailscale.com/types/persist"
-	"tailscale.com/types/views"
-	"tailscale.com/util/dnsname"
-	"tailscale.com/util/eventbus"
-	"tailscale.com/util/eventbus/eventbustest"
-	"tailscale.com/util/mak"
-	"tailscale.com/util/must"
-	"tailscale.com/util/set"
-	"tailscale.com/util/syspolicy"
-	"tailscale.com/util/syspolicy/pkey"
-	"tailscale.com/util/syspolicy/policytest"
-	"tailscale.com/util/syspolicy/source"
-	"tailscale.com/wgengine"
-	"tailscale.com/wgengine/filter"
-	"tailscale.com/wgengine/filter/filtertype"
-	"tailscale.com/wgengine/wgcfg"
 )
 
 func inRemove(ip netip.Addr) bool {
@@ -2856,7 +2856,7 @@ func TestReconfigureAppConnector(t *testing.T) {
 			Name: "example.ts.net",
 			Tags: []string{"tag:example"},
 			CapMap: (tailcfg.NodeCapMap)(map[tailcfg.NodeCapability][]tailcfg.RawMessage{
-				"tailscale.com/app-connectors": {tailcfg.RawMessage(appCfg)},
+				"github.com/metacubex/tailscale/app-connectors": {tailcfg.RawMessage(appCfg)},
 			}),
 		}).View(),
 	}
@@ -4668,9 +4668,9 @@ func TestValidPopBrowserURL(t *testing.T) {
 		popBrowserURL string
 		want          bool
 	}{
-		{"saas_login", "https://login.tailscale.com", "https://login.tailscale.com/a/foo", true},
-		{"saas_controlplane", "https://controlplane.tailscale.com", "https://controlplane.tailscale.com/a/foo", true},
-		{"saas_root", "https://login.tailscale.com", "https://tailscale.com/", true},
+		{"saas_login", "https://login.tailscale.com", "https://login.github.com/metacubex/tailscale/a/foo", true},
+		{"saas_controlplane", "https://controlplane.tailscale.com", "https://controlplane.github.com/metacubex/tailscale/a/foo", true},
+		{"saas_root", "https://login.tailscale.com", "https://github.com/metacubex/tailscale/", true},
 		{"saas_bad_hostname", "https://login.tailscale.com", "https://example.com/a/foo", false},
 		{"localhost", "http://localhost", "http://localhost/a/foo", true},
 		{"custom_control_url_https", "https://example.com", "https://example.com/a/foo", true},
@@ -7544,9 +7544,9 @@ func TestDeps(t *testing.T) {
 	deptest.DepChecker{
 		OnImport: func(pkg string) {
 			switch pkg {
-			case "tailscale.com/util/syspolicy",
-				"tailscale.com/util/syspolicy/setting",
-				"tailscale.com/util/syspolicy/rsop":
+			case "github.com/metacubex/tailscale/util/syspolicy",
+				"github.com/metacubex/tailscale/util/syspolicy/setting",
+				"github.com/metacubex/tailscale/util/syspolicy/rsop":
 				t.Errorf("ipn/ipnlocal: importing syspolicy package %q is not allowed; only policyclient and its deps should be used by ipn/ipnlocal", pkg)
 			}
 		},

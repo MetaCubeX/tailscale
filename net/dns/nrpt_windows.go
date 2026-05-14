@@ -9,13 +9,13 @@ import (
 	"sync"
 	"sync/atomic"
 
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/util/dnsname"
+	"github.com/metacubex/tailscale/util/set"
+	"github.com/metacubex/tailscale/util/winutil"
+	"github.com/metacubex/tailscale/util/winutil/gp"
 	"golang.org/x/sys/windows"
 	"golang.org/x/sys/windows/registry"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/dnsname"
-	"tailscale.com/util/set"
-	"tailscale.com/util/winutil"
-	"tailscale.com/util/winutil/gp"
 )
 
 const (

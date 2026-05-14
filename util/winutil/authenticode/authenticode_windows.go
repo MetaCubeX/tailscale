@@ -12,9 +12,9 @@ import (
 	"strings"
 	"unsafe"
 
+	"github.com/metacubex/tailscale/util/wingoes"
+	"github.com/metacubex/tailscale/util/wingoes/pe"
 	"golang.org/x/sys/windows"
-	"tailscale.com/util/wingoes"
-	"tailscale.com/util/wingoes/pe"
 )
 
 var (

@@ -8,6 +8,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"log"
 	"net/netip"
 	"os"
@@ -15,14 +16,13 @@ import (
 	"path/filepath"
 	"runtime"
 	"strings"
-	slices "tailscale.com/util/go120/slices"
 
+	"github.com/metacubex/tailscale/envknob"
+	"github.com/metacubex/tailscale/ipn/ipnstate"
+	"github.com/metacubex/tailscale/net/tsaddr"
+	"github.com/metacubex/tailscale/paths"
+	"github.com/metacubex/tailscale/version"
 	"github.com/peterbourgon/ff/v3/ffcli"
-	"tailscale.com/envknob"
-	"tailscale.com/ipn/ipnstate"
-	"tailscale.com/net/tsaddr"
-	"tailscale.com/paths"
-	"tailscale.com/version"
 )
 
 var sshCmd = &ffcli.Command{

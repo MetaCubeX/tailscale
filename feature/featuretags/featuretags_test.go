@@ -6,14 +6,14 @@
 package featuretags
 
 import (
+	maps "github.com/metacubex/tailscale/util/go120/maps"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"os/exec"
 	"regexp"
 	"strings"
-	maps "tailscale.com/util/go120/maps"
-	slices "tailscale.com/util/go120/slices"
 	"testing"
 
-	"tailscale.com/util/set"
+	"github.com/metacubex/tailscale/util/set"
 )
 
 func TestKnownDeps(t *testing.T) {

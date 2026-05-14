@@ -12,19 +12,19 @@ import (
 	"sync/atomic"
 	"time"
 
-	"tailscale.com/disco"
-	"tailscale.com/net/packet"
-	"tailscale.com/net/stun"
-	udprelay "tailscale.com/net/udprelay/endpoint"
-	"tailscale.com/syncs"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tstime"
-	"tailscale.com/types/key"
-	"tailscale.com/util/set"
+	"github.com/metacubex/tailscale/disco"
+	"github.com/metacubex/tailscale/net/packet"
+	"github.com/metacubex/tailscale/net/stun"
+	udprelay "github.com/metacubex/tailscale/net/udprelay/endpoint"
+	"github.com/metacubex/tailscale/syncs"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/tstime"
+	"github.com/metacubex/tailscale/types/key"
+	"github.com/metacubex/tailscale/util/set"
 )
 
 // relayManager manages allocation, handshaking, and initial probing (disco
-// ping/pong) of [tailscale.com/net/udprelay.Server] endpoints. The zero value
+// ping/pong) of [github.com/metacubex/tailscale/net/udprelay.Server] endpoints. The zero value
 // is ready for use.
 //
 // [relayManager] methods can be called by [Conn] and [endpoint] while their .mu
@@ -79,7 +79,7 @@ type relayManager struct {
 	runLoopStoppedCh chan struct{}
 }
 
-// serverDiscoVNI represents a [tailscale.com/net/udprelay.Server] disco key
+// serverDiscoVNI represents a [github.com/metacubex/tailscale/net/udprelay.Server] disco key
 // and Geneve header VNI value for a given [udprelay.ServerEndpoint].
 type serverDiscoVNI struct {
 	serverDisco key.DiscoPublic
@@ -1054,7 +1054,7 @@ func (r *relayManager) allocateServerEndpoint(work *relayEndpointAllocWork) {
 	defer returnAfterTimer.Stop()
 	// While connections to DERP are over TCP, they can be lossy on the DERP
 	// server when data moves between the two independent streams. Also, the
-	// peer relay server may not be "ready" (see [tailscale.com/net/udprelay.ErrServerNotReady]).
+	// peer relay server may not be "ready" (see [github.com/metacubex/tailscale/net/udprelay.ErrServerNotReady]).
 	// So, start a timer to retry once if needed.
 	retryAfterTimer := time.NewTimer(udprelay.ServerRetryAfter)
 	defer retryAfterTimer.Stop()

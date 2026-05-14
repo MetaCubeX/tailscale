@@ -5,8 +5,8 @@
 package slicesx
 
 import (
-	"tailscale.com/util/go120/randv2"
-	slices "tailscale.com/util/go120/slices"
+	"github.com/metacubex/tailscale/util/go120/randv2"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 )
 
 // Interleave combines two slices of the form [a, b, c] and [x, y, z] into a

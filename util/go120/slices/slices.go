@@ -7,10 +7,10 @@ package slices
 import (
 	"sort"
 
+	"github.com/metacubex/tailscale/util/go120/cmp"
+	"github.com/metacubex/tailscale/util/go120/iter"
 	"golang.org/x/exp/constraints"
 	xslices "golang.org/x/exp/slices"
-	"tailscale.com/util/go120/cmp"
-	"tailscale.com/util/go120/iter"
 )
 
 func All[S ~[]E, E any](s S) iter.Seq2[int, E] {

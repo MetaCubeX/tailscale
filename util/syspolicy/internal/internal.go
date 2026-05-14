@@ -9,9 +9,9 @@ import (
 	"bytes"
 
 	"github.com/metacubex/jsonv2/jsontext"
-	"tailscale.com/types/lazy"
-	"tailscale.com/util/testenv"
-	"tailscale.com/version"
+	"github.com/metacubex/tailscale/types/lazy"
+	"github.com/metacubex/tailscale/util/testenv"
+	"github.com/metacubex/tailscale/version"
 )
 
 // Init facilitates deferred invocation of initializers.

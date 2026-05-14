@@ -7,9 +7,9 @@ package netlog
 
 import (
 	"encoding/binary"
+	"github.com/metacubex/tailscale/util/go120/randv2"
 	"net/netip"
 	"sync"
-	"tailscale.com/util/go120/randv2"
 	"testing"
 	"testing/synctest"
 	"time"
@@ -17,12 +17,12 @@ import (
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
 	jsonv2 "github.com/metacubex/jsonv2"
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/bools"
-	"tailscale.com/types/ipproto"
-	"tailscale.com/types/netlogtype"
-	"tailscale.com/types/netmap"
-	"tailscale.com/wgengine/router"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/types/bools"
+	"github.com/metacubex/tailscale/types/ipproto"
+	"github.com/metacubex/tailscale/types/netlogtype"
+	"github.com/metacubex/tailscale/types/netmap"
+	"github.com/metacubex/tailscale/wgengine/router"
 )
 
 func TestEmbedNodeInfo(t *testing.T) {

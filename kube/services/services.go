@@ -10,10 +10,10 @@ import (
 	"fmt"
 	"time"
 
-	"tailscale.com/client/local"
-	"tailscale.com/ipn"
-	"tailscale.com/kube/localclient"
-	"tailscale.com/types/logger"
+	"github.com/metacubex/tailscale/client/local"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/kube/localclient"
+	"github.com/metacubex/tailscale/types/logger"
 )
 
 // EnsureServicesAdvertised is a function that gets called on containerboot
@@ -41,7 +41,7 @@ func EnsureServicesAdvertised(ctx context.Context, services []string, lc localcl
 	// primary no matter how long we wait. We would need a mechanism to await
 	// netmap updates for peers to know for sure.
 	//
-	// See https://tailscale.com/kb/1115/high-availability for more details.
+	// See https://github.com/metacubex/tailscale/kb/1115/high-availability for more details.
 	// TODO(tomhjp): Wait for a netmap update instead of sleeping when control
 	// supports that.
 	select {
@@ -88,7 +88,7 @@ func EnsureServicesNotAdvertised(ctx context.Context, lc *local.Client, logf log
 	// primary no matter how long we wait. We would need a mechanism to await
 	// netmap updates for peers to know for sure.
 	//
-	// See https://tailscale.com/kb/1115/high-availability for more details.
+	// See https://github.com/metacubex/tailscale/kb/1115/high-availability for more details.
 	// TODO(tomhjp): Wait for a netmap update instead of sleeping when control
 	// supports that.
 	select {

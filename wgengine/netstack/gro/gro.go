@@ -15,8 +15,8 @@ import (
 	"github.com/metacubex/gvisor/pkg/tcpip/header"
 	"github.com/metacubex/gvisor/pkg/tcpip/header/parse"
 	"github.com/metacubex/gvisor/pkg/tcpip/stack"
-	"tailscale.com/net/packet"
-	"tailscale.com/types/ipproto"
+	"github.com/metacubex/tailscale/net/packet"
+	"github.com/metacubex/tailscale/types/ipproto"
 )
 
 // RXChecksumOffload validates IPv4, TCP, and UDP header checksums in p,

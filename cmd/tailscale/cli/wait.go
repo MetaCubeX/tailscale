@@ -12,10 +12,10 @@ import (
 	"strings"
 	"time"
 
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/util/backoff"
 	"github.com/peterbourgon/ff/v3/ffcli"
-	"tailscale.com/ipn"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/backoff"
 )
 
 var waitCmd = &ffcli.Command{

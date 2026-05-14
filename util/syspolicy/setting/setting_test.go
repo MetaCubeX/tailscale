@@ -6,13 +6,13 @@
 package setting
 
 import (
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"strings"
-	slices "tailscale.com/util/go120/slices"
 	"testing"
 
-	"tailscale.com/types/lazy"
-	"tailscale.com/util/syspolicy/internal"
-	"tailscale.com/util/syspolicy/pkey"
+	"github.com/metacubex/tailscale/types/lazy"
+	"github.com/metacubex/tailscale/util/syspolicy/internal"
+	"github.com/metacubex/tailscale/util/syspolicy/pkey"
 )
 
 func TestSettingDefinition(t *testing.T) {

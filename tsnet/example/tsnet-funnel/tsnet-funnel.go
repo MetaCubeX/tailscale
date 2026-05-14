@@ -15,7 +15,7 @@ import (
 	"log"
 	"net/http"
 
-	"tailscale.com/tsnet"
+	"github.com/metacubex/tailscale/tsnet"
 )
 
 func main() {

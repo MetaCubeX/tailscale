@@ -6,11 +6,11 @@
 package gokrazydeps
 
 import (
+	_ "github.com/metacubex/tailscale/cmd/tailscale"
+	_ "github.com/metacubex/tailscale/cmd/tailscaled"
+	_ "github.com/metacubex/tailscale/cmd/tta"
 	_ "github.com/gokrazy/gokrazy/cmd/dhcp"
 	_ "github.com/gokrazy/serial-busybox"
 	_ "github.com/tailscale/gokrazy-kernel"
 	_ "github.com/tailscale/ts-gokrazy/gokrazyinit"
-	_ "tailscale.com/cmd/tailscale"
-	_ "tailscale.com/cmd/tailscaled"
-	_ "tailscale.com/cmd/tta"
 )

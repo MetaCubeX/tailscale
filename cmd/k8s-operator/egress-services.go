@@ -11,11 +11,11 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/metacubex/tailscale/util/go120/randv2"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"reflect"
 	"strings"
 	"sync"
-	"tailscale.com/util/go120/randv2"
-	slices "tailscale.com/util/go120/slices"
 
 	"go.uber.org/zap"
 	corev1 "k8s.io/api/core/v1"
@@ -31,14 +31,14 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 
-	tsoperator "tailscale.com/k8s-operator"
-	tsapi "tailscale.com/k8s-operator/apis/v1alpha1"
-	"tailscale.com/kube/egressservices"
-	"tailscale.com/kube/kubetypes"
-	"tailscale.com/tstime"
-	"tailscale.com/util/clientmetric"
-	"tailscale.com/util/mak"
-	"tailscale.com/util/set"
+	tsoperator "github.com/metacubex/tailscale/k8s-operator"
+	tsapi "github.com/metacubex/tailscale/k8s-operator/apis/v1alpha1"
+	"github.com/metacubex/tailscale/kube/egressservices"
+	"github.com/metacubex/tailscale/kube/kubetypes"
+	"github.com/metacubex/tailscale/tstime"
+	"github.com/metacubex/tailscale/util/clientmetric"
+	"github.com/metacubex/tailscale/util/mak"
+	"github.com/metacubex/tailscale/util/set"
 )
 
 const (
@@ -47,9 +47,9 @@ const (
 	reasonEgressSvcCreationFailed = "EgressSvcCreationFailed"
 	reasonProxyGroupNotReady      = "ProxyGroupNotReady"
 
-	labelProxyGroup = "tailscale.com/proxy-group"
+	labelProxyGroup = "github.com/metacubex/tailscale/proxy-group"
 
-	labelSvcType = "tailscale.com/svc-type" // ingress or egress
+	labelSvcType = "github.com/metacubex/tailscale/svc-type" // ingress or egress
 	typeEgress   = "egress"
 	// maxPorts is the maximum number of ports that can be exposed on a
 	// container. In practice this will be ports in range [10000 - 11000). The
@@ -617,8 +617,8 @@ func unusedPort(usedPorts sets.Set[int32]) int32 {
 }
 
 // tailnetTargetFromSvc returns a tailnet target for the given egress Service.
-// Service must contain exactly one of tailscale.com/tailnet-ip,
-// tailscale.com/tailnet-fqdn annotations.
+// Service must contain exactly one of github.com/metacubex/tailscale/tailnet-ip,
+// github.com/metacubex/tailscale/tailnet-fqdn annotations.
 func tailnetTargetFromSvc(svc *corev1.Service) egressservices.TailnetTarget {
 	if fqdn := svc.Annotations[AnnotationTailnetTargetFQDN]; fqdn != "" {
 		return egressservices.TailnetTarget{

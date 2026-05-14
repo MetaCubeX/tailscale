@@ -13,11 +13,11 @@ import (
 	"testing"
 	"time"
 
+	"github.com/metacubex/tailscale/tstest"
+	"github.com/metacubex/tailscale/util/mak"
 	"golang.org/x/net/icmp"
 	"golang.org/x/net/ipv4"
 	"golang.org/x/net/ipv6"
-	"tailscale.com/tstest"
-	"tailscale.com/util/mak"
 )
 
 var (

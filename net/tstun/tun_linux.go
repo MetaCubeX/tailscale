@@ -11,8 +11,8 @@ import (
 	"strings"
 	"syscall"
 
-	"tailscale.com/types/logger"
-	"tailscale.com/version/distro"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/version/distro"
 )
 
 func init() {

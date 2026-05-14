@@ -9,15 +9,15 @@ import (
 	"bytes"
 	"crypto/ed25519"
 	"fmt"
+	maps "github.com/metacubex/tailscale/util/go120/maps"
 	"strconv"
 	"strings"
-	maps "tailscale.com/util/go120/maps"
 	"testing"
 	"text/scanner"
 
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
-	"tailscale.com/types/tkatype"
+	"github.com/metacubex/tailscale/types/tkatype"
 )
 
 // chaintest_test.go implements test helpers for concisely describing

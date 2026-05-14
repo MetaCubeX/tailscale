@@ -9,7 +9,7 @@ import (
 	"os"
 	"testing"
 
-	"tailscale.com/util/cibuild"
+	"github.com/metacubex/tailscale/util/cibuild"
 )
 
 func TestMain(m *testing.M) {

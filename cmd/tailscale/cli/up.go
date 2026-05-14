@@ -22,26 +22,26 @@ import (
 	"time"
 
 	shellquote "github.com/kballard/go-shellquote"
+	"github.com/metacubex/tailscale/feature/buildfeatures"
+	_ "github.com/metacubex/tailscale/feature/condregister/awsparamstore"
+	_ "github.com/metacubex/tailscale/feature/condregister/identityfederation"
+	_ "github.com/metacubex/tailscale/feature/condregister/oauthkey"
+	"github.com/metacubex/tailscale/health/healthmsg"
+	"github.com/metacubex/tailscale/internal/client/tailscale"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/ipn/ipnstate"
+	"github.com/metacubex/tailscale/net/netutil"
+	"github.com/metacubex/tailscale/net/tsaddr"
+	"github.com/metacubex/tailscale/safesocket"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/types/preftype"
+	"github.com/metacubex/tailscale/types/views"
+	"github.com/metacubex/tailscale/util/dnsname"
+	"github.com/metacubex/tailscale/util/qrcodes"
+	"github.com/metacubex/tailscale/util/syspolicy/policyclient"
+	"github.com/metacubex/tailscale/version/distro"
 	"github.com/peterbourgon/ff/v3/ffcli"
-	"tailscale.com/feature/buildfeatures"
-	_ "tailscale.com/feature/condregister/awsparamstore"
-	_ "tailscale.com/feature/condregister/identityfederation"
-	_ "tailscale.com/feature/condregister/oauthkey"
-	"tailscale.com/health/healthmsg"
-	"tailscale.com/internal/client/tailscale"
-	"tailscale.com/ipn"
-	"tailscale.com/ipn/ipnstate"
-	"tailscale.com/net/netutil"
-	"tailscale.com/net/tsaddr"
-	"tailscale.com/safesocket"
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/logger"
-	"tailscale.com/types/preftype"
-	"tailscale.com/types/views"
-	"tailscale.com/util/dnsname"
-	"tailscale.com/util/qrcodes"
-	"tailscale.com/util/syspolicy/policyclient"
-	"tailscale.com/version/distro"
 )
 
 var upCmd = &ffcli.Command{
@@ -271,7 +271,7 @@ var upArgsGlobal upArgsT
 // Ex:
 //
 //	{
-//	   "AuthURL": "https://login.tailscale.com/a/0123456789abcdef",
+//	   "AuthURL": "https://login.github.com/metacubex/tailscale/a/0123456789abcdef",
 //	   "QR": "data:image/png;base64,0123...cdef"
 //	   "BackendState": "NeedsLogin"
 //	}
@@ -280,7 +280,7 @@ var upArgsGlobal upArgsT
 //	   "BackendState": "Running"
 //	}
 type upOutputJSON struct {
-	AuthURL      string `json:",omitempty"` // Authentication URL of the form https://login.tailscale.com/a/0123456789
+	AuthURL      string `json:",omitempty"` // Authentication URL of the form https://login.github.com/metacubex/tailscale/a/0123456789
 	QR           string `json:",omitempty"` // a DataURL (base64) PNG of a QR code AuthURL
 	BackendState string `json:",omitempty"` // name of state like Running or NeedsMachineAuth
 	Error        string `json:",omitempty"` // description of an error

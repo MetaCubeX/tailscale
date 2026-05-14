@@ -9,9 +9,9 @@ import (
 	"net/netip"
 	"time"
 
-	"tailscale.com/tstime"
-	"tailscale.com/util/dnsname"
-	"tailscale.com/util/mak"
+	"github.com/metacubex/tailscale/tstime"
+	"github.com/metacubex/tailscale/util/dnsname"
+	"github.com/metacubex/tailscale/util/mak"
 )
 
 // domainDst is a key for looking up an existing address assignment by the

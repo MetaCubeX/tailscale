@@ -9,8 +9,8 @@ import (
 	"context"
 	"time"
 
-	"tailscale.com/net/captivedetection"
-	"tailscale.com/tailcfg"
+	"github.com/metacubex/tailscale/net/captivedetection"
+	"github.com/metacubex/tailscale/tailcfg"
 )
 
 func init() {

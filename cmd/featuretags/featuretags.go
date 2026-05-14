@@ -8,13 +8,13 @@ package main
 import (
 	"flag"
 	"fmt"
+	maps "github.com/metacubex/tailscale/util/go120/maps"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"log"
 	"strings"
-	maps "tailscale.com/util/go120/maps"
-	slices "tailscale.com/util/go120/slices"
 
-	"tailscale.com/feature/featuretags"
-	"tailscale.com/util/set"
+	"github.com/metacubex/tailscale/feature/featuretags"
+	"github.com/metacubex/tailscale/util/set"
 )
 
 var (

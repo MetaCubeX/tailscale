@@ -9,9 +9,9 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/metacubex/tailscale/tsconst"
+	"github.com/metacubex/tailscale/util/winipcfg"
 	"golang.org/x/sys/windows"
-	"tailscale.com/tsconst"
-	"tailscale.com/util/winipcfg"
 )
 
 func TestGetInterfaceIndex(t *testing.T) {

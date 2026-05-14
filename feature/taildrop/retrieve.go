@@ -13,9 +13,9 @@ import (
 	"sort"
 	"time"
 
-	"tailscale.com/client/tailscale/apitype"
-	"tailscale.com/util/backoff"
-	"tailscale.com/util/set"
+	"github.com/metacubex/tailscale/client/tailscale/apitype"
+	"github.com/metacubex/tailscale/util/backoff"
+	"github.com/metacubex/tailscale/util/set"
 )
 
 // HasFilesWaiting reports whether any files are buffered in [Handler.Dir].

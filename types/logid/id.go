@@ -11,8 +11,8 @@ import (
 	"encoding/binary"
 	"encoding/hex"
 	"fmt"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"math/bits"
-	slices "tailscale.com/util/go120/slices"
 	"unicode/utf8"
 )
 

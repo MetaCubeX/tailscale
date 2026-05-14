@@ -8,6 +8,7 @@ import (
 	"bufio"
 	"expvar"
 	"fmt"
+	cmp "github.com/metacubex/tailscale/util/go120/cmp"
 	"io"
 	"net/http"
 	"os"
@@ -18,16 +19,15 @@ import (
 	"strconv"
 	"strings"
 	"sync"
-	cmp "tailscale.com/util/go120/cmp"
 	"time"
 	"unicode"
 	"unicode/utf8"
 
+	"github.com/metacubex/tailscale/metrics"
+	"github.com/metacubex/tailscale/syncs"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/version"
 	"golang.org/x/exp/constraints"
-	"tailscale.com/metrics"
-	"tailscale.com/syncs"
-	"tailscale.com/types/logger"
-	"tailscale.com/version"
 )
 
 // StaticStringVar returns a new expvar.Var that always returns s.

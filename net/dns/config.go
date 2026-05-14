@@ -1,7 +1,7 @@
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
-//go:generate go run tailscale.com/cmd/viewer --type=Config --clonefunc
+//go:generate go run github.com/metacubex/tailscale/cmd/viewer --type=Config --clonefunc
 
 // Package dns contains code to configure and manage DNS settings.
 package dns
@@ -9,19 +9,19 @@ package dns
 import (
 	"bufio"
 	"fmt"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"net/netip"
 	"reflect"
 	"sort"
-	slices "tailscale.com/util/go120/slices"
 
-	"tailscale.com/control/controlknobs"
-	"tailscale.com/envknob"
-	"tailscale.com/net/dns/publicdns"
-	"tailscale.com/net/dns/resolver"
-	"tailscale.com/net/tsaddr"
-	"tailscale.com/types/dnstype"
-	"tailscale.com/util/dnsname"
-	"tailscale.com/util/set"
+	"github.com/metacubex/tailscale/control/controlknobs"
+	"github.com/metacubex/tailscale/envknob"
+	"github.com/metacubex/tailscale/net/dns/publicdns"
+	"github.com/metacubex/tailscale/net/dns/resolver"
+	"github.com/metacubex/tailscale/net/tsaddr"
+	"github.com/metacubex/tailscale/types/dnstype"
+	"github.com/metacubex/tailscale/util/dnsname"
+	"github.com/metacubex/tailscale/util/set"
 )
 
 // Config is a DNS configuration.

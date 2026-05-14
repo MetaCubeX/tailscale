@@ -5,4 +5,4 @@
 
 package condregister
 
-import _ "tailscale.com/feature/capture"
+import _ "github.com/metacubex/tailscale/feature/capture"

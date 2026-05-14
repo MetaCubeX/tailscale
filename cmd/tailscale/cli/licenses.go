@@ -6,8 +6,8 @@ package cli
 import (
 	"context"
 
+	"github.com/metacubex/tailscale/licenses"
 	"github.com/peterbourgon/ff/v3/ffcli"
-	"tailscale.com/licenses"
 )
 
 var licensesCmd = &ffcli.Command{

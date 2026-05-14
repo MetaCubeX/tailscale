@@ -16,8 +16,8 @@ import (
 	"strconv"
 	"strings"
 
-	"tailscale.com/ipn/conffile"
-	"tailscale.com/kube/kubeclient"
+	"github.com/metacubex/tailscale/ipn/conffile"
+	"github.com/metacubex/tailscale/kube/kubeclient"
 )
 
 // settings is all the configuration for containerboot.

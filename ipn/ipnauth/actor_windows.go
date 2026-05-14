@@ -7,9 +7,9 @@ import (
 	"context"
 	"errors"
 
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/types/lazy"
 	"golang.org/x/sys/windows"
-	"tailscale.com/ipn"
-	"tailscale.com/types/lazy"
 )
 
 // WindowsActor implements [Actor].

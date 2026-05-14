@@ -10,8 +10,8 @@ import (
 	"net/netip"
 	"testing"
 
+	"github.com/metacubex/tailscale/util/must"
 	"go4.org/netipx"
-	"tailscale.com/util/must"
 )
 
 func TestNext(t *testing.T) {

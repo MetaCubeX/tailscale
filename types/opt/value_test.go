@@ -11,8 +11,8 @@ import (
 	"testing"
 
 	jsonv2 "github.com/metacubex/jsonv2"
-	"tailscale.com/types/bools"
-	"tailscale.com/util/must"
+	"github.com/metacubex/tailscale/types/bools"
+	"github.com/metacubex/tailscale/util/must"
 )
 
 var (

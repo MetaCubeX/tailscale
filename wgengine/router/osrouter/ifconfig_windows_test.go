@@ -13,7 +13,7 @@ import (
 	"strings"
 	"testing"
 
-	"tailscale.com/util/winipcfg"
+	"github.com/metacubex/tailscale/util/winipcfg"
 )
 
 func randIP() netip.Addr {

@@ -9,12 +9,12 @@ import (
 	"fmt"
 	"testing"
 
-	"tailscale.com/health"
-	"tailscale.com/net/netcheck"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tstest"
-	"tailscale.com/util/eventbus"
-	"tailscale.com/util/eventbus/eventbustest"
+	"github.com/metacubex/tailscale/health"
+	"github.com/metacubex/tailscale/net/netcheck"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/tstest"
+	"github.com/metacubex/tailscale/util/eventbus"
+	"github.com/metacubex/tailscale/util/eventbus/eventbustest"
 )
 
 func CheckDERPHeuristicTimes(t *testing.T) {

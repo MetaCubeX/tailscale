@@ -11,33 +11,33 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	stdcmp "github.com/metacubex/tailscale/util/go120/cmp"
 	"io"
 	"net/netip"
 	"os"
 	"path/filepath"
 	"reflect"
 	"strings"
-	stdcmp "tailscale.com/util/go120/cmp"
 	"testing"
 
 	qt "github.com/frankban/quicktest"
 	"github.com/google/go-cmp/cmp"
+	"github.com/metacubex/tailscale/envknob"
+	"github.com/metacubex/tailscale/health/healthmsg"
+	"github.com/metacubex/tailscale/internal/client/tailscale"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/ipn/ipnstate"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/tka"
+	"github.com/metacubex/tailscale/tstest"
+	"github.com/metacubex/tailscale/tstest/deptest"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/types/opt"
+	"github.com/metacubex/tailscale/types/persist"
+	"github.com/metacubex/tailscale/types/preftype"
+	"github.com/metacubex/tailscale/util/set"
+	"github.com/metacubex/tailscale/version/distro"
 	"github.com/peterbourgon/ff/v3/ffcli"
-	"tailscale.com/envknob"
-	"tailscale.com/health/healthmsg"
-	"tailscale.com/internal/client/tailscale"
-	"tailscale.com/ipn"
-	"tailscale.com/ipn/ipnstate"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tka"
-	"tailscale.com/tstest"
-	"tailscale.com/tstest/deptest"
-	"tailscale.com/types/logger"
-	"tailscale.com/types/opt"
-	"tailscale.com/types/persist"
-	"tailscale.com/types/preftype"
-	"tailscale.com/util/set"
-	"tailscale.com/version/distro"
 )
 
 func TestPanicIfAnyEnvCheckedInInit(t *testing.T) {
@@ -1811,12 +1811,12 @@ func TestDeps(t *testing.T) {
 		GOOS:   "linux",
 		GOARCH: "arm64",
 		WantDeps: set.Of(
-			"tailscale.com/feature/capture/dissector", // want the Lua by default
+			"github.com/metacubex/tailscale/feature/capture/dissector", // want the Lua by default
 		),
 		BadDeps: map[string]string{
-			"tailscale.com/feature/capture": "don't link capture code",
-			"tailscale.com/net/packet":      "why we passing packets in the CLI?",
-			"tailscale.com/net/flowtrack":   "why we tracking flows in the CLI?",
+			"github.com/metacubex/tailscale/feature/capture": "don't link capture code",
+			"github.com/metacubex/tailscale/net/packet":      "why we passing packets in the CLI?",
+			"github.com/metacubex/tailscale/net/flowtrack":   "why we tracking flows in the CLI?",
 		},
 	}.Check(t)
 }
@@ -1827,8 +1827,8 @@ func TestDepsNoCapture(t *testing.T) {
 		GOARCH: "arm64",
 		Tags:   "ts_omit_capture",
 		BadDeps: map[string]string{
-			"tailscale.com/feature/capture":           "don't link capture code",
-			"tailscale.com/feature/capture/dissector": "don't like the Lua",
+			"github.com/metacubex/tailscale/feature/capture":           "don't link capture code",
+			"github.com/metacubex/tailscale/feature/capture/dissector": "don't like the Lua",
 		},
 	}.Check(t)
 

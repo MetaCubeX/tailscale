@@ -6,7 +6,7 @@ package setting
 import (
 	jsonv2 "github.com/metacubex/jsonv2"
 	"github.com/metacubex/jsonv2/jsontext"
-	"tailscale.com/types/opt"
+	"github.com/metacubex/tailscale/types/opt"
 )
 
 // Summary is an immutable [PolicyScope] and [Origin].

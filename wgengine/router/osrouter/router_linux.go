@@ -20,21 +20,21 @@ import (
 	"time"
 
 	"github.com/metacubex/tailscale-wireguard-go/tun"
+	"github.com/metacubex/tailscale/envknob"
+	"github.com/metacubex/tailscale/health"
+	"github.com/metacubex/tailscale/net/netmon"
+	"github.com/metacubex/tailscale/tsconst"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/types/opt"
+	"github.com/metacubex/tailscale/types/preftype"
+	"github.com/metacubex/tailscale/util/eventbus"
+	"github.com/metacubex/tailscale/util/linuxfw"
+	"github.com/metacubex/tailscale/version/distro"
+	"github.com/metacubex/tailscale/wgengine/router"
 	"github.com/tailscale/netlink"
 	"go4.org/netipx"
 	"golang.org/x/sys/unix"
 	"golang.org/x/time/rate"
-	"tailscale.com/envknob"
-	"tailscale.com/health"
-	"tailscale.com/net/netmon"
-	"tailscale.com/tsconst"
-	"tailscale.com/types/logger"
-	"tailscale.com/types/opt"
-	"tailscale.com/types/preftype"
-	"tailscale.com/util/eventbus"
-	"tailscale.com/util/linuxfw"
-	"tailscale.com/version/distro"
-	"tailscale.com/wgengine/router"
 )
 
 func init() {
@@ -578,7 +578,7 @@ var dockerStatefulFilteringWarnable = health.Register(&health.Warnable{
 	Code:     "docker-stateful-filtering",
 	Title:    "Docker with stateful filtering",
 	Severity: health.SeverityMedium,
-	Text:     health.StaticMessage("Stateful filtering is enabled and Docker was detected; this may prevent Docker containers on this host from resolving DNS and connecting to Tailscale nodes. See https://tailscale.com/s/stateful-docker"),
+	Text:     health.StaticMessage("Stateful filtering is enabled and Docker was detected; this may prevent Docker containers on this host from resolving DNS and connecting to Tailscale nodes. See https://github.com/metacubex/tailscale/s/stateful-docker"),
 })
 
 func (r *linuxRouter) updateStatefulFilteringWithDockerWarning(cfg *router.Config) {

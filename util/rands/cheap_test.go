@@ -6,10 +6,10 @@
 package rands
 
 import (
-	slices "tailscale.com/util/go120/slices"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"testing"
 
-	randv2 "tailscale.com/util/go120/randv2"
+	randv2 "github.com/metacubex/tailscale/util/go120/randv2"
 )
 
 func TestShuffleNoAllocs(t *testing.T) {

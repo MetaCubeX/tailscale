@@ -12,7 +12,7 @@ import (
 
 	"github.com/metacubex/gvisor/pkg/tcpip"
 	"github.com/metacubex/gvisor/pkg/tcpip/header"
-	"tailscale.com/net/packet"
+	"github.com/metacubex/tailscale/net/packet"
 )
 
 func Test_RXChecksumOffload(t *testing.T) {

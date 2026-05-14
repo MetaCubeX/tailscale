@@ -13,9 +13,9 @@ import (
 	"runtime"
 	"testing"
 
+	"github.com/metacubex/tailscale/net/netmon"
 	"golang.org/x/net/route"
 	"golang.org/x/sys/unix"
-	"tailscale.com/net/netmon"
 )
 
 func TestRouteEntryFromMsg(t *testing.T) {

@@ -8,12 +8,12 @@ package packet
 import (
 	"bytes"
 	"encoding/hex"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"net/netip"
-	slices "tailscale.com/util/go120/slices"
 	"testing"
 
+	"github.com/metacubex/tailscale/types/key"
 	"go4.org/mem"
-	"tailscale.com/types/key"
 )
 
 func TestTailscaleRejectedHeader(t *testing.T) {

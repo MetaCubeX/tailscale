@@ -13,11 +13,11 @@ import (
 	"time"
 
 	"github.com/godbus/dbus/v5"
+	"github.com/metacubex/tailscale/health"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/util/backoff"
+	"github.com/metacubex/tailscale/util/dnsname"
 	"golang.org/x/sys/unix"
-	"tailscale.com/health"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/backoff"
-	"tailscale.com/util/dnsname"
 )
 
 // DBus entities we talk to.

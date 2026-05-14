@@ -11,8 +11,8 @@ import (
 	"fmt"
 	"testing"
 
-	"tailscale.com/types/logger"
-	"tailscale.com/util/syspolicy/policyclient"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/util/syspolicy/policyclient"
 )
 
 func TestGetSerialNumberNotMac(t *testing.T) {

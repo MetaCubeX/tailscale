@@ -18,7 +18,7 @@ import (
 	"testing"
 	"time"
 
-	"tailscale.com/tstest"
+	"github.com/metacubex/tailscale/tstest"
 )
 
 func TestExpandProxyArgUnix(t *testing.T) {

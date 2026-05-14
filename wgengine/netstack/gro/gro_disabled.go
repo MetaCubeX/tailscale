@@ -8,7 +8,7 @@ package gro
 import (
 	"runtime"
 
-	"tailscale.com/net/packet"
+	"github.com/metacubex/tailscale/net/packet"
 )
 
 type GRO struct{}

@@ -6,8 +6,8 @@
 package stringsx
 
 import (
+	cmp "github.com/metacubex/tailscale/util/go120/cmp"
 	"strings"
-	cmp "tailscale.com/util/go120/cmp"
 	"testing"
 )
 

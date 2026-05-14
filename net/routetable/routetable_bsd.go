@@ -15,10 +15,10 @@ import (
 	"strings"
 	"syscall"
 
+	"github.com/metacubex/tailscale/net/netmon"
+	"github.com/metacubex/tailscale/types/logger"
 	"golang.org/x/net/route"
 	"golang.org/x/sys/unix"
-	"tailscale.com/net/netmon"
-	"tailscale.com/types/logger"
 )
 
 type RouteEntryBSD struct {

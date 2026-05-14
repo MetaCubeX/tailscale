@@ -10,8 +10,8 @@ import (
 	"errors"
 	"fmt"
 
-	"tailscale.com/types/tkatype"
-	"tailscale.com/util/ed25519consensus"
+	"github.com/metacubex/tailscale/types/tkatype"
+	"github.com/metacubex/tailscale/util/ed25519consensus"
 )
 
 // signatureVerify returns a nil error if the signature is valid over the

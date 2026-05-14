@@ -6,21 +6,21 @@ package ipn
 import (
 	"errors"
 	"fmt"
+	iter "github.com/metacubex/tailscale/util/go120/iter"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"net"
 	"net/netip"
 	"net/url"
 	"runtime"
 	"strconv"
 	"strings"
-	iter "tailscale.com/util/go120/iter"
-	slices "tailscale.com/util/go120/slices"
 
-	"tailscale.com/ipn/ipnstate"
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/ipproto"
-	"tailscale.com/util/dnsname"
-	"tailscale.com/util/mak"
-	"tailscale.com/util/set"
+	"github.com/metacubex/tailscale/ipn/ipnstate"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/types/ipproto"
+	"github.com/metacubex/tailscale/util/dnsname"
+	"github.com/metacubex/tailscale/util/mak"
+	"github.com/metacubex/tailscale/util/set"
 )
 
 // ServeConfigKey returns a StateKey that stores the
@@ -609,10 +609,10 @@ func CheckFunnelAccess(port uint16, node *ipnstate.PeerStatus) error {
 // for Tailscale Funnel usage.
 func NodeCanFunnel(node *ipnstate.PeerStatus) error {
 	if !node.HasCap(tailcfg.CapabilityHTTPS) {
-		return errors.New("Funnel not available; HTTPS must be enabled. See https://tailscale.com/s/https.")
+		return errors.New("Funnel not available; HTTPS must be enabled. See https://github.com/metacubex/tailscale/s/https.")
 	}
 	if !node.HasCap(tailcfg.NodeAttrFunnel) {
-		return errors.New("Funnel not available; \"funnel\" node attribute not set. See https://tailscale.com/s/no-funnel.")
+		return errors.New("Funnel not available; \"funnel\" node attribute not set. See https://github.com/metacubex/tailscale/s/no-funnel.")
 	}
 	return nil
 }

@@ -15,10 +15,10 @@ import (
 	"time"
 
 	"github.com/hashicorp/raft"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/tsconsensus"
+	"github.com/metacubex/tailscale/util/must"
 	"go4.org/netipx"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tsconsensus"
-	"tailscale.com/util/must"
 )
 
 func makeSetFromPrefix(pfx netip.Prefix) *netipx.IPSet {

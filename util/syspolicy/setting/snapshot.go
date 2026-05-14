@@ -5,17 +5,17 @@ package setting
 
 import (
 	"errors"
+	iter "github.com/metacubex/tailscale/util/go120/iter"
+	maps "github.com/metacubex/tailscale/util/go120/maps"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"strings"
-	iter "tailscale.com/util/go120/iter"
-	maps "tailscale.com/util/go120/maps"
-	slices "tailscale.com/util/go120/slices"
 	"time"
 
 	jsonv2 "github.com/metacubex/jsonv2"
 	"github.com/metacubex/jsonv2/jsontext"
+	"github.com/metacubex/tailscale/util/deephash"
+	"github.com/metacubex/tailscale/util/syspolicy/pkey"
 	xmaps "golang.org/x/exp/maps"
-	"tailscale.com/util/deephash"
-	"tailscale.com/util/syspolicy/pkey"
 )
 
 // Snapshot is an immutable collection of ([Key], [RawItem]) pairs, representing

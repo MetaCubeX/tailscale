@@ -12,7 +12,7 @@ import (
 	_ "net/http/pprof"
 	"strings"
 
-	"tailscale.com/tsnet"
+	"github.com/metacubex/tailscale/tsnet"
 )
 
 // This example function is in a separate file for the "net/http/pprof" import.

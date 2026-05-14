@@ -7,17 +7,17 @@ package nmcfg
 import (
 	"bufio"
 	"fmt"
+	cmp "github.com/metacubex/tailscale/util/go120/cmp"
 	"net/netip"
 	"strings"
-	cmp "tailscale.com/util/go120/cmp"
 
-	"tailscale.com/net/tsaddr"
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/key"
-	"tailscale.com/types/logger"
-	"tailscale.com/types/logid"
-	"tailscale.com/types/netmap"
-	"tailscale.com/wgengine/wgcfg"
+	"github.com/metacubex/tailscale/net/tsaddr"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/types/key"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/types/logid"
+	"github.com/metacubex/tailscale/types/netmap"
+	"github.com/metacubex/tailscale/wgengine/wgcfg"
 )
 
 func nodeDebugName(n tailcfg.NodeView) string {

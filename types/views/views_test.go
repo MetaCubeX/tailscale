@@ -8,10 +8,10 @@ package views
 import (
 	jsonv1 "encoding/json"
 	"fmt"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"net/netip"
 	"reflect"
 	"strings"
-	slices "tailscale.com/util/go120/slices"
 	"testing"
 	"unsafe"
 
@@ -19,7 +19,7 @@ import (
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
 	jsonv2 "github.com/metacubex/jsonv2"
-	"tailscale.com/types/structs"
+	"github.com/metacubex/tailscale/types/structs"
 )
 
 // Statically verify that each type implements the following interfaces.

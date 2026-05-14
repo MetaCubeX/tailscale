@@ -16,11 +16,11 @@ import (
 	"time"
 
 	"github.com/metacubex/bart"
+	"github.com/metacubex/tailscale/client/tailscale/apitype"
+	"github.com/metacubex/tailscale/cmd/natc/ippool"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/util/must"
 	"golang.org/x/net/dns/dnsmessage"
-	"tailscale.com/client/tailscale/apitype"
-	"tailscale.com/cmd/natc/ippool"
-	"tailscale.com/tailcfg"
-	"tailscale.com/util/must"
 )
 
 func prefixEqual(a, b netip.Prefix) bool {

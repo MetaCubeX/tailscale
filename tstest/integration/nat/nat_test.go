@@ -12,6 +12,7 @@ import (
 	"errors"
 	"flag"
 	"fmt"
+	cmp "github.com/metacubex/tailscale/util/go120/cmp"
 	"io"
 	"net"
 	"net/http"
@@ -23,17 +24,16 @@ import (
 	"strconv"
 	"strings"
 	"sync"
-	cmp "tailscale.com/util/go120/cmp"
 	"testing"
 	"time"
 
+	"github.com/metacubex/tailscale/client/tailscale"
+	"github.com/metacubex/tailscale/ipn/ipnstate"
+	"github.com/metacubex/tailscale/syncs"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/tstest/natlab/vnet"
 	"golang.org/x/mod/modfile"
 	"golang.org/x/sync/errgroup"
-	"tailscale.com/client/tailscale"
-	"tailscale.com/ipn/ipnstate"
-	"tailscale.com/syncs"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tstest/natlab/vnet"
 )
 
 var (

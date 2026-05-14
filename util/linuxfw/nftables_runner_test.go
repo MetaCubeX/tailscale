@@ -3,25 +3,26 @@
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
+
 package linuxfw
 
 import (
 	"bytes"
 	"errors"
 	"fmt"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"net/netip"
 	"runtime"
 	"strings"
-	slices "tailscale.com/util/go120/slices"
 	"testing"
 
+	"github.com/metacubex/tailscale/net/tsaddr"
+	"github.com/metacubex/tailscale/tstest"
+	"github.com/metacubex/tailscale/types/logger"
 	"github.com/google/nftables"
 	"github.com/google/nftables/expr"
 	"github.com/mdlayher/netlink"
 	"github.com/vishvananda/netns"
-	"tailscale.com/net/tsaddr"
-	"tailscale.com/tstest"
-	"tailscale.com/types/logger"
 )
 
 func toAnySlice[T any](s []T) []any {

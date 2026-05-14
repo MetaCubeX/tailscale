@@ -11,6 +11,7 @@ import (
 	_ "embed"
 	"flag"
 	"fmt"
+	cmp "github.com/metacubex/tailscale/util/go120/cmp"
 	"log"
 	"net"
 	"net/http"
@@ -19,12 +20,11 @@ import (
 	"os"
 	"os/signal"
 	"strings"
-	cmp "tailscale.com/util/go120/cmp"
 
+	"github.com/metacubex/tailscale/client/web"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/tsconst"
 	"github.com/peterbourgon/ff/v3/ffcli"
-	"tailscale.com/client/web"
-	"tailscale.com/ipn"
-	"tailscale.com/tsconst"
 )
 
 func init() {

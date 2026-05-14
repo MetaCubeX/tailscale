@@ -8,10 +8,10 @@ package linuxfw
 import (
 	"errors"
 	"fmt"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"os"
 	"strconv"
 	"strings"
-	slices "tailscale.com/util/go120/slices"
 )
 
 type fakeIPTables struct {

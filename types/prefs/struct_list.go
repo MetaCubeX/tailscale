@@ -5,13 +5,13 @@ package prefs
 
 import (
 	"fmt"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"reflect"
-	slices "tailscale.com/util/go120/slices"
 
 	jsonv2 "github.com/metacubex/jsonv2"
 	"github.com/metacubex/jsonv2/jsontext"
-	"tailscale.com/types/opt"
-	"tailscale.com/types/views"
+	"github.com/metacubex/tailscale/types/opt"
+	"github.com/metacubex/tailscale/types/views"
 )
 
 // StructList is a preference type that holds zero or more potentially mutable struct values.
@@ -103,7 +103,7 @@ type StructListView[T views.ViewCloner[T, V], V views.StructView[T]] struct {
 }
 
 // StructListViewOf returns a read-only view of l.
-// It is used by [tailscale.com/cmd/viewer].
+// It is used by [github.com/metacubex/tailscale/cmd/viewer].
 func StructListViewOf[T views.ViewCloner[T, V], V views.StructView[T]](ls *StructList[T]) StructListView[T, V] {
 	return StructListView[T, V]{ls}
 }

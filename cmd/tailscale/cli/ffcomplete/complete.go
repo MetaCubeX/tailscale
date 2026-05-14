@@ -22,9 +22,9 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/metacubex/tailscale/cmd/tailscale/cli/ffcomplete/internal"
+	"github.com/metacubex/tailscale/tempfork/spf13/cobra"
 	"github.com/peterbourgon/ff/v3/ffcli"
-	"tailscale.com/cmd/tailscale/cli/ffcomplete/internal"
-	"tailscale.com/tempfork/spf13/cobra"
 )
 
 type compOpts struct {

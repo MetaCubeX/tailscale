@@ -7,6 +7,7 @@ package driveimpl
 
 import (
 	"fmt"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"io"
 	"io/fs"
 	"log"
@@ -20,15 +21,14 @@ import (
 	"runtime"
 	"strings"
 	"sync"
-	slices "tailscale.com/util/go120/slices"
 	"testing"
 	"time"
 
 	"github.com/google/go-cmp/cmp"
+	"github.com/metacubex/tailscale/drive"
+	"github.com/metacubex/tailscale/drive/driveimpl/shared"
+	"github.com/metacubex/tailscale/tstest"
 	"github.com/studio-b12/gowebdav"
-	"tailscale.com/drive"
-	"tailscale.com/drive/driveimpl/shared"
-	"tailscale.com/tstest"
 )
 
 const (

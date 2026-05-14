@@ -11,7 +11,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"tailscale.com/types/key"
+	"github.com/metacubex/tailscale/types/key"
 )
 
 func TestNodeFileRoundTrip(t *testing.T) {

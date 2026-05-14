@@ -8,12 +8,12 @@ package prober
 import (
 	"context"
 	"fmt"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"net/netip"
 	"sync"
-	slices "tailscale.com/util/go120/slices"
 	"testing"
 
-	"tailscale.com/syncs"
+	"github.com/metacubex/tailscale/syncs"
 )
 
 func TestForEachAddr(t *testing.T) {

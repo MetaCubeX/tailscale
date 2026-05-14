@@ -14,9 +14,9 @@ import (
 	"net/http"
 	"strings"
 
-	"tailscale.com/metrics"
-	"tailscale.com/tsweb/varz"
-	"tailscale.com/util/set"
+	"github.com/metacubex/tailscale/metrics"
+	"github.com/metacubex/tailscale/tsweb/varz"
+	"github.com/metacubex/tailscale/util/set"
 )
 
 // Registry tracks user-facing metrics of various Tailscale subsystems.

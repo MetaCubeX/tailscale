@@ -11,8 +11,8 @@ import (
 	"strings"
 	"testing"
 
-	"tailscale.com/tstime"
-	"tailscale.com/util/must"
+	"github.com/metacubex/tailscale/tstime"
+	"github.com/metacubex/tailscale/util/must"
 )
 
 func TestPutFile(t *testing.T) {

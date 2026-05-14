@@ -7,13 +7,13 @@ package tsweb
 
 import (
 	"fmt"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"io"
 	"net/http"
 	"net/http/httptest"
 	"net/netip"
 	"runtime"
 	"strings"
-	slices "tailscale.com/util/go120/slices"
 	"testing"
 )
 

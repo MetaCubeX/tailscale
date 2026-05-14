@@ -8,9 +8,12 @@ package main
 import (
 	"context"
 	"fmt"
+	maps "github.com/metacubex/tailscale/util/go120/maps"
 	"reflect"
-	maps "tailscale.com/util/go120/maps"
 
+	kube "github.com/metacubex/tailscale/k8s-operator"
+	tsapi "github.com/metacubex/tailscale/k8s-operator/apis/v1alpha1"
+	"github.com/metacubex/tailscale/kube/kubetypes"
 	"go.uber.org/zap"
 	corev1 "k8s.io/api/core/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
@@ -19,13 +22,10 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-	kube "tailscale.com/k8s-operator"
-	tsapi "tailscale.com/k8s-operator/apis/v1alpha1"
-	"tailscale.com/kube/kubetypes"
 )
 
 const (
-	labelMetricsTarget = "tailscale.com/metrics-target"
+	labelMetricsTarget = "github.com/metacubex/tailscale/metrics-target"
 
 	// These labels get transferred from the metrics Service to the ingested Prometheus metrics.
 	labelPromProxyType            = "ts_proxy_type"

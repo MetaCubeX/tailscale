@@ -14,12 +14,12 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/metacubex/tailscale/envknob"
+	"github.com/metacubex/tailscale/hostinfo"
+	"github.com/metacubex/tailscale/util/lineiter"
+	"github.com/metacubex/tailscale/util/osuser"
+	"github.com/metacubex/tailscale/version/distro"
 	"go4.org/mem"
-	"tailscale.com/envknob"
-	"tailscale.com/hostinfo"
-	"tailscale.com/util/lineiter"
-	"tailscale.com/util/osuser"
-	"tailscale.com/version/distro"
 )
 
 // userMeta is a wrapper around *user.User with extra fields.

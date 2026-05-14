@@ -6,13 +6,13 @@
 package main
 
 import (
+	maps "github.com/metacubex/tailscale/util/go120/maps"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"strings"
-	maps "tailscale.com/util/go120/maps"
-	slices "tailscale.com/util/go120/slices"
 	"testing"
 
-	"tailscale.com/feature/featuretags"
-	"tailscale.com/tstest/deptest"
+	"github.com/metacubex/tailscale/feature/featuretags"
+	"github.com/metacubex/tailscale/tstest/deptest"
 )
 
 func TestOmitSSH(t *testing.T) {
@@ -22,15 +22,15 @@ func TestOmitSSH(t *testing.T) {
 		GOARCH: "amd64",
 		Tags:   "ts_omit_ssh,ts_include_cli",
 		BadDeps: map[string]string{
-			"golang.org/x/crypto/ssh":              msg,
-			"tailscale.com/ssh/tailssh":            msg,
-			"tailscale.com/sessionrecording":       msg,
-			"github.com/anmitsu/go-shlex":          msg,
-			"github.com/creack/pty":                msg,
-			"github.com/kr/fs":                     msg,
-			"github.com/pkg/sftp":                  msg,
-			"github.com/u-root/u-root/pkg/termios": msg,
-			"tempfork/gliderlabs/ssh":              msg,
+			"golang.org/x/crypto/ssh":                         msg,
+			"github.com/metacubex/tailscale/ssh/tailssh":      msg,
+			"github.com/metacubex/tailscale/sessionrecording": msg,
+			"github.com/anmitsu/go-shlex":                     msg,
+			"github.com/creack/pty":                           msg,
+			"github.com/kr/fs":                                msg,
+			"github.com/pkg/sftp":                             msg,
+			"github.com/u-root/u-root/pkg/termios":            msg,
+			"tempfork/gliderlabs/ssh":                         msg,
 		},
 	}.Check(t)
 }
@@ -42,9 +42,9 @@ func TestOmitSyspolicy(t *testing.T) {
 		GOARCH: "amd64",
 		Tags:   "ts_omit_syspolicy,ts_include_cli",
 		BadDeps: map[string]string{
-			"tailscale.com/util/syspolicy":         msg,
-			"tailscale.com/util/syspolicy/setting": msg,
-			"tailscale.com/util/syspolicy/rsop":    msg,
+			"github.com/metacubex/tailscale/util/syspolicy":         msg,
+			"github.com/metacubex/tailscale/util/syspolicy/setting": msg,
+			"github.com/metacubex/tailscale/util/syspolicy/rsop":    msg,
 		},
 	}.Check(t)
 }
@@ -55,7 +55,7 @@ func TestOmitLocalClient(t *testing.T) {
 		GOARCH: "amd64",
 		Tags:   "ts_omit_webclient,ts_omit_relayserver,ts_omit_oauthkey,ts_omit_acme",
 		BadDeps: map[string]string{
-			"tailscale.com/client/local": "unexpected",
+			"github.com/metacubex/tailscale/client/local": "unexpected",
 		},
 	}.Check(t)
 }
@@ -101,7 +101,7 @@ func TestOmitPortmapper(t *testing.T) {
 		GOARCH: "amd64",
 		Tags:   "ts_omit_portmapper,ts_include_cli,ts_omit_debugportmapper",
 		OnDep: func(dep string) {
-			if dep == "tailscale.com/net/portmapper" {
+			if dep == "github.com/metacubex/tailscale/net/portmapper" {
 				t.Errorf("unexpected dep with ts_omit_portmapper: %q", dep)
 				return
 			}
@@ -245,7 +245,7 @@ func TestMinTailscaledNoCLI(t *testing.T) {
 		"golang.org/x/net/proxy",
 		"internal/socks",
 		"github.com/tailscale/peercred",
-		"tailscale.com/types/netlogtype",
+		"github.com/metacubex/tailscale/types/netlogtype",
 		"deephash",
 		"util/hashx",
 	}
@@ -268,8 +268,8 @@ func TestMinTailscaledWithCLI(t *testing.T) {
 		"cbor",
 		"hujson",
 		"multierr", // https://github.com/tailscale/tailscale/pull/17379
-		"tailscale.com/metrics",
-		"tailscale.com/tsweb/varz",
+		"github.com/metacubex/tailscale/metrics",
+		"github.com/metacubex/tailscale/tsweb/varz",
 		"dirwalk",
 		"deephash",
 		"util/hashx",
@@ -286,20 +286,20 @@ func TestMinTailscaledWithCLI(t *testing.T) {
 			}
 		},
 		BadDeps: map[string]string{
-			"golang.org/x/net/http2":                 "unexpected x/net/http2 dep; tailscale/tailscale#17305",
-			"expvar":                                 "unexpected expvar dep",
-			"runtime/pprof":                          "unexpected runtime/pprof dep",
-			"net/http/pprof":                         "unexpected net/http/pprof dep",
-			"github.com/mdlayher/genetlink":          "unexpected genetlink dep",
-			"tailscale.com/clientupdate":             "unexpected clientupdate dep",
-			"filippo.io/edwards25519":                "unexpected edwards25519 dep",
-			"github.com/hdevalence/ed25519consensus": "unexpected ed25519consensus dep",
-			"tailscale.com/clientupdate/distsign":    "unexpected distsign dep",
-			"archive/tar":                            "unexpected archive/tar dep",
-			"tailscale.com/feature/conn25":           "unexpected conn25 dep",
-			"regexp":                                 "unexpected regexp dep; bloats binary",
-			"github.com/toqueteos/webbrowser":        "unexpected webbrowser dep with ts_omit_webbrowser",
-			"github.com/mattn/go-colorable":          "unexpected go-colorable dep with ts_omit_colorable",
+			"golang.org/x/net/http2":        "unexpected x/net/http2 dep; tailscale/tailscale#17305",
+			"expvar":                        "unexpected expvar dep",
+			"runtime/pprof":                 "unexpected runtime/pprof dep",
+			"net/http/pprof":                "unexpected net/http/pprof dep",
+			"github.com/mdlayher/genetlink": "unexpected genetlink dep",
+			"github.com/metacubex/tailscale/clientupdate":          "unexpected clientupdate dep",
+			"filippo.io/edwards25519":                              "unexpected edwards25519 dep",
+			"github.com/hdevalence/ed25519consensus":               "unexpected ed25519consensus dep",
+			"github.com/metacubex/tailscale/clientupdate/distsign": "unexpected distsign dep",
+			"archive/tar": "unexpected archive/tar dep",
+			"github.com/metacubex/tailscale/feature/conn25": "unexpected conn25 dep",
+			"regexp":                          "unexpected regexp dep; bloats binary",
+			"github.com/toqueteos/webbrowser": "unexpected webbrowser dep with ts_omit_webbrowser",
+			"github.com/mattn/go-colorable":   "unexpected go-colorable dep with ts_omit_colorable",
 		},
 	}.Check(t)
 }

@@ -6,8 +6,8 @@ package ffcomplete
 import (
 	"strings"
 
-	"tailscale.com/cmd/tailscale/cli/ffcomplete/internal"
-	"tailscale.com/tempfork/spf13/cobra"
+	"github.com/metacubex/tailscale/cmd/tailscale/cli/ffcomplete/internal"
+	"github.com/metacubex/tailscale/tempfork/spf13/cobra"
 )
 
 type ShellCompDirective = cobra.ShellCompDirective

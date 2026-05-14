@@ -21,9 +21,9 @@ import (
 	"testing"
 	"time"
 
+	"github.com/metacubex/tailscale/net/memnet"
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
-	"tailscale.com/net/memnet"
 )
 
 func TestConnectToRecorder(t *testing.T) {

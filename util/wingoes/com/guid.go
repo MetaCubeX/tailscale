@@ -4,7 +4,7 @@
 package com
 
 import (
-	"tailscale.com/util/wingoes"
+	"github.com/metacubex/tailscale/util/wingoes"
 )
 
 // We intentionally export these types across all GOOSes

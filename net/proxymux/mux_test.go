@@ -13,7 +13,7 @@ import (
 	"net/url"
 	"testing"
 
-	"tailscale.com/net/socks5"
+	"github.com/metacubex/tailscale/net/socks5"
 )
 
 func TestSplitSOCKSAndHTTP(t *testing.T) {

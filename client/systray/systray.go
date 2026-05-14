@@ -11,6 +11,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	slices "github.com/metacubex/tailscale/util/go120/slices"
 	"image"
 	"io"
 	"log"
@@ -21,20 +22,19 @@ import (
 	"strings"
 	"sync"
 	"syscall"
-	slices "tailscale.com/util/go120/slices"
 	"time"
 
 	"fyne.io/systray"
 	ico "github.com/Kodeworks/golang-image-ico"
 	"github.com/atotto/clipboard"
 	dbus "github.com/godbus/dbus/v5"
+	"github.com/metacubex/tailscale/client/local"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/ipn/ipnstate"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/util/slicesx"
+	"github.com/metacubex/tailscale/util/stringsx"
 	"github.com/toqueteos/webbrowser"
-	"tailscale.com/client/local"
-	"tailscale.com/ipn"
-	"tailscale.com/ipn/ipnstate"
-	"tailscale.com/tailcfg"
-	"tailscale.com/util/slicesx"
-	"tailscale.com/util/stringsx"
 )
 
 var (
@@ -168,7 +168,7 @@ This usually means that you should run the application like:
 
 tailscale systray
 
-See https://tailscale.com/kb/1597/linux-systray for more information.`)
+See https://github.com/metacubex/tailscale/kb/1597/linux-systray for more information.`)
 	}
 	setAppIcon(disconnected)
 
@@ -185,7 +185,7 @@ No permission to manage Tailscale. Set operator by running:
 
 sudo tailscale set --operator=$USER
 
-See https://tailscale.com/s/cli-operator for more information.`)
+See https://github.com/metacubex/tailscale/s/cli-operator for more information.`)
 	}
 	menu.mu.Unlock()
 }
@@ -231,10 +231,10 @@ func (menu *Menu) rebuild() {
 	systray.ResetMenu()
 
 	if menu.readonly {
-		const readonlyMsg = "No permission to manage Tailscale.\nSee tailscale.com/s/cli-operator"
+		const readonlyMsg = "No permission to manage Tailscale.\nSee github.com/metacubex/tailscale/s/cli-operator"
 		m := systray.AddMenuItem(readonlyMsg, "")
 		onClick(ctx, m, func(_ context.Context) {
-			webbrowser.Open("https://tailscale.com/s/cli-operator")
+			webbrowser.Open("https://github.com/metacubex/tailscale/s/cli-operator")
 		})
 		systray.AddSeparator()
 	}

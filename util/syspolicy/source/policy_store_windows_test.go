@@ -16,15 +16,15 @@ import (
 	"testing"
 	"time"
 
+	"github.com/metacubex/tailscale/tstest"
+	"github.com/metacubex/tailscale/util/cibuild"
+	"github.com/metacubex/tailscale/util/mak"
+	"github.com/metacubex/tailscale/util/syspolicy/pkey"
+	"github.com/metacubex/tailscale/util/syspolicy/setting"
+	"github.com/metacubex/tailscale/util/winutil"
+	"github.com/metacubex/tailscale/util/winutil/gp"
 	"golang.org/x/sys/windows"
 	"golang.org/x/sys/windows/registry"
-	"tailscale.com/tstest"
-	"tailscale.com/util/cibuild"
-	"tailscale.com/util/mak"
-	"tailscale.com/util/syspolicy/pkey"
-	"tailscale.com/util/syspolicy/setting"
-	"tailscale.com/util/winutil"
-	"tailscale.com/util/winutil/gp"
 )
 
 // subkeyStrings is a test type indicating that a string slice should be written

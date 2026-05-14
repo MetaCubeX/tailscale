@@ -7,7 +7,7 @@ package tstun
 
 import (
 	"github.com/metacubex/tailscale-wireguard-go/tun"
-	"tailscale.com/types/logger"
+	"github.com/metacubex/tailscale/types/logger"
 )
 
 func New(logf logger.Logf, tunName string) (tun.Device, string, error) {

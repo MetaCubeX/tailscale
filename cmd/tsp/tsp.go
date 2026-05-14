@@ -13,17 +13,17 @@ import (
 	"errors"
 	"flag"
 	"fmt"
+	cmp "github.com/metacubex/tailscale/util/go120/cmp"
 	"io"
 	"os"
 	"reflect"
 	"strings"
-	cmp "tailscale.com/util/go120/cmp"
 
+	"github.com/metacubex/tailscale/control/tsp"
+	"github.com/metacubex/tailscale/hostinfo"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/types/key"
 	"github.com/peterbourgon/ff/v3/ffcli"
-	"tailscale.com/control/tsp"
-	"tailscale.com/hostinfo"
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/key"
 )
 
 var globalArgs struct {

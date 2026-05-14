@@ -9,6 +9,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/metacubex/tailscale/util/go120/randv2"
 	"io"
 	"math"
 	"os"
@@ -17,13 +18,12 @@ import (
 	"strings"
 	"sync"
 	"sync/atomic"
-	"tailscale.com/util/go120/randv2"
 	"testing"
 	"time"
 
 	jsonv2 "github.com/metacubex/jsonv2"
-	"tailscale.com/tstest"
-	"tailscale.com/util/must"
+	"github.com/metacubex/tailscale/tstest"
+	"github.com/metacubex/tailscale/util/must"
 )
 
 func init() { alwaysStatForTests = true }
