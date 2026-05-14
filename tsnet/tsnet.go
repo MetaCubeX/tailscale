@@ -140,6 +140,7 @@ import (
 	"context"
 	crand "crypto/rand"
 	"crypto/tls"
+	"crypto/x509"
 	"encoding/hex"
 	"errors"
 	"fmt"
@@ -179,8 +180,10 @@ import (
 	"github.com/metacubex/tailscale/logpolicy"
 	"github.com/metacubex/tailscale/logtail"
 	"github.com/metacubex/tailscale/logtail/filch"
+	"github.com/metacubex/tailscale/net/dnscache"
 	"github.com/metacubex/tailscale/net/memnet"
 	"github.com/metacubex/tailscale/net/netmon"
+	"github.com/metacubex/tailscale/net/netx"
 	"github.com/metacubex/tailscale/net/proxymux"
 	"github.com/metacubex/tailscale/net/socks5"
 	"github.com/metacubex/tailscale/net/tsdial"
@@ -192,6 +195,7 @@ import (
 	"github.com/metacubex/tailscale/types/nettype"
 	"github.com/metacubex/tailscale/types/views"
 	"github.com/metacubex/tailscale/util/clientmetric"
+	"github.com/metacubex/tailscale/util/eventbus"
 	"github.com/metacubex/tailscale/util/mak"
 	"github.com/metacubex/tailscale/util/set"
 	"github.com/metacubex/tailscale/util/testenv"
@@ -296,6 +300,22 @@ type Server struct {
 	// field at zero unless you know what you are doing.
 	Port uint16
 
+	// SystemDialer optionally specifies how tsnet dials non-Tailscale
+	// infrastructure such as control, DERP, STUN, and logtail.
+	SystemDialer netx.DialFunc
+
+	// SystemPacketListener optionally specifies how tsnet opens UDP sockets
+	// for non-Tailscale infrastructure such as STUN and peer paths.
+	SystemPacketListener nettype.PacketListener
+
+	// ExtraRootCAs optionally specifies additional trusted root CAs for
+	// Tailscale control connections.
+	ExtraRootCAs *x509.CertPool
+
+	// LookupHook optionally specifies how tsnet resolves non-Tailscale
+	// infrastructure hostnames such as control and DERP.
+	LookupHook dnscache.LookupHookFunc
+
 	// AdvertiseTags specifies tags that should be applied to this node, for
 	// purposes of ACL enforcement. These can be referenced from the ACL policy
 	// document. Note that advertising a tag on the client doesn't guarantee
@@ -360,6 +380,18 @@ func (s *Server) Dial(ctx context.Context, network, address string) (net.Conn, e
 		return nil, err
 	}
 	return s.dialer.UserDial(ctx, network, address)
+}
+
+// DialPlan resolves address and reports whether Dial would route it via
+// Tailscale instead of falling back to the system dialer.
+func (s *Server) DialPlan(ctx context.Context, network, address string) (ipp netip.AddrPort, viaTailscale bool, err error) {
+	if err := s.Start(); err != nil {
+		return netip.AddrPort{}, false, err
+	}
+	if err := s.awaitRunning(ctx); err != nil {
+		return netip.AddrPort{}, false, err
+	}
+	return s.dialer.UserDialPlan(ctx, network, address)
 }
 
 // awaitRunning waits until the backend is in state Running.
@@ -836,8 +868,9 @@ func (s *Server) start() (reterr error) {
 		s.Logf(format, a...)
 	}
 
-	sys := tsd.NewSystem()
+	sys := tsd.NewSystemWithBus(eventbus.NewWithOptions(eventbus.BusOptions{Logf: tsLogf}))
 	s.sys = sys
+	sys.ExtraRootCAs = s.ExtraRootCAs
 	if err := s.startLogger(&closePool, sys.HealthTracker.Get(), tsLogf); err != nil {
 		return err
 	}
@@ -849,18 +882,20 @@ func (s *Server) start() (reterr error) {
 	closePool.add(s.netMon)
 
 	s.dialer = &tsdial.Dialer{Logf: tsLogf} // mutated below (before used)
+	s.dialer.SystemDialer = s.SystemDialer
 	s.dialer.SetBus(sys.Bus.Get())
 	eng, err := wgengine.NewUserspaceEngine(tsLogf, wgengine.Config{
-		Tun:           s.Tun,
-		EventBus:      sys.Bus.Get(),
-		ListenPort:    s.Port,
-		NetMon:        s.netMon,
-		Dialer:        s.dialer,
-		SetSubsystem:  sys.Set,
-		ControlKnobs:  sys.ControlKnobs(),
-		HealthTracker: sys.HealthTracker.Get(),
-		ExtraRootCAs:  sys.ExtraRootCAs,
-		Metrics:       sys.UserMetricsRegistry(),
+		Tun:            s.Tun,
+		EventBus:       sys.Bus.Get(),
+		ListenPort:     s.Port,
+		NetMon:         s.netMon,
+		Dialer:         s.dialer,
+		SetSubsystem:   sys.Set,
+		ControlKnobs:   sys.ControlKnobs(),
+		HealthTracker:  sys.HealthTracker.Get(),
+		ExtraRootCAs:   sys.ExtraRootCAs,
+		Metrics:        sys.UserMetricsRegistry(),
+		PacketListener: s.SystemPacketListener,
 	})
 	if err != nil {
 		return err
@@ -932,7 +967,7 @@ func (s *Server) start() (reterr error) {
 	if s.Ephemeral {
 		loginFlags = controlclient.LoginEphemeral
 	}
-	lb, err := ipnlocal.NewLocalBackend(tsLogf, s.logid, sys, loginFlags|controlclient.LocalBackendStartKeyOSNeutral)
+	lb, err := ipnlocal.NewLocalBackend(tsLogf, s.logid, sys, loginFlags|controlclient.LocalBackendStartKeyOSNeutral, s.LookupHook)
 	if err != nil {
 		return fmt.Errorf("NewLocalBackend: %v", err)
 	}
@@ -1076,7 +1111,13 @@ func (s *Server) startLogger(closePool *closeOnErrorPool, health *health.Tracker
 		Buffer:       s.logbuffer,
 		CompressLogs: true,
 		Bus:          s.sys.Bus.Get(),
-		HTTPC:        &http.Client{Transport: logpolicy.NewLogtailTransport(logtail.DefaultHost, s.netMon, health, tsLogf)},
+		HTTPC: &http.Client{Transport: logpolicy.TransportOptions{
+			Host:        logtail.DefaultHost,
+			NetMon:      s.netMon,
+			Health:      health,
+			Logf:        tsLogf,
+			DialContext: s.SystemDialer,
+		}.New()},
 		MetricsDelta: clientmetric.EncodeLogTailMetricsDelta,
 	}
 	s.logtail = logtail.NewLogger(c, tsLogf)
@@ -1113,7 +1154,18 @@ func (s *Server) printAuthURLLoop() {
 	ctx, cancel := context.WithCancel(s.shutdownCtx)
 	defer cancel()
 	stateCh := make(chan struct{}, 1)
+	var lastAuthURL string
+	logAuthURL := func(authURL string) {
+		if authURL == "" || authURL == lastAuthURL {
+			return
+		}
+		lastAuthURL = authURL
+		s.logf("To start this tsnet server, restart with TS_AUTHKEY set, or go to: %s", authURL)
+	}
 	go s.lb.WatchNotifications(ctx, ipn.NotifyInitialState, nil, func(n *ipn.Notify) (keepGoing bool) {
+		if n.BrowseToURL != nil && *n.BrowseToURL != "" {
+			logAuthURL(*n.BrowseToURL)
+		}
 		if n.State == nil {
 			return true
 		}
@@ -1135,9 +1187,7 @@ func (s *Server) printAuthURLLoop() {
 			return
 		}
 		st := s.lb.StatusWithoutPeers()
-		if st.AuthURL != "" {
-			s.logf("To start this tsnet server, restart with TS_AUTHKEY set, or go to: %s", st.AuthURL)
-		}
+		logAuthURL(st.AuthURL)
 		select {
 		case <-time.After(5 * time.Second):
 		case <-stateCh:
