@@ -30,8 +30,18 @@ import (
 
 var zaddr netip.Addr
 
+var defaultForwardResolver = &net.Resolver{
+	PreferGo: preferGoResolver(),
+	Dial:     defaultResolverDial,
+}
+
+func defaultResolverDial(ctx context.Context, network, address string) (net.Conn, error) {
+	var d net.Dialer
+	return d.DialContext(ctx, network, "223.5.5.5:53")
+}
+
 var single = &Resolver{
-	Forward: &net.Resolver{PreferGo: preferGoResolver()},
+	Forward: defaultForwardResolver,
 }
 
 func preferGoResolver() bool {
@@ -72,6 +82,8 @@ type Resolver struct {
 	// LookupIPFallback optionally provides a backup DNS mechanism
 	// to use if Forward returns an error or no results.
 	LookupIPFallback func(ctx context.Context, host string) ([]netip.Addr, error)
+
+	LookupHook LookupHookFunc
 
 	// TTL is how long to keep entries cached
 	//
@@ -119,7 +131,7 @@ func (r *Resolver) fwd() *net.Resolver {
 	if r.Forward != nil {
 		return r.Forward
 	}
-	return net.DefaultResolver
+	return defaultForwardResolver
 }
 
 // dlogf logs a debug message if debug logging is enabled either globally via
@@ -297,6 +309,8 @@ func (r *Resolver) lookupIP(ctx context.Context, host string) (ip, ip6 netip.Add
 	var ips []netip.Addr
 	if r.LookupIPForTest != nil && testenv.InTest() {
 		ips, err = r.LookupIPForTest(ctx, host)
+	} else if r.LookupHook != nil {
+		ips, err = r.LookupHook(lookupCtx, host)
 	} else {
 		ips, err = r.fwd().LookupNetIP(lookupCtx, "ip", host)
 	}
@@ -306,7 +320,7 @@ func (r *Resolver) lookupIP(ctx context.Context, host string) (ip, ip6 netip.Add
 			ips, err = resolver.LookupNetIP(lookupCtx, "ip", host)
 		}
 	}
-	if (err != nil || len(ips) == 0) && r.LookupIPFallback != nil {
+	if (err != nil || len(ips) == 0) && r.LookupIPFallback != nil && r.LookupHook == nil {
 		lookupCtx, lookupCancel := context.WithTimeout(ctx, 30*time.Second)
 		defer lookupCancel()
 		if err != nil {

@@ -153,6 +153,8 @@ type Options struct {
 	ControlKnobs         *controlknobs.Knobs // or nil to ignore
 	Bus                  *eventbus.Bus       // non-nil, for setting up publishers
 
+	LookupHook dnscache.LookupHookFunc
+
 	SkipStartForTests bool // if true, don't call [Auto.Start] to avoid any background goroutines (for tests only)
 
 	// StartPaused indicates whether the client should start in a paused state
@@ -284,6 +286,7 @@ func NewDirect(opts Options) (*Direct, error) {
 		UseLastGood:      true,
 		LookupIPFallback: dnsfallback.MakeLookupFunc(opts.Logf, netMon),
 		Logf:             opts.Logf,
+		LookupHook:       opts.LookupHook,
 	}
 
 	httpc := opts.HTTPTestClient
@@ -309,7 +312,7 @@ func NewDirect(opts Options) (*Direct, error) {
 			}
 			tr.TLSClientConfig.RootCAs = opts.ExtraRootCAs
 		}
-		tr.TLSClientConfig = tlsdial.Config(opts.HealthTracker, tr.TLSClientConfig)
+		tr.TLSClientConfig = tlsdial.ConfigWithLogf(opts.HealthTracker, tr.TLSClientConfig, opts.Logf)
 		var dialFunc netx.DialFunc
 		dialFunc, interceptedDial = makeScreenTimeDetectingDialFunc(opts.Dialer.SystemDial)
 		tr.DialContext = dnscache.Dialer(dialFunc, dnsCache)

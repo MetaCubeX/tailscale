@@ -33,6 +33,7 @@ import (
 	"github.com/metacubex/tailscale/hostinfo"
 	"github.com/metacubex/tailscale/net/bakedroots"
 	"github.com/metacubex/tailscale/net/tlsdial/blockblame"
+	"github.com/metacubex/tailscale/types/logger"
 )
 
 var counterFallbackOK int32 // atomic
@@ -67,6 +68,10 @@ var mitmBlockWarnable = health.Register(&health.Warnable{
 //
 // If ht is non-nil, it's used to report health errors.
 func Config(ht *health.Tracker, base *tls.Config) *tls.Config {
+	return ConfigWithLogf(ht, base, nil)
+}
+
+func ConfigWithLogf(ht *health.Tracker, base *tls.Config, logf logger.Logf) *tls.Config {
 	var extraRoots *x509.CertPool
 	if base != nil {
 		extraRoots = base.RootCAs
@@ -138,7 +143,7 @@ func Config(ht *health.Tracker, base *tls.Config) *tls.Config {
 					// Show a dedicated warning.
 					m, ok := blockblame.VerifyCertificate(cert)
 					if ok {
-						log.Printf("tlsdial: server cert seen while dialing %q looks like %q equipment (could be blocking Tailscale)", dialedHost, m.Name)
+						tlsLogf(logf, "tlsdial: server cert seen while dialing %q looks like %q equipment (could be blocking Tailscale)", dialedHost, m.Name)
 						ht.SetUnhealthy(mitmBlockWarnable, health.Args{"manufacturer": m.Name})
 					} else {
 						ht.SetHealthy(mitmBlockWarnable)
@@ -157,7 +162,7 @@ func Config(ht *health.Tracker, base *tls.Config) *tls.Config {
 					ht.SetTLSConnectionError(cs.ServerName, nil)
 					if selfSignedIssuer != "" {
 						// Log the self-signed issuer, but don't treat it as an error.
-						log.Printf("tlsdial: warning: server cert for %q passed x509 validation but is self-signed by %q", dialedHost, selfSignedIssuer)
+						tlsLogf(logf, "tlsdial: warning: server cert for %q passed x509 validation but is self-signed by %q", dialedHost, selfSignedIssuer)
 					}
 				}
 			}()
@@ -174,7 +179,7 @@ func Config(ht *health.Tracker, base *tls.Config) *tls.Config {
 		}
 		_, errSys := cs.PeerCertificates[0].Verify(opts)
 		if debug() {
-			log.Printf("tlsdial(sys %q): %v", dialedHost, errSys)
+			tlsLogf(logf, "tlsdial(sys %q): %v", dialedHost, errSys)
 		}
 		if errSys == nil && !debug() {
 			return nil
@@ -186,7 +191,7 @@ func Config(ht *health.Tracker, base *tls.Config) *tls.Config {
 			opts.Roots = extraRoots
 			_, errExtra := cs.PeerCertificates[0].Verify(opts)
 			if debug() {
-				log.Printf("tlsdial(extra %q): %v", dialedHost, errExtra)
+				tlsLogf(logf, "tlsdial(extra %q): %v", dialedHost, errExtra)
 			}
 			if errExtra == nil {
 				atomic.AddInt32(&counterFallbackOK, 1)
@@ -204,14 +209,14 @@ func Config(ht *health.Tracker, base *tls.Config) *tls.Config {
 		opts.Roots = bakedroots.Get()
 		_, bakedErr := cs.PeerCertificates[0].Verify(opts)
 		if debug() {
-			log.Printf("tlsdial(bake %q): %v", dialedHost, bakedErr)
+			tlsLogf(logf, "tlsdial(bake %q): %v", dialedHost, bakedErr)
 		} else if bakedErr != nil {
 			if _, loaded := tlsdialWarningPrinted.LoadOrStore(dialedHost, true); !loaded {
 				if errSys != nil {
 					if extraRoots != nil {
-						log.Printf("tlsdial: error: server cert for %q failed system roots, extra roots & Let's Encrypt root validation", dialedHost)
+						tlsLogf(logf, "tlsdial: error: server cert for %q failed system roots, extra roots & Let's Encrypt root validation", dialedHost)
 					} else {
-						log.Printf("tlsdial: error: server cert for %q failed both system roots & Let's Encrypt root validation", dialedHost)
+						tlsLogf(logf, "tlsdial: error: server cert for %q failed both system roots & Let's Encrypt root validation", dialedHost)
 					}
 				}
 			}
@@ -226,6 +231,14 @@ func Config(ht *health.Tracker, base *tls.Config) *tls.Config {
 		return errSys
 	}
 	return conf
+}
+
+func tlsLogf(logf logger.Logf, format string, args ...any) {
+	if logf != nil {
+		logf(format, args...)
+		return
+	}
+	log.Printf(format, args...)
 }
 
 func certIsSelfSigned(cert *x509.Certificate) bool {

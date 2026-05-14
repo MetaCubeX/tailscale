@@ -482,7 +482,7 @@ func (a *Dialer) tryURLUpgrade(ctx context.Context, u *url.URL, optAddr netip.Ad
 	if a.ExtraRootCAs != nil {
 		tr.TLSClientConfig.RootCAs = a.ExtraRootCAs
 	}
-	tr.TLSClientConfig = tlsdial.Config(a.HealthTracker, tr.TLSClientConfig)
+	tr.TLSClientConfig = tlsdial.ConfigWithLogf(a.HealthTracker, tr.TLSClientConfig, a.Logf)
 	if !tr.TLSClientConfig.InsecureSkipVerify {
 		panic("unexpected") // should be set by tlsdial.Config
 	}

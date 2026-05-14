@@ -408,6 +408,8 @@ type LocalBackend struct {
 	// bind the node identity to this device.
 	hardwareAttested atomic.Bool
 
+	lookupHook dnscache.LookupHookFunc
+
 	// getCertForTest is used to retrieve TLS certificates in tests.
 	// See [LocalBackend.ConfigureCertsForTest].
 	getCertForTest func(hostname string) (*TLSCertKeyPair, error)
@@ -471,7 +473,7 @@ type clientGen func(controlclient.Options) (controlclient.Client, error)
 // If dialer is nil, a new one is made.
 //
 // The logID may be the zero value if logging is not in use.
-func NewLocalBackend(logf logger.Logf, logID logid.PublicID, sys *tsd.System, loginFlags controlclient.LoginFlags) (_ *LocalBackend, err error) {
+func NewLocalBackend(logf logger.Logf, logID logid.PublicID, sys *tsd.System, loginFlags controlclient.LoginFlags, lookupHook ...dnscache.LookupHookFunc) (_ *LocalBackend, err error) {
 	e := sys.Engine.Get()
 	store := sys.StateStore.Get()
 	dialer := sys.Dialer.Get()
@@ -494,6 +496,11 @@ func NewLocalBackend(logf logger.Logf, logID logid.PublicID, sys *tsd.System, lo
 	if sds, ok := store.(ipn.StateStoreDialerSetter); ok {
 		sds.SetDialer(dialer.SystemDial)
 	}
+	var lookupHookFunc dnscache.LookupHookFunc
+	if len(lookupHook) > 0 {
+		lookupHookFunc = lookupHook[0]
+	}
+
 	envknob.LogCurrent(logf)
 
 	ctx, cancel := context.WithCancelCause(context.Background())
@@ -533,6 +540,7 @@ func NewLocalBackend(logf logger.Logf, logID logid.PublicID, sys *tsd.System, lo
 		captiveCtx:            captiveCtx,
 		captiveCancel:         nil, // so that we start checkCaptivePortalLoop when Running
 		needsCaptiveDetection: make(chan bool),
+		lookupHook:            lookupHookFunc,
 	}
 
 	nb := newNodeBackend(ctx, b.logf, b.sys.Bus.Get())
@@ -2825,6 +2833,7 @@ func (b *LocalBackend) startLocked(opts ipn.Options) error {
 		Shutdown:             ccShutdown,
 		Bus:                  b.sys.Bus.Get(),
 		StartPaused:          prefs.Sync().EqualBool(false),
+		LookupHook:           b.lookupHook,
 	})
 	if err != nil {
 		return err
