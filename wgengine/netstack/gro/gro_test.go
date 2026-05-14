@@ -1,3 +1,5 @@
+//go:build ignore
+
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
@@ -8,8 +10,8 @@ import (
 	"net/netip"
 	"testing"
 
-	"gvisor.dev/gvisor/pkg/tcpip"
-	"gvisor.dev/gvisor/pkg/tcpip/header"
+	"github.com/metacubex/gvisor/pkg/tcpip"
+	"github.com/metacubex/gvisor/pkg/tcpip/header"
 	"tailscale.com/net/packet"
 )
 

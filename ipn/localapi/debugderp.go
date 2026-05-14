@@ -6,7 +6,6 @@
 package localapi
 
 import (
-	"cmp"
 	"context"
 	"crypto/tls"
 	"encoding/json"
@@ -15,6 +14,7 @@ import (
 	"net/http"
 	"net/netip"
 	"strconv"
+	cmp "tailscale.com/util/go120/cmp"
 	"time"
 
 	"tailscale.com/derp/derphttp"
@@ -257,7 +257,7 @@ func (h *Handler) serveDebugDERPRegion(w http.ResponseWriter, r *http.Request) {
 			// Next, repeatedly get the server key to see if the node is
 			// behind a load balancer (incorrectly).
 			serverPubKeys := make(map[key.NodePublic]bool)
-			for i := range 5 {
+			for i := 0; i < 5; i++ {
 				func() {
 					rc := derphttp.NewRegionClient(fakePrivKey, h.logf, h.b.NetMon(), func() *tailcfg.DERPRegion {
 						return &tailcfg.DERPRegion{

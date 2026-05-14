@@ -19,7 +19,7 @@ import (
 	"io"
 	"io/fs"
 	"log"
-	"slices"
+	slices "tailscale.com/util/go120/slices"
 )
 
 const (

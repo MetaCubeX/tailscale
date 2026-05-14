@@ -13,7 +13,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"maps"
 	"net"
 	"net/http"
 	"net/netip"
@@ -23,6 +22,7 @@ import (
 	"strings"
 	"sync"
 	"sync/atomic"
+	maps "tailscale.com/util/go120/maps"
 	"time"
 
 	dns "golang.org/x/net/dns/dnsmessage"
@@ -743,7 +743,8 @@ func (f *forwarder) send(ctx context.Context, fq *forwardQuery, rr resolverAndDe
 	}
 
 	// If we got a truncated UDP response, return that instead of an error.
-	if trErr, ok := errors.AsType[truncatedResponseError](err); ok {
+	var trErr truncatedResponseError
+	if ok := errors.As(err, &trErr); ok {
 		return trErr.res, nil
 	}
 	return nil, err
@@ -1295,7 +1296,8 @@ func (f *forwarder) forwardWithDestChan(ctx context.Context, query packet, respo
 					// available; otherwise synthesize a SERVFAIL response. Note the
 					// rcode guard: firstErr may be a REFUSED rcodeResponseError if it
 					// arrived before the SERVFAIL that set sawNonRefused.
-					if rcodeErr, ok := errors.AsType[rcodeResponseError](firstErr); ok && rcodeErr.rcode == dns.RCodeServerFailure {
+					var rcodeErr rcodeResponseError
+					if ok := errors.As(firstErr, &rcodeErr); ok && rcodeErr.rcode == dns.RCodeServerFailure {
 						res = packet{rcodeErr.res, query.family, query.addr}
 					} else {
 						r, err := servfailResponse(query)
@@ -1308,7 +1310,8 @@ func (f *forwarder) forwardWithDestChan(ctx context.Context, query packet, respo
 				} else {
 					// !sawNonRefused means every error was an rcodeResponseError with rcode REFUSED,
 					// so firstErr is guaranteed to wrap one.
-					rcodeErr, ok := errors.AsType[rcodeResponseError](firstErr)
+					var rcodeErr rcodeResponseError
+					ok := errors.As(firstErr, &rcodeErr)
 					if !ok {
 						f.logf("unexpected: all errors were REFUSED but firstErr is not rcodeResponseError: %v", firstErr)
 						return firstErr

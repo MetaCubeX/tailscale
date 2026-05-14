@@ -1,15 +1,17 @@
+//go:build ignore
+
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
 package appc
 
 import (
-	stdcmp "cmp"
 	"fmt"
 	"net/netip"
 	"reflect"
-	"slices"
 	"sync/atomic"
+	stdcmp "tailscale.com/util/go120/cmp"
+	slices "tailscale.com/util/go120/slices"
 	"testing"
 	"time"
 

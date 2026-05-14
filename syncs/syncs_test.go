@@ -1,3 +1,5 @@
+//go:build ignore
+
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
@@ -6,9 +8,9 @@ package syncs
 import (
 	"context"
 	"io"
-	"maps"
 	"os"
 	"sync"
+	maps "tailscale.com/util/go120/maps"
 	"testing"
 	"time"
 

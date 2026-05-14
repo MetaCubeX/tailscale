@@ -48,7 +48,7 @@ func stateFileUnix() string {
 	}
 
 	try := path
-	for range 3 { // check writability of the file, /var/lib/tailscale, and /var/lib
+	for i := 0; i < 3; i++ { // check writability of the file, /var/lib/tailscale, and /var/lib
 		err := unix.Access(try, unix.O_RDWR)
 		if err == nil {
 			return path

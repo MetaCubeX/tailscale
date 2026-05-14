@@ -10,9 +10,9 @@
 package desktop
 
 import (
-	"cmp"
 	"fmt"
 	"sync"
+	cmp "tailscale.com/util/go120/cmp"
 
 	"tailscale.com/feature"
 	"tailscale.com/ipn"

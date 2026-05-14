@@ -42,27 +42,28 @@ func dnsMapFromNetworkMap(nm *netmap.NetworkMap) dnsMap {
 		if dnsname.HasSuffix(name, suffix) {
 			ret[canonMapKey(dnsname.TrimSuffix(name, suffix))] = ip
 		}
-		for _, p := range addrs.All() {
+		addrs.All()(func(_ int, p netip.Prefix) bool {
 			if p.Addr().Is4() {
 				have4 = true
 			}
-		}
+			return true
+		})
 	}
 	for _, p := range nm.Peers {
 		if p.Name() == "" {
 			continue
 		}
-		for _, pfx := range p.Addresses().All() {
+		p.Addresses().All()(func(_ int, pfx netip.Prefix) bool {
 			ip := pfx.Addr()
 			if ip.Is4() && !have4 {
-				continue
+				return true
 			}
 			ret[canonMapKey(p.Name())] = ip
 			if dnsname.HasSuffix(p.Name(), suffix) {
 				ret[canonMapKey(dnsname.TrimSuffix(p.Name(), suffix))] = ip
 			}
-			break
-		}
+			return false
+		})
 	}
 	for _, rec := range nm.DNS.ExtraRecords {
 		if rec.Type != "" {

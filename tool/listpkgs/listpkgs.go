@@ -14,10 +14,10 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-	"slices"
 	"sort"
 	"strings"
 	"sync"
+	slices "tailscale.com/util/go120/slices"
 
 	"golang.org/x/tools/go/packages"
 )

@@ -4,7 +4,6 @@
 package main
 
 import (
-	"cmp"
 	"crypto/rand"
 	"encoding/base64"
 	"encoding/hex"
@@ -14,10 +13,11 @@ import (
 	"os"
 	"os/exec"
 	"sync"
+	cmp "tailscale.com/util/go120/cmp"
 
-	"github.com/tailscale/wireguard-go/conn"
-	"github.com/tailscale/wireguard-go/device"
-	"github.com/tailscale/wireguard-go/tun"
+	"github.com/metacubex/tailscale-wireguard-go/conn"
+	"github.com/metacubex/tailscale-wireguard-go/device"
+	"github.com/metacubex/tailscale-wireguard-go/tun"
 	"golang.org/x/crypto/curve25519"
 	"tailscale.com/wgengine/wgcfg"
 )

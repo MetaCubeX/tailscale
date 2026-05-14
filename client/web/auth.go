@@ -11,8 +11,8 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
-	"slices"
 	"strings"
+	slices "tailscale.com/util/go120/slices"
 	"time"
 
 	"tailscale.com/client/tailscale/apitype"
@@ -234,7 +234,7 @@ func (s *Server) awaitUserAuth(ctx context.Context, session *browserSession) err
 
 func (s *Server) newSessionID() (string, error) {
 	raw := make([]byte, 16)
-	for range 5 {
+	for i := 0; i < 5; i++ {
 		if _, err := rand.Read(raw); err != nil {
 			return "", err
 		}

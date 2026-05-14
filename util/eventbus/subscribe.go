@@ -196,7 +196,7 @@ func newSubscriber[T any](r *subscribeState, logf logger.Logf) *Subscriber[T] {
 	slow.Stop() // reset in dispatch
 	return &Subscriber[T]{
 		read:       make(chan T),
-		unregister: func() { r.deleteSubscriber(reflect.TypeFor[T]()) },
+		unregister: func() { r.deleteSubscriber(reflect.TypeOf((*T)(nil)).Elem()) },
 		logf:       logf,
 		slow:       slow,
 	}
@@ -211,7 +211,7 @@ func newMonitor[T any](attach func(fn func(T)) (cancel func())) *Subscriber[T] {
 }
 
 func (s *Subscriber[T]) subscribeType() reflect.Type {
-	return reflect.TypeFor[T]()
+	return reflect.TypeOf((*T)(nil)).Elem()
 }
 
 func (s *Subscriber[T]) monitor(debugEvent T) {
@@ -299,7 +299,7 @@ type subscriberFuncCore struct {
 	// subscribeType() and used by the dispatch closure to format
 	// slow-subscriber log messages.
 	typ reflect.Type
-	// typeName is the cached reflect.TypeFor[T]().String() result.
+	// typeName is the cached reflect.TypeOf((*T)(nil)).Elem().String() result.
 	// Computed once at construction time so the dispatch closure
 	// (which runs once per delivered event) doesn't allocate a
 	// fresh string on every call. The string is also independent
@@ -322,7 +322,7 @@ type subscriberFuncCore struct {
 }
 
 func newSubscriberFunc[T any](r *subscribeState, f func(T), logf logger.Logf) *SubscriberFunc[T] {
-	core := newSubscriberFuncCore(r, logf, reflect.TypeFor[T]())
+	core := newSubscriberFuncCore(r, logf, reflect.TypeOf((*T)(nil)).Elem())
 	// The dispatch closure is the only piece that intrinsically
 	// needs T: it performs the type assertion on the head queue
 	// value and forwards the unboxed value to the user callback.
@@ -356,7 +356,7 @@ func newSubscriberFunc[T any](r *subscribeState, f func(T), logf logger.Logf) *S
 // Hoisting this out of newSubscriberFunc[T] eliminates the bulk of
 // the constructor body's per-T stencil cost; the only T-typed
 // instructions left in the generic constructor are the
-// reflect.TypeFor[T]() call (whose body is shared via the
+// reflect.TypeOf((*T)(nil)).Elem() call (whose body is shared via the
 // internal/abi.TypeFor[T] dictionary) and the construction of the
 // dispatch closure itself.
 func newSubscriberFuncCore(r *subscribeState, logf logger.Logf, typ reflect.Type) *subscriberFuncCore {

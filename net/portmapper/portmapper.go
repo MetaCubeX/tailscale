@@ -13,8 +13,8 @@ import (
 	"net"
 	"net/http"
 	"net/netip"
-	"slices"
 	"sync/atomic"
+	slices "tailscale.com/util/go120/slices"
 	"time"
 
 	"go4.org/mem"

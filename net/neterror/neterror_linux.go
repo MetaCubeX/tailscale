@@ -12,7 +12,8 @@ import (
 
 func init() {
 	shouldDisableUDPGSO = func(err error) bool {
-		if serr, ok := errors.AsType[*os.SyscallError](err); ok {
+		var serr *os.SyscallError
+		if errors.As(err, &serr) {
 			// EIO is returned by udp_send_skb() if the device driver does not
 			// have tx checksumming enabled, which is a hard requirement of
 			// UDP_SEGMENT. See:

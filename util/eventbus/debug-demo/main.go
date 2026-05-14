@@ -9,9 +9,9 @@ package main
 
 import (
 	"log"
-	"math/rand/v2"
 	"net/http"
 	"net/netip"
+	"tailscale.com/util/go120/randv2"
 	"time"
 
 	"tailscale.com/feature/buildfeatures"

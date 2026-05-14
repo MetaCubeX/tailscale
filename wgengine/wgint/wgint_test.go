@@ -1,3 +1,5 @@
+//go:build ignore
+
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
@@ -6,7 +8,7 @@ package wgint
 import (
 	"testing"
 
-	"github.com/tailscale/wireguard-go/device"
+	"github.com/metacubex/tailscale-wireguard-go/device"
 )
 
 func TestInternalOffsets(t *testing.T) {

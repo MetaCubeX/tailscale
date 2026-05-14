@@ -4,10 +4,10 @@
 package prefs
 
 import (
-	"maps"
+	maps "tailscale.com/util/go120/maps"
 
-	jsonv2 "github.com/go-json-experiment/json"
-	"github.com/go-json-experiment/json/jsontext"
+	jsonv2 "github.com/metacubex/jsonv2"
+	"github.com/metacubex/jsonv2/jsontext"
 	"tailscale.com/types/opt"
 	"tailscale.com/types/views"
 )

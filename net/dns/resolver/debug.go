@@ -71,7 +71,7 @@ func (fl *fwdLog) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Fprintf(w, "<html><h1>DNS forwards</h1>")
 	now := time.Now()
-	for i := range len(fl.ent) {
+	for i := 0; i < len(fl.ent); i++ {
 		ent := fl.ent[(i+fl.pos)%len(fl.ent)]
 		if ent.Domain == "" {
 			continue

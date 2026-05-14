@@ -12,11 +12,11 @@ import (
 
 	"golang.org/x/sys/cpu"
 	"golang.org/x/sys/windows"
-	"golang.zx2c4.com/wireguard/windows/tunnel/winipcfg"
 	"tailscale.com/envknob"
 	"tailscale.com/net/netmon"
 	"tailscale.com/tsconst"
 	"tailscale.com/types/logger"
+	"tailscale.com/util/winipcfg"
 )
 
 func interfaceIndex(iface *winipcfg.IPAdapterAddresses) uint32 {

@@ -146,7 +146,7 @@ func interfaceNameDoesNotNeedCaptiveDetection(ifName string, goos string) bool {
 func (d *Detector) detectOnInterface(ctx context.Context, ifIndex int, endpoints []Endpoint) bool {
 	defer d.httpClient.CloseIdleConnections()
 
-	use := min(len(endpoints), 5)
+	use := minInt(len(endpoints), 5)
 	endpoints = endpoints[:use]
 	d.logf("[v2] %d available captive portal detection endpoints; trying %v", len(endpoints), use)
 
@@ -245,4 +245,11 @@ func (d *Detector) dialContext(ctx context.Context, network, addr string) (net.C
 	}
 
 	return dl.DialContext(ctx, network, addr)
+}
+
+func minInt(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
 }

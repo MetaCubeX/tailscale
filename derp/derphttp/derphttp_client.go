@@ -11,7 +11,6 @@ package derphttp
 
 import (
 	"bufio"
-	"cmp"
 	"context"
 	"crypto/rand"
 	"crypto/tls"
@@ -26,6 +25,7 @@ import (
 	"runtime"
 	"strings"
 	"sync"
+	cmp "tailscale.com/util/go120/cmp"
 	"time"
 
 	"go4.org/mem"

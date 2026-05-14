@@ -1,3 +1,5 @@
+//go:build ignore
+
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
@@ -13,9 +15,9 @@ import (
 	"path/filepath"
 	"reflect"
 	"regexp"
-	"slices"
 	"strconv"
 	"strings"
+	slices "tailscale.com/util/go120/slices"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"

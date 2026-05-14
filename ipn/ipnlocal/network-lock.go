@@ -20,7 +20,7 @@ import (
 	"net/netip"
 	"os"
 	"path/filepath"
-	"slices"
+	slices "tailscale.com/util/go120/slices"
 	"time"
 
 	"tailscale.com/health"
@@ -485,10 +485,16 @@ func (b *LocalBackend) tkaBootstrapFromGenesisLocked(g tkatype.MarshaledAUM, per
 		}
 		bootstrapStateID := fmt.Sprintf("%d:%d", genesis.State.StateID1, genesis.State.StateID2)
 
-		for _, stateID := range persist.DisallowedTKAStateIDs().All() {
+		var disallowed bool
+		persist.DisallowedTKAStateIDs().All()(func(_ int, stateID string) bool {
 			if stateID == bootstrapStateID {
-				return fmt.Errorf("TKA with stateID of %q is disallowed on this node", stateID)
+				disallowed = true
+				return false
 			}
+			return true
+		})
+		if disallowed {
+			return fmt.Errorf("TKA with stateID of %q is disallowed on this node", bootstrapStateID)
 		}
 	}
 
@@ -575,7 +581,7 @@ func (b *LocalBackend) NetworkLockStatus() *ipnstate.NetworkLockStatus {
 	}
 
 	filtered := make([]*ipnstate.TKAPeer, len(b.tka.filtered))
-	for i := range len(filtered) {
+	for i := 0; i < len(filtered); i++ {
 		filtered[i] = b.tka.filtered[i].Clone()
 	}
 
@@ -612,11 +618,12 @@ func tkaStateFromPeer(p tailcfg.NodeView) ipnstate.TKAPeer {
 		TailscaleIPs: make([]netip.Addr, 0, p.Addresses().Len()),
 		NodeKey:      p.Key(),
 	}
-	for _, addr := range p.Addresses().All() {
+	p.Addresses().All()(func(_ int, addr netip.Prefix) bool {
 		if addr.IsSingleIP() && tsaddr.IsTailscaleIP(addr.Addr()) {
 			fp.TailscaleIPs = append(fp.TailscaleIPs, addr.Addr())
 		}
-	}
+		return true
+	})
 	var decoded tka.NodeKeySignature
 	if err := decoded.Unserialize(p.KeySignature().AsSlice()); err == nil {
 		fp.NodeKeySignature = decoded
@@ -926,7 +933,7 @@ func (b *LocalBackend) NetworkLockLog(maxEntries int) ([]ipnstate.NetworkLockUpd
 
 	var out []ipnstate.NetworkLockUpdate
 	cursor := b.tka.authority.Head()
-	for range maxEntries {
+	for i := 0; i < maxEntries; i++ {
 		aum, err := b.tka.storage.AUM(cursor)
 		if err != nil {
 			if err == os.ErrNotExist {

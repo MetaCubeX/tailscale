@@ -7,8 +7,8 @@ package multierr
 
 import (
 	"errors"
-	"slices"
 	"strings"
+	slices "tailscale.com/util/go120/slices"
 )
 
 // An Error represents multiple errors.

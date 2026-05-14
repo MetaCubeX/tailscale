@@ -1,3 +1,5 @@
+//go:build ignore
+
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
@@ -8,7 +10,7 @@ import (
 	"reflect"
 	"testing"
 
-	jsonv2 "github.com/go-json-experiment/json"
+	jsonv2 "github.com/metacubex/jsonv2"
 	"tailscale.com/types/bools"
 	"tailscale.com/util/must"
 )

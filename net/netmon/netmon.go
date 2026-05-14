@@ -12,9 +12,9 @@ import (
 	"log"
 	"net/netip"
 	"runtime"
-	"slices"
 	"strings"
 	"sync"
+	slices "tailscale.com/util/go120/slices"
 	"time"
 
 	"tailscale.com/feature/buildfeatures"

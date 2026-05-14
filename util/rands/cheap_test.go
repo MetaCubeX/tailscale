@@ -1,13 +1,15 @@
+//go:build ignore
+
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
 package rands
 
 import (
-	"slices"
+	slices "tailscale.com/util/go120/slices"
 	"testing"
 
-	randv2 "math/rand/v2"
+	randv2 "tailscale.com/util/go120/randv2"
 )
 
 func TestShuffleNoAllocs(t *testing.T) {

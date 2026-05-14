@@ -7,11 +7,11 @@ package cli
 
 import (
 	"bytes"
-	"cmp"
 	"context"
 	"fmt"
 	"net/netip"
-	"slices"
+	cmp "tailscale.com/util/go120/cmp"
+	slices "tailscale.com/util/go120/slices"
 
 	"github.com/peterbourgon/ff/v3/ffcli"
 	"tailscale.com/net/udprelay/status"

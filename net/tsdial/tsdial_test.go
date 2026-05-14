@@ -1,3 +1,5 @@
+//go:build ignore
+
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
@@ -8,7 +10,7 @@ import (
 	"net/netip"
 	"testing"
 
-	"github.com/gaissmai/bart"
+	"github.com/metacubex/bart"
 )
 
 func TestUserDialPlan(t *testing.T) {

@@ -18,13 +18,13 @@ import (
 	"unsafe"
 
 	"github.com/alexbrainman/sspi/negotiate"
-	"github.com/dblohm7/wingoes"
 	"golang.org/x/sys/windows"
 	"tailscale.com/hostinfo"
 	"tailscale.com/syncs"
 	"tailscale.com/types/logger"
 	"tailscale.com/util/clientmetric"
 	"tailscale.com/util/cmpver"
+	"tailscale.com/util/wingoes"
 )
 
 func init() {
@@ -237,7 +237,7 @@ func (pi *winHTTPProxyInfo) free() {
 	}
 }
 
-var getProxyForURLOpts = sync.OnceValue(func() *winHTTPAutoProxyOptions {
+var getProxyForURLOpts = syncs.OnceValue(func() *winHTTPAutoProxyOptions {
 	opts := &winHTTPAutoProxyOptions{
 		DwFlags:           winHTTP_AUTOPROXY_AUTO_DETECT,
 		DwAutoDetectFlags: winHTTP_AUTO_DETECT_TYPE_DHCP | winHTTP_AUTO_DETECT_TYPE_DNS_A,

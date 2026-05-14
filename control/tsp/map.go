@@ -5,7 +5,6 @@ package tsp
 
 import (
 	"bytes"
-	"cmp"
 	"context"
 	"encoding/binary"
 	"encoding/json"
@@ -16,6 +15,7 @@ import (
 	"strings"
 	"sync"
 	"sync/atomic"
+	cmp "tailscale.com/util/go120/cmp"
 
 	"github.com/klauspost/compress/zstd"
 	"tailscale.com/control/ts2021"

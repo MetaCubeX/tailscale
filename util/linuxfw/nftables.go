@@ -7,11 +7,11 @@
 package linuxfw
 
 import (
-	"cmp"
 	"encoding/binary"
 	"fmt"
 	"sort"
 	"strings"
+	cmp "tailscale.com/util/go120/cmp"
 
 	"github.com/google/nftables"
 	"github.com/google/nftables/expr"

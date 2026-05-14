@@ -16,12 +16,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-	"math/rand/v2"
 	"net"
 	"net/http"
 	"net/netip"
 	"strings"
 	"syscall/js"
+	"tailscale.com/util/go120/randv2"
 	"time"
 
 	"golang.org/x/crypto/ssh"

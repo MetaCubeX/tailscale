@@ -10,9 +10,9 @@ import (
 	"log"
 	"net/netip"
 	"os/exec"
-	"slices"
 	"strconv"
 	"strings"
+	slices "tailscale.com/util/go120/slices"
 
 	"tailscale.com/net/tsaddr"
 	"tailscale.com/types/logger"

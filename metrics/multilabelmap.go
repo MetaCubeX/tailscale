@@ -64,7 +64,9 @@ func LabelString(k any) string {
 	sb.WriteString("{")
 
 	first := true
-	for ft, fv := range rv.Fields() {
+	for i := 0; i < rv.NumField(); i++ {
+		ft := t.Field(i)
+		fv := rv.Field(i)
 		if !first {
 			sb.WriteString(",")
 		}

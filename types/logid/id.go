@@ -12,7 +12,7 @@ import (
 	"encoding/hex"
 	"fmt"
 	"math/bits"
-	"slices"
+	slices "tailscale.com/util/go120/slices"
 	"unicode/utf8"
 )
 
@@ -46,7 +46,7 @@ func (id PrivateID) Add(i int64) PrivateID {
 }
 
 func (id PrivateID) AppendText(b []byte) ([]byte, error) {
-	return hex.AppendEncode(b, id[:]), nil
+	return appendHex(b, id[:]), nil
 }
 
 func (id PrivateID) MarshalText() ([]byte, error) {
@@ -58,7 +58,7 @@ func (id *PrivateID) UnmarshalText(in []byte) error {
 }
 
 func (id PrivateID) String() string {
-	return string(hex.AppendEncode(nil, id[:]))
+	return string(appendHex(nil, id[:]))
 }
 
 func (id1 PrivateID) Less(id2 PrivateID) bool {
@@ -96,7 +96,7 @@ func (id PublicID) Add(i int64) PublicID {
 }
 
 func (id PublicID) AppendText(b []byte) ([]byte, error) {
-	return hex.AppendEncode(b, id[:]), nil
+	return appendHex(b, id[:]), nil
 }
 
 func (id PublicID) MarshalText() ([]byte, error) {
@@ -108,7 +108,7 @@ func (id *PublicID) UnmarshalText(in []byte) error {
 }
 
 func (id PublicID) String() string {
-	return string(hex.AppendEncode(nil, id[:]))
+	return string(appendHex(nil, id[:]))
 }
 
 func (id1 PublicID) Less(id2 PublicID) bool {
@@ -138,6 +138,13 @@ func parseID[Bytes []byte | string](funcName string, out *[32]byte, in Bytes) (e
 		return fmt.Errorf("%s: invalid hex character: %c", funcName, r)
 	}
 	return nil
+}
+
+func appendHex(dst []byte, src []byte) []byte {
+	n := len(dst)
+	dst = append(dst, make([]byte, hex.EncodedLen(len(src)))...)
+	hex.Encode(dst[n:], src)
+	return dst
 }
 
 func add(id [32]byte, i int64) [32]byte {

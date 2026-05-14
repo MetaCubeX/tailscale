@@ -1,3 +1,5 @@
+//go:build ignore
+
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
@@ -6,8 +8,8 @@ package osdiag
 import (
 	"errors"
 	"fmt"
-	"maps"
 	"strings"
+	maps "tailscale.com/util/go120/maps"
 	"testing"
 
 	"golang.org/x/sys/windows/registry"

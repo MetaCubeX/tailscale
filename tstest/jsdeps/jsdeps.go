@@ -14,9 +14,9 @@ import (
 	_ "encoding/json"
 	_ "fmt"
 	_ "log"
-	_ "math/rand/v2"
 	_ "net"
 	_ "strings"
+	_ "tailscale.com/util/go120/randv2"
 	_ "time"
 
 	_ "golang.org/x/crypto/ssh"

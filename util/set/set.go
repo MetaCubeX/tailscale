@@ -6,9 +6,9 @@ package set
 
 import (
 	"encoding/json"
-	"maps"
 	"reflect"
 	"sort"
+	maps "tailscale.com/util/go120/maps"
 )
 
 // Set is a set of T.
@@ -63,7 +63,7 @@ func (s Set[T]) Slice() []T {
 	for k := range s {
 		es = append(es, k)
 	}
-	if f := genOrderedSwapper(reflect.TypeFor[T]()); f != nil {
+	if f := genOrderedSwapper(reflect.TypeOf((*T)(nil)).Elem()); f != nil {
 		sort.Slice(es, f(reflect.ValueOf(es)))
 	}
 	return es

@@ -1,3 +1,5 @@
+//go:build ignore
+
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
@@ -65,7 +67,7 @@ func (src *TestBundle) Clone() *TestBundle {
 	dst := new(TestBundle)
 	*dst = *src
 	if dst.Nested != nil {
-		dst.Nested = new(*src.Nested)
+		dst.Nested = func() *Nested { v := *src.Nested; return &v }()
 	}
 	return dst
 }

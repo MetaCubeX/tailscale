@@ -9,9 +9,9 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"iter"
 	"log"
 	"net/http"
+	iter "tailscale.com/util/go120/iter"
 
 	"tailscale.com/tailcfg"
 	"tailscale.com/tka"

@@ -5,7 +5,7 @@ package posture
 
 import (
 	"net/netip"
-	"slices"
+	slices "tailscale.com/util/go120/slices"
 
 	"tailscale.com/net/netmon"
 )

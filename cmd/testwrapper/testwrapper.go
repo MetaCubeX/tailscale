@@ -10,7 +10,6 @@ package main
 import (
 	"bufio"
 	"bytes"
-	"cmp"
 	"context"
 	"encoding/json"
 	"errors"
@@ -19,9 +18,10 @@ import (
 	"log"
 	"os"
 	"os/exec"
-	"slices"
 	"sort"
 	"strings"
+	cmp "tailscale.com/util/go120/cmp"
+	slices "tailscale.com/util/go120/slices"
 	"time"
 
 	"tailscale.com/cmd/testwrapper/flakytest"

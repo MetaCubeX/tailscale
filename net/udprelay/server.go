@@ -16,10 +16,10 @@ import (
 	"net"
 	"net/netip"
 	"runtime"
-	"slices"
 	"strconv"
 	"sync"
 	"syscall"
+	slices "tailscale.com/util/go120/slices"
 	"time"
 
 	"go4.org/mem"

@@ -9,8 +9,8 @@ import (
 	"expvar"
 	"fmt"
 	"io"
-	"slices"
 	"strings"
+	slices "tailscale.com/util/go120/slices"
 
 	"tailscale.com/syncs"
 )

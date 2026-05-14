@@ -14,11 +14,11 @@ import (
 	"os"
 	"os/user"
 	"runtime"
-	"slices"
 	"strconv"
 	"strings"
 	"sync"
 	"sync/atomic"
+	slices "tailscale.com/util/go120/slices"
 	"unsafe"
 
 	"golang.org/x/sys/windows"

@@ -7,8 +7,8 @@ package filter
 import (
 	"fmt"
 	"net/netip"
-	"slices"
 	"sync"
+	slices "tailscale.com/util/go120/slices"
 	"time"
 
 	"go4.org/netipx"

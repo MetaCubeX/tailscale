@@ -123,17 +123,18 @@ func (b *LocalBackend) updateWebClientListenersLocked() {
 	}
 
 	addrs := nm.GetAddresses()
-	for _, pfx := range addrs.All() {
+	addrs.All()(func(_ int, pfx netip.Prefix) bool {
 		addrPort := netip.AddrPortFrom(pfx.Addr(), webClientPort)
 		if _, ok := b.webClientListeners[addrPort]; ok {
-			continue // already listening
+			return true // already listening
 		}
 
 		sl := b.newWebClientListener(context.Background(), addrPort, b.logf)
 		mak.Set(&b.webClientListeners, addrPort, sl)
 
 		go sl.Run()
-	}
+		return true
+	})
 }
 
 // newWebClientListener returns a listener for local connections to the built-in web client

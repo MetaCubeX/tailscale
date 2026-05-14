@@ -12,7 +12,7 @@ import (
 	"io"
 	"net/http"
 	"net/netip"
-	"slices"
+	slices "tailscale.com/util/go120/slices"
 	"time"
 )
 

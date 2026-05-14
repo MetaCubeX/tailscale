@@ -4,13 +4,13 @@
 package cli
 
 import (
-	"cmp"
 	"context"
 	"errors"
 	"flag"
 	"fmt"
-	"slices"
 	"strings"
+	cmp "tailscale.com/util/go120/cmp"
+	slices "tailscale.com/util/go120/slices"
 	"text/tabwriter"
 
 	"github.com/kballard/go-shellquote"

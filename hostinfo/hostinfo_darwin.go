@@ -18,7 +18,7 @@ func init() {
 }
 
 var (
-	lazyOSVersion = &lazyAtomicValue[string]{f: new(osVersionDarwin)}
+	lazyOSVersion = &lazyAtomicValue[string]{f: funcPtr(osVersionDarwin)}
 )
 
 func packageTypeDarwin() string {

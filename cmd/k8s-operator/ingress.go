@@ -8,9 +8,9 @@ package main
 import (
 	"context"
 	"fmt"
-	"slices"
 	"strings"
 	"sync"
+	slices "tailscale.com/util/go120/slices"
 
 	"github.com/pkg/errors"
 	"go.uber.org/zap"

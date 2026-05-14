@@ -55,10 +55,10 @@ func (src *Peer) Clone() *Peer {
 	*dst = *src
 	dst.AllowedIPs = append(src.AllowedIPs[:0:0], src.AllowedIPs...)
 	if dst.V4MasqAddr != nil {
-		dst.V4MasqAddr = new(*src.V4MasqAddr)
+		dst.V4MasqAddr = func() *netip.Addr { v := *src.V4MasqAddr; return &v }()
 	}
 	if dst.V6MasqAddr != nil {
-		dst.V6MasqAddr = new(*src.V6MasqAddr)
+		dst.V6MasqAddr = func() *netip.Addr { v := *src.V6MasqAddr; return &v }()
 	}
 	return dst
 }

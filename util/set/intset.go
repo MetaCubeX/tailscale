@@ -4,10 +4,10 @@
 package set
 
 import (
-	"iter"
-	"maps"
 	"math/bits"
-	"math/rand/v2"
+	iter "tailscale.com/util/go120/iter"
+	maps "tailscale.com/util/go120/maps"
+	"tailscale.com/util/go120/randv2"
 
 	"golang.org/x/exp/constraints"
 	"tailscale.com/util/mak"
@@ -42,19 +42,15 @@ func IntsOf[T constraints.Integer](slice ...T) IntSet[T] {
 func (s IntSet[T]) Values() iter.Seq[T] {
 	return func(yield func(T) bool) {
 		if s.bits != 0 {
-			for i := range s.bits.values() {
-				if !yield(decodeZigZag[T](i)) {
-					return
-				}
-			}
+			s.bits.values()(func(i uint64) bool {
+				return yield(decodeZigZag[T](i))
+			})
 		}
 		if s.extra != nil {
 			for hi, bs := range s.extra {
-				for lo := range bs.values() {
-					if !yield(decodeZigZag[T](hi*bits.UintSize + lo)) {
-						return
-					}
-				}
+				bs.values()(func(lo uint64) bool {
+					return yield(decodeZigZag[T](hi*bits.UintSize + lo))
+				})
 			}
 		}
 	}
@@ -91,9 +87,10 @@ func (s *IntSet[T]) Add(e T) {
 
 // AddSeq adds the values from seq to the set.
 func (s *IntSet[T]) AddSeq(seq iter.Seq[T]) {
-	for e := range seq {
+	seq(func(e T) bool {
 		s.Add(e)
-	}
+		return true
+	})
 }
 
 // Len reports the number of elements in the set.
@@ -122,9 +119,10 @@ func (s *IntSet[T]) Delete(e T) {
 
 // DeleteSeq deletes the values in seq from the set.
 func (s *IntSet[T]) DeleteSeq(seq iter.Seq[T]) {
-	for e := range seq {
+	seq(func(e T) bool {
 		s.Delete(e)
-	}
+		return true
+	})
 }
 
 // Equal reports whether s is equal to other.
@@ -152,13 +150,13 @@ func (s bitSet) values() iter.Seq[uint64] {
 	return func(yield func(uint64) bool) {
 		// Hyrum-proofing: randomly iterate in forwards or reverse.
 		if rand.Uint64()%2 == 0 {
-			for i := range bits.UintSize {
+			for i := 0; i < bits.UintSize; i++ {
 				if s.contains(uint64(i)) && !yield(uint64(i)) {
 					return
 				}
 			}
 		} else {
-			for i := bits.UintSize; i >= 0; i-- {
+			for i := bits.UintSize - 1; i >= 0; i-- {
 				if s.contains(uint64(i)) && !yield(uint64(i)) {
 					return
 				}

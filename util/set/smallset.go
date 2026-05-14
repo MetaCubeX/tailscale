@@ -4,8 +4,8 @@
 package set
 
 import (
-	"iter"
-	"maps"
+	iter "tailscale.com/util/go120/iter"
+	maps "tailscale.com/util/go120/maps"
 
 	"tailscale.com/types/structs"
 )

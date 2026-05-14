@@ -4,9 +4,9 @@
 package tstun
 
 import (
-	"github.com/tailscale/wireguard-go/tun"
+	"github.com/metacubex/tailscale-wireguard-go/tun"
 	"golang.org/x/sys/windows"
-	"golang.zx2c4.com/wireguard/windows/tunnel/winipcfg"
+	"tailscale.com/util/winipcfg"
 )
 
 func init() {

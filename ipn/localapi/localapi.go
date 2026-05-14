@@ -6,7 +6,6 @@ package localapi
 
 import (
 	"bytes"
-	"cmp"
 	"crypto/subtle"
 	"encoding/json"
 	"errors"
@@ -17,10 +16,11 @@ import (
 	"net/netip"
 	"net/url"
 	"runtime"
-	"slices"
 	"strconv"
 	"strings"
 	"sync"
+	cmp "tailscale.com/util/go120/cmp"
+	slices "tailscale.com/util/go120/slices"
 	"time"
 
 	"golang.org/x/net/dns/dnsmessage"
@@ -866,10 +866,12 @@ func InUseOtherUserIPNStream(w http.ResponseWriter, r *http.Request, err error) 
 	if r.Method != httpm.GET || r.URL.Path != "/localapi/v0/watch-ipn-bus" {
 		return false
 	}
+	state := ipn.InUseOtherUser
+	errMessage := err.Error()
 	js, err := json.Marshal(&ipn.Notify{
 		Version:    version.Long(),
-		State:      new(ipn.InUseOtherUser),
-		ErrMessage: new(err.Error()),
+		State:      &state,
+		ErrMessage: &errMessage,
 	})
 	if err != nil {
 		return false

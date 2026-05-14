@@ -5,9 +5,9 @@
 package netlogtype
 
 import (
-	"maps"
 	"net/netip"
 	"sync"
+	maps "tailscale.com/util/go120/maps"
 	"time"
 
 	"tailscale.com/tailcfg"
@@ -153,5 +153,7 @@ func (c *CountsByConnection) Clone() map[Connection]Counts {
 func (c *CountsByConnection) Reset() {
 	c.mu.Lock()
 	defer c.mu.Unlock()
-	clear(c.m)
+	for k := range c.m {
+		delete(c.m, k)
+	}
 }

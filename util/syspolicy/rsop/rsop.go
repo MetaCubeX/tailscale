@@ -9,7 +9,7 @@ package rsop
 import (
 	"errors"
 	"fmt"
-	"slices"
+	slices "tailscale.com/util/go120/slices"
 
 	"tailscale.com/syncs"
 	"tailscale.com/util/slicesx"

@@ -1,7 +1,7 @@
+//go:build ignore
+
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
-
-//go:build linux
 
 package main
 
@@ -15,7 +15,6 @@ import (
 	"fmt"
 	"io"
 	"io/fs"
-	"maps"
 	"net"
 	"net/http"
 	"net/http/httptest"
@@ -27,6 +26,7 @@ import (
 	"strings"
 	"sync"
 	"syscall"
+	maps "tailscale.com/util/go120/maps"
 	"testing"
 	"time"
 

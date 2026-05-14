@@ -10,11 +10,11 @@ import (
 	"net/netip"
 	"runtime"
 
-	"github.com/tailscale/wireguard-go/tun"
+	"github.com/metacubex/gvisor/pkg/tcpip"
+	"github.com/metacubex/gvisor/pkg/tcpip/checksum"
+	"github.com/metacubex/gvisor/pkg/tcpip/header"
+	"github.com/metacubex/tailscale-wireguard-go/tun"
 	"golang.org/x/sys/unix"
-	"gvisor.dev/gvisor/pkg/tcpip"
-	"gvisor.dev/gvisor/pkg/tcpip/checksum"
-	"gvisor.dev/gvisor/pkg/tcpip/header"
 	"tailscale.com/envknob"
 	"tailscale.com/net/tsaddr"
 )

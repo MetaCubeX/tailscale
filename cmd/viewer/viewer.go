@@ -15,8 +15,8 @@ import (
 	"html/template"
 	"log"
 	"os"
-	"slices"
 	"strings"
+	slices "tailscale.com/util/go120/slices"
 
 	"tailscale.com/util/codegen"
 	"tailscale.com/util/mak"
@@ -222,8 +222,8 @@ func genView(buf *bytes.Buffer, it *codegen.ImportTracker, typ *types.Named, fie
 		return
 	}
 	it.Import("jsonv1", "encoding/json")
-	it.Import("jsonv2", "github.com/go-json-experiment/json")
-	it.Import("", "github.com/go-json-experiment/json/jsontext")
+	it.Import("jsonv2", "github.com/metacubex/jsonv2")
+	it.Import("", "github.com/metacubex/jsonv2/jsontext")
 	it.Import("", "errors")
 
 	args := struct {

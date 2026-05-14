@@ -14,8 +14,8 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
-	"slices"
 	"sync"
+	slices "tailscale.com/util/go120/slices"
 
 	"tailscale.com/release/dist"
 )

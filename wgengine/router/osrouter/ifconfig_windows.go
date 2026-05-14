@@ -10,8 +10,8 @@ import (
 	"fmt"
 	"log"
 	"net/netip"
-	"slices"
 	"sort"
+	slices "tailscale.com/util/go120/slices"
 	"time"
 
 	"tailscale.com/health"
@@ -22,10 +22,10 @@ import (
 	"tailscale.com/wgengine/winnet"
 
 	ole "github.com/go-ole/go-ole"
-	"github.com/tailscale/wireguard-go/tun"
+	"github.com/metacubex/tailscale-wireguard-go/tun"
 	"go4.org/netipx"
 	"golang.org/x/sys/windows"
-	"golang.zx2c4.com/wireguard/windows/tunnel/winipcfg"
+	"tailscale.com/util/winipcfg"
 )
 
 // monitorDefaultRoutes subscribes to route change events and updates

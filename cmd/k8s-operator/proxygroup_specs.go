@@ -7,10 +7,10 @@ package main
 
 import (
 	"fmt"
-	"maps"
-	"slices"
 	"strconv"
 	"strings"
+	maps "tailscale.com/util/go120/maps"
+	slices "tailscale.com/util/go120/slices"
 
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"

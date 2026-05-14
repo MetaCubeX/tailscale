@@ -1,3 +1,5 @@
+//go:build ignore
+
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
@@ -8,11 +10,11 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"maps"
 	"net/netip"
 	"reflect"
 	"strings"
 	"sync/atomic"
+	maps "tailscale.com/util/go120/maps"
 	"testing"
 	"testing/synctest"
 	"time"

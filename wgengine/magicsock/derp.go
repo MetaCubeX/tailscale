@@ -8,15 +8,15 @@ import (
 	"context"
 	"crypto/tls"
 	"fmt"
-	"maps"
 	"net"
 	"net/netip"
 	"reflect"
-	"slices"
+	maps "tailscale.com/util/go120/maps"
+	slices "tailscale.com/util/go120/slices"
 	"time"
 	"unsafe"
 
-	"github.com/tailscale/wireguard-go/conn"
+	"github.com/metacubex/tailscale-wireguard-go/conn"
 	"tailscale.com/derp"
 	"tailscale.com/derp/derphttp"
 	"tailscale.com/health"
@@ -413,6 +413,7 @@ func (c *Conn) derpWriteChanForRegion(regionID int, peer key.NodePublic) chan de
 		}
 		return derpMap.Regions[regionID]
 	})
+	dc.SetURLDialer(c.systemDialer)
 	dc.HealthTracker = c.health
 	if c.extraRootCAs != nil {
 		dc.TLSConfig = &tls.Config{RootCAs: c.extraRootCAs}

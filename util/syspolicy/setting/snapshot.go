@@ -5,14 +5,14 @@ package setting
 
 import (
 	"errors"
-	"iter"
-	"maps"
-	"slices"
 	"strings"
+	iter "tailscale.com/util/go120/iter"
+	maps "tailscale.com/util/go120/maps"
+	slices "tailscale.com/util/go120/slices"
 	"time"
 
-	jsonv2 "github.com/go-json-experiment/json"
-	"github.com/go-json-experiment/json/jsontext"
+	jsonv2 "github.com/metacubex/jsonv2"
+	"github.com/metacubex/jsonv2/jsontext"
 	xmaps "golang.org/x/exp/maps"
 	"tailscale.com/util/deephash"
 	"tailscale.com/util/syspolicy/pkey"

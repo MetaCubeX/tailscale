@@ -13,8 +13,8 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
-	"slices"
 	"strings"
+	slices "tailscale.com/util/go120/slices"
 	"time"
 
 	"github.com/peterbourgon/ff/v3/ffcli"

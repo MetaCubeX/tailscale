@@ -10,9 +10,9 @@ import (
 	"errors"
 	"fmt"
 	"net/netip"
-	"slices"
 	"strings"
 	"sync"
+	slices "tailscale.com/util/go120/slices"
 	"time"
 
 	"go.uber.org/zap"

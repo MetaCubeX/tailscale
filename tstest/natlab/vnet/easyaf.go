@@ -5,8 +5,8 @@ package vnet
 
 import (
 	"log"
-	"math/rand/v2"
 	"net/netip"
+	"tailscale.com/util/go120/randv2"
 	"time"
 
 	"tailscale.com/util/mak"

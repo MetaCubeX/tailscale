@@ -37,7 +37,8 @@ type ErrorText string
 
 // NewErrorText returns a [ErrorText] with the specified error message.
 func NewErrorText(text string) *ErrorText {
-	return new(ErrorText(text))
+	e := ErrorText(text)
+	return &e
 }
 
 // MaybeErrorText returns an [ErrorText] with the text of the specified error,
@@ -49,7 +50,8 @@ func MaybeErrorText(err error) *ErrorText {
 	if err, ok := err.(*ErrorText); ok {
 		return err
 	}
-	return new(ErrorText(err.Error()))
+	e := ErrorText(err.Error())
+	return &e
 }
 
 // Error implements error.

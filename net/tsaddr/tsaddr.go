@@ -8,8 +8,8 @@ import (
 	"encoding/binary"
 	"errors"
 	"net/netip"
-	"slices"
 	"sync"
+	slices "tailscale.com/util/go120/slices"
 
 	"go4.org/netipx"
 	"tailscale.com/net/netaddr"
@@ -186,36 +186,43 @@ func PrefixIs6(p netip.Prefix) bool { return p.Addr().Is6() }
 // IPv6 /0 route.
 func ContainsExitRoutes(rr views.Slice[netip.Prefix]) bool {
 	var v4, v6 bool
-	for _, r := range rr.All() {
+	rr.All()(func(_ int, r netip.Prefix) bool {
 		if r == allIPv4 {
 			v4 = true
 		} else if r == allIPv6 {
 			v6 = true
 		}
-	}
+		return true
+	})
 	return v4 && v6
 }
 
 // ContainsExitRoute reports whether rr contains at least one of IPv4 or
 // IPv6 /0 (exit) routes.
 func ContainsExitRoute(rr views.Slice[netip.Prefix]) bool {
-	for _, r := range rr.All() {
+	found := false
+	rr.All()(func(_ int, r netip.Prefix) bool {
 		if r.Bits() == 0 {
-			return true
+			found = true
+			return false
 		}
-	}
-	return false
+		return true
+	})
+	return found
 }
 
 // ContainsNonExitSubnetRoutes reports whether v contains Subnet
 // Routes other than ExitNode Routes.
 func ContainsNonExitSubnetRoutes(rr views.Slice[netip.Prefix]) bool {
-	for _, r := range rr.All() {
+	found := false
+	rr.All()(func(_ int, r netip.Prefix) bool {
 		if r.Bits() != 0 {
-			return true
+			found = true
+			return false
 		}
-	}
-	return false
+		return true
+	})
+	return found
 }
 
 // WithoutExitRoutes returns rr unchanged if it has only 1 or 0 /0
@@ -226,11 +233,12 @@ func WithoutExitRoutes(rr views.Slice[netip.Prefix]) views.Slice[netip.Prefix] {
 		return rr
 	}
 	var out []netip.Prefix
-	for _, r := range rr.All() {
+	rr.All()(func(_ int, r netip.Prefix) bool {
 		if r.Bits() > 0 {
 			out = append(out, r)
 		}
-	}
+		return true
+	})
 	return views.SliceOf(out)
 }
 
@@ -242,11 +250,12 @@ func WithoutExitRoute(rr views.Slice[netip.Prefix]) views.Slice[netip.Prefix] {
 		return rr
 	}
 	var out []netip.Prefix
-	for _, r := range rr.All() {
+	rr.All()(func(_ int, r netip.Prefix) bool {
 		if r.Bits() > 0 {
 			out = append(out, r)
 		}
-	}
+		return true
+	})
 	return views.SliceOf(out)
 }
 
@@ -278,7 +287,7 @@ func SortPrefixes(p []netip.Prefix) {
 // in that match f.
 func FilterPrefixesCopy(in views.Slice[netip.Prefix], f func(netip.Prefix) bool) []netip.Prefix {
 	var out []netip.Prefix
-	for i := range in.Len() {
+	for i := 0; i < in.Len(); i++ {
 		if v := in.At(i); f(v) {
 			out = append(out, v)
 		}

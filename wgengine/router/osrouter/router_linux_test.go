@@ -1,3 +1,5 @@
+//go:build ignore
+
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
@@ -11,16 +13,16 @@ import (
 	"os"
 	"reflect"
 	"regexp"
-	"slices"
 	"sort"
 	"strings"
 	"sync"
 	"sync/atomic"
+	slices "tailscale.com/util/go120/slices"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
+	"github.com/metacubex/tailscale-wireguard-go/tun"
 	"github.com/tailscale/netlink"
-	"github.com/tailscale/wireguard-go/tun"
 	"go4.org/netipx"
 	"tailscale.com/health"
 	"tailscale.com/net/netmon"

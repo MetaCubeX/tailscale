@@ -1,7 +1,7 @@
+//go:build ignore
+
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
-
-//go:build go1.19
 
 package local
 

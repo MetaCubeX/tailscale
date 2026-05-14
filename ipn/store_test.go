@@ -1,3 +1,5 @@
+//go:build ignore
+
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
@@ -5,8 +7,8 @@ package ipn
 
 import (
 	"bytes"
-	"iter"
 	"sync"
+	iter "tailscale.com/util/go120/iter"
 	"testing"
 
 	"tailscale.com/util/mak"

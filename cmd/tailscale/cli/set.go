@@ -11,9 +11,9 @@ import (
 	"net/netip"
 	"os/exec"
 	"runtime"
-	"slices"
 	"strconv"
 	"strings"
+	slices "tailscale.com/util/go120/slices"
 
 	"github.com/peterbourgon/ff/v3/ffcli"
 	"tailscale.com/cmd/tailscale/cli/ffcomplete"

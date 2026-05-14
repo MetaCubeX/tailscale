@@ -174,7 +174,8 @@ func (fs wslFS) Truncate(name string) error { return fs.WriteFile(name, nil, 064
 
 func (fs wslFS) ReadFile(name string) ([]byte, error) {
 	b, err := wslCombinedOutput(fs.cmd("cat", "--", name))
-	if ee, ok := errors.AsType[*exec.ExitError](err); ok && ee.ExitCode() == 1 {
+	var ee *exec.ExitError
+	if ok := errors.As(err, &ee); ok && ee.ExitCode() == 1 {
 		return nil, os.ErrNotExist
 	}
 	return b, err

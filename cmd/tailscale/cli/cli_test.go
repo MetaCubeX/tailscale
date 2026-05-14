@@ -1,3 +1,5 @@
+//go:build ignore
+
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
@@ -5,7 +7,6 @@ package cli
 
 import (
 	"bytes"
-	stdcmp "cmp"
 	"context"
 	"encoding/json"
 	"flag"
@@ -16,6 +17,7 @@ import (
 	"path/filepath"
 	"reflect"
 	"strings"
+	stdcmp "tailscale.com/util/go120/cmp"
 	"testing"
 
 	qt "github.com/frankban/quicktest"

@@ -5,8 +5,8 @@
 package mapx
 
 import (
-	"iter"
-	"slices"
+	iter "tailscale.com/util/go120/iter"
+	slices "tailscale.com/util/go120/slices"
 )
 
 // OrderedMap is a map that maintains the order of its keys.

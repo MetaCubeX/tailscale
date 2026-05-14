@@ -40,7 +40,7 @@ func ToFQDN(s string) (FQDN, error) {
 	}
 
 	st := 0
-	for i := range len(s) {
+	for i := 0; i < len(s); i++ {
 		if s[i] != '.' {
 			continue
 		}
@@ -234,7 +234,7 @@ func ValidHostname(hostname string) error {
 		return err
 	}
 
-	for label := range strings.SplitSeq(fqdn.WithoutTrailingDot(), ".") {
+	for _, label := range strings.Split(fqdn.WithoutTrailingDot(), ".") {
 		if err := ValidLabel(label); err != nil {
 			return err
 		}

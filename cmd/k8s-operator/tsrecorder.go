@@ -10,10 +10,10 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"slices"
 	"strconv"
 	"strings"
 	"sync"
+	slices "tailscale.com/util/go120/slices"
 	"time"
 
 	"go.uber.org/zap"

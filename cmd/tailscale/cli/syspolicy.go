@@ -11,7 +11,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
-	"slices"
+	slices "tailscale.com/util/go120/slices"
 	"text/tabwriter"
 
 	"github.com/peterbourgon/ff/v3/ffcli"

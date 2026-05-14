@@ -11,10 +11,10 @@ import (
 	"errors"
 	"fmt"
 	"net/netip"
-	"slices"
 	"sort"
 	"strings"
 	"sync"
+	slices "tailscale.com/util/go120/slices"
 	"time"
 
 	dockerref "github.com/distribution/reference"

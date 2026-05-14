@@ -8,7 +8,7 @@
 package reconciler
 
 import (
-	"slices"
+	slices "tailscale.com/util/go120/slices"
 
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )

@@ -5,8 +5,8 @@ package ts2021
 
 import (
 	"bytes"
-	"cmp"
 	"context"
+	"crypto/tls"
 	"crypto/x509"
 	"encoding/json"
 	"errors"
@@ -18,7 +18,10 @@ import (
 	"net/netip"
 	"net/url"
 	"sync"
+	cmp "tailscale.com/util/go120/cmp"
 	"time"
+
+	"golang.org/x/net/http2"
 
 	"tailscale.com/control/controlhttp"
 	"tailscale.com/health"
@@ -162,15 +165,8 @@ func NewClient(opts ClientOpts) (*Client, error) {
 		logf:      logf,
 	}
 
-	tr := &http.Transport{
-		Protocols:       new(http.Protocols),
-		MaxConnsPerHost: 1,
-	}
-	// We force only HTTP/2 for this transport, which is what the control server
-	// speaks inside the ts2021 Noise encryption. But Go doesn't know about that,
-	// so we use "SetUnencryptedHTTP2" even though it's actually encrypted.
-	tr.Protocols.SetUnencryptedHTTP2(true)
-	tr.DialTLSContext = func(ctx context.Context, network, addr string) (net.Conn, error) {
+	tr := &http2.Transport{}
+	tr.DialTLSContext = func(ctx context.Context, network, addr string, _ *tls.Config) (net.Conn, error) {
 		return np.dial(ctx)
 	}
 

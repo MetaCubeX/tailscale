@@ -11,7 +11,6 @@
 package main // import "tailscale.com/cmd/derper"
 
 import (
-	"cmp"
 	"context"
 	"crypto/tls"
 	"encoding/json"
@@ -35,6 +34,7 @@ import (
 	"strconv"
 	"strings"
 	"syscall"
+	cmp "tailscale.com/util/go120/cmp"
 	"time"
 
 	"github.com/tailscale/setec/client/setec"

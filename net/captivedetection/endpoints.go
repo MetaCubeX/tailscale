@@ -4,12 +4,12 @@
 package captivedetection
 
 import (
-	"cmp"
 	"fmt"
 	"io"
 	"net/http"
 	"net/url"
-	"slices"
+	cmp "tailscale.com/util/go120/cmp"
+	slices "tailscale.com/util/go120/slices"
 
 	"go4.org/mem"
 	"tailscale.com/net/dnsfallback"

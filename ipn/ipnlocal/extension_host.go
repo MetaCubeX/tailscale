@@ -7,12 +7,12 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"maps"
 	"reflect"
-	"slices"
 	"strings"
 	"sync"
 	"sync/atomic"
+	maps "tailscale.com/util/go120/maps"
+	slices "tailscale.com/util/go120/slices"
 	"time"
 
 	"tailscale.com/control/controlclient"
@@ -183,23 +183,26 @@ func newExtensionHost(logf logger.Logf, b Backend, overrideExts ...*ipnext.Defin
 		extDef = slices.Values(overrideExts)
 	}
 
-	for d := range extDef {
-		ext, err := d.MakeExtension(logf, b)
-		if errors.Is(err, ipnext.SkipExtension) {
+	extDef(func(d *ipnext.Definition) bool {
+		ext, makeErr := d.MakeExtension(logf, b)
+		if errors.Is(makeErr, ipnext.SkipExtension) {
 			// The extension wants to be skipped.
-			host.logf("%q: %v", d.Name(), err)
-			continue
-		} else if err != nil {
-			return nil, fmt.Errorf("failed to create %q extension: %v", d.Name(), err)
+			host.logf("%q: %v", d.Name(), makeErr)
+			return true
+		} else if makeErr != nil {
+			err = fmt.Errorf("failed to create %q extension: %v", d.Name(), makeErr)
+			return false
 		}
 		host.allExtensions = append(host.allExtensions, ext)
 
 		if d.Name() != ext.Name() {
-			return nil, fmt.Errorf("extension name %q does not match the registered name %q", ext.Name(), d.Name())
+			err = fmt.Errorf("extension name %q does not match the registered name %q", ext.Name(), d.Name())
+			return false
 		}
 
 		if _, ok := host.extensionsByName[ext.Name()]; ok {
-			return nil, fmt.Errorf("duplicate extension name %q", ext.Name())
+			err = fmt.Errorf("duplicate extension name %q", ext.Name())
+			return false
 		} else {
 			mak.Set(&host.extensionsByName, ext.Name(), ext)
 		}
@@ -207,14 +210,18 @@ func newExtensionHost(logf logger.Logf, b Backend, overrideExts ...*ipnext.Defin
 		typ := reflect.TypeOf(ext)
 		if _, ok := host.extByType.Load(typ); ok {
 			if _, ok := ext.(interface{ PermitDoubleRegister() }); !ok {
-				return nil, fmt.Errorf("duplicate extension type %T", ext)
+				err = fmt.Errorf("duplicate extension type %T", ext)
+				return false
 			}
 		}
 		host.extByType.Store(typ, ext)
+		return true
+	})
+	if err != nil {
+		return nil, err
 	}
 	return host, nil
 }
-
 func (h *ExtensionHost) NodeBackend() ipnext.NodeBackend {
 	if h == nil {
 		return nil
@@ -308,7 +315,7 @@ func (h *ExtensionHost) FindExtensionByName(name string) any {
 }
 
 // extensionIfaceType is the runtime type of the [ipnext.Extension] interface.
-var extensionIfaceType = reflect.TypeFor[ipnext.Extension]()
+var extensionIfaceType = reflect.TypeOf((*ipnext.Extension)(nil)).Elem()
 
 // GetExt returns the extension of type T registered with lb.
 // If lb is nil or the extension is not found, it returns zero, false.
@@ -317,7 +324,7 @@ func GetExt[T ipnext.Extension](lb *LocalBackend) (_ T, ok bool) {
 	if lb == nil {
 		return zero, false
 	}
-	if ext, ok := lb.extHost.extensionOfType(reflect.TypeFor[T]()); ok {
+	if ext, ok := lb.extHost.extensionOfType(reflect.TypeOf((*T)(nil)).Elem()); ok {
 		return ext.(T), true
 	}
 	return zero, false
@@ -606,12 +613,13 @@ func (h *ExtensionHost) shutdownExtensions() {
 	// a deadlock if the h.mu is already held.
 	//
 	// Shutdown is called in the reverse order of Init.
-	for _, ext := range slices.Backward(extensions) {
+	slices.Backward(extensions)(func(_ int, ext ipnext.Extension) bool {
 		if err := ext.Shutdown(); err != nil {
 			// Extension shutdown errors are never fatal, but we log them for debugging purposes.
 			h.logf("%q: shutdown callback failed: %v", ext.Name(), err)
 		}
-	}
+		return true
+	})
 }
 
 // enqueueBackendOperation enqueues a function to perform an operation on the [Backend].

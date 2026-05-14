@@ -1,3 +1,5 @@
+//go:build ignore
+
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
@@ -7,11 +9,11 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"math/rand/v2"
 	"net/netip"
 	"strings"
 	"sync"
 	"sync/atomic"
+	"tailscale.com/util/go120/randv2"
 	"testing"
 	"time"
 

@@ -8,13 +8,13 @@
 package netlog
 
 import (
-	"cmp"
 	"context"
 	"fmt"
 	"io"
 	"log"
 	"net/http"
 	"net/netip"
+	cmp "tailscale.com/util/go120/cmp"
 	"time"
 
 	"tailscale.com/health"
@@ -34,8 +34,8 @@ import (
 	"tailscale.com/util/set"
 	"tailscale.com/wgengine/router"
 
-	jsonv2 "github.com/go-json-experiment/json"
-	"github.com/go-json-experiment/json/jsontext"
+	jsonv2 "github.com/metacubex/jsonv2"
+	"github.com/metacubex/jsonv2/jsontext"
 )
 
 // pollPeriod specifies how often to poll for network traffic.
@@ -413,19 +413,21 @@ func makeNodeMaps(nm *netmap.NetworkMap) (selfNode nodeUser, allNodes map[netip.
 	allNodes = make(map[netip.Addr]nodeUser)
 	if nm.SelfNode.Valid() {
 		selfNode = nodeUser{nm.SelfNode, nm.UserProfiles[nm.SelfNode.User()]}
-		for _, addr := range nm.SelfNode.Addresses().All() {
+		nm.SelfNode.Addresses().All()(func(_ int, addr netip.Prefix) bool {
 			if addr.IsSingleIP() {
 				allNodes[addr.Addr()] = selfNode
 			}
-		}
+			return true
+		})
 	}
 	for _, peer := range nm.Peers {
 		if peer.Valid() {
-			for _, addr := range peer.Addresses().All() {
+			peer.Addresses().All()(func(_ int, addr netip.Prefix) bool {
 				if addr.IsSingleIP() {
 					allNodes[addr.Addr()] = nodeUser{peer, nm.UserProfiles[peer.User()]}
 				}
-			}
+				return true
+			})
 		}
 	}
 	return selfNode, allNodes

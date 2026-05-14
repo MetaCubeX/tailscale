@@ -7,10 +7,10 @@
 package source
 
 import (
-	"cmp"
 	"errors"
 	"fmt"
 	"io"
+	cmp "tailscale.com/util/go120/cmp"
 
 	"tailscale.com/types/lazy"
 	"tailscale.com/util/syspolicy/pkey"

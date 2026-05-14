@@ -6,7 +6,6 @@
 package local
 
 import (
-	"cmp"
 	"context"
 	"fmt"
 	"io"
@@ -14,6 +13,7 @@ import (
 	"net/netip"
 	"net/url"
 	"strconv"
+	cmp "tailscale.com/util/go120/cmp"
 	"time"
 
 	"tailscale.com/client/tailscale/apitype"

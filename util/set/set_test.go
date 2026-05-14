@@ -1,3 +1,5 @@
+//go:build ignore
+
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
@@ -5,7 +7,7 @@ package set
 
 import (
 	"encoding/json"
-	"slices"
+	slices "tailscale.com/util/go120/slices"
 	"testing"
 )
 

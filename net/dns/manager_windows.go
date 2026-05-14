@@ -8,20 +8,19 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
-	"maps"
 	"net/netip"
 	"os"
 	"os/exec"
 	"path/filepath"
-	"slices"
 	"sort"
 	"strings"
 	"syscall"
+	maps "tailscale.com/util/go120/maps"
+	slices "tailscale.com/util/go120/slices"
 	"time"
 
 	"golang.org/x/sys/windows"
 	"golang.org/x/sys/windows/registry"
-	"golang.zx2c4.com/wireguard/windows/tunnel/winipcfg"
 	"tailscale.com/atomicfile"
 	"tailscale.com/control/controlknobs"
 	"tailscale.com/envknob"
@@ -33,6 +32,7 @@ import (
 	"tailscale.com/util/syspolicy/pkey"
 	"tailscale.com/util/syspolicy/policyclient"
 	"tailscale.com/util/syspolicy/ptype"
+	"tailscale.com/util/winipcfg"
 	"tailscale.com/util/winutil"
 	"tailscale.com/util/winutil/winenv"
 )
@@ -262,7 +262,7 @@ func (m *windowsManager) setHosts(hosts []*HostEntry) error {
 
 	// This can fail spuriously with an access denied error, so retry it a
 	// few times.
-	for range 5 {
+	for i := 0; i < 5; i++ {
 		if err = atomicfile.WriteFile(hostsFile, outB, fileMode); err == nil {
 			return nil
 		}

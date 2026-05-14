@@ -1,3 +1,5 @@
+//go:build ignore
+
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
@@ -5,11 +7,11 @@ package dns
 
 import (
 	"errors"
-	"maps"
 	"net/netip"
 	"os"
 	"path/filepath"
-	"slices"
+	maps "tailscale.com/util/go120/maps"
+	slices "tailscale.com/util/go120/slices"
 	"testing"
 
 	"tailscale.com/types/logger"

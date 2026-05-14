@@ -8,12 +8,12 @@ import (
 	"context"
 	"encoding/json"
 	"log"
-	"math/rand/v2"
 	"net"
 	"net/http"
 	"os"
 	"runtime"
 	"strings"
+	"tailscale.com/util/go120/randv2"
 	"time"
 
 	"tailscale.com/feature/buildfeatures"

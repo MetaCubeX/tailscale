@@ -11,7 +11,7 @@ import (
 	"fmt"
 	"io"
 	"reflect"
-	"slices"
+	slices "tailscale.com/util/go120/slices"
 
 	"go4.org/mem"
 	"tailscale.com/util/set"
@@ -56,7 +56,15 @@ func clamp25519Private(b []byte) {
 func appendHexKey(dst []byte, prefix string, key []byte) []byte {
 	dst = slices.Grow(dst, len(prefix)+hex.EncodedLen(len(key)))
 	dst = append(dst, prefix...)
-	dst = hex.AppendEncode(dst, key)
+	var enc [512]byte
+	if len(key)*2 <= len(enc) {
+		hex.Encode(enc[:len(key)*2], key)
+		dst = append(dst, enc[:len(key)*2]...)
+	} else {
+		buf := make([]byte, len(key)*2)
+		hex.Encode(buf, key)
+		dst = append(dst, buf...)
+	}
 	return dst
 }
 
@@ -124,12 +132,12 @@ func debug32(k [32]byte) string {
 func PrivateTypesForTest() set.Set[reflect.Type] {
 	testenv.AssertInTest()
 	return set.Of(
-		reflect.TypeFor[ChallengePrivate](),
-		reflect.TypeFor[ControlPrivate](),
-		reflect.TypeFor[DiscoPrivate](),
-		reflect.TypeFor[MachinePrivate](),
-		reflect.TypeFor[NodePrivate](),
-		reflect.TypeFor[NLPrivate](),
-		reflect.TypeFor[HardwareAttestationKey](),
+		reflect.TypeOf((*ChallengePrivate)(nil)).Elem(),
+		reflect.TypeOf((*ControlPrivate)(nil)).Elem(),
+		reflect.TypeOf((*DiscoPrivate)(nil)).Elem(),
+		reflect.TypeOf((*MachinePrivate)(nil)).Elem(),
+		reflect.TypeOf((*NodePrivate)(nil)).Elem(),
+		reflect.TypeOf((*NLPrivate)(nil)).Elem(),
+		reflect.TypeOf((*HardwareAttestationKey)(nil)).Elem(),
 	)
 }

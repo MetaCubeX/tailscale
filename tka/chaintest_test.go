@@ -1,3 +1,5 @@
+//go:build ignore
+
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
@@ -7,9 +9,9 @@ import (
 	"bytes"
 	"crypto/ed25519"
 	"fmt"
-	"maps"
 	"strconv"
 	"strings"
+	maps "tailscale.com/util/go120/maps"
 	"testing"
 	"text/scanner"
 

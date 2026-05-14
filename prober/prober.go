@@ -8,18 +8,18 @@ package prober
 
 import (
 	"bytes"
-	"cmp"
 	"container/ring"
 	"context"
 	"encoding/json"
 	"fmt"
 	"hash/fnv"
 	"log"
-	"maps"
 	"math/rand"
 	"net/http"
-	"slices"
 	"sync"
+	cmp "tailscale.com/util/go120/cmp"
+	maps "tailscale.com/util/go120/maps"
+	slices "tailscale.com/util/go120/slices"
 	"time"
 
 	"github.com/prometheus/client_golang/prometheus"

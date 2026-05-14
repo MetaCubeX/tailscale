@@ -6,8 +6,8 @@
 package dirfs
 
 import (
-	"slices"
 	"strings"
+	slices "tailscale.com/util/go120/slices"
 	"time"
 
 	"tailscale.com/drive/driveimpl/shared"

@@ -4,7 +4,6 @@
 package cli
 
 import (
-	"cmp"
 	"context"
 	"encoding/json"
 	"errors"
@@ -15,6 +14,7 @@ import (
 	"net/netip"
 	"os"
 	"strings"
+	cmp "tailscale.com/util/go120/cmp"
 	"text/tabwriter"
 
 	"github.com/peterbourgon/ff/v3/ffcli"

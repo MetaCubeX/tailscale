@@ -6,7 +6,7 @@ package backoff
 
 import (
 	"context"
-	"math/rand/v2"
+	"tailscale.com/util/go120/randv2"
 	"time"
 
 	"tailscale.com/tstime"

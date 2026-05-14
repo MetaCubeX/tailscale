@@ -57,7 +57,7 @@ func Set[K ~string, V any](m map[K]V, k K, v V) {
 	//
 	// Alternatively, we could use string interning.
 	// See an example intern data structure, see:
-	//	https://github.com/go-json-experiment/json/blob/master/intern.go
+	//	https://github.com/metacubex/jsonv2/blob/master/intern.go
 	var a [stackArraySize]byte
 	m[K(appendToLower(a[:0], string(k)))] = v
 }
@@ -91,7 +91,7 @@ func AppendSliceElem[K ~string, S []E, E any](m map[K]S, k K, vs ...E) {
 }
 
 func isLowerASCII(s string) bool {
-	for i := range len(s) {
+	for i := 0; i < len(s); i++ {
 		if c := s[i]; c >= utf8.RuneSelf || ('A' <= c && c <= 'Z') {
 			return false
 		}

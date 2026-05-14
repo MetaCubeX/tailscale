@@ -7,14 +7,12 @@ package tsweb
 import (
 	"bufio"
 	"bytes"
-	"cmp"
 	"context"
 	"errors"
 	"expvar"
 	"fmt"
 	"io"
 	"log"
-	"maps"
 	"net"
 	"net/http"
 	"net/netip"
@@ -26,12 +24,15 @@ import (
 	"strconv"
 	"strings"
 	"sync"
+	cmp "tailscale.com/util/go120/cmp"
+	maps "tailscale.com/util/go120/maps"
 	"time"
 
 	"go4.org/mem"
 	"tailscale.com/envknob"
 	"tailscale.com/metrics"
 	"tailscale.com/net/tsaddr"
+	"tailscale.com/syncs"
 	"tailscale.com/tsweb/varz"
 	"tailscale.com/types/logger"
 	"tailscale.com/util/ctxkey"
@@ -63,7 +64,7 @@ func IsProd443(addr string) bool {
 var debugTrustedCIDRs = envknob.RegisterString("TS_DEBUG_TRUSTED_CIDRS")
 
 // trustedCIDRs returns the parsed CIDR prefixes from TS_DEBUG_TRUSTED_CIDRS.
-var trustedCIDRs = sync.OnceValue(func() []netip.Prefix {
+var trustedCIDRs = syncs.OnceValue(func() []netip.Prefix {
 	return parseTrustedCIDRs(debugTrustedCIDRs())
 })
 
@@ -783,7 +784,8 @@ func (h errorHandler) handleError(w http.ResponseWriter, r *http.Request, lw *lo
 
 	// Extract a presentable, loggable error.
 	var hOK bool
-	hErr, hAsOK := errors.AsType[HTTPError](err)
+	var hErr HTTPError
+	hAsOK := errors.As(err, &hErr)
 	if hAsOK {
 		hOK = true
 		if hErr.Code == 0 {

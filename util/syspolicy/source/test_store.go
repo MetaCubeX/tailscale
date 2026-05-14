@@ -249,7 +249,9 @@ func (s *TestStore) recordRead(key pkey.Key, typ setting.Type) {
 
 func (s *TestStore) ResetCounters() {
 	s.readsMu.Lock()
-	clear(s.reads)
+	for k := range s.reads {
+		delete(s.reads, k)
+	}
 	s.readsMu.Unlock()
 }
 
@@ -415,7 +417,9 @@ func (s *TestStore) Delete(keys ...pkey.Key) {
 func (s *TestStore) Clear() {
 	s.storeLock.Lock()
 	s.mu.Lock()
-	clear(s.mw)
+	for k := range s.mw {
+		delete(s.mw, k)
+	}
 	s.mu.Unlock()
 	s.storeLock.Unlock()
 	s.NotifyPolicyChanged()

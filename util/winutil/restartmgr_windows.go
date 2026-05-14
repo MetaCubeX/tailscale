@@ -16,9 +16,9 @@ import (
 	"unicode/utf16"
 	"unsafe"
 
-	"github.com/dblohm7/wingoes"
 	"golang.org/x/sys/windows"
 	"tailscale.com/types/logger"
+	"tailscale.com/util/wingoes"
 )
 
 var (
@@ -461,7 +461,9 @@ func (rps RestartableProcesses) Close() error {
 	for _, v := range rps {
 		v.Close()
 	}
-	clear(rps)
+	for pid := range rps {
+		delete(rps, pid)
+	}
 	return nil
 }
 
@@ -508,7 +510,7 @@ func (rps RestartableProcesses) Terminate(logf logger.Logf, exitCode uint32, tim
 	for len(handles) > 0 {
 		// WaitForMultipleObjects can only wait on _MAXIMUM_WAIT_OBJECTS handles per
 		// call, so we batch them as necessary.
-		count := uint32(min(len(handles), _MAXIMUM_WAIT_OBJECTS))
+		count := uint32(minInt(len(handles), _MAXIMUM_WAIT_OBJECTS))
 		waitCode, err := windows.WaitForMultipleObjects(handles[:count], true, millis)
 		if err != nil {
 			errs = append(errs, fmt.Errorf("waiting on terminated process handles: %w", err))
@@ -841,4 +843,11 @@ func NewEnvBlock(env []string) *uint16 {
 	}
 	buf.WriteByte(0)
 	return unsafe.SliceData(utf16.Encode([]rune(string(buf.Bytes()))))
+}
+
+func minInt(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
 }

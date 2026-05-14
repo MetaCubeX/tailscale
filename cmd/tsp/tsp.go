@@ -8,7 +8,6 @@ package main
 
 import (
 	"bytes"
-	"cmp"
 	"context"
 	"encoding/json"
 	"errors"
@@ -18,6 +17,7 @@ import (
 	"os"
 	"reflect"
 	"strings"
+	cmp "tailscale.com/util/go120/cmp"
 
 	"github.com/peterbourgon/ff/v3/ffcli"
 	"tailscale.com/control/tsp"

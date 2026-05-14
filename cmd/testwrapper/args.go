@@ -7,9 +7,9 @@ import (
 	"flag"
 	"io"
 	"os"
-	"slices"
 	"strconv"
 	"strings"
+	slices "tailscale.com/util/go120/slices"
 	"testing"
 )
 

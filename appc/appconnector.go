@@ -12,10 +12,10 @@ package appc
 import (
 	"context"
 	"fmt"
-	"maps"
 	"net/netip"
-	"slices"
 	"strings"
+	maps "tailscale.com/util/go120/maps"
+	slices "tailscale.com/util/go120/slices"
 	"time"
 
 	"tailscale.com/syncs"

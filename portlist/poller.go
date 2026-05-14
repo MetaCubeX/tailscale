@@ -10,8 +10,8 @@ import (
 	"errors"
 	"fmt"
 	"runtime"
-	"slices"
 	"sync"
+	slices "tailscale.com/util/go120/slices"
 	"time"
 
 	"tailscale.com/envknob"

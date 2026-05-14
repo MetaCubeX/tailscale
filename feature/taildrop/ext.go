@@ -4,18 +4,18 @@
 package taildrop
 
 import (
-	"cmp"
 	"context"
 	"errors"
 	"fmt"
 	"io"
-	"maps"
 	"path/filepath"
 	"runtime"
-	"slices"
 	"strings"
 	"sync"
 	"sync/atomic"
+	cmp "tailscale.com/util/go120/cmp"
+	maps "tailscale.com/util/go120/maps"
+	slices "tailscale.com/util/go120/slices"
 
 	"tailscale.com/client/tailscale/apitype"
 	"tailscale.com/cmd/tailscaled/tailscaledhooks"

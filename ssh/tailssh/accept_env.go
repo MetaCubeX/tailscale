@@ -5,8 +5,8 @@ package tailssh
 
 import (
 	"fmt"
-	"slices"
 	"strings"
+	slices "tailscale.com/util/go120/slices"
 )
 
 // filterEnv filters a passed in environ string slice (a slice with strings

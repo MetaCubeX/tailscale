@@ -8,8 +8,8 @@ import (
 	"bufio"
 	"bytes"
 	"io"
-	"iter"
 	"os"
+	iter "tailscale.com/util/go120/iter"
 
 	"tailscale.com/types/result"
 )

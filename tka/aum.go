@@ -42,7 +42,11 @@ func (h *AUMHash) UnmarshalText(text []byte) error {
 
 // AppendText implements encoding.TextAppender.
 func (h AUMHash) AppendText(b []byte) ([]byte, error) {
-	return base32StdNoPad.AppendEncode(b, h[:]), nil
+	n := base32StdNoPad.EncodedLen(len(h))
+	off := len(b)
+	b = append(b, make([]byte, n)...)
+	base32StdNoPad.Encode(b[off:], h[:])
+	return b, nil
 }
 
 // MarshalText implements encoding.TextMarshaler.

@@ -1,3 +1,5 @@
+//go:build ignore
+
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
@@ -7,7 +9,7 @@ import (
 	"bytes"
 	"encoding/hex"
 	"net/netip"
-	"slices"
+	slices "tailscale.com/util/go120/slices"
 	"testing"
 
 	"go4.org/mem"

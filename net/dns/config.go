@@ -11,8 +11,8 @@ import (
 	"fmt"
 	"net/netip"
 	"reflect"
-	"slices"
 	"sort"
+	slices "tailscale.com/util/go120/slices"
 
 	"tailscale.com/control/controlknobs"
 	"tailscale.com/envknob"

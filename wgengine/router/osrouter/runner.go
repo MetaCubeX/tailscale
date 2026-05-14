@@ -10,10 +10,10 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
-	"slices"
 	"strconv"
 	"strings"
 	"syscall"
+	slices "tailscale.com/util/go120/slices"
 
 	"golang.org/x/sys/unix"
 )

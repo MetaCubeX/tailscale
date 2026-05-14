@@ -698,10 +698,10 @@ func AllocateContiguousBuffer[T any, BU BufUnit](values ...[]BU) (t *T, tLenByte
 	}
 
 	// Get the sizes of T and BU, then compute a preferred alignment for T.
-	tT := reflect.TypeFor[T]()
+	tT := reflect.TypeOf((*T)(nil)).Elem()
 	szT := tT.Size()
 	szBU := int(unsafe.Sizeof(BU(0)))
-	alignment := max(tT.Align(), szBU)
+	alignment := maxInt(tT.Align(), szBU)
 
 	// Our buffers for values will start at the next szBU boundary.
 	tLenBytes = alignUp(uint32(szT), szBU)
@@ -971,4 +971,11 @@ func GUIPathFromReg() (string, error) {
 	}
 
 	return regPath, nil
+}
+
+func maxInt(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
 }

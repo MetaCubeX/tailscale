@@ -18,15 +18,15 @@ import (
 	"net/netip"
 	"reflect"
 	"runtime"
-	"slices"
 	"strconv"
 	"strings"
 	"sync"
 	"sync/atomic"
+	slices "tailscale.com/util/go120/slices"
 	"time"
 
-	"github.com/tailscale/wireguard-go/conn"
-	"github.com/tailscale/wireguard-go/device"
+	"github.com/metacubex/tailscale-wireguard-go/conn"
+	"github.com/metacubex/tailscale-wireguard-go/device"
 	"go4.org/mem"
 	"golang.org/x/net/ipv6"
 	"tailscale.com/control/controlknobs"
@@ -701,13 +701,13 @@ func NewConn(opts Options) (*Conn, error) {
 	if d4, err := c.listenRawDisco("ip4"); err == nil {
 		c.logf("[v1] using BPF disco receiver for IPv4")
 		c.closeDisco4 = d4
-	} else if !errors.Is(err, errors.ErrUnsupported) {
+	} else if !errors.Is(err, errUnsupported) {
 		c.logf("[v1] couldn't create raw v4 disco listener, using regular listener instead: %v", err)
 	}
 	if d6, err := c.listenRawDisco("ip6"); err == nil {
 		c.logf("[v1] using BPF disco receiver for IPv6")
 		c.closeDisco6 = d6
-	} else if !errors.Is(err, errors.ErrUnsupported) {
+	} else if !errors.Is(err, errUnsupported) {
 		c.logf("[v1] couldn't create raw v6 disco listener, using regular listener instead: %v", err)
 	}
 
@@ -1345,9 +1345,10 @@ func (c *Conn) determineEndpoints(ctx context.Context) ([]tailcfg.Endpoint, erro
 	// re-run.
 	eps = c.endpointTracker.update(time.Now(), eps)
 
-	for _, ep := range c.staticEndpoints.All() {
+	c.staticEndpoints.All()(func(_ int, ep netip.AddrPort) bool {
 		addAddr(ep, tailcfg.EndpointExplicitConf)
-	}
+		return true
+	})
 
 	if localAddr := c.pconn4.LocalAddr(); localAddr.IP.IsUnspecified() {
 		ips, loopback, err := netmon.LocalAddresses()
@@ -1445,7 +1446,7 @@ func (c *Conn) networkDown() bool {
 
 // Send implements conn.Bind.
 //
-// See https://pkg.go.dev/github.com/tailscale/wireguard-go/conn#Bind.Send
+// See https://pkg.go.dev/github.com/metacubex/tailscale-wireguard-go/conn#Bind.Send
 func (c *Conn) Send(buffs [][]byte, ep conn.Endpoint, offset int) (err error) {
 	n := int64(len(buffs))
 	defer func() {
@@ -1496,7 +1497,8 @@ func (c *Conn) sendUDPBatch(addr epAddr, buffs [][]byte, offset int) (sent bool,
 		err = c.pconn4.WriteWireGuardBatchTo(buffs, addr, offset)
 	}
 	if err != nil {
-		if errGSO, ok := errors.AsType[neterror.ErrUDPGSODisabled](err); ok {
+		var errGSO neterror.ErrUDPGSODisabled
+		if ok := errors.As(err, &errGSO); ok {
 			c.logf("magicsock: %s", errGSO.Error())
 			err = errGSO.RetryErr
 		} else {
@@ -1565,11 +1567,11 @@ func (c *Conn) maybeRebindOnError(err error) {
 
 // sendUDPNetcheck sends b via UDP to addr. It is used exclusively by netcheck.
 // It returns the number of bytes sent along with any error encountered. It
-// returns errors.ErrUnsupported if the client is explicitly configured to only
+// returns errUnsupported if the client is explicitly configured to only
 // send data over TCP port 443 and/or we're running on wasm.
 func (c *Conn) sendUDPNetcheck(b []byte, addr netip.AddrPort) (int, error) {
 	if c.onlyTCP443.Load() || runtime.GOOS == "js" {
-		return 0, errors.ErrUnsupported
+		return 0, errUnsupported
 	}
 	switch {
 	case addr.Addr().Is4():
@@ -1634,7 +1636,7 @@ func (c *Conn) sendAddr(addr netip.AddrPort, pubKey key.NodePublic, b []byte, is
 	pkt := bytes.Clone(b)
 
 	wr := derpWriteRequest{addr, pubKey, pkt, isDisco}
-	for range 3 {
+	for i := 0; i < 3; i++ {
 		select {
 		case <-c.donec:
 			metricSendDERPErrorClosed.Add(1)
@@ -1831,7 +1833,7 @@ func (c *Conn) receiveIP(b []byte, ipp netip.AddrPort, cache *epAddrEndpointCach
 		// Strip away the Geneve header before returning the packet to
 		// wireguard-go.
 		//
-		// TODO(jwhited): update [github.com/tailscale/wireguard-go/conn.ReceiveFunc]
+		// TODO(jwhited): update [github.com/metacubex/tailscale-wireguard-go/conn.ReceiveFunc]
 		//  to support returning start offset in order to get rid of this memmove perf
 		//  penalty.
 		size = copy(b, b[packet.GeneveFixedHeaderLength:])
@@ -2787,7 +2789,7 @@ func debugRingBufferSize(numPeers int) int {
 	}
 
 	const averageRingBufferElemSize = 512
-	return max(defaultVal, maxRingBufferSize/(averageRingBufferElemSize*numPeers))
+	return maxInt(defaultVal, maxRingBufferSize/(averageRingBufferElemSize*numPeers))
 }
 
 // debugFlags are the debug flags in use by the magicsock package.
@@ -2928,14 +2930,15 @@ func nodeHasCap(filt *filter.Filter, src, dst tailcfg.NodeView, cap tailcfg.Peer
 		!dst.Valid() {
 		return false
 	}
-	for _, srcPrefix := range src.Addresses().All() {
+	var hasCap bool
+	src.Addresses().All()(func(_ int, srcPrefix netip.Prefix) bool {
 		if !srcPrefix.IsSingleIP() {
-			continue
+			return true
 		}
 		srcAddr := srcPrefix.Addr()
-		for _, dstPrefix := range dst.Addresses().All() {
+		dst.Addresses().All()(func(_ int, dstPrefix netip.Prefix) bool {
 			if !dstPrefix.IsSingleIP() {
-				continue
+				return true
 			}
 			dstAddr := dstPrefix.Addr()
 			if dstAddr.BitLen() == srcAddr.BitLen() { // same address family
@@ -2946,11 +2949,14 @@ func nodeHasCap(filt *filter.Filter, src, dst tailcfg.NodeView, cap tailcfg.Peer
 				// same address family they either have the capability or not.
 				// We do not check against additional host addresses of the same
 				// address family.
-				return filt.CapsWithValues(srcAddr, dstAddr).HasCapability(cap)
+				hasCap = filt.CapsWithValues(srcAddr, dstAddr).HasCapability(cap)
+				return false
 			}
-		}
-	}
-	return false
+			return true
+		})
+		return !hasCap
+	})
+	return hasCap
 }
 
 // candidatePeerRelay represents the identifiers and DERP home region ID for a
@@ -3329,16 +3335,18 @@ func (c *Conn) logEndpointCreated(n tailcfg.NodeView) {
 			fmt.Fprintf(w, "derp=%v%s ", regionID, code)
 		}
 
-		for _, a := range n.AllowedIPs().All() {
+		n.AllowedIPs().All()(func(_ int, a netip.Prefix) bool {
 			if a.IsSingleIP() {
 				fmt.Fprintf(w, "aip=%v ", a.Addr())
 			} else {
 				fmt.Fprintf(w, "aip=%v ", a)
 			}
-		}
-		for _, ep := range n.Endpoints().All() {
+			return true
+		})
+		n.Endpoints().All()(func(_ int, ep netip.AddrPort) bool {
 			fmt.Fprintf(w, "ep=%v ", ep)
-		}
+			return true
+		})
 	}))
 }
 

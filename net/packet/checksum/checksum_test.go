@@ -1,3 +1,5 @@
+//go:build ignore
+
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
@@ -5,13 +7,13 @@ package checksum
 
 import (
 	"encoding/binary"
-	"math/rand/v2"
 	"net/netip"
+	"tailscale.com/util/go120/randv2"
 	"testing"
 
-	"gvisor.dev/gvisor/pkg/tcpip"
-	"gvisor.dev/gvisor/pkg/tcpip/checksum"
-	"gvisor.dev/gvisor/pkg/tcpip/header"
+	"github.com/metacubex/gvisor/pkg/tcpip"
+	"github.com/metacubex/gvisor/pkg/tcpip/checksum"
+	"github.com/metacubex/gvisor/pkg/tcpip/header"
 	"tailscale.com/net/packet"
 )
 

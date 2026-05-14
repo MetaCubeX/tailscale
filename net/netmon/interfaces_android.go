@@ -14,6 +14,7 @@ import (
 	"golang.org/x/sys/unix"
 	"tailscale.com/net/netaddr"
 	"tailscale.com/syncs"
+	"tailscale.com/types/result"
 	"tailscale.com/util/lineiter"
 )
 
@@ -48,43 +49,45 @@ func likelyHomeRouterIPAndroid() (ret netip.Addr, myIP netip.Addr, ok bool) {
 	}
 	lineNum := 0
 	var f []mem.RO
-	for lr := range lineiter.File(procNetRoutePath) {
+	lineiter.File(procNetRoutePath)(func(lr result.Of[[]byte]) bool {
 		line, err := lr.Value()
 		if err != nil {
 			procNetRouteErr.Store(true)
-			return likelyHomeRouterIP()
+			ret, myIP, ok = likelyHomeRouterIP()
+			return false
 		}
 
 		lineNum++
 		if lineNum == 1 {
 			// Skip header line.
-			continue
+			return true
 		}
 		if lineNum > maxProcNetRouteRead {
-			break
+			return false
 		}
 		f = mem.AppendFields(f[:0], mem.B(line))
 		if len(f) < 4 {
-			continue
+			return true
 		}
 		gwHex, flagsHex := f[2], f[3]
 		flags, err := mem.ParseUint(flagsHex, 16, 16)
 		if err != nil {
-			continue // ignore error, skip line and keep going
+			return true // ignore error, skip line and keep going
 		}
 		if flags&(unix.RTF_UP|unix.RTF_GATEWAY) != unix.RTF_UP|unix.RTF_GATEWAY {
-			continue
+			return true
 		}
 		ipu32, err := mem.ParseUint(gwHex, 16, 32)
 		if err != nil {
-			continue // ignore error, skip line and keep going
+			return true // ignore error, skip line and keep going
 		}
 		ip := netaddr.IPv4(byte(ipu32), byte(ipu32>>8), byte(ipu32>>16), byte(ipu32>>24))
 		if ip.IsPrivate() {
 			ret = ip
-			break
+			return false
 		}
-	}
+		return true
+	})
 	if ret.IsValid() {
 		// Try to get the local IP of the interface associated with
 		// this route to short-circuit finding the IP associated with
@@ -136,26 +139,27 @@ func likelyHomeRouterIPHelper() (ret netip.Addr, _ netip.Addr, ok bool) {
 		return
 	}
 	// Search for line like "default via 10.0.2.2 dev radio0 table 1016 proto static mtu 1500 "
-	for lr := range lineiter.Reader(out) {
+	lineiter.Reader(out)(func(lr result.Of[[]byte]) bool {
 		line, err := lr.Value()
 		if err != nil {
-			break
+			return false
 		}
 		const pfx = "default via "
 		if !mem.HasPrefix(mem.B(line), mem.S(pfx)) {
-			continue
+			return true
 		}
 		line = line[len(pfx):]
 		sp := bytes.IndexByte(line, ' ')
 		if sp == -1 {
-			continue
+			return true
 		}
 		ipb := line[:sp]
 		if ip, err := netip.ParseAddr(string(ipb)); err == nil && ip.Is4() {
 			ret = ip
 			log.Printf("interfaces: found Android default route %v", ip)
 		}
-	}
+		return true
+	})
 	cmd.Process.Kill()
 	cmd.Wait()
 	return ret, netip.Addr{}, ret.IsValid()

@@ -4,7 +4,6 @@
 package batching
 
 import (
-	"encoding/binary"
 	"errors"
 	"fmt"
 	"net"
@@ -349,7 +348,7 @@ func getRXQOverflowsFromControl(control []byte) (uint32, error) {
 		return 0, err
 	}
 	if len(data) >= 4 {
-		return binary.NativeEndian.Uint32(data), nil
+		return nativeEndian.Uint32(data), nil
 	}
 	return 0, nil
 }
@@ -455,7 +454,7 @@ func getGSOSizeFromControl(control []byte) (int, error) {
 		return 0, err
 	}
 	if len(data) >= 2 {
-		return int(binary.NativeEndian.Uint16(data)), nil
+		return int(nativeEndian.Uint16(data)), nil
 	}
 	return 0, nil
 }
@@ -477,7 +476,7 @@ func setGSOSizeInControl(control *[]byte, gsoSize uint16) {
 	hdr.Level = unix.SOL_UDP
 	hdr.Type = unix.UDP_SEGMENT
 	hdr.SetLen(unix.CmsgLen(2))
-	binary.NativeEndian.PutUint16((*control)[unix.SizeofCmsghdr:], gsoSize)
+	nativeEndian.PutUint16((*control)[unix.SizeofCmsghdr:], gsoSize)
 	*control = (*control)[:unix.CmsgSpace(2)]
 }
 

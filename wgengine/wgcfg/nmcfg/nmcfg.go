@@ -6,10 +6,10 @@ package nmcfg
 
 import (
 	"bufio"
-	"cmp"
 	"fmt"
 	"net/netip"
 	"strings"
+	cmp "tailscale.com/util/go120/cmp"
 
 	"tailscale.com/net/tsaddr"
 	"tailscale.com/tailcfg"
@@ -37,12 +37,15 @@ func cidrIsSubnet(node tailcfg.NodeView, cidr netip.Prefix) bool {
 	if tsaddr.IsTailscaleIP(cidr.Addr()) {
 		return false
 	}
-	for _, selfCIDR := range node.Addresses().All() {
+	isSubnet := true
+	node.Addresses().All()(func(_ int, selfCIDR netip.Prefix) bool {
 		if cidr == selfCIDR {
+			isSubnet = false
 			return false
 		}
-	}
-	return true
+		return true
+	})
+	return isSubnet
 }
 
 // WGCfg returns the NetworkMaps's WireGuard configuration.
@@ -101,23 +104,24 @@ func WGCfg(pk key.NodePrivate, nm *netmap.NetworkMap, logf logger.Logf, flags ne
 		cpeer.V4MasqAddr = peer.SelfNodeV4MasqAddrForThisPeer().Clone()
 		cpeer.V6MasqAddr = peer.SelfNodeV6MasqAddrForThisPeer().Clone()
 		cpeer.IsJailed = peer.IsJailed()
-		for _, allowedIP := range peer.AllowedIPs().All() {
+		peer.AllowedIPs().All()(func(_ int, allowedIP netip.Prefix) bool {
 			if allowedIP.Bits() == 0 && peer.StableID() != exitNode {
 				if didExitNodeLog {
 					// Don't log about both the IPv4 /0 and IPv6 /0.
-					continue
+					return true
 				}
 				didExitNodeLog = true
 				skippedExitNode = append(skippedExitNode, peer)
-				continue
+				return true
 			} else if cidrIsSubnet(peer, allowedIP) {
 				if (flags & netmap.AllowSubnetRoutes) == 0 {
 					skippedSubnetRouter = append(skippedSubnetRouter, peer)
-					continue
+					return true
 				}
 			}
 			cpeer.AllowedIPs = append(cpeer.AllowedIPs, allowedIP)
-		}
+			return true
+		})
 	}
 
 	logList := func(title string, nodes []tailcfg.NodeView) {

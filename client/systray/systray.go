@@ -18,10 +18,10 @@ import (
 	"os"
 	"os/signal"
 	"runtime"
-	"slices"
 	"strings"
 	"sync"
 	"syscall"
+	slices "tailscale.com/util/go120/slices"
 	"time"
 
 	"fyne.io/systray"

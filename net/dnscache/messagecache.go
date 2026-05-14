@@ -4,12 +4,12 @@
 package dnscache
 
 import (
-	"cmp"
 	"encoding/binary"
 	"errors"
 	"fmt"
 	"io"
 	"sync"
+	cmp "tailscale.com/util/go120/cmp"
 	"time"
 
 	"github.com/golang/groupcache/lru"

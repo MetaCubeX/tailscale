@@ -270,7 +270,9 @@ func SetHooksForTest(tb testenv.TB, addMetric, setMetric metricFn) {
 
 	settingMetricsMu.Lock()
 	oldSettingMetricsMap := xmaps.Clone(settingMetricsMap)
-	clear(settingMetricsMap)
+	for k := range settingMetricsMap {
+		delete(settingMetricsMap, k)
+	}
 	settingMetricsMu.Unlock()
 	tb.Cleanup(func() {
 		settingMetricsMu.Lock()

@@ -12,9 +12,9 @@ import (
 	"io"
 	"log"
 	"net/netip"
-	"slices"
 	"sort"
 	"strings"
+	slices "tailscale.com/util/go120/slices"
 	"time"
 
 	"tailscale.com/tailcfg"
@@ -534,7 +534,8 @@ func (sb *StatusBuilder) AddPeer(peer key.NodePublic, st *PeerStatus) {
 		e.Expired = true
 	}
 	if t := st.KeyExpiry; t != nil {
-		e.KeyExpiry = new(*t)
+		keyExpiry := *t
+		e.KeyExpiry = &keyExpiry
 	}
 	if v := st.CapMap; v != nil {
 		e.CapMap = v

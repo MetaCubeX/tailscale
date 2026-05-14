@@ -10,9 +10,9 @@ import (
 	_ "embed"
 	"errors"
 	"fmt"
-	"slices"
 	"strings"
 	"sync"
+	slices "tailscale.com/util/go120/slices"
 
 	"go.uber.org/zap"
 	xslices "golang.org/x/exp/slices"

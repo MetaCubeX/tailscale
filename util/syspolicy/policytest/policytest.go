@@ -6,9 +6,9 @@ package policytest
 
 import (
 	"fmt"
-	"maps"
-	"slices"
 	"sync"
+	maps "tailscale.com/util/go120/maps"
+	slices "tailscale.com/util/go120/slices"
 	"time"
 
 	"tailscale.com/util/set"

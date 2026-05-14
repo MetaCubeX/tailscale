@@ -23,6 +23,7 @@ import (
 	"tailscale.com/tailcfg"
 	"tailscale.com/types/lazy"
 	"tailscale.com/types/opt"
+	"tailscale.com/types/result"
 	"tailscale.com/util/cloudenv"
 	"tailscale.com/util/dnsname"
 	"tailscale.com/util/lineiter"
@@ -83,6 +84,10 @@ var (
 	deviceModel    func() string
 )
 
+func funcPtr[T any](fn func() T) *func() T {
+	return &fn
+}
+
 func condCall[T any](fn func() T) T {
 	var zero T
 	if fn == nil {
@@ -92,8 +97,8 @@ func condCall[T any](fn func() T) T {
 }
 
 var (
-	lazyInContainer = &lazyAtomicValue[opt.Bool]{f: new(inContainer)}
-	lazyGoArchVar   = &lazyAtomicValue[string]{f: new(goArchVar)}
+	lazyInContainer = &lazyAtomicValue[opt.Bool]{f: funcPtr(inContainer)}
+	lazyGoArchVar   = &lazyAtomicValue[string]{f: funcPtr(goArchVar)}
 )
 
 type lazyAtomicValue[T any] struct {
@@ -242,11 +247,12 @@ func desktop() (ret opt.Bool) {
 	}
 
 	seenDesktop := false
-	for lr := range lineiter.File("/proc/net/unix") {
+	lineiter.File("/proc/net/unix")(func(lr result.Of[[]byte]) bool {
 		line, _ := lr.Value()
 		seenDesktop = seenDesktop || mem.Contains(mem.B(line), mem.S(".X11-unix"))
 		seenDesktop = seenDesktop || mem.Contains(mem.B(line), mem.S("/wayland-1"))
-	}
+		return true
+	})
 	ret.Set(seenDesktop)
 
 	// Only cache after a minute - compositors might not have started yet.
@@ -315,21 +321,23 @@ func inContainer() opt.Bool {
 		ret.Set(true)
 		return ret
 	}
-	for lr := range lineiter.File("/proc/1/cgroup") {
+	lineiter.File("/proc/1/cgroup")(func(lr result.Of[[]byte]) bool {
 		line, _ := lr.Value()
 		if mem.Contains(mem.B(line), mem.S("/docker/")) ||
 			mem.Contains(mem.B(line), mem.S("/lxc/")) {
 			ret.Set(true)
-			break
+			return false
 		}
-	}
-	for lr := range lineiter.File("/proc/mounts") {
+		return true
+	})
+	lineiter.File("/proc/mounts")(func(lr result.Of[[]byte]) bool {
 		line, _ := lr.Value()
 		if mem.Contains(mem.B(line), mem.S("lxcfs /proc/cpuinfo fuse.lxcfs")) {
 			ret.Set(true)
-			break
+			return false
 		}
-	}
+		return true
+	})
 	return ret
 }
 

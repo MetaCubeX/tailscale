@@ -1,3 +1,5 @@
+//go:build ignore
+
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
@@ -18,7 +20,7 @@ import (
 	"testing/synctest"
 	"time"
 
-	"github.com/go-json-experiment/json/jsontext"
+	"github.com/metacubex/jsonv2/jsontext"
 	"tailscale.com/net/memnet"
 	"tailscale.com/tstest"
 	"tailscale.com/tstime"

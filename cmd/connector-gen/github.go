@@ -9,8 +9,8 @@ import (
 	"log"
 	"net/http"
 	"net/netip"
-	"slices"
 	"strings"
+	slices "tailscale.com/util/go120/slices"
 
 	"go4.org/netipx"
 )

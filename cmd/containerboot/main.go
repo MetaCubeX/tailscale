@@ -128,11 +128,11 @@ import (
 	"os"
 	"os/signal"
 	"path/filepath"
-	"slices"
 	"strings"
 	"sync"
 	"sync/atomic"
 	"syscall"
+	slices "tailscale.com/util/go120/slices"
 	"time"
 
 	"golang.org/x/sys/unix"

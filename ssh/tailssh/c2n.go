@@ -11,7 +11,7 @@ import (
 	"net/http"
 	"os/exec"
 	"runtime"
-	"slices"
+	slices "tailscale.com/util/go120/slices"
 
 	"go4.org/mem"
 	"tailscale.com/ipn/ipnlocal"

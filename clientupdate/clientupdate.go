@@ -16,7 +16,6 @@ import (
 	"fmt"
 	"io"
 	"io/fs"
-	"maps"
 	"net/http"
 	"os"
 	"os/exec"
@@ -26,6 +25,7 @@ import (
 	"runtime"
 	"strconv"
 	"strings"
+	maps "tailscale.com/util/go120/maps"
 
 	"tailscale.com/envknob"
 	"tailscale.com/feature"

@@ -10,7 +10,6 @@ package ace
 
 import (
 	"bufio"
-	"cmp"
 	"context"
 	"crypto/tls"
 	"errors"
@@ -19,6 +18,7 @@ import (
 	"net/http"
 	"net/netip"
 	"sync/atomic"
+	cmp "tailscale.com/util/go120/cmp"
 )
 
 // Dialer is an HTTP CONNECT proxy dialer to dial the control plane via an ACE

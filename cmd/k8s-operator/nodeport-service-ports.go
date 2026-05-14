@@ -6,11 +6,11 @@ package main
 import (
 	"context"
 	"fmt"
-	"math/rand/v2"
 	"regexp"
 	"sort"
 	"strconv"
 	"strings"
+	"tailscale.com/util/go120/randv2"
 
 	"go.uber.org/zap"
 	corev1 "k8s.io/api/core/v1"

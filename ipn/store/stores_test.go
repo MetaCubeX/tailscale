@@ -1,11 +1,13 @@
+//go:build ignore
+
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
 package store
 
 import (
-	"maps"
 	"path/filepath"
+	maps "tailscale.com/util/go120/maps"
 	"testing"
 
 	"tailscale.com/ipn"

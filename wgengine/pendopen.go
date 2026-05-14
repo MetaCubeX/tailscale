@@ -10,13 +10,13 @@ import (
 	"net/netip"
 	"runtime"
 	"strings"
-	"sync"
 	"time"
 
-	"github.com/gaissmai/bart"
+	"github.com/metacubex/bart"
 	"tailscale.com/net/flowtrack"
 	"tailscale.com/net/packet"
 	"tailscale.com/net/tstun"
+	"tailscale.com/syncs"
 	"tailscale.com/types/ipproto"
 	"tailscale.com/util/mak"
 	"tailscale.com/wgengine/filter"
@@ -99,10 +99,10 @@ func (e *userspaceEngine) trackOpenPreFilterIn(pp *packet.Parsed, t *tstun.Wrapp
 
 var (
 	appleIPRange = netip.MustParsePrefix("17.0.0.0/8")
-	canonicalIPs = sync.OnceValue(func() (checkIPFunc func(netip.Addr) bool) {
+	canonicalIPs = syncs.OnceValue(func() (checkIPFunc func(netip.Addr) bool) {
 		// https://bgp.he.net/AS41231#_prefixes
 		t := &bart.Lite{}
-		for s := range strings.FieldsSeq(`
+		for _, s := range strings.Fields(`
 			91.189.89.0/24
 			91.189.91.0/24
 			91.189.92.0/24
@@ -212,12 +212,13 @@ func (e *userspaceEngine) onOpenTimeout(flow flowtrack.Tuple) {
 	ps, found := e.getPeerStatusLite(n.Key())
 	if !found {
 		onlyZeroRoute := true // whether peerForIP returned n only because its /0 route matched
-		for _, r := range n.AllowedIPs().All() {
+		n.AllowedIPs().All()(func(_ int, r netip.Prefix) bool {
 			if r.Bits() != 0 && r.Contains(flow.DstAddr()) {
 				onlyZeroRoute = false
-				break
+				return false
 			}
-		}
+			return true
+		})
 		if onlyZeroRoute {
 			// This node was returned by peerForIP because
 			// its exit node /0 route(s) matched, but this

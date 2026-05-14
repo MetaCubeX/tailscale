@@ -8,7 +8,7 @@ package dnstype
 
 import (
 	"net/netip"
-	"slices"
+	slices "tailscale.com/util/go120/slices"
 )
 
 // Resolver is the configuration for one DNS resolver.

@@ -4,9 +4,9 @@
 package appc
 
 import (
-	"cmp"
-	"slices"
 	"strings"
+	cmp "tailscale.com/util/go120/cmp"
+	slices "tailscale.com/util/go120/slices"
 
 	"tailscale.com/ipn/ipnext"
 	"tailscale.com/tailcfg"
@@ -43,12 +43,15 @@ func PickConnector(nb ipnext.NodeBackend, app appctype.Conn25Attr) []tailcfg.Nod
 		if !isPeerEligibleConnector(n) {
 			return false
 		}
-		for _, t := range n.Tags().All() {
+		matched := false
+		n.Tags().All()(func(_ int, t string) bool {
 			if appTagsSet.Contains(t) {
-				return true
+				matched = true
+				return false
 			}
-		}
-		return false
+			return true
+		})
+		return matched
 	})
 	sortByPreference(matches)
 	return matches
@@ -96,7 +99,7 @@ func PickSplitDNSPeers(hasCap func(c tailcfg.NodeCapability) bool, self tailcfg.
 		if !isPeerEligibleConnector(peer) {
 			continue
 		}
-		for _, t := range peer.Tags().All() {
+		peer.Tags().All()(func(_ int, t string) bool {
 			domains := tagToDomain[t]
 			for domain := range domains {
 				if selfRoutedDomains.Contains(domain) {
@@ -107,7 +110,8 @@ func PickSplitDNSPeers(hasCap func(c tailcfg.NodeCapability) bool, self tailcfg.
 				}
 				work[domain].Add(peer.ID())
 			}
-		}
+			return true
+		})
 	}
 
 	// Populate m. Make a []tailcfg.NodeView from []tailcfg.NodeID using the peers map.

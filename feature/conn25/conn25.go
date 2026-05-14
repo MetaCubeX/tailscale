@@ -16,10 +16,10 @@ import (
 	"io"
 	"net/http"
 	"net/netip"
-	"slices"
 	"strings"
 	"sync"
 	"sync/atomic"
+	slices "tailscale.com/util/go120/slices"
 	"time"
 
 	"go4.org/netipx"

@@ -16,8 +16,8 @@ import (
 	"os/exec"
 	"path"
 	"runtime"
-	"slices"
 	"strings"
+	slices "tailscale.com/util/go120/slices"
 
 	"github.com/peterbourgon/ff/v3/ffcli"
 	"tailscale.com/hostinfo"
