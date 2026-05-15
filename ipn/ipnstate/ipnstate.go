@@ -285,8 +285,8 @@ type PeerStatus struct {
 	// Capabilities are capabilities that the node has.
 	// They're free-form strings, but should be in the form of URLs/URIs
 	// such as:
-	//    "https://github.com/metacubex/tailscale/cap/is-admin"
-	//    "https://github.com/metacubex/tailscale/cap/file-sharing"
+	//    "https://tailscale.com/cap/is-admin"
+	//    "https://tailscale.com/cap/file-sharing"
 	//    "funnel"
 	//
 	// Deprecated: use CapMap instead. See https://github.com/tailscale/tailscale/issues/11508
