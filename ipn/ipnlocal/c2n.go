@@ -20,7 +20,6 @@ import (
 	"github.com/metacubex/tailscale/feature/buildfeatures"
 	"github.com/metacubex/tailscale/health"
 	"github.com/metacubex/tailscale/ipn"
-	"github.com/metacubex/tailscale/net/sockstats"
 	"github.com/metacubex/tailscale/tailcfg"
 	"github.com/metacubex/tailscale/types/netmap"
 	"github.com/metacubex/tailscale/util/clientmetric"
@@ -49,8 +48,6 @@ func init() {
 		RegisterC2N("POST /logtail/flush", handleC2NLogtailFlush)
 	}
 	if buildfeatures.HasDebug {
-		RegisterC2N("POST /sockstats", handleC2NSockStats)
-
 		// pprof:
 		// we only expose a subset of typical pprof endpoints for security.
 		RegisterC2N("/debug/pprof/heap", handleC2NPprof)
@@ -286,17 +283,6 @@ func handleC2NPprof(b *LocalBackend, w http.ResponseWriter, r *http.Request) {
 	}
 	_, profile := path.Split(r.URL.Path)
 	c2nPprof(w, r, profile)
-}
-
-func handleC2NSockStats(b *LocalBackend, w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "text/plain")
-	if b.sockstatLogger == nil {
-		http.Error(w, "no sockstatLogger", http.StatusInternalServerError)
-		return
-	}
-	b.sockstatLogger.Flush()
-	fmt.Fprintf(w, "logid: %s\n", b.sockstatLogger.LogID())
-	fmt.Fprintf(w, "debug info: %v\n", sockstats.DebugInfo())
 }
 
 func handleC2NSetNetfilterKind(b *LocalBackend, w http.ResponseWriter, r *http.Request) {
