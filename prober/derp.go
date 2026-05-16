@@ -1210,7 +1210,13 @@ func newConn(ctx context.Context, dm *tailcfg.DERPMap, n *tailcfg.DERPNode, isPr
 var httpOrFileClient = &http.Client{Transport: httpOrFileTransport()}
 
 func httpOrFileTransport() http.RoundTripper {
-	tr := http.DefaultTransport.(*http.Transport).Clone()
+	tr := (&http.Transport{
+		ForceAttemptHTTP2:     true,
+		MaxIdleConns:          100,
+		IdleConnTimeout:       90 * time.Second,
+		TLSHandshakeTimeout:   10 * time.Second,
+		ExpectContinueTimeout: 1 * time.Second,
+	}).Clone()
 	tr.RegisterProtocol("file", http.NewFileTransport(http.Dir("/")))
 	return tr
 }

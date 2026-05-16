@@ -299,7 +299,13 @@ func NewDirect(opts Options) (*Direct, error) {
 	}
 	var interceptedDial *atomic.Bool
 	if httpc == nil {
-		tr := http.DefaultTransport.(*http.Transport).Clone()
+		tr := &http.Transport{
+			ForceAttemptHTTP2:     true,
+			MaxIdleConns:          100,
+			IdleConnTimeout:       90 * time.Second,
+			TLSHandshakeTimeout:   10 * time.Second,
+			ExpectContinueTimeout: 1 * time.Second,
+		}
 		if buildfeatures.HasUseProxy {
 			tr.Proxy = feature.HookProxyFromEnvironment.GetOrNil()
 			if f, ok := feature.HookProxySetTransportGetProxyConnectHeader.GetOk(); ok {

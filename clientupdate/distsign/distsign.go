@@ -329,7 +329,13 @@ func fetch(url string, limit int64) ([]byte, error) {
 // download writes the response body of url into a local file at dst, up to
 // limit bytes. On success, the returned value is a BLAKE2s hash of the file.
 func (c *Client) download(ctx context.Context, url, dst string, limit int64) ([]byte, int64, error) {
-	tr := http.DefaultTransport.(*http.Transport).Clone()
+	tr := (&http.Transport{
+		ForceAttemptHTTP2:     true,
+		MaxIdleConns:          100,
+		IdleConnTimeout:       90 * time.Second,
+		TLSHandshakeTimeout:   10 * time.Second,
+		ExpectContinueTimeout: 1 * time.Second,
+	}).Clone()
 	tr.Proxy = feature.HookProxyFromEnvironment.GetOrNil()
 	defer tr.CloseIdleConnections()
 	hc := &http.Client{
