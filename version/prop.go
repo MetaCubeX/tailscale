@@ -214,6 +214,7 @@ var isUnstableBuild lazy.SyncValue[bool]
 // IsUnstableBuild reports whether this is an unstable build.
 // That is, whether its minor version number is odd.
 func IsUnstableBuild() bool {
+	return false
 	return isUnstableBuild.Get(func() bool {
 		_, rest, ok := strings.Cut(Short(), ".")
 		if !ok {
