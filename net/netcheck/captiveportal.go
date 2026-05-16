@@ -28,7 +28,7 @@ func startCaptivePortalDetection(ctx context.Context, rs *reportState, dm *tailc
 
 	tmr := time.AfterFunc(c.captivePortalDelay(), func() {
 		defer close(ch)
-		d := captivedetection.NewDetector(c.logf)
+		d := captivedetection.NewDetector(c.logf, c.Dialer)
 		found := d.Detect(ctx, c.NetMon, dm, preferredDERP)
 		rs.report.CaptivePortal.Set(found)
 	})

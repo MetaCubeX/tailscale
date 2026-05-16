@@ -7,6 +7,7 @@ package captivedetection
 
 import (
 	"context"
+	"net"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
@@ -40,7 +41,7 @@ func TestAvailableEndpointsAlwaysAtLeastTwo(t *testing.T) {
 }
 
 func TestDetectCaptivePortalReturnsFalse(t *testing.T) {
-	d := NewDetector(t.Logf)
+	d := NewDetector(t.Logf, (&net.Dialer{}).DialContext)
 	found := d.Detect(context.Background(), netmon.NewStatic(), nil, 0)
 	if found {
 		t.Errorf("DetectCaptivePortal returned true, expected false.")
@@ -50,7 +51,7 @@ func TestDetectCaptivePortalReturnsFalse(t *testing.T) {
 func TestEndpointsAreUpAndReturnExpectedResponse(t *testing.T) {
 	nettest.SkipIfNoNetwork(t)
 
-	d := NewDetector(t.Logf)
+	d := NewDetector(t.Logf, (&net.Dialer{}).DialContext)
 	endpoints := availableEndpoints(nil, 0, t.Logf, runtime.GOOS)
 	t.Logf("testing %d endpoints", len(endpoints))
 
@@ -92,7 +93,7 @@ func TestEndpointsAreUpAndReturnExpectedResponse(t *testing.T) {
 }
 
 func TestCaptivePortalRequest(t *testing.T) {
-	d := NewDetector(t.Logf)
+	d := NewDetector(t.Logf, (&net.Dialer{}).DialContext)
 	now := time.Now()
 	d.clock = func() time.Time { return now }
 
@@ -132,7 +133,7 @@ func TestCaptivePortalRequest(t *testing.T) {
 }
 
 func TestAgainstDERPHandler(t *testing.T) {
-	d := NewDetector(t.Logf)
+	d := NewDetector(t.Logf, (&net.Dialer{}).DialContext)
 
 	ctx := t.Context()
 
