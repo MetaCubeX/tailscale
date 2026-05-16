@@ -14,11 +14,10 @@ import (
 	"strconv"
 	"strings"
 	"sync"
-	"syscall"
 	"time"
 
 	"github.com/metacubex/tailscale/net/netmon"
-	"github.com/metacubex/tailscale/syncs"
+	"github.com/metacubex/tailscale/net/netx"
 	"github.com/metacubex/tailscale/tailcfg"
 	"github.com/metacubex/tailscale/types/logger"
 )
@@ -30,17 +29,16 @@ type Detector struct {
 	// httpClient is the HTTP client that is used for captive portal detection. It is configured
 	// to not follow redirects, have a short timeout and no keep-alive.
 	httpClient *http.Client
-	// currIfIndex is the index of the interface that is currently being used by the httpClient.
-	currIfIndex int
-	// mu guards currIfIndex.
-	mu syncs.Mutex
+	// dialer specifies how captive portal detection dials endpoints. If nil,
+	// detection is skipped instead of falling back to net.DefaultResolver.
+	dialer netx.DialFunc
 	// logf is the logger used for logging messages. If it is nil, log.Printf is used.
 	logf logger.Logf
 }
 
 // NewDetector creates a new Detector instance for captive portal detection.
-func NewDetector(logf logger.Logf) *Detector {
-	d := &Detector{logf: logf}
+func NewDetector(logf logger.Logf, dialer netx.DialFunc) *Detector {
+	d := &Detector{logf: logf, dialer: dialer}
 	d.httpClient = &http.Client{
 		// No redirects allowed
 		CheckRedirect: func(req *http.Request, via []*http.Request) error {
@@ -74,6 +72,10 @@ const Timeout = 3 * time.Second
 // This function might take a while to return, as it will attempt to detect a captive portal on all available interfaces
 // by performing multiple HTTP requests. It should be called in a separate goroutine if you want to avoid blocking.
 func (d *Detector) Detect(ctx context.Context, netMon *netmon.Monitor, derpMap *tailcfg.DERPMap, preferredDERPRegionID int) (found bool) {
+	if d.dialer == nil {
+		d.logf("[v1] DetectCaptivePortal: no dialer configured, returning false")
+		return false
+	}
 	return d.detectCaptivePortalWithGOOS(ctx, netMon, derpMap, preferredDERPRegionID, runtime.GOOS)
 }
 
@@ -218,10 +220,6 @@ func (d *Detector) verifyCaptivePortalEndpoint(ctx context.Context, e Endpoint, 
 		req.Header.Set("X-Tailscale-Challenge", chal)
 	}
 
-	d.mu.Lock()
-	d.currIfIndex = ifIndex
-	d.mu.Unlock()
-
 	// Make the actual request, and check if the response looks like a captive portal or not.
 	r, err := d.httpClient.Do(req)
 	if err != nil {
@@ -232,19 +230,7 @@ func (d *Detector) verifyCaptivePortalEndpoint(ctx context.Context, e Endpoint, 
 }
 
 func (d *Detector) dialContext(ctx context.Context, network, addr string) (net.Conn, error) {
-	d.mu.Lock()
-	defer d.mu.Unlock()
-
-	ifIndex := d.currIfIndex
-
-	dl := &net.Dialer{
-		Timeout: Timeout,
-		Control: func(network, address string, c syscall.RawConn) error {
-			return setSocketInterfaceIndex(c, ifIndex, d.logf)
-		},
-	}
-
-	return dl.DialContext(ctx, network, addr)
+	return d.dialer(ctx, network, addr)
 }
 
 func minInt(a, b int) int {

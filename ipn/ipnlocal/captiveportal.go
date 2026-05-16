@@ -161,7 +161,7 @@ func (b *LocalBackend) performCaptiveDetection() {
 		return
 	}
 
-	d := captivedetection.NewDetector(b.logf)
+	d := captivedetection.NewDetector(b.logf, b.Dialer().SystemDial)
 	b.mu.Lock() // for b.hostinfo
 	cn := b.currentNode()
 	dm := cn.DERPMap()
