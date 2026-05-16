@@ -36,6 +36,7 @@ import (
 	"github.com/metacubex/tailscale/hostinfo"
 	"github.com/metacubex/tailscale/ipn/ipnstate"
 	"github.com/metacubex/tailscale/net/batching"
+	"github.com/metacubex/tailscale/net/dnscache"
 	"github.com/metacubex/tailscale/net/netcheck"
 	"github.com/metacubex/tailscale/net/neterror"
 	"github.com/metacubex/tailscale/net/netmon"
@@ -483,6 +484,10 @@ type Options struct {
 	// for TLS connections to DERP servers.
 	ExtraRootCAs *x509.CertPool
 
+	// LookupHook optionally specifies how tsnet resolves non-Tailscale
+	// infrastructure hostnames such as control and DERP.
+	LookupHook dnscache.LookupHookFunc
+
 	// Metrics specifies the metrics registry to record metrics to.
 	Metrics *usermetric.Registry
 
@@ -705,6 +710,7 @@ func NewConn(opts Options) (*Conn, error) {
 		SkipExternalNetwork: inTest(),
 		PortMapper:          c.portMapper,
 		UseDNSCache:         true,
+		LookupHook:          opts.LookupHook,
 	}
 
 	c.metrics = registerMetrics(opts.Metrics)

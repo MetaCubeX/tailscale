@@ -232,6 +232,10 @@ type Client struct {
 	// If false, the default net.Resolver will be used, with no caching.
 	UseDNSCache bool
 
+	// LookupHook optionally specifies how tsnet resolves non-Tailscale
+	// infrastructure hostnames such as control and DERP.
+	LookupHook dnscache.LookupHookFunc
+
 	// if non-zero, force this DERP region to be preferred in all reports where
 	// the DERP is found to be reachable.
 	ForcePreferredDERP int
@@ -1633,31 +1637,19 @@ func (c *Client) nodeAddrPort(ctx context.Context, n *tailcfg.DERPNode, port int
 		return zero, false
 	}
 
-	// The default lookup function if we don't set UseDNSCache is to use net.DefaultResolver.
-	lookupIPAddr := func(ctx context.Context, host string) ([]netip.Addr, error) {
-		addrs, err := net.DefaultResolver.LookupIPAddr(ctx, host)
-		if err != nil {
-			return nil, err
-		}
-
-		var naddrs []netip.Addr
-		for _, addr := range addrs {
-			na, ok := netip.AddrFromSlice(addr.IP)
-			if !ok {
-				continue
-			}
-			naddrs = append(naddrs, na.Unmap())
-		}
-		return naddrs, nil
+	if c.LookupHook == nil {
+		return zero, false
 	}
+
+	lookupIPAddr := c.LookupHook
 
 	c.mu.Lock()
 	if c.UseDNSCache {
 		if c.resolver == nil {
 			c.resolver = &dnscache.Resolver{
-				Forward:     net.DefaultResolver,
 				UseLastGood: true,
 				Logf:        c.logf,
+				LookupHook:  c.LookupHook,
 			}
 		}
 		resolver := c.resolver

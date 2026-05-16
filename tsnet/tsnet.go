@@ -895,6 +895,7 @@ func (s *Server) start() (reterr error) {
 		ControlKnobs:   sys.ControlKnobs(),
 		HealthTracker:  sys.HealthTracker.Get(),
 		ExtraRootCAs:   sys.ExtraRootCAs,
+		LookupHook:     s.LookupHook,
 		Metrics:        sys.UserMetricsRegistry(),
 		PacketListener: s.SystemPacketListener,
 	})
