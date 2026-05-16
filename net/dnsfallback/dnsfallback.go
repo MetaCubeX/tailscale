@@ -130,7 +130,13 @@ func lookup(ctx context.Context, host string, logf logger.Logf, ht *health.Track
 //
 // ht may be nil.
 func bootstrapDNSMap(ctx context.Context, serverName string, serverIP netip.Addr, queryName string, logf logger.Logf, ht *health.Tracker, dialer netx.DialFunc) (dnsMap, error) {
-	tr := http.DefaultTransport.(*http.Transport).Clone()
+	tr := (&http.Transport{
+		ForceAttemptHTTP2:     true,
+		MaxIdleConns:          100,
+		IdleConnTimeout:       90 * time.Second,
+		TLSHandshakeTimeout:   10 * time.Second,
+		ExpectContinueTimeout: 1 * time.Second,
+	}).Clone()
 	tr.DisableKeepAlives = true // This transport is meant to be used once.
 	tr.Proxy = feature.HookProxyFromEnvironment.GetOrNil()
 	tr.DialContext = func(ctx context.Context, netw, addr string) (net.Conn, error) {

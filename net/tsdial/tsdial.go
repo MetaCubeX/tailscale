@@ -628,7 +628,13 @@ func (d *Dialer) PeerAPIHTTPClient() *http.Client {
 		panic("unreachable")
 	}
 	d.peerClientOnce.Do(func() {
-		t := http.DefaultTransport.(*http.Transport).Clone()
+		t := &http.Transport{
+			ForceAttemptHTTP2:     true,
+			MaxIdleConns:          100,
+			IdleConnTimeout:       90 * time.Second,
+			TLSHandshakeTimeout:   10 * time.Second,
+			ExpectContinueTimeout: 1 * time.Second,
+		}
 		t.Dial = nil
 		t.DialContext = d.dialPeerAPI
 		// Do not use the environment proxy for PeerAPI.

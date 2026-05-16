@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"time"
 )
 
 const maxHTTPBody = 4 << 20 // MiB
@@ -35,7 +36,13 @@ func probeHTTP(ctx context.Context, url string, want []byte) error {
 
 	// Get a completely new transport each time, so we don't reuse a
 	// past connection.
-	tr := http.DefaultTransport.(*http.Transport).Clone()
+	tr := (&http.Transport{
+		ForceAttemptHTTP2:     true,
+		MaxIdleConns:          100,
+		IdleConnTimeout:       90 * time.Second,
+		TLSHandshakeTimeout:   10 * time.Second,
+		ExpectContinueTimeout: 1 * time.Second,
+	}).Clone()
 	defer tr.CloseIdleConnections()
 	c := &http.Client{
 		Transport: tr,

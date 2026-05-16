@@ -466,7 +466,13 @@ func (a *Dialer) tryURLUpgrade(ctx context.Context, u *url.URL, optAddr netip.Ad
 		}()
 	}
 
-	tr := http.DefaultTransport.(*http.Transport).Clone()
+	tr := (&http.Transport{
+		ForceAttemptHTTP2:     true,
+		MaxIdleConns:          100,
+		IdleConnTimeout:       90 * time.Second,
+		TLSHandshakeTimeout:   10 * time.Second,
+		ExpectContinueTimeout: 1 * time.Second,
+	}).Clone()
 	defer tr.CloseIdleConnections()
 	if optACEHost != "" {
 		// If using ACE, we don't want to use any HTTP proxy.
