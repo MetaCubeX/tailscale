@@ -541,9 +541,7 @@ func (d *Dialer) UserDial(ctx context.Context, network, addr string) (net.Conn, 
 	if version.IsMacGUIVariant() && tsaddr.IsTailscaleIP(ipp.Addr()) {
 		return d.getPeerDialer().DialContext(ctx, network, ipp.String())
 	}
-	// TODO(bradfitz): netns, etc
-	var stdDialer net.Dialer
-	return stdDialer.DialContext(ctx, network, ipp.String())
+	return d.SystemDial(ctx, network, ipp.String())
 }
 
 // UserDialPlan resolves addr and reports whether the dialer would
