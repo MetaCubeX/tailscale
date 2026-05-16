@@ -161,12 +161,26 @@ func (h *Handler) serveDebugDERPRegion(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 		} else {
-			addrs, err := net.DefaultResolver.LookupNetIP(ctx, "ip4", derpNode.HostName)
+			lookup := h.b.Dialer().LookupHook
+			if lookup == nil {
+				st.Errors = append(st.Errors, "No LookupHook configured")
+				return
+			}
+			addrs, err := lookup(ctx, derpNode.HostName)
 			if err != nil {
 				st.Errors = append(st.Errors, fmt.Sprintf("Error resolving node %q IPv4 addresses: %v", derpNode.HostName, err))
 				return
 			}
-			addr = addrs[0]
+			for _, _addr := range addrs {
+				if _addr.Is4() {
+					addr = _addr
+					break
+				}
+			}
+			if !addr.IsValid() {
+				st.Errors = append(st.Errors, fmt.Sprintf("Node %q has no IPv4 addresses", derpNode.HostName))
+				return
+			}
 		}
 
 		addrPort := netip.AddrPortFrom(addr, uint16(cmp.Or(derpNode.STUNPort, 3478)))
