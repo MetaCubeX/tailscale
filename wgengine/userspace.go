@@ -30,6 +30,7 @@ import (
 	"github.com/metacubex/tailscale/ipn/ipnstate"
 	"github.com/metacubex/tailscale/net/dns"
 	"github.com/metacubex/tailscale/net/dns/resolver"
+	"github.com/metacubex/tailscale/net/dnscache"
 	"github.com/metacubex/tailscale/net/ipset"
 	"github.com/metacubex/tailscale/net/netmon"
 	"github.com/metacubex/tailscale/net/packet"
@@ -225,6 +226,10 @@ type Config struct {
 	// ExtraRootCAs, if non-nil, specifies additional trusted root CAs for TLS
 	// connections (e.g. DERP). Passed through to magicsock.
 	ExtraRootCAs *x509.CertPool
+
+	// LookupHook optionally specifies how tsnet resolves non-Tailscale
+	// infrastructure hostnames such as control and DERP.
+	LookupHook dnscache.LookupHookFunc
 
 	// ControlKnobs is the set of control plane-provied knobs
 	// to use.
@@ -444,6 +449,7 @@ func NewUserspaceEngine(logf logger.Logf, conf Config) (_ Engine, reterr error) 
 		PacketListener: conf.PacketListener,
 		HealthTracker:  e.health,
 		ExtraRootCAs:   conf.ExtraRootCAs,
+		LookupHook:     conf.LookupHook,
 		Metrics:        conf.Metrics,
 		ControlKnobs:   conf.ControlKnobs,
 		PeerByKeyFunc:  e.PeerByKey,
