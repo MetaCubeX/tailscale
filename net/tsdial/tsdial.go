@@ -75,6 +75,8 @@ type Dialer struct {
 	// If nil, it's not used.
 	NetstackDialUDP func(context.Context, netip.AddrPort) (net.Conn, error)
 
+	SystemDialer netx.DialFunc
+
 	peerClientOnce sync.Once
 	peerClient     *http.Client
 
@@ -438,7 +440,7 @@ func (d *Dialer) SetSystemDialerForTest(fn netx.DialFunc) {
 // Control and (in the future, as of 2022-04-27) DERPs..
 func (d *Dialer) SystemDial(ctx context.Context, network, addr string) (net.Conn, error) {
 	d.mu.Lock()
-	if d.netMon == nil && d.sysDialForTest == nil {
+	if d.netMon == nil && d.sysDialForTest == nil && d.SystemDialer == nil {
 		d.mu.Unlock()
 		if testenv.InTest() {
 			panic("SystemDial requires a netmon.Monitor; call SetNetMon first")
@@ -455,6 +457,8 @@ func (d *Dialer) SystemDial(ctx context.Context, network, addr string) (net.Conn
 	var err error
 	if d.sysDialForTest != nil {
 		c, err = d.sysDialForTest(ctx, network, addr)
+	} else if d.SystemDialer != nil {
+		c, err = d.SystemDialer(ctx, network, addr)
 	} else {
 		d.netnsDialerOnce.Do(func() {
 			d.netnsDialer = netns.NewDialer(d.logf, d.netMon)
