@@ -883,6 +883,7 @@ func (s *Server) start() (reterr error) {
 
 	s.dialer = &tsdial.Dialer{Logf: tsLogf} // mutated below (before used)
 	s.dialer.SystemDialer = s.SystemDialer
+	s.dialer.LookupHook = s.LookupHook
 	s.dialer.SetBus(sys.Bus.Get())
 	eng, err := wgengine.NewUserspaceEngine(tsLogf, wgengine.Config{
 		Tun:            s.Tun,
