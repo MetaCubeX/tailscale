@@ -1,7 +1,7 @@
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
-//go:build !ios && !js && !android && !ts_omit_useproxy
+//go:build !ios && !js && !android && ts_enable_useproxy
 
 package netns
 
