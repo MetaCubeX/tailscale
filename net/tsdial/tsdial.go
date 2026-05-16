@@ -77,6 +77,10 @@ type Dialer struct {
 
 	SystemDialer netx.DialFunc
 
+	// LookupHook optionally specifies how tsnet resolves non-Tailscale
+	// infrastructure hostnames such as control and DERP.
+	LookupHook dnscache.LookupHookFunc
+
 	peerClientOnce sync.Once
 	peerClient     *http.Client
 
@@ -383,8 +387,8 @@ func (d *Dialer) userDialResolve(ctx context.Context, network, addr string) (net
 		return netip.AddrPort{}, err
 	}
 
-	var r net.Resolver
 	if buildfeatures.HasUseExitNode && buildfeatures.HasPeerAPIClient && exitDNSDoH != "" {
+		var r net.Resolver
 		r.PreferGo = true
 		r.Dial = func(ctx context.Context, network, address string) (net.Conn, error) {
 			return &dohConn{
@@ -394,17 +398,43 @@ func (d *Dialer) userDialResolve(ctx context.Context, network, addr string) (net
 				dnsCache: d.dnsCache,
 			}, nil
 		}
+
+		ips, err := r.LookupIP(ctx, ipNetOfNetwork(network), host)
+		if err != nil {
+			return netip.AddrPort{}, err
+		}
+		if len(ips) == 0 {
+			return netip.AddrPort{}, fmt.Errorf("DNS lookup returned no results for %q", host)
+		}
+		ip, _ := netip.AddrFromSlice(ips[0])
+		return netip.AddrPortFrom(ip.Unmap(), port), nil
 	}
 
-	ips, err := r.LookupIP(ctx, ipNetOfNetwork(network), host)
-	if err != nil {
-		return netip.AddrPort{}, err
+	if ip, err := netip.ParseAddr(host); err == nil {
+		return netip.AddrPortFrom(ip.Unmap(), port), nil
 	}
-	if len(ips) == 0 {
-		return netip.AddrPort{}, fmt.Errorf("DNS lookup returned no results for %q", host)
+	var ips []netip.Addr
+	if d.LookupHook != nil {
+		ips, err = d.LookupHook(ctx, host)
+		if err != nil {
+			return netip.AddrPort{}, err
+		}
 	}
-	ip, _ := netip.AddrFromSlice(ips[0])
-	return netip.AddrPortFrom(ip.Unmap(), port), nil
+	for _, ip := range ips {
+		ip = ip.Unmap()
+		if strings.HasSuffix(network, "4") {
+			if ip.Is4() {
+				return netip.AddrPortFrom(ip, port), nil
+			}
+		} else if strings.HasSuffix(network, "6") {
+			if ip.Is6() {
+				return netip.AddrPortFrom(ip, port), nil
+			}
+		} else {
+			return netip.AddrPortFrom(ip, port), nil
+		}
+	}
+	return netip.AddrPort{}, fmt.Errorf("DNS lookup returned no results for %q", host)
 }
 
 // ipNetOfNetwork returns "ip", "ip4", or "ip6" corresponding

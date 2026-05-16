@@ -345,6 +345,7 @@ func NewUserspaceEngine(logf logger.Logf, conf Config) (_ Engine, reterr error) 
 	}
 	if conf.Dialer == nil {
 		conf.Dialer = &tsdial.Dialer{Logf: logf}
+		conf.Dialer.LookupHook = conf.LookupHook
 		if conf.EventBus != nil {
 			conf.Dialer.SetBus(conf.EventBus)
 		}
