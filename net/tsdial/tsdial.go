@@ -52,7 +52,7 @@ func NewDialer(netMon *netmon.Monitor) *Dialer {
 // and no netMon. It's meant exclusively for the "tailscale debug ts2021"
 // debug command, and perhaps tests.
 func NewFromFuncForDebug(logf logger.Logf, dial netx.DialFunc) *Dialer {
-	return &Dialer{sysDialForTest: dial, Logf: logf}
+	return &Dialer{SystemDialer: dial, Logf: logf}
 }
 
 // Dialer dials out of tailscaled, while taking care of details while
@@ -75,6 +75,8 @@ type Dialer struct {
 	// If nil, it's not used.
 	NetstackDialUDP func(context.Context, netip.AddrPort) (net.Conn, error)
 
+	SystemDialer netx.DialFunc
+
 	peerClientOnce sync.Once
 	peerClient     *http.Client
 
@@ -83,7 +85,6 @@ type Dialer struct {
 
 	netnsDialerOnce sync.Once
 	netnsDialer     netns.Dialer
-	sysDialForTest  netx.DialFunc // or nil
 
 	routes atomic.Pointer[bart.Table[bool]] // or nil if UserDial should not use routes. `true` indicates routes that point into the Tailscale interface
 
@@ -429,7 +430,7 @@ func (d *Dialer) logf(format string, args ...any) {
 // instead of netns.Dialer. This is intended for use with nettest.MemoryNetwork.
 func (d *Dialer) SetSystemDialerForTest(fn netx.DialFunc) {
 	testenv.AssertInTest()
-	d.sysDialForTest = fn
+	d.SystemDialer = fn
 }
 
 // SystemDial connects to the provided network address without going over
@@ -438,7 +439,7 @@ func (d *Dialer) SetSystemDialerForTest(fn netx.DialFunc) {
 // Control and (in the future, as of 2022-04-27) DERPs..
 func (d *Dialer) SystemDial(ctx context.Context, network, addr string) (net.Conn, error) {
 	d.mu.Lock()
-	if d.netMon == nil && d.sysDialForTest == nil {
+	if d.netMon == nil && d.SystemDialer == nil {
 		d.mu.Unlock()
 		if testenv.InTest() {
 			panic("SystemDial requires a netmon.Monitor; call SetNetMon first")
@@ -453,8 +454,8 @@ func (d *Dialer) SystemDial(ctx context.Context, network, addr string) (net.Conn
 
 	var c net.Conn
 	var err error
-	if d.sysDialForTest != nil {
-		c, err = d.sysDialForTest(ctx, network, addr)
+	if d.SystemDialer != nil {
+		c, err = d.SystemDialer(ctx, network, addr)
 	} else {
 		d.netnsDialerOnce.Do(func() {
 			d.netnsDialer = netns.NewDialer(d.logf, d.netMon)
