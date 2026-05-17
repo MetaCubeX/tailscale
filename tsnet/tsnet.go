@@ -306,7 +306,7 @@ type Server struct {
 
 	// SystemPacketListener optionally specifies how tsnet opens UDP sockets
 	// for non-Tailscale infrastructure such as STUN and peer paths.
-	SystemPacketListener nettype.PacketListener
+	SystemPacketListener netx.ListenPacketFunc
 
 	// ExtraRootCAs optionally specifies additional trusted root CAs for
 	// Tailscale control connections.

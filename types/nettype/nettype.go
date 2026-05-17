@@ -42,6 +42,10 @@ type PacketConn interface {
 	SetWriteDeadline(time.Time) error
 }
 
+func MakePacketConn(pc net.PacketConn) PacketConn {
+	return pc.(PacketConn)
+}
+
 func MakePacketListenerWithNetIP(ln PacketListener) PacketListenerWithNetIP {
 	return packetListenerAdapter{ln}
 }

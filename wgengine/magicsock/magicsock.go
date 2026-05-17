@@ -166,7 +166,7 @@ type Conn struct {
 	derpActiveFunc         func()
 	idleFunc               func() time.Duration // nil means unknown
 	testOnlyPacketListener nettype.PacketListener
-	packetListener         nettype.PacketListener
+	packetListener         netx.ListenPacketFunc
 	onDERPRecv             func(int, key.NodePublic, []byte) bool // or nil, see Options.OnDERPRecv
 	netMon                 *netmon.Monitor                        // must be non-nil
 	systemDialer           netx.DialFunc                          // or nil
@@ -474,7 +474,7 @@ type Options struct {
 
 	// PacketListener optionally specifies how UDP sockets are opened for
 	// non-Tailscale infrastructure.
-	PacketListener nettype.PacketListener
+	PacketListener netx.ListenPacketFunc
 
 	// HealthTracker optionally specifies the health tracker to
 	// report errors and warnings to.
@@ -3640,7 +3640,11 @@ func (c *Conn) listenPacket(network string, port uint16) (nettype.PacketConn, er
 		return nettype.MakePacketListenerWithNetIP(c.testOnlyPacketListener).ListenPacket(ctx, network, addr)
 	}
 	if c.packetListener != nil {
-		return nettype.MakePacketListenerWithNetIP(c.packetListener).ListenPacket(ctx, network, addr)
+		pc, err := c.packetListener(ctx, network, addr)
+		if err != nil {
+			return nil, err
+		}
+		return nettype.MakePacketConn(pc), nil
 	}
 	return nettype.MakePacketListenerWithNetIP(netns.Listener(c.logf, c.netMon)).ListenPacket(ctx, network, addr)
 }

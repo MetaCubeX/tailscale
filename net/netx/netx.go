@@ -17,6 +17,11 @@ import (
 // by net/http.Transport.DialContext, etc.
 type DialFunc func(ctx context.Context, network, address string) (net.Conn, error)
 
+// ListenPacketFunc is a function that listens on a network address.
+//
+// It's the type implemented by net.ListenPacket.'
+type ListenPacketFunc func(ctx context.Context, network, address string) (net.PacketConn, error)
+
 // Network describes a network that can listen and dial. The two common
 // implementations are [RealNetwork], using the net package to use the real
 // network, or [memnet.Network], using an in-memory network (typically for testing)

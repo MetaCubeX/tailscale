@@ -30,7 +30,6 @@ import (
 	"github.com/metacubex/tailscale/syncs"
 	"github.com/metacubex/tailscale/types/logger"
 	"github.com/metacubex/tailscale/types/netmap"
-	"github.com/metacubex/tailscale/types/nettype"
 	"github.com/metacubex/tailscale/util/clientmetric"
 	"github.com/metacubex/tailscale/util/eventbus"
 	"github.com/metacubex/tailscale/util/mak"
@@ -82,7 +81,7 @@ type Dialer struct {
 
 	// SystemPacketListener optionally specifies how tsnet opens UDP sockets
 	// for non-Tailscale infrastructure such as STUN and peer paths.
-	SystemPacketListener nettype.PacketListener
+	SystemPacketListener netx.ListenPacketFunc
 
 	// LookupHook optionally specifies how tsnet resolves non-Tailscale
 	// infrastructure hostnames such as control and DERP.
@@ -462,6 +461,32 @@ func (d *Dialer) logf(format string, args ...any) {
 	if d.Logf != nil {
 		d.Logf(format, args...)
 	}
+}
+
+// SystemPacketListen returns a net.PacketConn that listens on the
+// provided network address. It prefers going over the default interface
+// and closes existing connections if the default interface changes. It is
+// used to listen for DERP packets.
+func (d *Dialer) SystemPacketListen(ctx context.Context, network, address string) (net.PacketConn, error) {
+	d.mu.Lock()
+	if d.netMon == nil && d.SystemPacketListener == nil {
+		d.mu.Unlock()
+		if testenv.InTest() {
+			panic("SystemPacketListen requires a netmon.Monitor; call SetNetMon first")
+		}
+		return nil, errors.New("SystemPacketListen requires a netmon.Monitor; call SetNetMon first")
+	}
+	closed := d.closed
+	d.mu.Unlock()
+	if closed {
+		return nil, net.ErrClosed
+	}
+
+	listener := d.SystemPacketListener
+	if listener == nil {
+		listener = netns.Listener(d.logf, d.netMon).ListenPacket
+	}
+	return listener(ctx, network, address)
 }
 
 // SetSystemDialerForTest sets an alternate function to use for SystemDial
