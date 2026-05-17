@@ -2025,47 +2025,47 @@ func (ns *Impl) forwardUDP(client *gonet.UDPConn, clientAddr, dstAddr netip.Addr
 		ns.logf("[v2] netstack: forwarding incoming UDP connection on port %v", port)
 	}
 
-	var backendListenAddr *net.UDPAddr
-	var backendRemoteAddr *net.UDPAddr
+	var backendListenAddr netip.AddrPort
+	var backendRemoteAddr netip.AddrPort
 	isLocal := ns.isLocalIP(dstAddr.Addr())
 	isLoopback := dstAddr.Addr() == ipv4Loopback || dstAddr.Addr() == ipv6Loopback
 	if isLocal {
-		backendRemoteAddr = &net.UDPAddr{IP: net.ParseIP("127.0.0.1"), Port: int(port)}
-		backendListenAddr = &net.UDPAddr{IP: net.ParseIP("127.0.0.1"), Port: int(srcPort)}
+		backendRemoteAddr = netip.AddrPortFrom(netip.MustParseAddr("127.0.0.1"), port)
+		backendListenAddr = netip.AddrPortFrom(netip.MustParseAddr("127.0.0.1"), srcPort)
 	} else if isLoopback {
-		ip := net.IP(ipv4Loopback.AsSlice())
+		ip := ipv4Loopback
 		if dstAddr.Addr() == ipv6Loopback {
-			ip = ipv6Loopback.AsSlice()
+			ip = ipv6Loopback
 		}
-		backendRemoteAddr = &net.UDPAddr{IP: ip, Port: int(port)}
-		backendListenAddr = &net.UDPAddr{IP: ip, Port: int(srcPort)}
+		backendRemoteAddr = netip.AddrPortFrom(ip, port)
+		backendListenAddr = netip.AddrPortFrom(ip, srcPort)
 	} else {
 		if dstIP := dstAddr.Addr(); viaRange.Contains(dstIP) {
 			dstAddr = netip.AddrPortFrom(tsaddr.UnmapVia(dstIP), dstAddr.Port())
 		}
-		backendRemoteAddr = net.UDPAddrFromAddrPort(dstAddr)
+		backendRemoteAddr = dstAddr
 		if dstAddr.Addr().Is4() {
-			backendListenAddr = &net.UDPAddr{IP: net.ParseIP("0.0.0.0"), Port: int(srcPort)}
+			backendListenAddr = netip.AddrPortFrom(netip.IPv4Unspecified(), srcPort)
 		} else {
-			backendListenAddr = &net.UDPAddr{IP: net.ParseIP("::"), Port: int(srcPort)}
+			backendListenAddr = netip.AddrPortFrom(netip.IPv4Unspecified(), srcPort)
 		}
 	}
 
 	backendConn, err := ns.dialer.SystemPacketListen(context.Background(), "udp", backendListenAddr.String())
 	if err != nil {
 		ns.logf("netstack: could not bind local port %v: %v, trying again with random port", backendListenAddr.Port, err)
-		backendListenAddr.Port = 0
+		backendListenAddr = netip.AddrPortFrom(backendListenAddr.Addr(), 0)
 		backendConn, err = ns.dialer.SystemPacketListen(context.Background(), "udp", backendListenAddr.String())
 		if err != nil {
 			ns.logf("netstack: could not create UDP socket, preventing forwarding to %v: %v", dstAddr, err)
 			return
 		}
 	}
-	backendLocalAddr := backendConn.LocalAddr().(*net.UDPAddr)
+	backendLocalIPPort := netaddr.FromStdNetAddr(backendConn.LocalAddr())
+	backendLocalIPPort = netaddr.Unmap(backendLocalIPPort)
 
-	backendLocalIPPort := netip.AddrPortFrom(backendListenAddr.AddrPort().Addr().Unmap().WithZone(backendLocalAddr.Zone), backendLocalAddr.AddrPort().Port())
 	if !backendLocalIPPort.IsValid() {
-		ns.logf("could not get backend local IP:port from %v:%v", backendLocalAddr.IP, backendLocalAddr.Port)
+		ns.logf("could not get backend local IP:port from %v:%v", backendLocalIPPort.Addr(), backendLocalIPPort.Port())
 	}
 	if isLocal {
 		if err := ns.pm.RegisterIPPortIdentity("udp", backendLocalIPPort, clientAddr.Addr()); err != nil {
@@ -2098,7 +2098,7 @@ func (ns *Impl) forwardUDP(client *gonet.UDPConn, clientAddr, dstAddr netip.Addr
 		timer.Reset(idleTimeout)
 	}
 	startPacketCopy(ctx, cancel, client, net.UDPAddrFromAddrPort(clientAddr), backendConn, ns.logf, extend)
-	startPacketCopy(ctx, cancel, backendConn, backendRemoteAddr, client, ns.logf, extend)
+	startPacketCopy(ctx, cancel, backendConn, net.UDPAddrFromAddrPort(backendRemoteAddr), client, ns.logf, extend)
 	if isLocal {
 		// Wait for the copies to be done before decrementing the
 		// subnet address count to potentially remove the route.

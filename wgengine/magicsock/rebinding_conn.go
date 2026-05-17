@@ -152,7 +152,7 @@ func (c *RebindingUDPConn) LocalAddr() *net.UDPAddr {
 }
 
 func (c *RebindingUDPConn) localAddrLocked() *net.UDPAddr {
-	return c.pconn.LocalAddr().(*net.UDPAddr)
+	return net.UDPAddrFromAddrPort(netaddr.FromStdNetAddr(c.pconn.LocalAddr()))
 }
 
 // errNilPConn is returned by RebindingUDPConn.Close when there is no current pconn.

@@ -47,3 +47,23 @@ func FromStdIPNet(std *net.IPNet) (prefix netip.Prefix, ok bool) {
 
 	return netip.PrefixFrom(ip, ones), true
 }
+
+func FromStdNetAddr(addr net.Addr) netip.AddrPort {
+	if addr == nil {
+		return netip.AddrPort{}
+	}
+	if rawAddr, ok := addr.(interface{ RawAddr() net.Addr }); ok { // mihomo special interface
+		if rawAddr := rawAddr.RawAddr(); rawAddr != nil {
+			if ap := FromStdNetAddr(rawAddr); ap.IsValid() {
+				return ap
+			}
+		}
+	}
+	if addr, ok := addr.(interface{ AddrPort() netip.AddrPort }); ok { // *net.UDPAddr, *net.TCPAddr
+		if ap := addr.AddrPort(); ap.IsValid() {
+			return ap
+		}
+	}
+	ap, _ := netip.ParseAddrPort(addr.String())
+	return ap
+}
