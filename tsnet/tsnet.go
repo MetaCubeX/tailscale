@@ -394,6 +394,18 @@ func (s *Server) DialPlan(ctx context.Context, network, address string) (ipp net
 	return s.dialer.UserDialPlan(ctx, network, address)
 }
 
+// Netstack returns the *netstack.Impl for the server.
+// It will start the server if it has not been started yet.
+func (s *Server) Netstack(ctx context.Context) (*netstack.Impl, error) {
+	if err := s.Start(); err != nil {
+		return nil, err
+	}
+	if err := s.awaitRunning(ctx); err != nil {
+		return nil, err
+	}
+	return s.netstack, nil
+}
+
 // awaitRunning waits until the backend is in state Running.
 // If the backend is in state Starting, it blocks until it reaches
 // a terminal state (such as Stopped, NeedsMachineAuth)
