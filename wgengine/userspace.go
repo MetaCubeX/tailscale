@@ -47,7 +47,6 @@ import (
 	"github.com/metacubex/tailscale/types/key"
 	"github.com/metacubex/tailscale/types/logger"
 	"github.com/metacubex/tailscale/types/netmap"
-	"github.com/metacubex/tailscale/types/nettype"
 	"github.com/metacubex/tailscale/types/views"
 	"github.com/metacubex/tailscale/util/backoff"
 	"github.com/metacubex/tailscale/util/checkchange"
@@ -219,9 +218,6 @@ type Config struct {
 	// Dialer is the dialer to use for outbound connections.
 	// If nil, a new Dialer is created.
 	Dialer *tsdial.Dialer
-
-	// PacketListener is the packet listener to use for UDP sockets.
-	PacketListener nettype.PacketListener
 
 	// ExtraRootCAs, if non-nil, specifies additional trusted root CAs for TLS
 	// connections (e.g. DERP). Passed through to magicsock.
@@ -446,7 +442,7 @@ func NewUserspaceEngine(logf logger.Logf, conf Config) (_ Engine, reterr error) 
 		IdleFunc:       e.tundev.IdleDuration,
 		NetMon:         e.netMon,
 		SystemDialer:   conf.Dialer.SystemDial,
-		PacketListener: conf.PacketListener,
+		PacketListener: conf.Dialer.SystemPacketListener,
 		HealthTracker:  e.health,
 		ExtraRootCAs:   conf.ExtraRootCAs,
 		LookupHook:     conf.LookupHook,

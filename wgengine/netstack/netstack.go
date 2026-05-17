@@ -2051,11 +2051,15 @@ func (ns *Impl) forwardUDP(client *gonet.UDPConn, clientAddr, dstAddr netip.Addr
 		}
 	}
 
-	backendConn, err := net.ListenUDP("udp", backendListenAddr)
+	listener := ns.dialer.SystemPacketListener
+	if listener == nil {
+		listener = &net.ListenConfig{}
+	}
+	backendConn, err := listener.ListenPacket(context.Background(), "udp", backendListenAddr.String())
 	if err != nil {
 		ns.logf("netstack: could not bind local port %v: %v, trying again with random port", backendListenAddr.Port, err)
 		backendListenAddr.Port = 0
-		backendConn, err = net.ListenUDP("udp", backendListenAddr)
+		backendConn, err = listener.ListenPacket(context.Background(), "udp", backendListenAddr.String())
 		if err != nil {
 			ns.logf("netstack: could not create UDP socket, preventing forwarding to %v: %v", dstAddr, err)
 			return

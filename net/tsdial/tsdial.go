@@ -30,6 +30,7 @@ import (
 	"github.com/metacubex/tailscale/syncs"
 	"github.com/metacubex/tailscale/types/logger"
 	"github.com/metacubex/tailscale/types/netmap"
+	"github.com/metacubex/tailscale/types/nettype"
 	"github.com/metacubex/tailscale/util/clientmetric"
 	"github.com/metacubex/tailscale/util/eventbus"
 	"github.com/metacubex/tailscale/util/mak"
@@ -75,7 +76,13 @@ type Dialer struct {
 	// If nil, it's not used.
 	NetstackDialUDP func(context.Context, netip.AddrPort) (net.Conn, error)
 
+	// SystemDialer optionally specifies how tsnet dials non-Tailscale
+	// infrastructure such as control, DERP, STUN, and logtail.
 	SystemDialer netx.DialFunc
+
+	// SystemPacketListener optionally specifies how tsnet opens UDP sockets
+	// for non-Tailscale infrastructure such as STUN and peer paths.
+	SystemPacketListener nettype.PacketListener
 
 	// LookupHook optionally specifies how tsnet resolves non-Tailscale
 	// infrastructure hostnames such as control and DERP.

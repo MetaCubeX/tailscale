@@ -883,21 +883,21 @@ func (s *Server) start() (reterr error) {
 
 	s.dialer = &tsdial.Dialer{Logf: tsLogf} // mutated below (before used)
 	s.dialer.SystemDialer = s.SystemDialer
+	s.dialer.SystemPacketListener = s.SystemPacketListener
 	s.dialer.LookupHook = s.LookupHook
 	s.dialer.SetBus(sys.Bus.Get())
 	eng, err := wgengine.NewUserspaceEngine(tsLogf, wgengine.Config{
-		Tun:            s.Tun,
-		EventBus:       sys.Bus.Get(),
-		ListenPort:     s.Port,
-		NetMon:         s.netMon,
-		Dialer:         s.dialer,
-		SetSubsystem:   sys.Set,
-		ControlKnobs:   sys.ControlKnobs(),
-		HealthTracker:  sys.HealthTracker.Get(),
-		ExtraRootCAs:   sys.ExtraRootCAs,
-		LookupHook:     s.LookupHook,
-		Metrics:        sys.UserMetricsRegistry(),
-		PacketListener: s.SystemPacketListener,
+		Tun:           s.Tun,
+		EventBus:      sys.Bus.Get(),
+		ListenPort:    s.Port,
+		NetMon:        s.netMon,
+		Dialer:        s.dialer,
+		SetSubsystem:  sys.Set,
+		ControlKnobs:  sys.ControlKnobs(),
+		HealthTracker: sys.HealthTracker.Get(),
+		ExtraRootCAs:  sys.ExtraRootCAs,
+		LookupHook:    s.LookupHook,
+		Metrics:       sys.UserMetricsRegistry(),
 	})
 	if err != nil {
 		return err
