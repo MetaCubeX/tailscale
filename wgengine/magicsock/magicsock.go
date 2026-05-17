@@ -40,6 +40,7 @@ import (
 	"github.com/metacubex/tailscale/net/neterror"
 	"github.com/metacubex/tailscale/net/netmon"
 	"github.com/metacubex/tailscale/net/netns"
+	"github.com/metacubex/tailscale/net/netx"
 	"github.com/metacubex/tailscale/net/packet"
 	"github.com/metacubex/tailscale/net/ping"
 	"github.com/metacubex/tailscale/net/portmapper/portmappertype"
@@ -164,8 +165,10 @@ type Conn struct {
 	derpActiveFunc         func()
 	idleFunc               func() time.Duration // nil means unknown
 	testOnlyPacketListener nettype.PacketListener
+	packetListener         nettype.PacketListener
 	onDERPRecv             func(int, key.NodePublic, []byte) bool // or nil, see Options.OnDERPRecv
 	netMon                 *netmon.Monitor                        // must be non-nil
+	systemDialer           netx.DialFunc                          // or nil
 	health                 *health.Tracker                        // or nil
 	extraRootCAs           *x509.CertPool                         // additional trusted root CAs; or nil
 	controlKnobs           *controlknobs.Knobs                    // or nil
@@ -464,6 +467,14 @@ type Options struct {
 	// It must be non-nil.
 	NetMon *netmon.Monitor
 
+	// SystemDialer optionally specifies how TCP probes and DERP connections
+	// dial non-Tailscale infrastructure.
+	SystemDialer netx.DialFunc
+
+	// PacketListener optionally specifies how UDP sockets are opened for
+	// non-Tailscale infrastructure.
+	PacketListener nettype.PacketListener
+
 	// HealthTracker optionally specifies the health tracker to
 	// report errors and warnings to.
 	HealthTracker *health.Tracker
@@ -638,6 +649,7 @@ func NewConn(opts Options) (*Conn, error) {
 	c.derpActiveFunc = opts.derpActiveFunc()
 	c.idleFunc = opts.IdleFunc
 	c.testOnlyPacketListener = opts.TestOnlyPacketListener
+	c.packetListener = opts.PacketListener
 	c.onDERPRecv = opts.OnDERPRecv
 
 	// Set up publishers and subscribers. Subscribe calls must return before
@@ -676,6 +688,7 @@ func NewConn(opts Options) (*Conn, error) {
 	}
 
 	c.netMon = opts.NetMon
+	c.systemDialer = opts.SystemDialer
 	c.health = opts.HealthTracker
 	c.extraRootCAs = opts.ExtraRootCAs
 	c.getPeerByKey = opts.PeerByKeyFunc
@@ -687,6 +700,7 @@ func NewConn(opts Options) (*Conn, error) {
 	c.netChecker = &netcheck.Client{
 		Logf:                logger.WithPrefix(c.logf, "netcheck: "),
 		NetMon:              c.netMon,
+		Dialer:              c.systemDialer,
 		SendPacket:          c.sendUDPNetcheck,
 		SkipExternalNetwork: inTest(),
 		PortMapper:          c.portMapper,
@@ -3618,6 +3632,9 @@ func (c *Conn) listenPacket(network string, port uint16) (nettype.PacketConn, er
 	addr := net.JoinHostPort("", fmt.Sprint(port))
 	if c.testOnlyPacketListener != nil {
 		return nettype.MakePacketListenerWithNetIP(c.testOnlyPacketListener).ListenPacket(ctx, network, addr)
+	}
+	if c.packetListener != nil {
+		return nettype.MakePacketListenerWithNetIP(c.packetListener).ListenPacket(ctx, network, addr)
 	}
 	return nettype.MakePacketListenerWithNetIP(netns.Listener(c.logf, c.netMon)).ListenPacket(ctx, network, addr)
 }
