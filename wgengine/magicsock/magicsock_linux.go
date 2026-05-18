@@ -174,7 +174,7 @@ func (c *Conn) listenRawDisco(family string) (io.Closer, error) {
 		// logging; when we switch this to an opt-out (vs. an opt-in),
 		// drop the ErrUnsupported so that the callee logs that it was
 		// disabled.
-		return nil, fmt.Errorf("raw disco not enabled: %w", errUnsupported)
+		return nil, fmt.Errorf("raw disco not enabled: %w", ErrUnsupported)
 	}
 
 	// https://github.com/tailscale/tailscale/issues/5607

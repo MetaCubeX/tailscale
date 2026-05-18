@@ -10,7 +10,7 @@ require (
 	github.com/huin/goupnp v1.3.0
 	github.com/klauspost/compress v1.17.9
 	github.com/metacubex/edwards25519 v1.2.0
-	github.com/metacubex/jsonv2 v0.0.0-20260513175203-1c6abea7534c
+	github.com/metacubex/jsonv2 v0.0.0-20260518173308-f4597c22f1df
 	github.com/mitchellh/go-ps v1.0.0
 	github.com/pires/go-proxyproto v0.8.0
 	github.com/tailscale/certstore v0.1.1-0.20260409135935-3638fb84b77d

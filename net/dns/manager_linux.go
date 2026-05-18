@@ -43,8 +43,6 @@ var publishOnce sync.Once
 // Such operations should be wrapped in a timeout context.
 const reconfigTimeout = time.Second
 
-var errUnsupported = errors.New("unsupported")
-
 // Set unless ts_omit_networkmanager
 var (
 	optNewNMManager      feature.Hook[func(ifName string) (OSConfigurator, error)]
@@ -78,17 +76,17 @@ func NewOSConfigurator(logf logger.Logf, health *health.Tracker, bus *eventbus.B
 	if f, ok := optDBusPing.GetOk(); ok {
 		env.dbusPing = f
 	} else {
-		env.dbusPing = func(_, _ string) error { return errUnsupported }
+		env.dbusPing = func(_, _ string) error { return ErrUnsupported }
 	}
 	if f, ok := optDBusReadString.GetOk(); ok {
 		env.dbusReadString = f
 	} else {
-		env.dbusReadString = func(_, _, _, _ string) (string, error) { return "", errUnsupported }
+		env.dbusReadString = func(_, _, _, _ string) (string, error) { return "", ErrUnsupported }
 	}
 	if f, ok := optNMIsUsingResolved.GetOk(); ok {
 		env.nmIsUsingResolved = f
 	} else {
-		env.nmIsUsingResolved = func() error { return errUnsupported }
+		env.nmIsUsingResolved = func() error { return ErrUnsupported }
 	}
 	env.nmVersionBetween, _ = optNMVersionBetween.GetOk() // GetOk to not panic if nil; unused if optNMIsUsingResolved returns an error
 	mode, err := dnsMode(logf, health, env)
