@@ -352,6 +352,7 @@ type Server struct {
 	listeners           map[listenKey]*listener
 	nextEphemeralPort   uint16 // next port to try in ephemeral range; 0 means use ephemeralPortFirst
 	fallbackTCPHandlers set.HandleSet[FallbackTCPHandler]
+	fallbackUDPHandlers set.HandleSet[FallbackUDPHandler]
 	dialer              *tsdial.Dialer
 	advertisedServices  map[tailcfg.ServiceName]int
 	closeOnce           sync.Once
@@ -369,6 +370,19 @@ type Server struct {
 // is non-nil: if nil, the connection is rejected. If non-nil, handler takes
 // over the TCP conn.
 type FallbackTCPHandler func(src, dst netip.AddrPort) (handler func(net.Conn), intercept bool)
+
+// FallbackUDPHandler describes the callback which
+// conditionally handles an incoming UDP flow for the
+// provided (src/port, dst/port) 4-tuple. These are registered
+// as handlers of last resort, and are called only if no
+// listener could handle the incoming flow.
+//
+// If the callback returns intercept=false, the flow is rejected.
+//
+// When intercept=true, the behavior depends on whether the returned handler
+// is non-nil: if nil, the connection is rejected. If non-nil, handler takes
+// over the TCP conn.
+type FallbackUDPHandler func(src, dst netip.AddrPort) (handler func(nettype.ConnPacketConn), intercept bool)
 
 // Dial connects to the address on the tailnet.
 // It will start the server if it has not been started yet.
@@ -1316,6 +1330,14 @@ func (s *Server) getTCPHandlerForFlow(src, dst netip.AddrPort) (handler func(net
 func (s *Server) getUDPHandlerForFlow(src, dst netip.AddrPort) (handler func(nettype.ConnPacketConn), intercept bool) {
 	ln, ok := s.listenerForDstAddr("udp", dst, false)
 	if !ok {
+		s.mu.Lock()
+		defer s.mu.Unlock()
+		for _, handler := range s.fallbackUDPHandlers {
+			connHandler, intercept := handler(src, dst)
+			if intercept {
+				return connHandler, intercept
+			}
+		}
 		return nil, true // don't handle, don't forward to localhost
 	}
 	return func(c nettype.ConnPacketConn) { ln.handle(c) }, true
@@ -1439,6 +1461,24 @@ func (s *Server) RegisterFallbackTCPHandler(cb FallbackTCPHandler) func() {
 		s.mu.Lock()
 		defer s.mu.Unlock()
 		delete(s.fallbackTCPHandlers, hnd)
+	}
+}
+
+// RegisterFallbackUDPHandler registers a callback which will be called
+// to handle a UDP flow to this tsnet node, for which no listeners will handle.
+//
+// If multiple fallback handlers are registered, they will be called in an
+// undefined order. See FallbackUDPHandler for details on handling a flow.
+//
+// The returned function can be used to deregister this callback.
+func (s *Server) RegisterFallbackUDPHandler(cb FallbackUDPHandler) func() {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	hnd := s.fallbackUDPHandlers.Add(cb)
+	return func() {
+		s.mu.Lock()
+		defer s.mu.Unlock()
+		delete(s.fallbackUDPHandlers, hnd)
 	}
 }
 
