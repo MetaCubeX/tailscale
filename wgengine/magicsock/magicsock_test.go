@@ -2703,7 +2703,7 @@ func mockPinger(t *testing.T, clock *tstest.Clock, dest net.Addr) (*ping.Pinger,
 		destPort:   dIPP.Port(),
 	}
 
-	p := ping.New(ctx, t.Logf, &mockListenPacketer{conn4: conn4, conn6: conn6})
+	p := ping.New(ctx, t.Logf, &mockListenPacketer{conn4: conn4, conn6: conn6}.ListenPacket)
 
 	done := func() {
 		if err := p.Close(); err != nil {

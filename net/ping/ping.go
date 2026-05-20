@@ -20,6 +20,7 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/metacubex/tailscale/net/netx"
 	"github.com/metacubex/tailscale/syncs"
 	"github.com/metacubex/tailscale/types/logger"
 	"github.com/metacubex/tailscale/util/mak"
@@ -75,7 +76,7 @@ type Pinger struct {
 	Verbose bool        // verbose logging
 	Logf    logger.Logf // optional logging function; if nil, logs to the standard logger
 
-	lp ListenPacketer
+	lp netx.ListenPacketFunc
 
 	// closed guards against send incrementing the waitgroup concurrently with close.
 	closed atomic.Bool
@@ -95,7 +96,7 @@ type Pinger struct {
 
 // New creates a new Pinger. The Context provided will be used to create
 // network listeners, and to set an absolute deadline (if any) on the net.Conn
-func New(ctx context.Context, logf logger.Logf, lp ListenPacketer) *Pinger {
+func New(ctx context.Context, logf logger.Logf, lp netx.ListenPacketFunc) *Pinger {
 	var id [2]byte
 	if _, err := io.ReadFull(rand.Reader, id[:]); err != nil {
 		panic("net/ping: New:" + err.Error())
@@ -124,7 +125,7 @@ func (p *Pinger) mkconn(ctx context.Context, typ, addr string) (net.PacketConn, 
 		// Darwin/iOS, strips the IPv4 header on read via IP_STRIPHDR.
 		c, err = icmp.ListenPacket(typ, addr)
 	} else {
-		c, err = p.lp.ListenPacket(ctx, typ, addr)
+		c, err = p.lp(ctx, typ, addr)
 	}
 	if err != nil {
 		return nil, err
