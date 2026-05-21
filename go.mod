@@ -42,7 +42,7 @@ require (
 	github.com/google/btree v1.1.3 // indirect
 	github.com/metacubex/bart v0.26.0
 	github.com/metacubex/gvisor v0.0.0-20251227095601-261ec1326fe8
-	github.com/metacubex/tailscale-wireguard-go v0.0.0-20260513233728-8bc7ee255d04
+	github.com/metacubex/tailscale-wireguard-go v0.0.0-20260623093519-06ea214022e4
 	github.com/tailscale/go-winio v0.0.0-20231025203758-c4f33415bf55
 	github.com/x448/float16 v0.8.4 // indirect
 	golang.org/x/text v0.22.0 // indirect
