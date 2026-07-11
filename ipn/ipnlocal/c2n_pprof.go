@@ -1,7 +1,7 @@
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
-//go:build !js && !wasm && !ts_omit_debug
+//go:build !js && !wasm && ts_enable_debug
 
 package ipnlocal
 
