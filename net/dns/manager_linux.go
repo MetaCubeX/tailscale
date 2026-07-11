@@ -50,7 +50,7 @@ var (
 	optNMVersionBetween  feature.Hook[func(v1, v2 string) (bool, error)]
 )
 
-// Set unless ts_omit_resolved
+// Set when ts_enable_resolved.
 var (
 	optNewResolvedManager feature.Hook[func(logf logger.Logf, health *health.Tracker, interfaceName string) (OSConfigurator, error)]
 )
