@@ -1,7 +1,7 @@
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
-//go:build !android && !ts_omit_webclient
+//go:build !android && ts_enable_webclient
 
 package ipnlocal
 
