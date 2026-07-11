@@ -1,7 +1,7 @@
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
-//go:build !ts_omit_logtail && windows
+//go:build ts_enable_logtail && windows
 
 package filch
 

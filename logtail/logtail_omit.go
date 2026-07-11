@@ -1,7 +1,7 @@
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
-//go:build ts_omit_logtail
+//go:build !ts_enable_logtail
 
 package logtail
 
@@ -12,7 +12,7 @@ import (
 	"github.com/metacubex/tailscale/types/logid"
 )
 
-// Noop implementations of everything when ts_omit_logtail is set.
+// Noop implementations of everything when logtail is not enabled.
 
 type Logger struct{}
 
