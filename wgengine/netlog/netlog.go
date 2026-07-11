@@ -1,7 +1,7 @@
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
-//go:build !ts_omit_netlog && !ts_omit_logtail
+//go:build !ts_omit_netlog && ts_enable_logtail
 
 // Package netlog provides a logger that monitors a TUN device and
 // periodically records any traffic into a log stream.

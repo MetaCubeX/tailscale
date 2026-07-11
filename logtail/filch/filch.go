@@ -1,7 +1,7 @@
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
-//go:build !ts_omit_logtail
+//go:build ts_enable_logtail
 
 // Package filch is a file system queue that pilfers your stderr.
 // (A FILe CHannel that filches.)
