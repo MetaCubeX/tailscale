@@ -43,7 +43,7 @@ var publishOnce sync.Once
 // Such operations should be wrapped in a timeout context.
 const reconfigTimeout = time.Second
 
-// Set unless ts_omit_networkmanager
+// Set when ts_enable_networkmanager.
 var (
 	optNewNMManager      feature.Hook[func(ifName string) (OSConfigurator, error)]
 	optNMIsUsingResolved feature.Hook[func() error]
