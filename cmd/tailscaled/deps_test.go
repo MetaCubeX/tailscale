@@ -91,7 +91,7 @@ func TestOmitReflectThings(t *testing.T) {
 	deptest.DepChecker{
 		GOOS:   "linux",
 		GOARCH: "amd64",
-		Tags:   "ts_include_cli,ts_omit_systray,ts_omit_debugeventbus,ts_omit_webclient",
+		Tags:   "ts_include_cli,ts_omit_systray,ts_omit_webclient",
 		BadDeps: map[string]string{
 			"text/template": "unexpected text/template usage",
 			"html/template": "unexpected text/template usage",
