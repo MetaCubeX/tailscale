@@ -1,7 +1,7 @@
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
-//go:build linux && !android && !ts_omit_dbus
+//go:build linux && !android && ts_enable_dbus
 
 package dns
 
