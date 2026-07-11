@@ -1,9 +1,9 @@
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
-//go:build ts_omit_syspolicy
+//go:build !ts_enable_syspolicy
 
 package policyclient
 
-// PolicySnapshot is a stub when syspolicy is omitted from the build.
+// policySnapshot is a stub when syspolicy is disabled.
 type policySnapshot struct{}

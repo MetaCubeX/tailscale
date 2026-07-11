@@ -74,7 +74,8 @@ type Client interface {
 	GetPolicySnapshot(uid string) (*PolicySnapshot, error)
 }
 
-// PolicySnapshot is an alias for [setting.Snapshot] unless syspolicy is omitted from the build.
+// PolicySnapshot is the effective policy snapshot when syspolicy is enabled,
+// or an empty stub when it is disabled.
 type PolicySnapshot = policySnapshot
 
 // Get returns a non-nil [Client] implementation as a function of the

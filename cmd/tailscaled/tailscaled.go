@@ -185,8 +185,8 @@ var (
 
 // loadSyspolicy, if set, loads a JSON-file-backed syspolicy source after
 // command-line flags are parsed, using the path from --syspolicy-file. It
-// is set when built without ts_omit_syspolicy (see syspolicy.go), and
-// unset otherwise.
+// is set when built with ts_enable_syspolicy (see syspolicy.go), and unset
+// otherwise.
 var loadSyspolicy feature.Hook[func()]
 
 // proxyStartFunc is the type of the function returned by

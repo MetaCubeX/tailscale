@@ -60,12 +60,12 @@ func TestOmitSyslog(t *testing.T) {
 	}.Check(t)
 }
 
-func TestOmitSyspolicy(t *testing.T) {
-	const msg = "unexpected syspolicy usage with ts_omit_syspolicy"
+func TestSyspolicyDisabledByDefault(t *testing.T) {
+	const msg = "unexpected syspolicy usage without ts_enable_syspolicy"
 	deptest.DepChecker{
 		GOOS:   "linux",
 		GOARCH: "amd64",
-		Tags:   "ts_omit_syspolicy,ts_include_cli",
+		Tags:   "ts_include_cli",
 		BadDeps: map[string]string{
 			"github.com/metacubex/tailscale/util/syspolicy":         msg,
 			"github.com/metacubex/tailscale/util/syspolicy/setting": msg,
