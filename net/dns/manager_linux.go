@@ -55,7 +55,7 @@ var (
 	optNewResolvedManager feature.Hook[func(logf logger.Logf, health *health.Tracker, interfaceName string) (OSConfigurator, error)]
 )
 
-// Set unless ts_omit_dbus
+// Set when ts_enable_dbus.
 var (
 	optDBusPing       feature.Hook[func(name, objectPath string) error]
 	optDBusReadString feature.Hook[func(name, objectPath, iface, member string) (string, error)]
