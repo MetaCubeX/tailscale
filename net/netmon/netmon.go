@@ -32,6 +32,13 @@ import (
 // us check the wall time sooner than this.
 const pollWallTimeInterval = 15 * time.Second
 
+// postWakePollDuration is how long to keep polling interfaces after a time
+// jump. The first wake snapshot can run before Wi-Fi or DHCP has recovered,
+// and the OS does not always deliver another address or route notification.
+const postWakePollDuration = 10 * time.Minute
+
+const postWakePollCount = int(postWakePollDuration / pollWallTimeInterval)
+
 // majorTimeJumpThreshold is the minimum sleep duration that warrants
 // treating a time jump as a major event requiring socket rebinding,
 // even if the interface state appears unchanged. After a long sleep,
@@ -77,18 +84,19 @@ type Monitor struct {
 	stop   chan struct{} // closed on Stop
 	static bool          // static Monitor that doesn't actually monitor
 
-	mu           syncs.Mutex // guards all following fields
-	cbs          set.HandleSet[ChangeFunc]
-	ifState      *State
-	gwValid      bool       // whether gw and gwSelfIP are valid
-	gw           netip.Addr // our gateway's IP
-	gwSelfIP     netip.Addr // our own IP address (that corresponds to gw)
-	started      bool
-	closed       bool
-	goroutines   sync.WaitGroup
-	wallTimer    *time.Timer // nil until Started; re-armed AfterFunc per tick
-	lastWall     time.Time
-	jumpDuration time.Duration // wall-clock time elapsed during detected time jump; 0 if no time jump observed since reset
+	mu            syncs.Mutex // guards all following fields
+	cbs           set.HandleSet[ChangeFunc]
+	ifState       *State
+	gwValid       bool       // whether gw and gwSelfIP are valid
+	gw            netip.Addr // our gateway's IP
+	gwSelfIP      netip.Addr // our own IP address (that corresponds to gw)
+	started       bool
+	closed        bool
+	goroutines    sync.WaitGroup
+	wallTimer     *time.Timer // nil until Started; re-armed AfterFunc per tick
+	lastWall      time.Time
+	jumpDuration  time.Duration // wall-clock time elapsed during detected time jump; 0 if no time jump observed since reset
+	postWakePolls int           // additional interface polls after a detected wake
 }
 
 // ChangeFunc is a callback function registered with Monitor that's called when the
@@ -708,7 +716,11 @@ func (m *Monitor) pollWallTime() {
 		return
 	}
 	if m.checkWallTimeAdvanceLocked() {
+		m.postWakePolls = postWakePollCount
 		m.InjectEvent()
+	} else if m.postWakePolls > 0 {
+		m.postWakePolls--
+		m.Poll()
 	}
 	m.wallTimer.Reset(pollWallTimeInterval)
 }
