@@ -383,6 +383,18 @@ func (s *Server) Dial(ctx context.Context, network, address string) (net.Conn, e
 	return s.dialer.UserDial(ctx, network, address)
 }
 
+// Netstack returns the server's userspace network stack.
+// It starts the server if necessary and waits for it to be running.
+func (s *Server) Netstack(ctx context.Context) (*netstack.Impl, error) {
+	if err := s.Start(); err != nil {
+		return nil, err
+	}
+	if err := s.awaitRunning(ctx); err != nil {
+		return nil, err
+	}
+	return s.netstack, nil
+}
+
 // awaitRunning waits until the backend is in state Running.
 // If the backend is in state Starting, it blocks until it reaches
 // a terminal state (such as Stopped, NeedsMachineAuth)
