@@ -28,8 +28,8 @@ import (
 	"time"
 
 	"github.com/creachadair/msync/trigger"
-	jsonv2 "github.com/go-json-experiment/json"
-	"github.com/go-json-experiment/json/jsontext"
+	jsonv2 "github.com/metacubex/jsonv2"
+	"github.com/metacubex/jsonv2/jsontext"
 	"github.com/metacubex/tailscale/envknob"
 	"github.com/metacubex/tailscale/metrics"
 	"github.com/metacubex/tailscale/net/netmon"

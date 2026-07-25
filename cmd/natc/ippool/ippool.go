@@ -12,7 +12,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/gaissmai/bart"
+	"github.com/metacubex/bart"
 	"go4.org/netipx"
 	"github.com/metacubex/tailscale/syncs"
 	"github.com/metacubex/tailscale/tailcfg"

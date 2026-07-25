@@ -19,7 +19,7 @@ import (
 	"testing"
 	"time"
 
-	jsonv2 "github.com/go-json-experiment/json"
+	jsonv2 "github.com/metacubex/jsonv2"
 	"github.com/metacubex/tailscale/tstest"
 	"github.com/metacubex/tailscale/util/must"
 )

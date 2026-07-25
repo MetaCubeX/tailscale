@@ -20,7 +20,7 @@ import (
 
 	"github.com/google/go-cmp/cmp"
 	"github.com/tailscale/netlink"
-	"github.com/tailscale/wireguard-go/tun"
+	"github.com/metacubex/tailscale-wireguard-go/tun"
 	"go4.org/netipx"
 	"github.com/metacubex/tailscale/health"
 	"github.com/metacubex/tailscale/net/netmon"

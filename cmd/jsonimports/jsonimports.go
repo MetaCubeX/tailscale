@@ -11,9 +11,9 @@
 //   - "encoding/json"
 //   - "encoding/json/v2"
 //   - "encoding/json/jsontext"
-//   - "github.com/go-json-experiment/json/v1"
-//   - "github.com/go-json-experiment/json"
-//   - "github.com/go-json-experiment/json/jsontext"
+//   - "github.com/metacubex/jsonv2/v1"
+//   - "github.com/metacubex/jsonv2"
+//   - "github.com/metacubex/jsonv2/jsontext"
 //
 // In order to enforce consistent usage, we apply the following rules:
 //
@@ -21,17 +21,17 @@
 //     and "encoding/json/jsontext" into the standard library
 //     (i.e., they are no longer considered experimental),
 //     we forbid any code from directly importing those packages.
-//     Go code should instead import "github.com/go-json-experiment/json"
-//     and "github.com/go-json-experiment/json/jsontext".
+//     Go code should instead import "github.com/metacubex/jsonv2"
+//     and "github.com/metacubex/jsonv2/jsontext".
 //     The latter packages contain aliases to the standard library
 //     if built on Go 1.25 with the goexperiment.jsonv2 tag specified.
 //
-//   - Imports of "encoding/json" or "github.com/go-json-experiment/json/v1"
+//   - Imports of "encoding/json" or "github.com/metacubex/jsonv2/v1"
 //     must be explicitly imported under the package name "jsonv1".
 //     If both packages need to be imported, then the former should
 //     be imported under the package name "jsonv1std".
 //
-//   - Imports of "github.com/go-json-experiment/json"
+//   - Imports of "github.com/metacubex/jsonv2"
 //     must be explicitly imported under the package name "jsonv2".
 //
 // The latter two rules exist to provide clarity when reading code.

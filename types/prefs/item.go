@@ -6,8 +6,8 @@ package prefs
 import (
 	"fmt"
 
-	jsonv2 "github.com/go-json-experiment/json"
-	"github.com/go-json-experiment/json/jsontext"
+	jsonv2 "github.com/metacubex/jsonv2"
+	"github.com/metacubex/jsonv2/jsontext"
 	"github.com/metacubex/tailscale/types/opt"
 	"github.com/metacubex/tailscale/types/views"
 	"github.com/metacubex/tailscale/util/must"

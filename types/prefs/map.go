@@ -7,8 +7,8 @@ import (
 	"maps"
 	"net/netip"
 
-	jsonv2 "github.com/go-json-experiment/json"
-	"github.com/go-json-experiment/json/jsontext"
+	jsonv2 "github.com/metacubex/jsonv2"
+	"github.com/metacubex/jsonv2/jsontext"
 	"golang.org/x/exp/constraints"
 	"github.com/metacubex/tailscale/types/opt"
 	"github.com/metacubex/tailscale/types/views"

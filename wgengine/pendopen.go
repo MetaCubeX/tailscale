@@ -13,7 +13,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/gaissmai/bart"
+	"github.com/metacubex/bart"
 	"github.com/metacubex/tailscale/net/flowtrack"
 	"github.com/metacubex/tailscale/net/packet"
 	"github.com/metacubex/tailscale/net/tstun"

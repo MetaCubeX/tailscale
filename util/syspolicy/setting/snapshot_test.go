@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	jsonv2 "github.com/go-json-experiment/json"
+	jsonv2 "github.com/metacubex/jsonv2"
 	"github.com/metacubex/tailscale/util/syspolicy/internal"
 	"github.com/metacubex/tailscale/util/syspolicy/pkey"
 	"github.com/metacubex/tailscale/util/syspolicy/ptype"

@@ -8,7 +8,7 @@ package ipset
 import (
 	"net/netip"
 
-	"github.com/gaissmai/bart"
+	"github.com/metacubex/bart"
 	"github.com/metacubex/tailscale/types/views"
 	"github.com/metacubex/tailscale/util/set"
 )

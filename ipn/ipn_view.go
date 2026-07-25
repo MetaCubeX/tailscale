@@ -11,8 +11,8 @@ import (
 	"net/netip"
 	"time"
 
-	jsonv2 "github.com/go-json-experiment/json"
-	"github.com/go-json-experiment/json/jsontext"
+	jsonv2 "github.com/metacubex/jsonv2"
+	"github.com/metacubex/jsonv2/jsontext"
 	"github.com/metacubex/tailscale/drive"
 	"github.com/metacubex/tailscale/tailcfg"
 	"github.com/metacubex/tailscale/types/opt"

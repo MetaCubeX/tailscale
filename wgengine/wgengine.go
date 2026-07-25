@@ -9,7 +9,7 @@ import (
 	"net/netip"
 	"time"
 
-	"github.com/gaissmai/bart"
+	"github.com/metacubex/bart"
 	"github.com/metacubex/tailscale/ipn/ipnstate"
 	"github.com/metacubex/tailscale/net/dns"
 	"github.com/metacubex/tailscale/net/packet"

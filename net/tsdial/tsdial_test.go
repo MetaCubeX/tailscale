@@ -12,7 +12,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/gaissmai/bart"
+	"github.com/metacubex/bart"
 )
 
 func TestUserDialPlan(t *testing.T) {

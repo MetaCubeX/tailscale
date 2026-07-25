@@ -9,7 +9,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/tailscale/wireguard-go/device"
+	"github.com/metacubex/tailscale-wireguard-go/device"
 	"github.com/metacubex/tailscale/envknob"
 	"github.com/metacubex/tailscale/types/logger"
 	"github.com/metacubex/tailscale/util/mak"

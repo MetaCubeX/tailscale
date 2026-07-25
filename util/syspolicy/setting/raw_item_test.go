@@ -9,7 +9,7 @@ import (
 	"strconv"
 	"testing"
 
-	jsonv2 "github.com/go-json-experiment/json"
+	jsonv2 "github.com/metacubex/jsonv2"
 )
 
 func TestMarshalUnmarshalRawValue(t *testing.T) {

@@ -10,7 +10,7 @@ import (
 	"net/netip"
 	"time"
 
-	"gvisor.dev/gvisor/pkg/tcpip"
+	"github.com/metacubex/gvisor/pkg/tcpip"
 )
 
 // TCPHandlerForDst returns a TCP handler for connections to dst, or nil if

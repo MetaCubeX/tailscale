@@ -898,6 +898,14 @@ github.com/mdlayher/socket v0.5.0 h1:ilICZmJcQz70vrWVes1MFera4jGiWNocSkykwwoy3XI
 github.com/mdlayher/socket v0.5.0/go.mod h1:WkcBFfvyG8QENs5+hfQPl1X6Jpd2yeLIYgrGFmJiJxI=
 github.com/mdlayher/watchdog v0.0.0-20221003142519-49be0df7b3b5 h1:80FAK3TW5lVymfHu3kvB1QvTZvy9Kmx1lx6sT5Ep16s=
 github.com/mdlayher/watchdog v0.0.0-20221003142519-49be0df7b3b5/go.mod h1:z0QjVpjpK4jksEkffQwS3+abQ3XFTm1bnimyDzWyUk0=
+github.com/metacubex/bart v0.29.0 h1:yVc/lLdDqn+7FShI0qUghStHl0/d3mn4EH/I5R5niKk=
+github.com/metacubex/bart v0.29.0/go.mod h1:DCcyfP4MC+Zy7sLK7XeGuMw+P5K9mIRsYOBgiE8icsI=
+github.com/metacubex/gvisor v0.0.0-20251227095601-261ec1326fe8 h1:hUL81H0Ic/XIDkvtn9M1pmfDdfid7JzYQToY4Ps1TvQ=
+github.com/metacubex/gvisor v0.0.0-20251227095601-261ec1326fe8/go.mod h1:8LpS0IJW1VmWzUm3ylb0e2SK5QDm5lO/2qwWLZgRpBU=
+github.com/metacubex/jsonv2 v0.0.0-20260721082349-16b4998c8f89 h1:v41RWXQbmSD1wqOuoN5VvRHo78wuSziG/bbsLdeH2TQ=
+github.com/metacubex/jsonv2 v0.0.0-20260721082349-16b4998c8f89/go.mod h1:F4sVXat6QjPXkNsKRDyyG3BhSkxPFFnRPEIwmmyCgbg=
+github.com/metacubex/tailscale-wireguard-go v0.0.0-20260725073821-e61ab99cede2 h1:nKyLVJEU4jsLVx+rdqbDUbEKTX/Sdu161AeVoZC9tlY=
+github.com/metacubex/tailscale-wireguard-go v0.0.0-20260725073821-e61ab99cede2/go.mod h1:W00EeoPdd2jbV3+ZUa0m2b7FdKx5B1LFsXvEpy7cToQ=
 github.com/mgechev/revive v1.3.7 h1:502QY0vQGe9KtYJ9FpxMz9rL+Fc/P13CI5POL4uHCcE=
 github.com/mgechev/revive v1.3.7/go.mod h1:RJ16jUbF0OWC3co/+XTxmFNgEpUPwnnA0BRllX2aDNA=
 github.com/miekg/dns v1.1.58 h1:ca2Hdkz+cDg/7eNF6V56jjzuZ4aCAE+DbVkILdQWG/4=

@@ -8,7 +8,7 @@ package internal
 import (
 	"bytes"
 
-	"github.com/go-json-experiment/json/jsontext"
+	"github.com/metacubex/jsonv2/jsontext"
 	"github.com/metacubex/tailscale/types/lazy"
 	"github.com/metacubex/tailscale/util/testenv"
 	"github.com/metacubex/tailscale/version"

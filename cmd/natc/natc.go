@@ -24,7 +24,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/gaissmai/bart"
+	"github.com/metacubex/bart"
 	"github.com/hashicorp/raft"
 	"github.com/inetaf/tcpproxy"
 	"github.com/peterbourgon/ff/v3"

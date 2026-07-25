@@ -11,7 +11,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/tailscale/wireguard-go/tun"
+	"github.com/metacubex/tailscale-wireguard-go/tun"
 	"github.com/metacubex/tailscale/health"
 	"github.com/metacubex/tailscale/net/netmon"
 	"github.com/metacubex/tailscale/types/logger"

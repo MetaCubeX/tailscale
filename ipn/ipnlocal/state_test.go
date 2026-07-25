@@ -17,7 +17,7 @@ import (
 	"time"
 
 	qt "github.com/frankban/quicktest"
-	"github.com/gaissmai/bart"
+	"github.com/metacubex/bart"
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
 

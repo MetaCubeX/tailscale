@@ -7,7 +7,7 @@ import (
 	"runtime"
 	"testing"
 
-	"gvisor.dev/gvisor/pkg/atomicbitops"
+	"github.com/metacubex/gvisor/pkg/atomicbitops"
 )
 
 // tests netstack's AlignedAtomicInt64.

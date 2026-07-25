@@ -11,8 +11,8 @@ import (
 	"strings"
 	"time"
 
-	jsonv2 "github.com/go-json-experiment/json"
-	"github.com/go-json-experiment/json/jsontext"
+	jsonv2 "github.com/metacubex/jsonv2"
+	"github.com/metacubex/jsonv2/jsontext"
 	xmaps "golang.org/x/exp/maps"
 	"github.com/metacubex/tailscale/util/deephash"
 	"github.com/metacubex/tailscale/util/syspolicy/pkey"

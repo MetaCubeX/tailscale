@@ -7,9 +7,9 @@ import (
 	"fmt"
 	"testing"
 
-	extwgconn "github.com/tailscale/wireguard-go/conn"
-	extwgdevice "github.com/tailscale/wireguard-go/device"
-	"github.com/tailscale/wireguard-go/tun/tuntest"
+	extwgconn "github.com/metacubex/tailscale-wireguard-go/conn"
+	extwgdevice "github.com/metacubex/tailscale-wireguard-go/device"
+	"github.com/metacubex/tailscale-wireguard-go/tun/tuntest"
 	"go4.org/mem"
 	"github.com/metacubex/tailscale/types/key"
 	"github.com/metacubex/tailscale/wgengine/wglog"

@@ -19,7 +19,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/tailscale/wireguard-go/device"
+	"github.com/metacubex/tailscale-wireguard-go/device"
 	"go4.org/mem"
 	"github.com/metacubex/tailscale/cmd/testwrapper/flakytest"
 	"github.com/metacubex/tailscale/control/controlknobs"

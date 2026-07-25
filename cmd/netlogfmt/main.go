@@ -42,8 +42,8 @@ import (
 	"time"
 
 	"github.com/dsnet/try"
-	jsonv2 "github.com/go-json-experiment/json"
-	"github.com/go-json-experiment/json/jsontext"
+	jsonv2 "github.com/metacubex/jsonv2"
+	"github.com/metacubex/jsonv2/jsontext"
 	"github.com/metacubex/tailscale/tailcfg"
 	"github.com/metacubex/tailscale/tstime"
 	"github.com/metacubex/tailscale/types/bools"

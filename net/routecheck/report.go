@@ -11,9 +11,9 @@ import (
 	"slices"
 	"time"
 
-	jsonv2 "github.com/go-json-experiment/json"
-	"github.com/go-json-experiment/json/jsontext"
-	jsonv1 "github.com/go-json-experiment/json/v1"
+	jsonv2 "github.com/metacubex/jsonv2"
+	"github.com/metacubex/jsonv2/jsontext"
+	jsonv1 "github.com/metacubex/jsonv2/v1"
 
 	"github.com/metacubex/tailscale/net/routecheck/peernode"
 	"github.com/metacubex/tailscale/tailcfg"

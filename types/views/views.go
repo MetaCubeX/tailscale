@@ -16,8 +16,8 @@ import (
 	"reflect"
 	"slices"
 
-	jsonv2 "github.com/go-json-experiment/json"
-	"github.com/go-json-experiment/json/jsontext"
+	jsonv2 "github.com/metacubex/jsonv2"
+	"github.com/metacubex/jsonv2/jsontext"
 	"go4.org/mem"
 )
 

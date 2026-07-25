@@ -9,8 +9,8 @@ import (
 	"net/http"
 	"time"
 
-	jsonv2 "github.com/go-json-experiment/json"
-	jsonv1 "github.com/go-json-experiment/json/v1"
+	jsonv2 "github.com/metacubex/jsonv2"
+	jsonv1 "github.com/metacubex/jsonv2/v1"
 
 	"github.com/metacubex/tailscale/ipn/ipnlocal"
 	"github.com/metacubex/tailscale/ipn/localapi"

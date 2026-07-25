@@ -22,7 +22,7 @@ import (
 	"sync"
 	"sync/atomic"
 
-	"github.com/gaissmai/bart"
+	"github.com/metacubex/bart"
 	"github.com/metacubex/tailscale/net/tsaddr"
 	"github.com/metacubex/tailscale/tailcfg"
 	"github.com/metacubex/tailscale/types/key"

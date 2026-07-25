@@ -6,7 +6,7 @@
 package tstun
 
 import (
-	"gvisor.dev/gvisor/pkg/tcpip/stack"
+	"github.com/metacubex/gvisor/pkg/tcpip/stack"
 )
 
 type (

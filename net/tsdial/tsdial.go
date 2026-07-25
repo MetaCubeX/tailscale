@@ -19,7 +19,7 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/gaissmai/bart"
+	"github.com/metacubex/bart"
 	"github.com/metacubex/tailscale/envknob"
 	"github.com/metacubex/tailscale/feature"
 	"github.com/metacubex/tailscale/feature/buildfeatures"

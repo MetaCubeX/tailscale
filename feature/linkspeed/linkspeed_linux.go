@@ -8,7 +8,7 @@ package linkspeed
 import (
 	"github.com/mdlayher/genetlink"
 	"github.com/mdlayher/netlink"
-	"github.com/tailscale/wireguard-go/tun"
+	"github.com/metacubex/tailscale-wireguard-go/tun"
 	"golang.org/x/sys/unix"
 	"github.com/metacubex/tailscale/net/tstun"
 )

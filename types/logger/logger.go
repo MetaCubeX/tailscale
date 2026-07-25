@@ -21,8 +21,8 @@ import (
 
 	"context"
 
-	jsonv2 "github.com/go-json-experiment/json"
-	jsonv1 "github.com/go-json-experiment/json/v1"
+	jsonv2 "github.com/metacubex/jsonv2"
+	jsonv1 "github.com/metacubex/jsonv2/v1"
 	"go4.org/mem"
 	"github.com/metacubex/tailscale/envknob"
 	"github.com/metacubex/tailscale/util/ctxkey"

@@ -14,7 +14,7 @@ import (
 	"unsafe"
 
 	qt "github.com/frankban/quicktest"
-	jsonv2 "github.com/go-json-experiment/json"
+	jsonv2 "github.com/metacubex/jsonv2"
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
 	"github.com/metacubex/tailscale/types/structs"

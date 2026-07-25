@@ -158,7 +158,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/tailscale/wireguard-go/tun"
+	"github.com/metacubex/tailscale-wireguard-go/tun"
 	"github.com/metacubex/tailscale/client/local"
 	"github.com/metacubex/tailscale/control/controlclient"
 	"github.com/metacubex/tailscale/envknob"

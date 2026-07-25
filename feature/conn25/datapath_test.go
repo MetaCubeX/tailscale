@@ -10,7 +10,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/tailscale/wireguard-go/tun/tuntest"
+	"github.com/metacubex/tailscale-wireguard-go/tun/tuntest"
 	"go4.org/netipx"
 	"github.com/metacubex/tailscale/net/packet"
 	"github.com/metacubex/tailscale/net/tstun"

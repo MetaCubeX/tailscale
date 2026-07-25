@@ -13,7 +13,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/gaissmai/bart"
+	"github.com/metacubex/bart"
 	"golang.org/x/net/dns/dnsmessage"
 	"github.com/metacubex/tailscale/client/tailscale/apitype"
 	"github.com/metacubex/tailscale/cmd/natc/ippool"

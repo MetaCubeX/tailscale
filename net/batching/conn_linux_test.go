@@ -17,7 +17,7 @@ import (
 	"unsafe"
 
 	qt "github.com/frankban/quicktest"
-	"github.com/tailscale/wireguard-go/conn"
+	"github.com/metacubex/tailscale-wireguard-go/conn"
 	"golang.org/x/net/ipv6"
 	"golang.org/x/sys/unix"
 	"github.com/metacubex/tailscale/net/neterror"

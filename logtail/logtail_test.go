@@ -19,7 +19,7 @@ import (
 	"testing/synctest"
 	"time"
 
-	"github.com/go-json-experiment/json/jsontext"
+	"github.com/metacubex/jsonv2/jsontext"
 	"github.com/metacubex/tailscale/envknob"
 	"github.com/metacubex/tailscale/net/memnet"
 	"github.com/metacubex/tailscale/tstest"

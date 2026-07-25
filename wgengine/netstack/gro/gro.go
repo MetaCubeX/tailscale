@@ -9,12 +9,12 @@ package gro
 import (
 	"bytes"
 
-	"github.com/tailscale/wireguard-go/tun"
-	"gvisor.dev/gvisor/pkg/buffer"
-	"gvisor.dev/gvisor/pkg/tcpip"
-	"gvisor.dev/gvisor/pkg/tcpip/header"
-	"gvisor.dev/gvisor/pkg/tcpip/header/parse"
-	"gvisor.dev/gvisor/pkg/tcpip/stack"
+	"github.com/metacubex/tailscale-wireguard-go/tun"
+	"github.com/metacubex/gvisor/pkg/buffer"
+	"github.com/metacubex/gvisor/pkg/tcpip"
+	"github.com/metacubex/gvisor/pkg/tcpip/header"
+	"github.com/metacubex/gvisor/pkg/tcpip/header/parse"
+	"github.com/metacubex/gvisor/pkg/tcpip/stack"
 	"github.com/metacubex/tailscale/net/packet"
 	"github.com/metacubex/tailscale/types/ipproto"
 )

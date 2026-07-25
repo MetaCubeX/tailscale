@@ -8,7 +8,7 @@ import (
 	"reflect"
 	"testing"
 
-	jsonv2 "github.com/go-json-experiment/json"
+	jsonv2 "github.com/metacubex/jsonv2"
 	"github.com/metacubex/tailscale/types/bools"
 	"github.com/metacubex/tailscale/util/must"
 )

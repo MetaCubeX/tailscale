@@ -12,7 +12,7 @@ import (
 	"os/exec"
 	"runtime"
 
-	"github.com/tailscale/wireguard-go/tun"
+	"github.com/metacubex/tailscale-wireguard-go/tun"
 	"go4.org/netipx"
 	"github.com/metacubex/tailscale/health"
 	"github.com/metacubex/tailscale/net/netmon"

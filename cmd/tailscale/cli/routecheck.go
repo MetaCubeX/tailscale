@@ -14,8 +14,8 @@ import (
 	"strings"
 	"text/tabwriter"
 
-	jsonv2 "github.com/go-json-experiment/json"
-	"github.com/go-json-experiment/json/jsontext"
+	jsonv2 "github.com/metacubex/jsonv2"
+	"github.com/metacubex/jsonv2/jsontext"
 	"github.com/peterbourgon/ff/v3/ffcli"
 
 	"github.com/metacubex/tailscale/cmd/tailscale/cli/jsonoutput"

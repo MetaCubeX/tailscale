@@ -14,9 +14,9 @@ import (
 
 	"github.com/cilium/ebpf"
 	"golang.org/x/sys/unix"
-	"gvisor.dev/gvisor/pkg/tcpip"
-	"gvisor.dev/gvisor/pkg/tcpip/checksum"
-	"gvisor.dev/gvisor/pkg/tcpip/header"
+	"github.com/metacubex/gvisor/pkg/tcpip"
+	"github.com/metacubex/gvisor/pkg/tcpip/checksum"
+	"github.com/metacubex/gvisor/pkg/tcpip/header"
 	"github.com/metacubex/tailscale/net/stun"
 	"github.com/metacubex/tailscale/tstest"
 )

@@ -41,8 +41,8 @@ import (
 	_ "time"
 	_ "unsafe"
 
-	_ "github.com/tailscale/wireguard-go/device"
-	_ "github.com/tailscale/wireguard-go/tun"
+	_ "github.com/metacubex/tailscale-wireguard-go/device"
+	_ "github.com/metacubex/tailscale-wireguard-go/tun"
 	_ "golang.org/x/sys/unix"
 	_ "github.com/metacubex/tailscale/client/tailscale/apitype"
 	_ "github.com/metacubex/tailscale/drive/driveimpl"

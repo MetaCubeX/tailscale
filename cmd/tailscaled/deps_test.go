@@ -262,7 +262,7 @@ func TestOmitGRO(t *testing.T) {
 		GOARCH: "amd64",
 		Tags:   "ts_omit_gro,ts_include_cli",
 		BadDeps: map[string]string{
-			"gvisor.dev/gvisor/pkg/tcpip/stack/gro": "unexpected dep with ts_omit_gro",
+			"github.com/metacubex/gvisor/pkg/tcpip/stack/gro": "unexpected dep with ts_omit_gro",
 		},
 	}.Check(t)
 }

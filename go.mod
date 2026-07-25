@@ -42,8 +42,8 @@ require (
 	github.com/fogleman/gg v1.3.0
 	github.com/frankban/quicktest v1.14.6
 	github.com/fxamacker/cbor/v2 v2.9.0
-	github.com/gaissmai/bart v0.26.1
-	github.com/go-json-experiment/json v0.0.0-20260214004413-d219187c3433
+	github.com/metacubex/bart v0.29.0
+	github.com/metacubex/jsonv2 v0.0.0-20260721082349-16b4998c8f89
 	github.com/go-logr/zapr v1.3.0
 	github.com/go-ole/go-ole v1.3.0
 	github.com/go4org/hashtriemap v0.0.0-20251130024219-545ba229f689
@@ -113,7 +113,7 @@ require (
 	github.com/tailscale/ts-gokrazy v0.0.0-20260630224145-b83088f2e52e
 	github.com/tailscale/web-client-prebuilt v0.0.0-20250124233751-d4cd19a26976
 	github.com/tailscale/wf v0.0.0-20240214030419-6fbb0a674ee6
-	github.com/tailscale/wireguard-go v0.0.0-20260715223240-2e01ba5b00f0
+	github.com/metacubex/tailscale-wireguard-go v0.0.0-20260725073821-e61ab99cede2
 	github.com/tailscale/xnet v0.0.0-20240729143630-8497ac4dab2e
 	github.com/tc-hib/winres v0.2.1
 	github.com/tcnksm/go-httpstat v0.2.0
@@ -137,7 +137,7 @@ require (
 	golang.zx2c4.com/wireguard v0.0.0-20260522210424-ecfc5a8d5446
 	golang.zx2c4.com/wireguard/windows v0.5.3
 	gopkg.in/square/go-jose.v2 v2.6.0
-	gvisor.dev/gvisor v0.0.0-20260224225140-573d5e7127a8
+	github.com/metacubex/gvisor v0.0.0-20251227095601-261ec1326fe8
 	helm.sh/helm/v3 v3.19.0
 	honnef.co/go/tools v0.7.0
 	k8s.io/api v0.34.0

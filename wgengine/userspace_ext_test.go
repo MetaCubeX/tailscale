@@ -6,7 +6,7 @@ package wgengine_test
 import (
 	"testing"
 
-	"github.com/tailscale/wireguard-go/tun"
+	"github.com/metacubex/tailscale-wireguard-go/tun"
 	"github.com/metacubex/tailscale/net/tstun"
 	"github.com/metacubex/tailscale/tsd"
 	"github.com/metacubex/tailscale/tstest"
