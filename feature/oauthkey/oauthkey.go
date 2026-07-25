@@ -13,7 +13,7 @@ import (
 	"strconv"
 	"strings"
 
-	"golang.org/x/oauth2/clientcredentials"
+	"github.com/metacubex/tailscale/tempfork/oauth2/clientcredentials"
 	"github.com/metacubex/tailscale/feature"
 	"github.com/metacubex/tailscale/internal/client/tailscale"
 )
