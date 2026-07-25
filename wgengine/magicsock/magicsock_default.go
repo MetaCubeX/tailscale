@@ -11,5 +11,5 @@ import (
 )
 
 func (c *Conn) listenRawDisco(family string) (io.Closer, error) {
-	return nil, fmt.Errorf("raw disco listening not supported on this OS: %w", errUnsupported)
+	return nil, fmt.Errorf("raw disco listening not supported on this OS: %w", ErrUnsupported)
 }

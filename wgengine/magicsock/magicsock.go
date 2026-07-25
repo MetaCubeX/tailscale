@@ -735,13 +735,13 @@ func NewConn(opts Options) (*Conn, error) {
 	if d4, err := c.listenRawDisco("ip4"); err == nil {
 		c.logf("[v1] using BPF disco receiver for IPv4")
 		c.closeDisco4 = d4
-	} else if !errors.Is(err, errUnsupported) {
+	} else if !errors.Is(err, ErrUnsupported) {
 		c.logf("[v1] couldn't create raw v4 disco listener, using regular listener instead: %v", err)
 	}
 	if d6, err := c.listenRawDisco("ip6"); err == nil {
 		c.logf("[v1] using BPF disco receiver for IPv6")
 		c.closeDisco6 = d6
-	} else if !errors.Is(err, errUnsupported) {
+	} else if !errors.Is(err, ErrUnsupported) {
 		c.logf("[v1] couldn't create raw v6 disco listener, using regular listener instead: %v", err)
 	}
 
@@ -1623,11 +1623,11 @@ func (c *Conn) maybeRebindOnError(err error) {
 
 // sendUDPNetcheck sends b via UDP to addr. It is used exclusively by netcheck.
 // It returns the number of bytes sent along with any error encountered. It
-// returns errUnsupported if the client is explicitly configured to only
+// returns ErrUnsupported if the client is explicitly configured to only
 // send data over TCP port 443 and/or we're running on wasm.
 func (c *Conn) sendUDPNetcheck(b []byte, addr netip.AddrPort) (int, error) {
 	if c.onlyTCP443.Load() || runtime.GOOS == "js" {
-		return 0, errUnsupported
+		return 0, ErrUnsupported
 	}
 	switch {
 	case addr.Addr().Is4():
