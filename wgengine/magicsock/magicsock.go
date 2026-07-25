@@ -739,6 +739,7 @@ func NewConn(opts Options) (*Conn, error) {
 		Logf:                logger.WithPrefix(c.logf, "netcheck: "),
 		NetMon:              c.netMon,
 		Dialer:              c.systemDialer,
+		PacketListener:      c.packetListener,
 		SendPacket:          c.sendUDPNetcheck,
 		SkipExternalNetwork: inTest(),
 		PortMapper:          c.portMapper,
@@ -4115,7 +4116,11 @@ const indexSentinelDeleted = -1
 // already instantiated it returns the existing one.
 func (c *Conn) getPinger() *ping.Pinger {
 	return c.wgPinger.Get(func() *ping.Pinger {
-		return ping.New(c.connCtx, c.dlogf, netns.Listener(c.logf, c.netMon))
+		listener := c.packetListener
+		if listener == nil {
+			listener = netns.Listener(c.logf, c.netMon).ListenPacket
+		}
+		return ping.New(c.connCtx, c.dlogf, listener)
 	})
 }
 

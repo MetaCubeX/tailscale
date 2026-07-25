@@ -208,6 +208,10 @@ type Client struct {
 	// If nil, the default netns dialer is used.
 	Dialer netx.DialFunc
 
+	// PacketListener optionally specifies how non-TCP probes are opened.
+	// If nil, the default netns listener is used.
+	PacketListener netx.ListenPacketFunc
+
 	// TimeNow, if non-nil, is used instead of time.Now.
 	TimeNow func() time.Time
 
@@ -1211,7 +1215,11 @@ func (c *Client) measureAllICMPLatency(ctx context.Context, rs *reportState, nee
 	ctx, done := context.WithTimeout(ctx, icmpProbeTimeout)
 	defer done()
 
-	p := ping.New(ctx, c.logf, netns.Listener(c.logf, c.NetMon))
+	listener := c.PacketListener
+	if listener == nil {
+		listener = netns.Listener(c.logf, c.NetMon).ListenPacket
+	}
+	p := ping.New(ctx, c.logf, listener)
 	defer p.Close()
 
 	c.logf("UDP is blocked, trying ICMP")
