@@ -25,9 +25,9 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/huin/goupnp"
-	"github.com/huin/goupnp/dcps/internetgateway2"
-	"github.com/huin/goupnp/soap"
+	"github.com/metacubex/tailscale/tempfork/goupnp"
+	"github.com/metacubex/tailscale/tempfork/goupnp/dcps/internetgateway2"
+	"github.com/metacubex/tailscale/tempfork/goupnp/soap"
 	"github.com/metacubex/tailscale/envknob"
 	"github.com/metacubex/tailscale/net/netns"
 	"github.com/metacubex/tailscale/types/logger"

@@ -11,8 +11,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/huin/goupnp"
-	"github.com/huin/goupnp/dcps/internetgateway2"
+	"github.com/metacubex/tailscale/tempfork/goupnp"
+	"github.com/metacubex/tailscale/tempfork/goupnp/dcps/internetgateway2"
 )
 
 // NOTE: this is in a distinct file because the various string constants are

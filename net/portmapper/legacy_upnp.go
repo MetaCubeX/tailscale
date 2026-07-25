@@ -10,8 +10,8 @@ package portmapper
 import (
 	"context"
 
-	"github.com/huin/goupnp"
-	"github.com/huin/goupnp/soap"
+	"github.com/metacubex/tailscale/tempfork/goupnp"
+	"github.com/metacubex/tailscale/tempfork/goupnp/soap"
 )
 
 const (
