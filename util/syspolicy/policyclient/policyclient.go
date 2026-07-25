@@ -74,8 +74,7 @@ type Client interface {
 	GetPolicySnapshot(uid string) (*PolicySnapshot, error)
 }
 
-// PolicySnapshot is the effective policy snapshot when syspolicy is enabled,
-// or an empty stub when it is disabled.
+// PolicySnapshot is retained as an empty stub for IPN API compatibility.
 type PolicySnapshot = policySnapshot
 
 // Get returns a non-nil [Client] implementation as a function of the
