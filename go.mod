@@ -46,60 +46,22 @@ require (
 
 require (
 	github.com/cilium/ebpf v0.16.0 // indirect
-	github.com/google/go-containerregistry v0.21.5 // indirect
 	github.com/google/pprof v0.0.0-20241210010833-40e02aabc2ad // indirect
 	github.com/metacubex/cpu v0.1.0 // indirect
 	github.com/metacubex/hkdf v0.1.0 // indirect
 	github.com/metacubex/hpke v0.1.0 // indirect
 	github.com/metacubex/mlkem v0.1.0 // indirect
-	github.com/onsi/gomega v1.36.2 // indirect
-	github.com/pkg/errors v0.9.1 // indirect
-	gotest.tools/v3 v3.5.2 // indirect
 	software.sslmate.com/src/go-pkcs12 v0.4.0 // indirect
 )
 
 require (
-	github.com/containerd/typeurl/v2 v2.2.3 // indirect
-	github.com/cyphar/filepath-securejoin v0.6.1 // indirect
-	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
-	github.com/deckarep/golang-set/v2 v2.8.0 // indirect
-	github.com/google/go-github/v66 v66.0.0 // indirect
-	github.com/google/go-querystring v1.2.0 // indirect
-	github.com/moby/buildkit v0.20.2 // indirect
-	github.com/planetscale/vtprotobuf v0.6.1-0.20240319094008-0393e58bdf10 // indirect
-	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
-	github.com/puzpuzpuz/xsync v1.5.2 // indirect
-	github.com/stacklok/frizbee v0.1.7 // indirect
-)
-
-require (
-	github.com/containerd/stargz-snapshotter/estargz v0.18.2 // indirect
-	github.com/docker/cli v29.4.0+incompatible // indirect
-	github.com/docker/docker-credential-helpers v0.9.3 // indirect
-	github.com/go-git/go-billy/v5 v5.8.0 // indirect
-	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/google/btree v1.1.3 // indirect
-	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/kr/pretty v0.3.1 // indirect
 	github.com/kr/text v0.2.0 // indirect
-	github.com/mattn/go-runewidth v0.0.14 // indirect
 	github.com/mdlayher/socket v0.5.0
-	github.com/mitchellh/go-homedir v1.1.0 // indirect
-	github.com/olekukonko/tablewriter v0.0.5 // indirect
-	github.com/opencontainers/go-digest v1.0.0 // indirect
-	github.com/opencontainers/image-spec v1.1.1 // indirect
-	github.com/rivo/uniseg v0.4.4 // indirect
 	github.com/rogpeppe/go-internal v1.14.1 // indirect
-	github.com/sirupsen/logrus v1.9.4 // indirect
-	github.com/spf13/cobra v1.10.2 // indirect
-	github.com/spf13/pflag v1.0.10 // indirect
 	github.com/tailscale/go-winio v0.0.0-20231025203758-c4f33415bf55
-	github.com/vbatts/tar-split v0.12.2 // indirect
 	github.com/x448/float16 v0.8.4 // indirect
 	golang.org/x/text v0.40.0 // indirect
-	google.golang.org/protobuf v1.36.11 // indirect
-	gopkg.in/yaml.v3 v3.0.1 // indirect
 	howett.net/plist v1.0.0 // indirect
 )
-
-tool github.com/stacklok/frizbee
