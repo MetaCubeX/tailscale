@@ -184,6 +184,7 @@ import (
 	"github.com/metacubex/tailscale/net/dnscache"
 	"github.com/metacubex/tailscale/net/memnet"
 	"github.com/metacubex/tailscale/net/netmon"
+	"github.com/metacubex/tailscale/net/netutil"
 	"github.com/metacubex/tailscale/net/netx"
 	"github.com/metacubex/tailscale/net/proxymux"
 	"github.com/metacubex/tailscale/net/socks5"
@@ -1061,8 +1062,9 @@ func (s *Server) resolveAuthKey() (string, error) {
 			clientSecret = s.getClientSecret()
 		}
 		authKey, err = resolveViaOAuth(s.shutdownCtx, tailscale.ResolveAuthKeyArgs{
-			AuthKey: clientSecret,
-			Tags:    s.AdvertiseTags,
+			AuthKey:    clientSecret,
+			Tags:       s.AdvertiseTags,
+			HTTPClient: netutil.NewSystemHTTPClient(s.dialer.SystemDial, s.ExtraRootCAs),
 		})
 		if err != nil {
 			return "", err

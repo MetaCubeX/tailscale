@@ -13,9 +13,10 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/metacubex/tailscale/tempfork/oauth2/clientcredentials"
 	"github.com/metacubex/tailscale/feature"
 	"github.com/metacubex/tailscale/internal/client/tailscale"
+	"github.com/metacubex/tailscale/tempfork/oauth2"
+	"github.com/metacubex/tailscale/tempfork/oauth2/clientcredentials"
 )
 
 func init() {
@@ -50,6 +51,9 @@ func resolveAuthKey(ctx context.Context, args tailscale.ResolveAuthKeyArgs) (str
 		ClientID:     "some-client-id", // ignored
 		ClientSecret: strippedSecret,
 		TokenURL:     baseURL + "/api/v2/oauth/token",
+	}
+	if args.HTTPClient != nil {
+		ctx = context.WithValue(ctx, oauth2.HTTPClient, args.HTTPClient)
 	}
 
 	tsClient := tailscale.NewClient("-", nil)

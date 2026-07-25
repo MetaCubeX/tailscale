@@ -11,6 +11,7 @@ import (
 	"testing"
 
 	"github.com/metacubex/tailscale/internal/client/tailscale"
+	"github.com/metacubex/tailscale/util/go120/slices"
 )
 
 func TestResolveAuthKey(t *testing.T) {
@@ -104,6 +105,39 @@ func TestResolveAuthKey(t *testing.T) {
 				t.Errorf("want authKey = %q, got %q", tt.wantAuthKey, got)
 			}
 		})
+	}
+}
+
+type roundTripperFunc func(*http.Request) (*http.Response, error)
+
+func (f roundTripperFunc) RoundTrip(r *http.Request) (*http.Response, error) {
+	return f(r)
+}
+
+func TestResolveAuthKeyUsesHTTPClient(t *testing.T) {
+	srv := mockControlServer(t)
+	defer srv.Close()
+
+	var paths []string
+	base := srv.Client().Transport
+	httpClient := &http.Client{Transport: roundTripperFunc(func(r *http.Request) (*http.Response, error) {
+		paths = append(paths, r.URL.Path)
+		return base.RoundTrip(r)
+	})}
+	authKey, err := resolveAuthKey(context.Background(), tailscale.ResolveAuthKeyArgs{
+		AuthKey:    "tskey-client-abc?baseURL=" + srv.URL,
+		Tags:       []string{"tag:test"},
+		HTTPClient: httpClient,
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if authKey != "tskey-auth-xyz" {
+		t.Fatalf("auth key = %q, want tskey-auth-xyz", authKey)
+	}
+	want := []string{"/api/v2/oauth/token", "/api/v2/tailnet/-/keys"}
+	if !slices.Equal(paths, want) {
+		t.Fatalf("request paths = %q, want %q", paths, want)
 	}
 }
 
