@@ -1750,8 +1750,7 @@ func (ns *Impl) forwardTCP(getClient func(...tcpip.SettableSocketOption) *gonet.
 	if ns.forwardDialFunc != nil {
 		dialFunc = ns.forwardDialFunc
 	} else {
-		var stdDialer net.Dialer
-		dialFunc = stdDialer.DialContext
+		dialFunc = ns.dialer.SystemDial
 	}
 
 	// TODO: this is racy, dialing before we register our local address. See
