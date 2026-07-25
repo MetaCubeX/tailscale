@@ -603,7 +603,6 @@ func newConn(logf logger.Logf) *Conn {
 		peerLastDerp:  make(map[key.NodePublic]int),
 		peerMap:       newPeerMap(),
 		discoInfo:     make(map[key.DiscoPublic]*discoInfo),
-		cloudInfo:     cloudinfo.New(logf),
 		initializedAt: mono.Now(),
 	}
 	c.discoAtomic.Set(discoPrivate)
@@ -667,6 +666,7 @@ func NewConn(opts Options) (*Conn, error) {
 	}
 
 	c := newConn(opts.logf())
+	c.cloudInfo = cloudinfo.New(c.logf, opts.SystemDialer)
 	if !opts.ForceDiscoKey.IsZero() {
 		c.discoAtomic.Set(opts.ForceDiscoKey)
 	}

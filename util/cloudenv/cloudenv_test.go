@@ -17,7 +17,7 @@ func TestGetCloud(t *testing.T) {
 		t.Skip("skipping test without --use-external-network")
 	}
 
-	cloud := getCloud()
+	cloud := getCloud(nil)
 	t.Logf("Cloud: %q", cloud)
 	t.Logf("Cloud.HasInternalTLD: %v", cloud.HasInternalTLD())
 	t.Logf("Cloud.ResolverIP: %q", cloud.ResolverIP())

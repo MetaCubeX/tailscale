@@ -19,6 +19,7 @@ import (
 	"time"
 
 	"github.com/metacubex/tailscale/feature/buildfeatures"
+	"github.com/metacubex/tailscale/net/netx"
 	"github.com/metacubex/tailscale/types/logger"
 	"github.com/metacubex/tailscale/util/cloudenv"
 )
@@ -37,21 +38,22 @@ type CloudInfo struct {
 }
 
 // New constructs a new [*CloudInfo] that will log to the provided logger instance.
-func New(logf logger.Logf) *CloudInfo {
+func New(logf logger.Logf, dialer netx.DialFunc) *CloudInfo {
 	if !buildfeatures.HasCloud {
 		return nil
 	}
+	if dialer == nil {
+		dialer = (&net.Dialer{Timeout: maxCloudInfoWait}).DialContext
+	}
 	tr := &http.Transport{
 		DisableKeepAlives: true,
-		Dial: (&net.Dialer{
-			Timeout: maxCloudInfoWait,
-		}).Dial,
+		DialContext:       dialer,
 	}
 
 	return &CloudInfo{
 		client:   http.Client{Transport: tr},
 		logf:     logf,
-		cloud:    cloudenv.Get(),
+		cloud:    cloudenv.GetWithDialer(dialer),
 		endpoint: "http://" + cloudenv.CommonNonRoutableMetadataIP,
 	}
 }

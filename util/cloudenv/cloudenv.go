@@ -17,6 +17,7 @@ import (
 	"time"
 
 	"github.com/metacubex/tailscale/feature/buildfeatures"
+	"github.com/metacubex/tailscale/net/netx"
 	"github.com/metacubex/tailscale/syncs"
 	"github.com/metacubex/tailscale/types/lazy"
 )
@@ -114,13 +115,19 @@ var cloudAtomic syncs.AtomicValue[Cloud]
 
 // Get returns the current cloud, or the empty string if unknown.
 func Get() Cloud {
+	return GetWithDialer(nil)
+}
+
+// GetWithDialer returns the current cloud, using dialer for any metadata
+// request needed to identify it. A nil dialer uses the standard network.
+func GetWithDialer(dialer netx.DialFunc) Cloud {
 	if !buildfeatures.HasCloud {
 		return ""
 	}
 	if c, ok := cloudAtomic.LoadOk(); ok {
 		return c
 	}
-	c := getCloud()
+	c := getCloud(dialer)
 	cloudAtomic.Store(c) // even if empty
 	return c
 }
@@ -130,7 +137,7 @@ func readFileTrimmed(name string) string {
 	return strings.TrimSpace(string(v))
 }
 
-func getCloud() Cloud {
+func getCloud(dialer netx.DialFunc) Cloud {
 	var hitMetadata bool
 	switch runtime.GOOS {
 	case "android", "ios", "darwin":
@@ -176,11 +183,12 @@ func getCloud() Cloud {
 	}
 
 	const maxWait = 2 * time.Second
+	if dialer == nil {
+		dialer = (&net.Dialer{Timeout: maxWait}).DialContext
+	}
 	tr := &http.Transport{
 		DisableKeepAlives: true,
-		Dial: (&net.Dialer{
-			Timeout: maxWait,
-		}).Dial,
+		DialContext:       dialer,
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), maxWait)
 	defer cancel()

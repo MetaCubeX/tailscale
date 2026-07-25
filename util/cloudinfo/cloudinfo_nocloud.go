@@ -9,6 +9,7 @@ import (
 	"context"
 	"net/netip"
 
+	"github.com/metacubex/tailscale/net/netx"
 	"github.com/metacubex/tailscale/types/logger"
 )
 
@@ -16,7 +17,7 @@ import (
 type CloudInfo struct{}
 
 // New construct a no-op CloudInfo stub.
-func New(_ logger.Logf) *CloudInfo {
+func New(_ logger.Logf, _ netx.DialFunc) *CloudInfo {
 	return &CloudInfo{}
 }
 

@@ -5,14 +5,36 @@ package cloudinfo
 
 import (
 	"context"
+	"errors"
 	"github.com/metacubex/http"
 	"github.com/metacubex/http/httptest"
 	"github.com/metacubex/tailscale/util/go120/slices"
+	"net"
 	"net/netip"
 	"testing"
 
 	"github.com/metacubex/tailscale/util/cloudenv"
 )
+
+func TestNewUsesDialer(t *testing.T) {
+	wantErr := errors.New("dialer called")
+	ci := New(t.Logf, func(_ context.Context, network, address string) (net.Conn, error) {
+		if network != "tcp" || address != "169.254.169.254:80" {
+			t.Fatalf("Dial(%q, %q), want tcp, 169.254.169.254:80", network, address)
+		}
+		return nil, wantErr
+	})
+	if ci == nil {
+		t.Skip("cloud support disabled")
+	}
+	tr, ok := ci.client.Transport.(*http.Transport)
+	if !ok {
+		t.Fatalf("Transport has type %T, want *http.Transport", ci.client.Transport)
+	}
+	if _, err := tr.DialContext(context.Background(), "tcp", "169.254.169.254:80"); !errors.Is(err, wantErr) {
+		t.Fatalf("DialContext error = %v, want %v", err, wantErr)
+	}
+}
 
 func TestCloudInfo_AWS(t *testing.T) {
 	const (
@@ -44,7 +66,7 @@ func TestCloudInfo_AWS(t *testing.T) {
 	srv := httptest.NewServer(fake)
 	defer srv.Close()
 
-	ci := New(t.Logf)
+	ci := New(t.Logf, nil)
 	ci.cloud = cloudenv.AWS
 	ci.endpoint = srv.URL
 
@@ -76,7 +98,7 @@ func TestCloudInfo_AWSNotPublic(t *testing.T) {
 	srv := httptest.NewServer(returns404)
 	defer srv.Close()
 
-	ci := New(t.Logf)
+	ci := New(t.Logf, nil)
 	ci.cloud = cloudenv.AWS
 	ci.endpoint = srv.URL
 
