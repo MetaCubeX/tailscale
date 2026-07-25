@@ -14,11 +14,11 @@ import (
 	"strings"
 
 	"github.com/fxamacker/cbor/v2"
-	"github.com/hdevalence/ed25519consensus"
-	"golang.org/x/crypto/blake2s"
 	"github.com/metacubex/tailscale/types/key"
 	"github.com/metacubex/tailscale/types/logger"
 	"github.com/metacubex/tailscale/types/tkatype"
+	"github.com/metacubex/tailscale/util/ed25519consensus"
+	"golang.org/x/crypto/blake2s"
 )
 
 //go:generate go run tailscale.com/cmd/cloner  -clonefunc=false -type=NodeKeySignature
