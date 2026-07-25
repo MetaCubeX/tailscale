@@ -6,11 +6,14 @@ package netutil
 
 import (
 	"bufio"
+	"crypto/x509"
+	"github.com/metacubex/http"
+	"github.com/metacubex/tls"
 	"io"
 	"net"
-	"github.com/metacubex/http"
 	"time"
 
+	"github.com/metacubex/tailscale/net/netx"
 	"github.com/metacubex/tailscale/syncs"
 )
 
@@ -40,6 +43,27 @@ func NewDefaultTransport() *http.Transport {
 		TLSHandshakeTimeout:   10 * time.Second,
 		ExpectContinueTimeout: 1 * time.Second,
 	}
+}
+
+// NewSystemHTTPClient returns an HTTP client that uses dialer for all new
+// connections and trusts roots in addition to the platform's default roots.
+func NewSystemHTTPClient(dialer netx.DialFunc, roots *x509.CertPool) *http.Client {
+	tr := NewDefaultTransport()
+	if dialer != nil {
+		tr.Dial = nil
+		tr.DialContext = dialer
+		tr.DialTLS = nil
+		tr.DialTLSContext = nil
+	}
+	if roots != nil {
+		if tr.TLSClientConfig == nil {
+			tr.TLSClientConfig = new(tls.Config)
+		} else {
+			tr.TLSClientConfig = tr.TLSClientConfig.Clone()
+		}
+		tr.TLSClientConfig.RootCAs = roots
+	}
+	return &http.Client{Transport: tr}
 }
 
 // NewOneConnListener returns a net.Listener that returns c on its
