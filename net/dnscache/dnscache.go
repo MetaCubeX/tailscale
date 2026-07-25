@@ -23,7 +23,6 @@ import (
 	"github.com/metacubex/tailscale/net/netx"
 	"github.com/metacubex/tailscale/syncs"
 	"github.com/metacubex/tailscale/types/logger"
-	"github.com/metacubex/tailscale/util/cloudenv"
 	"github.com/metacubex/tailscale/util/singleflight"
 	"github.com/metacubex/tailscale/util/testenv"
 )
@@ -137,26 +136,6 @@ func (r *Resolver) dlogf(format string, args ...any) {
 	if debug() || debugLogging.Load() {
 		logf("dnscache: "+format, args...)
 	}
-}
-
-// cloudHostResolver returns a Resolver for the current cloud hosting environment.
-// It currently only supports Google Cloud.
-func (r *Resolver) cloudHostResolver() (v *net.Resolver, ok bool) {
-	switch runtime.GOOS {
-	case "android", "ios", "darwin":
-		return nil, false
-	}
-	ip := cloudenv.Get().ResolverIP()
-	if ip == "" {
-		return nil, false
-	}
-	return &net.Resolver{
-		PreferGo: true,
-		Dial: func(ctx context.Context, network, address string) (net.Conn, error) {
-			var d net.Dialer
-			return d.DialContext(ctx, network, net.JoinHostPort(ip, "53"))
-		},
-	}, true
 }
 
 func (r *Resolver) ttl() time.Duration {
@@ -304,12 +283,6 @@ func (r *Resolver) lookupIP(ctx context.Context, host string) (ip, ip6 netip.Add
 		ips, err = r.LookupHook(lookupCtx, host)
 	} else {
 		ips, err = r.fwd().LookupNetIP(lookupCtx, "ip", host)
-	}
-	if (err != nil || len(ips) == 0) && r.LookupHook == nil {
-		if resolver, ok := r.cloudHostResolver(); ok {
-			r.dlogf("resolving %q via cloud resolver", host)
-			ips, err = resolver.LookupNetIP(lookupCtx, "ip", host)
-		}
 	}
 	if (err != nil || len(ips) == 0) && r.LookupIPFallback != nil && r.LookupHook == nil {
 		lookupCtx, lookupCancel := context.WithTimeout(ctx, 30*time.Second)
