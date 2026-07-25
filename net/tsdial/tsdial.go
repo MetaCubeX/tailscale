@@ -653,9 +653,7 @@ func (d *Dialer) dialOneUser(ctx context.Context, network string, ipp netip.Addr
 	if version.IsMacGUIVariant() && tsaddr.IsTailscaleIP(ipp.Addr()) {
 		return d.getPeerDialer().DialContext(ctx, network, ipp.String())
 	}
-	// TODO(bradfitz): netns, etc
-	var stdDialer net.Dialer
-	return stdDialer.DialContext(ctx, network, ipp.String())
+	return d.SystemDial(ctx, network, ipp.String())
 }
 
 // userDialFallbackDelay is the happy-eyeballs gap between starting
