@@ -139,6 +139,7 @@ package tsnet
 import (
 	"context"
 	crand "crypto/rand"
+	"crypto/x509"
 	"encoding/hex"
 	"errors"
 	"fmt"
@@ -306,6 +307,10 @@ type Server struct {
 	// SystemPacketListener optionally specifies how tsnet opens UDP sockets
 	// for non-Tailscale infrastructure such as STUN and peer paths.
 	SystemPacketListener netx.ListenPacketFunc
+
+	// ExtraRootCAs optionally specifies additional trusted root CAs for
+	// Tailscale control and DERP connections.
+	ExtraRootCAs *x509.CertPool
 
 	// LookupHook optionally specifies how tsnet resolves non-Tailscale
 	// infrastructure hostnames such as control and DERP.
@@ -853,6 +858,7 @@ func (s *Server) start() (reterr error) {
 
 	sys := tsd.NewSystem()
 	s.sys = sys
+	sys.ExtraRootCAs = s.ExtraRootCAs
 	sys.LookupHook = s.LookupHook
 	if err := s.startLogger(&closePool, sys.HealthTracker.Get(), tsLogf); err != nil {
 		return err
