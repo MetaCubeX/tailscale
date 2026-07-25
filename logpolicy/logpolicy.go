@@ -881,6 +881,10 @@ type TransportOptions struct {
 	// If nil, [log.Printf] will be used instead.
 	Logf logger.Logf
 
+	// DialContext is an optional dialer to use for log uploads.
+	// If nil, MakeDialFunc is used.
+	DialContext netx.DialFunc
+
 	// TLSClientConfig is an optional TLS configuration to use.
 	// If non-nil, the configuration will be cloned.
 	TLSClientConfig *tls.Config
@@ -917,7 +921,11 @@ func (opts TransportOptions) New() http.RoundTripper {
 	if opts.Logf == nil {
 		opts.Logf = log.Printf
 	}
-	tr.DialContext = MakeDialFunc(opts.NetMon, opts.Logf)
+	if opts.DialContext != nil {
+		tr.DialContext = opts.DialContext
+	} else {
+		tr.DialContext = MakeDialFunc(opts.NetMon, opts.Logf)
+	}
 
 	// We're uploading logs ideally infrequently, with specific timing that will
 	// change over time. Try to keep the connection open, to avoid repeatedly

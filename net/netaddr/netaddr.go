@@ -47,3 +47,22 @@ func FromStdIPNet(std *net.IPNet) (prefix netip.Prefix, ok bool) {
 
 	return netip.PrefixFrom(ip, ones), true
 }
+
+// FromStdNetAddr converts a standard or wrapped network address to an AddrPort.
+func FromStdNetAddr(addr net.Addr) netip.AddrPort {
+	if addr == nil {
+		return netip.AddrPort{}
+	}
+	if raw, ok := addr.(interface{ RawAddr() net.Addr }); ok {
+		if ap := FromStdNetAddr(raw.RawAddr()); ap.IsValid() {
+			return ap
+		}
+	}
+	if withAddrPort, ok := addr.(interface{ AddrPort() netip.AddrPort }); ok {
+		if ap := withAddrPort.AddrPort(); ap.IsValid() {
+			return ap
+		}
+	}
+	ap, _ := netip.ParseAddrPort(addr.String())
+	return ap
+}

@@ -593,8 +593,7 @@ func (c *Client) connect(ctx context.Context, caller string) (client *derp.Clien
 	return c.client, c.connGen, nil
 }
 
-// SetURLDialer sets the dialer to use for dialing URLs.
-// This dialer is only use for clients created with NewClient, not NewRegionClient.
+// SetURLDialer sets the dialer to use for dialing URLs and DERP regions.
 // If unset or nil, the default dialer is used.
 //
 // The primary use for this is the derper mesh mode to connect to each
@@ -711,6 +710,9 @@ func (c *Client) DialRegionTLS(ctx context.Context, reg *tailcfg.DERPRegion) (tl
 }
 
 func (c *Client) dialContext(ctx context.Context, proto, addr string) (net.Conn, error) {
+	if c.dialer != nil {
+		return c.dialer(ctx, proto, addr)
+	}
 	return netns.NewDialer(c.logf, c.netMon).DialContext(ctx, proto, addr)
 }
 

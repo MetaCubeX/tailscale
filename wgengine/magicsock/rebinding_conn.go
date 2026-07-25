@@ -11,13 +11,13 @@ import (
 	"sync/atomic"
 	"syscall"
 
-	"golang.org/x/net/ipv6"
 	"github.com/metacubex/tailscale/control/controlknobs"
 	"github.com/metacubex/tailscale/net/batching"
 	"github.com/metacubex/tailscale/net/netaddr"
 	"github.com/metacubex/tailscale/net/packet"
 	"github.com/metacubex/tailscale/syncs"
 	"github.com/metacubex/tailscale/types/nettype"
+	"golang.org/x/net/ipv6"
 )
 
 // RebindingUDPConn is a UDP socket that can be re-bound.
@@ -153,7 +153,7 @@ func (c *RebindingUDPConn) LocalAddr() *net.UDPAddr {
 }
 
 func (c *RebindingUDPConn) localAddrLocked() *net.UDPAddr {
-	return c.pconn.LocalAddr().(*net.UDPAddr)
+	return net.UDPAddrFromAddrPort(netaddr.FromStdNetAddr(c.pconn.LocalAddr()))
 }
 
 // errNilPConn is returned by RebindingUDPConn.Close when there is no current pconn.

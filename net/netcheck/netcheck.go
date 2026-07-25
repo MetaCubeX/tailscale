@@ -33,6 +33,7 @@ import (
 	"github.com/metacubex/tailscale/net/neterror"
 	"github.com/metacubex/tailscale/net/netmon"
 	"github.com/metacubex/tailscale/net/netns"
+	"github.com/metacubex/tailscale/net/netx"
 	"github.com/metacubex/tailscale/net/ping"
 	"github.com/metacubex/tailscale/net/portmapper/portmappertype"
 	"github.com/metacubex/tailscale/net/sockstats"
@@ -202,6 +203,10 @@ type Client struct {
 	// Logf optionally specifies where to log to.
 	// If nil, log.Printf is used.
 	Logf logger.Logf
+
+	// Dialer optionally specifies how TCP probes are dialed.
+	// If nil, the default netns dialer is used.
+	Dialer netx.DialFunc
 
 	// TimeNow, if non-nil, is used instead of time.Now.
 	TimeNow func() time.Time
@@ -1121,6 +1126,7 @@ func (c *Client) measureHTTPSLatency(ctx context.Context, reg *tailcfg.DERPRegio
 	var ip netip.Addr
 
 	dc := derphttp.NewNetcheckClient(c.logf, c.NetMon)
+	dc.SetURLDialer(c.Dialer)
 	defer dc.Close()
 
 	// DialRegionTLS may dial multiple times if a node is not available, as such

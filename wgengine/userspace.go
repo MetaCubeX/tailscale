@@ -433,6 +433,8 @@ func NewUserspaceEngine(logf logger.Logf, conf Config) (_ Engine, reterr error) 
 		DERPActiveFunc: e.RequestStatus,
 		IdleFunc:       e.tundev.IdleDuration,
 		NetMon:         e.netMon,
+		SystemDialer:   conf.Dialer.SystemDial,
+		PacketListener: conf.Dialer.SystemPacketListen,
 		HealthTracker:  e.health,
 		ExtraRootCAs:   conf.ExtraRootCAs,
 		LookupHook:     conf.LookupHook,

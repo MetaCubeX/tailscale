@@ -10,6 +10,8 @@ import (
 	"net"
 	"net/netip"
 	"time"
+
+	"github.com/metacubex/tailscale/net/netaddr"
 )
 
 // PacketListener defines the ListenPacket method as implemented
@@ -42,6 +44,27 @@ type PacketConn interface {
 	SetWriteDeadline(time.Time) error
 }
 
+// MakePacketConn adapts pc to the netip-aware PacketConn interface.
+func MakePacketConn(pc net.PacketConn) PacketConn {
+	if pc, ok := pc.(PacketConn); ok {
+		return pc
+	}
+	return packetConnAdapter{pc}
+}
+
+type packetConnAdapter struct {
+	net.PacketConn
+}
+
+func (pc packetConnAdapter) WriteToUDPAddrPort(p []byte, addr netip.AddrPort) (int, error) {
+	return pc.PacketConn.WriteTo(p, net.UDPAddrFromAddrPort(addr))
+}
+
+func (pc packetConnAdapter) ReadFromUDPAddrPort(p []byte) (int, netip.AddrPort, error) {
+	n, addr, err := pc.PacketConn.ReadFrom(p)
+	return n, netaddr.FromStdNetAddr(addr), err
+}
+
 func MakePacketListenerWithNetIP(ln PacketListener) PacketListenerWithNetIP {
 	return packetListenerAdapter{ln}
 }
@@ -55,7 +78,7 @@ func (a packetListenerAdapter) ListenPacket(ctx context.Context, network, addres
 	if err != nil {
 		return nil, err
 	}
-	return pc.(PacketConn), nil
+	return MakePacketConn(pc), nil
 }
 
 // ConnPacketConn is the interface that's a superset of net.Conn and net.PacketConn.

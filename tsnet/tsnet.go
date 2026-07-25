@@ -183,6 +183,7 @@ import (
 	"github.com/metacubex/tailscale/net/dnscache"
 	"github.com/metacubex/tailscale/net/memnet"
 	"github.com/metacubex/tailscale/net/netmon"
+	"github.com/metacubex/tailscale/net/netx"
 	"github.com/metacubex/tailscale/net/proxymux"
 	"github.com/metacubex/tailscale/net/socks5"
 	"github.com/metacubex/tailscale/net/tsdial"
@@ -297,6 +298,14 @@ type Server struct {
 	// traffic. If zero, a port is automatically selected. Leave this
 	// field at zero unless you know what you are doing.
 	Port uint16
+
+	// SystemDialer optionally specifies how tsnet dials non-Tailscale
+	// infrastructure such as control, DERP, and logtail.
+	SystemDialer netx.DialFunc
+
+	// SystemPacketListener optionally specifies how tsnet opens UDP sockets
+	// for non-Tailscale infrastructure such as STUN and peer paths.
+	SystemPacketListener netx.ListenPacketFunc
 
 	// LookupHook optionally specifies how tsnet resolves non-Tailscale
 	// infrastructure hostnames such as control and DERP.
@@ -856,6 +865,8 @@ func (s *Server) start() (reterr error) {
 	closePool.add(s.netMon)
 
 	s.dialer = &tsdial.Dialer{Logf: tsLogf} // mutated below (before used)
+	s.dialer.SystemDialer = s.SystemDialer
+	s.dialer.SystemPacketListener = s.SystemPacketListener
 	s.dialer.LookupHook = s.LookupHook
 	s.dialer.SetBus(sys.Bus.Get())
 	eng, err := wgengine.NewUserspaceEngine(tsLogf, wgengine.Config{
@@ -1095,7 +1106,13 @@ func (s *Server) startLogger(closePool *closeOnErrorPool, health *health.Tracker
 		Buffer:       s.logbuffer,
 		CompressLogs: true,
 		Bus:          s.sys.Bus.Get(),
-		HTTPC:        &http.Client{Transport: logpolicy.NewLogtailTransport(logtail.DefaultHost, s.netMon, health, tsLogf)},
+		HTTPC: &http.Client{Transport: logpolicy.TransportOptions{
+			Host:        logtail.DefaultHost,
+			NetMon:      s.netMon,
+			Health:      health,
+			Logf:        tsLogf,
+			DialContext: s.SystemDialer,
+		}.New()},
 		MetricsDelta: clientmetric.EncodeLogTailMetricsDelta,
 	}
 	s.logtail = logtail.NewLogger(c, tsLogf)

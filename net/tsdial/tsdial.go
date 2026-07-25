@@ -80,6 +80,13 @@ type Dialer struct {
 	// LookupHook optionally specifies how non-Tailscale hostnames are resolved.
 	LookupHook dnscache.LookupHookFunc
 
+	// SystemDialer optionally specifies how non-Tailscale connections are dialed.
+	SystemDialer netx.DialFunc
+
+	// SystemPacketListener optionally specifies how non-Tailscale packet sockets
+	// are opened.
+	SystemPacketListener netx.ListenPacketFunc
+
 	peerClientOnce sync.Once
 	peerClient     *http.Client
 
@@ -527,7 +534,7 @@ func (d *Dialer) SetSystemDialerForTest(fn netx.DialFunc) {
 // Control and (in the future, as of 2022-04-27) DERPs..
 func (d *Dialer) SystemDial(ctx context.Context, network, addr string) (net.Conn, error) {
 	d.mu.Lock()
-	if d.netMon == nil && d.sysDialForTest == nil {
+	if d.netMon == nil && d.sysDialForTest == nil && d.SystemDialer == nil {
 		d.mu.Unlock()
 		if testenv.InTest() {
 			panic("SystemDial requires a netmon.Monitor; call SetNetMon first")
@@ -544,6 +551,8 @@ func (d *Dialer) SystemDial(ctx context.Context, network, addr string) (net.Conn
 	var err error
 	if d.sysDialForTest != nil {
 		c, err = d.sysDialForTest(ctx, network, addr)
+	} else if d.SystemDialer != nil {
+		c, err = d.SystemDialer(ctx, network, addr)
 	} else {
 		d.netnsDialerOnce.Do(func() {
 			d.netnsDialer = netns.NewDialer(d.logf, d.netMon)
@@ -564,6 +573,29 @@ func (d *Dialer) SystemDial(ctx context.Context, network, addr string) (net.Conn
 		d:    d,
 		Conn: c,
 	}, nil
+}
+
+// SystemPacketListen opens a non-Tailscale packet socket using the configured
+// listener, or the default network namespace listener when none is configured.
+func (d *Dialer) SystemPacketListen(ctx context.Context, network, address string) (net.PacketConn, error) {
+	d.mu.Lock()
+	if d.netMon == nil && d.SystemPacketListener == nil {
+		d.mu.Unlock()
+		if testenv.InTest() {
+			panic("SystemPacketListen requires a netmon.Monitor; call SetNetMon first")
+		}
+		return nil, errors.New("SystemPacketListen requires a netmon.Monitor; call SetNetMon first")
+	}
+	closed := d.closed
+	d.mu.Unlock()
+	if closed {
+		return nil, net.ErrClosed
+	}
+
+	if d.SystemPacketListener != nil {
+		return d.SystemPacketListener(ctx, network, address)
+	}
+	return netns.Listener(d.logf, d.netMon).ListenPacket(ctx, network, address)
 }
 
 // UserDial connects to the provided network address as if a user were

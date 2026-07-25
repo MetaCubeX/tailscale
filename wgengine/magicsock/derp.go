@@ -415,6 +415,7 @@ func (c *Conn) derpWriteChanForRegion(regionID int, peer key.NodePublic) chan de
 	})
 	dc.HealthTracker = c.health
 	dc.AppName = c.derpAppName
+	dc.SetURLDialer(c.systemDialer)
 	if c.extraRootCAs != nil {
 		dc.TLSConfig = &tls.Config{RootCAs: c.extraRootCAs}
 	}
