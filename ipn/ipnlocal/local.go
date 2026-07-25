@@ -49,8 +49,6 @@ import (
 	"github.com/metacubex/tailscale/ipn/ipnauth"
 	"github.com/metacubex/tailscale/ipn/ipnext"
 	"github.com/metacubex/tailscale/ipn/ipnstate"
-	"github.com/metacubex/tailscale/log/sockstatlog"
-	"github.com/metacubex/tailscale/logpolicy"
 	"github.com/metacubex/tailscale/net/dns"
 	"github.com/metacubex/tailscale/net/dnscache"
 	"github.com/metacubex/tailscale/net/dnsfallback"
@@ -254,7 +252,6 @@ type LocalBackend struct {
 	exposeRemoteWebClientAtomicBool atomic.Bool // TODO(nickkhyl): move to nodeBackend
 	shutdownCalled                  bool        // if Shutdown has been called
 	debugSink                       packet.CaptureSink
-	sockstatLogger                  *sockstatlog.Logger
 
 	// getTCPHandlerForFunnelFlow returns a handler for an incoming TCP flow for
 	// the provided srcAddr and dstPort if one exists.
@@ -645,15 +642,6 @@ func NewLocalBackend(logf logger.Logf, logID logid.PublicID, sys *tsd.System, lo
 	}()
 
 	netMon := sys.NetMon.Get()
-	b.sockstatLogger, err = sockstatlog.NewLogger(logpolicy.LogsDir(logf), logf, logID, netMon, sys.HealthTracker.Get(), sys.Bus.Get())
-	if err != nil {
-		logf("error setting up sockstat logger: %v", err)
-	}
-	// Enable sockstats logs only on non-mobile unstable builds
-	if version.IsUnstableBuild() && !version.IsMobile() && b.sockstatLogger != nil {
-		b.sockstatLogger.SetLoggingEnabled(true)
-	}
-
 	// Default filter blocks everything and logs nothing, until Start() is called.
 	noneFilter := filter.NewAllowNone(logf, &netipx.IPSet{})
 	b.setFilter(noneFilter)
@@ -859,16 +847,6 @@ func (b *LocalBackend) SetComponentDebugLogging(component string, until time.Tim
 	case "magicsock":
 		setEnabled = b.MagicConn().SetDebugLoggingEnabled
 	case "sockstats":
-		if b.sockstatLogger != nil {
-			setEnabled = func(v bool) {
-				b.sockstatLogger.SetLoggingEnabled(v)
-				// Flush (and thus upload) logs when the enabled period ends,
-				// so that the logs are available for debugging.
-				if !v {
-					b.sockstatLogger.Flush()
-				}
-			}
-		}
 	case "syspolicy":
 		setEnabled = b.polc.SetDebugLoggingEnabled
 	}
@@ -1344,12 +1322,6 @@ func (b *LocalBackend) Shutdown() {
 	b.appConnector.Close()
 	b.mu.Unlock()
 	b.webClientShutdown()
-
-	if b.sockstatLogger != nil {
-		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-		defer cancel()
-		b.sockstatLogger.Shutdown(ctx)
-	}
 
 	b.unregisterSysPolicyWatch()
 	if cc != nil {
