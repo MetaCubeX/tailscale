@@ -45,6 +45,7 @@ require (
 	github.com/metacubex/bart v0.29.0
 	github.com/metacubex/http v0.1.7
 	github.com/metacubex/jsonv2 v0.0.0-20260721082349-16b4998c8f89
+	github.com/metacubex/randv2 v0.2.0
 	github.com/metacubex/tls v0.1.7
 	github.com/go-logr/zapr v1.3.0
 	github.com/go-ole/go-ole v1.3.0

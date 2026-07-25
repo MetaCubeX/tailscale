@@ -6,8 +6,8 @@ package main
 import (
 	"context"
 	"fmt"
+	rand "github.com/metacubex/randv2"
 	"log"
-	"math/rand/v2"
 	"net"
 	"net/netip"
 	"slices"

@@ -7,16 +7,16 @@ package netlog
 
 import (
 	"encoding/binary"
-	"math/rand/v2"
+	rand "github.com/metacubex/randv2"
 	"net/netip"
 	"sync"
 	"testing"
 	"testing/synctest"
 	"time"
 
-	jsonv2 "github.com/metacubex/jsonv2"
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
+	jsonv2 "github.com/metacubex/jsonv2"
 	"github.com/metacubex/tailscale/tailcfg"
 	"github.com/metacubex/tailscale/types/bools"
 	"github.com/metacubex/tailscale/types/ipproto"

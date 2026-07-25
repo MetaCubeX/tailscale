@@ -4,7 +4,7 @@
 package eventbus_test
 
 import (
-	"math/rand/v2"
+	rand "github.com/metacubex/randv2"
 	"testing"
 
 	"github.com/metacubex/tailscale/util/eventbus"

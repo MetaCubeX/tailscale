@@ -4,13 +4,13 @@
 package set
 
 import (
+	rand "github.com/metacubex/randv2"
 	"iter"
 	"maps"
 	"math/bits"
-	"math/rand/v2"
 
-	"golang.org/x/exp/constraints"
 	"github.com/metacubex/tailscale/util/mak"
+	"golang.org/x/exp/constraints"
 )
 
 // IntSet is a set optimized for integer values close to zero

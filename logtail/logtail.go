@@ -17,7 +17,7 @@ import (
 	"io"
 	"iter"
 	"log"
-	mrand "math/rand/v2"
+	mrand "github.com/metacubex/randv2"
 	"net/http"
 	"os"
 	"runtime"

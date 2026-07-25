@@ -13,8 +13,8 @@ import (
 	"expvar"
 	"flag"
 	"fmt"
+	rand "github.com/metacubex/randv2"
 	"log"
-	"math/rand/v2"
 	"net"
 	"net/http"
 	"net/netip"
@@ -24,12 +24,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/metacubex/bart"
 	"github.com/hashicorp/raft"
 	"github.com/inetaf/tcpproxy"
-	"github.com/peterbourgon/ff/v3"
-	"go4.org/netipx"
-	"golang.org/x/net/dns/dnsmessage"
+	"github.com/metacubex/bart"
 	"github.com/metacubex/tailscale/client/local"
 	"github.com/metacubex/tailscale/client/tailscale/apitype"
 	"github.com/metacubex/tailscale/cmd/natc/ippool"
@@ -42,6 +39,9 @@ import (
 	"github.com/metacubex/tailscale/util/mak"
 	"github.com/metacubex/tailscale/util/must"
 	"github.com/metacubex/tailscale/wgengine/netstack"
+	"github.com/peterbourgon/ff/v3"
+	"go4.org/netipx"
+	"golang.org/x/net/dns/dnsmessage"
 )
 
 func main() {

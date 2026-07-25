@@ -15,8 +15,8 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	rand "github.com/metacubex/randv2"
 	"log"
-	"math/rand/v2"
 	"net"
 	"net/http"
 	"net/netip"
@@ -24,7 +24,6 @@ import (
 	"syscall/js"
 	"time"
 
-	"golang.org/x/crypto/ssh"
 	"github.com/metacubex/tailscale/control/controlclient"
 	"github.com/metacubex/tailscale/ipn"
 	"github.com/metacubex/tailscale/ipn/ipnauth"
@@ -42,6 +41,7 @@ import (
 	"github.com/metacubex/tailscale/wgengine"
 	"github.com/metacubex/tailscale/wgengine/netstack"
 	"github.com/metacubex/tailscale/words"
+	"golang.org/x/crypto/ssh"
 )
 
 // ControlURL defines the URL to be used for connection to Control.

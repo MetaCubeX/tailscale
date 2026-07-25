@@ -4,9 +4,9 @@
 package ippool
 
 import (
+	rand "github.com/metacubex/randv2"
 	"math/big"
 	"math/bits"
-	"math/rand/v2"
 	"net/netip"
 
 	"go4.org/netipx"

@@ -12,12 +12,12 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/metacubex/http"
+	rand "github.com/metacubex/randv2"
 	"io"
 	"maps"
 	"math"
-	"math/rand/v2"
 	"net"
-	"github.com/metacubex/http"
 	"net/netip"
 	"net/url"
 	"os"
@@ -32,9 +32,6 @@ import (
 	"time"
 
 	"github.com/metacubex/bart"
-	"go4.org/mem"
-	"go4.org/netipx"
-	"golang.org/x/net/dns/dnsmessage"
 	"github.com/metacubex/tailscale/appc"
 	"github.com/metacubex/tailscale/client/tailscale/apitype"
 	"github.com/metacubex/tailscale/control/controlclient"
@@ -107,6 +104,9 @@ import (
 	"github.com/metacubex/tailscale/wgengine/magicsock"
 	"github.com/metacubex/tailscale/wgengine/router"
 	"github.com/metacubex/tailscale/wgengine/wgcfg"
+	"go4.org/mem"
+	"go4.org/netipx"
+	"golang.org/x/net/dns/dnsmessage"
 )
 
 var controlDebugFlags = getControlDebugFlags()

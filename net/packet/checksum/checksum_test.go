@@ -5,7 +5,7 @@ package checksum
 
 import (
 	"encoding/binary"
-	"math/rand/v2"
+	rand "github.com/metacubex/randv2"
 	"net/netip"
 	"testing"
 

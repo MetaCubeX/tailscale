@@ -16,7 +16,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
-	randv2 "math/rand/v2"
+	randv2 "github.com/metacubex/randv2"
 	"net"
 	"slices"
 	"strings"

@@ -7,10 +7,10 @@ package cloudenv
 import (
 	"context"
 	"encoding/json"
-	"log"
-	"math/rand/v2"
-	"net"
 	"github.com/metacubex/http"
+	rand "github.com/metacubex/randv2"
+	"log"
+	"net"
 	"os"
 	"runtime"
 	"strings"

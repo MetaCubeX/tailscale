@@ -11,7 +11,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"math/rand/v2"
+	rand "github.com/metacubex/randv2"
 	"net/netip"
 	"reflect"
 	"slices"

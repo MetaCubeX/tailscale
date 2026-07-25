@@ -7,7 +7,7 @@ import (
 	"slices"
 	"testing"
 
-	randv2 "math/rand/v2"
+	randv2 "github.com/metacubex/randv2"
 )
 
 func TestShuffleNoAllocs(t *testing.T) {

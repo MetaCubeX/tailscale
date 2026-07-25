@@ -14,7 +14,7 @@ import (
 	_ "encoding/json"
 	_ "fmt"
 	_ "log"
-	_ "math/rand/v2"
+	_ "github.com/metacubex/randv2"
 	_ "net"
 	_ "strings"
 	_ "time"

@@ -4,8 +4,8 @@
 package zstdframe
 
 import (
+	rand "github.com/metacubex/randv2"
 	"math/bits"
-	"math/rand/v2"
 	"os"
 	"runtime"
 	"strings"

@@ -8,8 +8,8 @@
 package main
 
 import (
+	rand "github.com/metacubex/randv2"
 	"log"
-	"math/rand/v2"
 	"net/http"
 	"net/netip"
 	"time"

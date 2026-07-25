@@ -9,7 +9,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"math/rand/v2"
+	rand "github.com/metacubex/randv2"
 	"os"
 	"reflect"
 	"time"

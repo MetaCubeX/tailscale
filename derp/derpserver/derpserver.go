@@ -20,11 +20,11 @@ import (
 	"errors"
 	"expvar"
 	"fmt"
+	rand "github.com/metacubex/randv2"
 	"io"
 	"log"
 	"math"
 	"math/big"
-	"math/rand/v2"
 	"net/http"
 	"net/netip"
 	"os"
@@ -39,9 +39,6 @@ import (
 
 	"github.com/axiomhq/hyperloglog"
 	"github.com/go4org/hashtriemap"
-	"go4.org/mem"
-	"golang.org/x/sync/errgroup"
-	xrate "golang.org/x/time/rate"
 	"github.com/metacubex/tailscale/client/local"
 	"github.com/metacubex/tailscale/derp"
 	"github.com/metacubex/tailscale/derp/derpconst"
@@ -60,6 +57,9 @@ import (
 	"github.com/metacubex/tailscale/util/set"
 	"github.com/metacubex/tailscale/util/slicesx"
 	"github.com/metacubex/tailscale/version"
+	"go4.org/mem"
+	"golang.org/x/sync/errgroup"
+	xrate "golang.org/x/time/rate"
 )
 
 // verboseDropKeys is the set of destination public keys that should

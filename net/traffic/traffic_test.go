@@ -4,8 +4,8 @@
 package traffic_test
 
 import (
+	rand "github.com/metacubex/randv2"
 	"maps"
-	"math/rand/v2"
 	"slices"
 	"testing"
 

@@ -7,7 +7,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"math/rand/v2"
+	rand "github.com/metacubex/randv2"
 	"net/netip"
 	"slices"
 	"strings"
@@ -17,9 +17,9 @@ import (
 	"time"
 
 	qt "github.com/frankban/quicktest"
-	"github.com/metacubex/bart"
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
+	"github.com/metacubex/bart"
 
 	"github.com/metacubex/tailscale/control/controlclient"
 	"github.com/metacubex/tailscale/envknob"

@@ -18,8 +18,8 @@ package main
 import (
 	"bufio"
 	"fmt"
+	rand "github.com/metacubex/randv2"
 	"log"
-	"math/rand/v2"
 	"net"
 	"strings"
 

@@ -4,8 +4,8 @@
 package vnet
 
 import (
+	rand "github.com/metacubex/randv2"
 	"log"
-	"math/rand/v2"
 	"net/netip"
 	"time"
 

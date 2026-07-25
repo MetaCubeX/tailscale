@@ -9,9 +9,9 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
+	rand "github.com/metacubex/randv2"
 	"iter"
 	"math"
-	"math/rand/v2"
 	"net"
 	"net/netip"
 	"reflect"
@@ -20,8 +20,6 @@ import (
 	"sync/atomic"
 	"time"
 
-	"golang.org/x/net/ipv4"
-	"golang.org/x/net/ipv6"
 	"github.com/metacubex/tailscale/disco"
 	"github.com/metacubex/tailscale/ipn/ipnstate"
 	"github.com/metacubex/tailscale/net/packet"
@@ -35,6 +33,8 @@ import (
 	"github.com/metacubex/tailscale/util/mak"
 	"github.com/metacubex/tailscale/util/ringlog"
 	"github.com/metacubex/tailscale/util/slicesx"
+	"golang.org/x/net/ipv4"
+	"golang.org/x/net/ipv6"
 )
 
 var mtuProbePingSizesV4 []int

@@ -9,17 +9,17 @@ import (
 	"context"
 	"crypto"
 	"crypto/sha256"
-	"github.com/metacubex/tls"
 	"crypto/x509"
 	"encoding/binary"
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/metacubex/http"
+	rand "github.com/metacubex/randv2"
+	"github.com/metacubex/tls"
 	"io"
 	"log"
-	"math/rand/v2"
 	"net"
-	"github.com/metacubex/http"
 	"net/netip"
 	"os"
 	"reflect"
@@ -30,7 +30,6 @@ import (
 	"sync/atomic"
 	"time"
 
-	"go4.org/mem"
 	"github.com/metacubex/tailscale/control/controlknobs"
 	"github.com/metacubex/tailscale/control/ts2021"
 	"github.com/metacubex/tailscale/envknob"
@@ -67,6 +66,7 @@ import (
 	"github.com/metacubex/tailscale/util/vizerror"
 	"github.com/metacubex/tailscale/util/zstdframe"
 	"github.com/metacubex/tailscale/wgengine/filter"
+	"go4.org/mem"
 )
 
 // Direct is the client that connects to a tailcontrol server for a node.

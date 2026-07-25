@@ -13,10 +13,10 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	rand "github.com/metacubex/randv2"
 	"io"
 	"log"
 	"maps"
-	"math/rand/v2"
 	"net/http"
 	"net/http/httptest"
 	"net/netip"
@@ -27,7 +27,6 @@ import (
 	"sync"
 	"time"
 
-	"golang.org/x/net/http2"
 	"github.com/metacubex/tailscale/control/controlhttp/controlhttpserver"
 	"github.com/metacubex/tailscale/net/netaddr"
 	"github.com/metacubex/tailscale/net/tsaddr"
@@ -44,6 +43,7 @@ import (
 	"github.com/metacubex/tailscale/util/rands"
 	"github.com/metacubex/tailscale/util/set"
 	"github.com/metacubex/tailscale/util/zstdframe"
+	"golang.org/x/net/http2"
 )
 
 const msgLimit = 1 << 20 // encrypted message length limit

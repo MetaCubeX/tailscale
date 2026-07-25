@@ -8,20 +8,20 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"math/rand/v2"
+	rand "github.com/metacubex/randv2"
 	"testing"
 
+	tsapi "github.com/metacubex/tailscale/k8s-operator/apis/v1alpha1"
+	"github.com/metacubex/tailscale/kube/egressservices"
+	"github.com/metacubex/tailscale/kube/kubetypes"
+	"github.com/metacubex/tailscale/tstest"
+	"github.com/metacubex/tailscale/util/mak"
 	"go.uber.org/zap"
 	corev1 "k8s.io/api/core/v1"
 	discoveryv1 "k8s.io/api/discovery/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
-	tsapi "github.com/metacubex/tailscale/k8s-operator/apis/v1alpha1"
-	"github.com/metacubex/tailscale/kube/egressservices"
-	"github.com/metacubex/tailscale/kube/kubetypes"
-	"github.com/metacubex/tailscale/tstest"
-	"github.com/metacubex/tailscale/util/mak"
 )
 
 func TestTailscaleEgressEndpointSlices(t *testing.T) {

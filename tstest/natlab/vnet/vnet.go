@@ -25,12 +25,12 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	rand "github.com/metacubex/randv2"
 	"io"
 	"iter"
 	"log"
 	"maps"
 	"math/big"
-	"math/rand/v2"
 	"net"
 	"net/http"
 	"net/netip"
@@ -42,10 +42,9 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/metacubex/bart"
 	"github.com/google/gopacket"
 	"github.com/google/gopacket/layers"
-	"go4.org/mem"
+	"github.com/metacubex/bart"
 	"github.com/metacubex/gvisor/pkg/buffer"
 	"github.com/metacubex/gvisor/pkg/tcpip"
 	"github.com/metacubex/gvisor/pkg/tcpip/adapters/gonet"
@@ -72,6 +71,7 @@ import (
 	"github.com/metacubex/tailscale/util/must"
 	"github.com/metacubex/tailscale/util/set"
 	"github.com/metacubex/tailscale/util/zstdframe"
+	"go4.org/mem"
 )
 
 const nicID = 1

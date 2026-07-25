@@ -13,10 +13,10 @@ import (
 	"errors"
 	"flag"
 	"fmt"
+	rand "github.com/metacubex/randv2"
 	"io"
 	"log"
 	"math"
-	"math/rand/v2"
 	"net"
 	"net/http"
 	"net/netip"
@@ -32,12 +32,12 @@ import (
 	"time"
 
 	"github.com/golang/snappy"
-	"github.com/prometheus/prometheus/prompb"
-	"github.com/tcnksm/go-httpstat"
 	"github.com/metacubex/tailscale/net/stun"
 	"github.com/metacubex/tailscale/net/tcpinfo"
 	"github.com/metacubex/tailscale/tailcfg"
 	"github.com/metacubex/tailscale/util/backoff"
+	"github.com/prometheus/prometheus/prompb"
+	"github.com/tcnksm/go-httpstat"
 )
 
 var (

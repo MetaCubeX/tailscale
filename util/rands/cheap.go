@@ -10,7 +10,7 @@ package rands
 import (
 	"math/bits"
 
-	randv2 "math/rand/v2"
+	randv2 "github.com/metacubex/randv2"
 )
 
 // Shuffle is like rand.Shuffle, but it does not allocate or lock any RNG state.
