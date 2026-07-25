@@ -22,7 +22,7 @@ import (
 
 	"golang.org/x/sys/windows"
 	"golang.org/x/sys/windows/registry"
-	"golang.zx2c4.com/wireguard/windows/tunnel/winipcfg"
+	"github.com/metacubex/tailscale/util/winipcfg"
 	"github.com/metacubex/tailscale/atomicfile"
 	"github.com/metacubex/tailscale/control/controlknobs"
 	"github.com/metacubex/tailscale/envknob"

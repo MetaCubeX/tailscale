@@ -12,7 +12,7 @@ import (
 
 	"golang.org/x/sys/cpu"
 	"golang.org/x/sys/windows"
-	"golang.zx2c4.com/wireguard/windows/tunnel/winipcfg"
+	"github.com/metacubex/tailscale/util/winipcfg"
 	"github.com/metacubex/tailscale/envknob"
 	"github.com/metacubex/tailscale/net/netmon"
 	"github.com/metacubex/tailscale/tsconst"

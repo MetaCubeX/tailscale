@@ -7,7 +7,7 @@ import (
 	"unsafe"
 
 	"golang.org/x/sys/windows"
-	"golang.zx2c4.com/wireguard/windows/tunnel/winipcfg"
+	"github.com/metacubex/tailscale/util/winipcfg"
 )
 
 var _ unsafe.Pointer

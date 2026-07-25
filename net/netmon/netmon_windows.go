@@ -10,7 +10,7 @@ import (
 	"sync"
 	"time"
 
-	"golang.zx2c4.com/wireguard/windows/tunnel/winipcfg"
+	"github.com/metacubex/tailscale/util/winipcfg"
 	"github.com/metacubex/tailscale/net/tsaddr"
 	"github.com/metacubex/tailscale/types/logger"
 	"github.com/metacubex/tailscale/util/eventbus"
