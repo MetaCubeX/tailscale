@@ -7,9 +7,9 @@ package dnscache
 
 import (
 	"context"
-	"github.com/metacubex/tls"
 	"errors"
 	"fmt"
+	"github.com/metacubex/tls"
 	"log"
 	"net"
 	"net/netip"
@@ -72,6 +72,9 @@ type Resolver struct {
 	// LookupIPFallback optionally provides a backup DNS mechanism
 	// to use if Forward returns an error or no results.
 	LookupIPFallback func(ctx context.Context, host string) ([]netip.Addr, error)
+
+	// LookupHook, if non-nil, replaces Forward and LookupIPFallback.
+	LookupHook LookupHookFunc
 
 	// TTL is how long to keep entries cached
 	//
@@ -297,16 +300,18 @@ func (r *Resolver) lookupIP(ctx context.Context, host string) (ip, ip6 netip.Add
 	var ips []netip.Addr
 	if r.LookupIPForTest != nil && testenv.InTest() {
 		ips, err = r.LookupIPForTest(ctx, host)
+	} else if r.LookupHook != nil {
+		ips, err = r.LookupHook(lookupCtx, host)
 	} else {
 		ips, err = r.fwd().LookupNetIP(lookupCtx, "ip", host)
 	}
-	if err != nil || len(ips) == 0 {
+	if (err != nil || len(ips) == 0) && r.LookupHook == nil {
 		if resolver, ok := r.cloudHostResolver(); ok {
 			r.dlogf("resolving %q via cloud resolver", host)
 			ips, err = resolver.LookupNetIP(lookupCtx, "ip", host)
 		}
 	}
-	if (err != nil || len(ips) == 0) && r.LookupIPFallback != nil {
+	if (err != nil || len(ips) == 0) && r.LookupIPFallback != nil && r.LookupHook == nil {
 		lookupCtx, lookupCancel := context.WithTimeout(ctx, 30*time.Second)
 		defer lookupCancel()
 		if err != nil {

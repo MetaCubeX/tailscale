@@ -30,6 +30,7 @@ import (
 	"github.com/metacubex/tailscale/ipn/ipnstate"
 	"github.com/metacubex/tailscale/net/dns"
 	"github.com/metacubex/tailscale/net/dns/resolver"
+	"github.com/metacubex/tailscale/net/dnscache"
 	"github.com/metacubex/tailscale/net/ipset"
 	"github.com/metacubex/tailscale/net/netmon"
 	"github.com/metacubex/tailscale/net/packet"
@@ -206,6 +207,9 @@ type Config struct {
 	// If nil, a new Dialer is created.
 	Dialer *tsdial.Dialer
 
+	// LookupHook optionally specifies how non-Tailscale hostnames are resolved.
+	LookupHook dnscache.LookupHookFunc
+
 	// ExtraRootCAs, if non-nil, specifies additional trusted root CAs for TLS
 	// connections (e.g. DERP). Passed through to magicsock.
 	ExtraRootCAs *x509.CertPool
@@ -331,6 +335,7 @@ func NewUserspaceEngine(logf logger.Logf, conf Config) (_ Engine, reterr error) 
 	}
 	if conf.Dialer == nil {
 		conf.Dialer = &tsdial.Dialer{Logf: logf}
+		conf.Dialer.LookupHook = conf.LookupHook
 		if conf.EventBus != nil {
 			conf.Dialer.SetBus(conf.EventBus)
 		}
@@ -430,6 +435,7 @@ func NewUserspaceEngine(logf logger.Logf, conf Config) (_ Engine, reterr error) 
 		NetMon:         e.netMon,
 		HealthTracker:  e.health,
 		ExtraRootCAs:   conf.ExtraRootCAs,
+		LookupHook:     conf.LookupHook,
 		DERPAppName:    conf.DERPAppName,
 		Metrics:        conf.Metrics,
 		ControlKnobs:   conf.ControlKnobs,

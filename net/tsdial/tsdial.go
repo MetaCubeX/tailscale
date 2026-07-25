@@ -77,6 +77,9 @@ type Dialer struct {
 	// If nil, it's not used.
 	NetstackDialUDP func(context.Context, netip.AddrPort) (net.Conn, error)
 
+	// LookupHook optionally specifies how non-Tailscale hostnames are resolved.
+	LookupHook dnscache.LookupHookFunc
+
 	peerClientOnce sync.Once
 	peerClient     *http.Client
 
@@ -424,8 +427,9 @@ func (d *Dialer) userDialResolveAll(ctx context.Context, network, addr string) (
 		return nil, err
 	}
 
-	var r net.Resolver
+	var ips []netip.Addr
 	if buildfeatures.HasUseExitNode && buildfeatures.HasPeerAPIClient && exitDNSDoH != "" {
+		var r net.Resolver
 		r.PreferGo = true
 		r.Dial = func(ctx context.Context, network, address string) (net.Conn, error) {
 			return &dohConn{
@@ -435,19 +439,25 @@ func (d *Dialer) userDialResolveAll(ctx context.Context, network, addr string) (
 				dnsCache: d.dnsCache,
 			}, nil
 		}
+		ips, err = r.LookupNetIP(ctx, ipNetOfNetwork(network), host)
+	} else if d.LookupHook != nil {
+		ips, err = d.LookupHook(ctx, host)
+	} else {
+		ips, err = net.DefaultResolver.LookupNetIP(ctx, ipNetOfNetwork(network), host)
 	}
-
-	ips, err := r.LookupIP(ctx, ipNetOfNetwork(network), host)
 	if err != nil {
 		return nil, err
 	}
 	out := make([]netip.AddrPort, 0, len(ips))
-	for _, stdIP := range ips {
-		ip, ok := netip.AddrFromSlice(stdIP)
-		if !ok {
+	for _, ip := range ips {
+		ip = ip.Unmap()
+		if strings.HasSuffix(network, "4") && !ip.Is4() {
 			continue
 		}
-		out = append(out, netip.AddrPortFrom(ip.Unmap(), port))
+		if strings.HasSuffix(network, "6") && !ip.Is6() {
+			continue
+		}
+		out = append(out, netip.AddrPortFrom(ip, port))
 	}
 	if len(out) == 0 {
 		return nil, fmt.Errorf("DNS lookup returned no results for %q", host)

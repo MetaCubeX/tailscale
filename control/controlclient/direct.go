@@ -155,6 +155,7 @@ type Options struct {
 	C2NHandler           http.Handler        // or nil
 	ControlKnobs         *controlknobs.Knobs // or nil to ignore
 	Bus                  *eventbus.Bus       // non-nil, for setting up publishers
+	LookupHook           dnscache.LookupHookFunc
 
 	SkipStartForTests bool // if true, don't call [Auto.Start] to avoid any background goroutines (for tests only)
 
@@ -336,6 +337,7 @@ func NewDirect(opts Options) (*Direct, error) {
 		UseLastGood:      true,
 		LookupIPFallback: dnsfallback.MakeLookupFunc(opts.Logf, netMon),
 		Logf:             opts.Logf,
+		LookupHook:       opts.LookupHook,
 	}
 
 	httpc := opts.HTTPTestClient

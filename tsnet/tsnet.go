@@ -180,6 +180,7 @@ import (
 	"github.com/metacubex/tailscale/logpolicy"
 	"github.com/metacubex/tailscale/logtail"
 	"github.com/metacubex/tailscale/logtail/filch"
+	"github.com/metacubex/tailscale/net/dnscache"
 	"github.com/metacubex/tailscale/net/memnet"
 	"github.com/metacubex/tailscale/net/netmon"
 	"github.com/metacubex/tailscale/net/proxymux"
@@ -296,6 +297,10 @@ type Server struct {
 	// traffic. If zero, a port is automatically selected. Leave this
 	// field at zero unless you know what you are doing.
 	Port uint16
+
+	// LookupHook optionally specifies how tsnet resolves non-Tailscale
+	// infrastructure hostnames such as control and DERP.
+	LookupHook dnscache.LookupHookFunc
 
 	// AdvertiseTags specifies tags that should be applied to this node, for
 	// purposes of ACL enforcement. These can be referenced from the ACL policy
@@ -839,6 +844,7 @@ func (s *Server) start() (reterr error) {
 
 	sys := tsd.NewSystem()
 	s.sys = sys
+	sys.LookupHook = s.LookupHook
 	if err := s.startLogger(&closePool, sys.HealthTracker.Get(), tsLogf); err != nil {
 		return err
 	}
@@ -850,6 +856,7 @@ func (s *Server) start() (reterr error) {
 	closePool.add(s.netMon)
 
 	s.dialer = &tsdial.Dialer{Logf: tsLogf} // mutated below (before used)
+	s.dialer.LookupHook = s.LookupHook
 	s.dialer.SetBus(sys.Bus.Get())
 	eng, err := wgengine.NewUserspaceEngine(tsLogf, wgengine.Config{
 		Tun:           s.Tun,
@@ -857,6 +864,7 @@ func (s *Server) start() (reterr error) {
 		ListenPort:    s.Port,
 		NetMon:        s.netMon,
 		Dialer:        s.dialer,
+		LookupHook:    s.LookupHook,
 		SetSubsystem:  sys.Set,
 		ControlKnobs:  sys.ControlKnobs(),
 		HealthTracker: sys.HealthTracker.Get(),

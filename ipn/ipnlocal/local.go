@@ -3201,6 +3201,7 @@ func (b *LocalBackend) startLocked(opts ipn.Options) error {
 		Shutdown:             ccShutdown,
 		Bus:                  b.sys.Bus.Get(),
 		StartPaused:          b.shouldPauseControlClientLocked(prefs),
+		LookupHook:           b.sys.LookupHook,
 	})
 	if err != nil {
 		return err

@@ -29,6 +29,7 @@ import (
 	"github.com/metacubex/tailscale/ipn"
 	"github.com/metacubex/tailscale/ipn/conffile"
 	"github.com/metacubex/tailscale/net/dns"
+	"github.com/metacubex/tailscale/net/dnscache"
 	"github.com/metacubex/tailscale/net/netmon"
 	"github.com/metacubex/tailscale/net/tsdial"
 	"github.com/metacubex/tailscale/net/tstun"
@@ -74,6 +75,10 @@ type System struct {
 	// CA certificates that Go's crypto/x509 does not see.
 	// It is plumbed through to tlsdial.Config via tls.Config.RootCAs.
 	ExtraRootCAs *x509.CertPool
+
+	// LookupHook, if non-nil, resolves non-Tailscale hostnames through the
+	// embedding application's resolver.
+	LookupHook dnscache.LookupHookFunc
 
 	// InitialConfig is initial server config, if any.
 	// It is nil if the node is not in declarative mode.
