@@ -7,7 +7,6 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
-	"strconv"
 	"strings"
 
 	"github.com/metacubex/tailscale/syncs"
@@ -209,26 +208,10 @@ func IsWindowsGUI() bool {
 	})
 }
 
-var isUnstableBuild lazy.SyncValue[bool]
-
-// IsUnstableBuild reports whether this is an unstable build.
-// That is, whether its minor version number is odd.
+// IsUnstableBuild reports whether this is an unstable build. Fork builds do
+// not use the upstream odd-minor warning convention.
 func IsUnstableBuild() bool {
-	return isUnstableBuild.Get(func() bool {
-		_, rest, ok := strings.Cut(Short(), ".")
-		if !ok {
-			return false
-		}
-		minorStr, _, ok := strings.Cut(rest, ".")
-		if !ok {
-			return false
-		}
-		minor, err := strconv.Atoi(minorStr)
-		if err != nil {
-			return false
-		}
-		return minor%2 == 1
-	})
+	return false
 }
 
 // osVariant returns the OS variant string for systems where we support
