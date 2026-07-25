@@ -16,8 +16,8 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"net"
 	"github.com/metacubex/http"
+	"net"
 	"net/netip"
 	"net/url"
 	"os"
@@ -28,9 +28,8 @@ import (
 	"github.com/metacubex/tailscale/atomicfile"
 	"github.com/metacubex/tailscale/feature"
 	"github.com/metacubex/tailscale/health"
-	"github.com/metacubex/tailscale/net/netmon"
-	"github.com/metacubex/tailscale/net/netns"
 	"github.com/metacubex/tailscale/net/netutil"
+	"github.com/metacubex/tailscale/net/netx"
 	"github.com/metacubex/tailscale/net/tlsdial"
 	"github.com/metacubex/tailscale/tailcfg"
 	"github.com/metacubex/tailscale/types/logger"
@@ -39,11 +38,16 @@ import (
 
 // MakeLookupFunc creates a function that can be used to resolve hostnames
 // (e.g. as a LookupIPFallback from dnscache.Resolver).
-// The netMon parameter is optional; if non-nil it's used to do faster interface lookups.
-func MakeLookupFunc(logf logger.Logf, netMon *netmon.Monitor) func(ctx context.Context, host string) ([]netip.Addr, error) {
+// dialer is used for the HTTPS bootstrap lookup. If nil, the standard network
+// dialer is used.
+func MakeLookupFunc(logf logger.Logf, dialer netx.DialFunc) func(ctx context.Context, host string) ([]netip.Addr, error) {
+	if dialer == nil {
+		var d net.Dialer
+		dialer = d.DialContext
+	}
 	fr := &fallbackResolver{
 		logf:   logf,
-		netMon: netMon,
+		dialer: dialer,
 	}
 	return fr.Lookup
 }
@@ -52,7 +56,7 @@ func MakeLookupFunc(logf logger.Logf, netMon *netmon.Monitor) func(ctx context.C
 // function.
 type fallbackResolver struct {
 	logf          logger.Logf
-	netMon        *netmon.Monitor // or nil
+	dialer        netx.DialFunc
 	healthTracker *health.Tracker // or nil
 
 	// for tests
@@ -60,10 +64,10 @@ type fallbackResolver struct {
 }
 
 func (fr *fallbackResolver) Lookup(ctx context.Context, host string) ([]netip.Addr, error) {
-	return lookup(ctx, host, fr.logf, fr.healthTracker, fr.netMon)
+	return lookup(ctx, host, fr.logf, fr.healthTracker, fr.dialer)
 }
 
-func lookup(ctx context.Context, host string, logf logger.Logf, ht *health.Tracker, netMon *netmon.Monitor) ([]netip.Addr, error) {
+func lookup(ctx context.Context, host string, logf logger.Logf, ht *health.Tracker, dialer netx.DialFunc) ([]netip.Addr, error) {
 	if ip, err := netip.ParseAddr(host); err == nil && ip.IsValid() {
 		return []netip.Addr{ip}, nil
 	}
@@ -111,7 +115,7 @@ func lookup(ctx context.Context, host string, logf logger.Logf, ht *health.Track
 		logf("trying bootstrapDNS(%q, %q) for %q ...", cand.dnsName, cand.ip, host)
 		ctx, cancel := context.WithTimeout(ctx, 3*time.Second)
 		defer cancel()
-		dm, err := bootstrapDNSMap(ctx, cand.dnsName, cand.ip, host, logf, ht, netMon)
+		dm, err := bootstrapDNSMap(ctx, cand.dnsName, cand.ip, host, logf, ht, dialer)
 		if err != nil {
 			logf("bootstrapDNS(%q, %q) for %q error: %v", cand.dnsName, cand.ip, host, err)
 			continue
@@ -132,13 +136,12 @@ func lookup(ctx context.Context, host string, logf logger.Logf, ht *health.Track
 // queryName is the name being sought (e.g. "controlplane.tailscale.com"), passed as hint.
 //
 // ht may be nil.
-func bootstrapDNSMap(ctx context.Context, serverName string, serverIP netip.Addr, queryName string, logf logger.Logf, ht *health.Tracker, netMon *netmon.Monitor) (dnsMap, error) {
-	dialer := netns.NewDialer(logf, netMon)
+func bootstrapDNSMap(ctx context.Context, serverName string, serverIP netip.Addr, queryName string, logf logger.Logf, ht *health.Tracker, dialer netx.DialFunc) (dnsMap, error) {
 	tr := netutil.NewDefaultTransport()
 	tr.DisableKeepAlives = true // This transport is meant to be used once.
 	tr.Proxy = feature.HookProxyFromEnvironment.GetOrNil()
 	tr.DialContext = func(ctx context.Context, netw, addr string) (net.Conn, error) {
-		return dialer.DialContext(ctx, "tcp", net.JoinHostPort(serverIP.String(), "443"))
+		return dialer(ctx, "tcp", net.JoinHostPort(serverIP.String(), "443"))
 	}
 	tr.TLSClientConfig = tlsdial.ConfigWithLogf(ht, tr.TLSClientConfig, logf)
 	c := &http.Client{Transport: tr}

@@ -848,7 +848,7 @@ func dialContext(ctx context.Context, netw, addr string, netMon *netmon.Monitor,
 	dnsCache := &dnscache.Resolver{
 		Forward:          dnscache.Get().Forward, // use default cache's forwarder
 		UseLastGood:      true,
-		LookupIPFallback: dnsfallback.MakeLookupFunc(logf, netMon),
+		LookupIPFallback: dnsfallback.MakeLookupFunc(logf, nd.DialContext),
 	}
 	dialer := dnscache.Dialer(nd.DialContext, dnsCache)
 	c, err = dialer(ctx, netw, addr)

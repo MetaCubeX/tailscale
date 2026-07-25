@@ -13,6 +13,7 @@ import (
 	"testing"
 
 	"github.com/metacubex/tailscale/net/netmon"
+	"github.com/metacubex/tailscale/net/netns"
 	"github.com/metacubex/tailscale/tailcfg"
 	"github.com/metacubex/tailscale/types/logger"
 	"github.com/metacubex/tailscale/util/eventbus"
@@ -196,7 +197,7 @@ func TestLookup(t *testing.T) {
 
 	resolver := &fallbackResolver{
 		logf:           logf,
-		netMon:         netMon,
+		dialer:         netns.NewDialer(logf, netMon).DialContext,
 		waitForCompare: true,
 	}
 	addrs, err := resolver.Lookup(context.Background(), "controlplane.tailscale.com")

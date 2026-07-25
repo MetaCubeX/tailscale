@@ -369,9 +369,13 @@ func (a *Dialer) resolver() *dnscache.Resolver {
 		return a.DNSCache
 	}
 
+	dialer := a.Dialer
+	if dialer == nil {
+		dialer = stdDialer.DialContext
+	}
 	return &dnscache.Resolver{
 		Forward:          dnscache.Get().Forward,
-		LookupIPFallback: dnsfallback.MakeLookupFunc(a.logf, a.NetMon),
+		LookupIPFallback: dnsfallback.MakeLookupFunc(a.logf, dialer),
 		UseLastGood:      true,
 		Logf:             a.Logf, // not a.logf method; we want to propagate nil-ness
 	}
