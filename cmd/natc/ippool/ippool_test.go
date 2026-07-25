@@ -11,8 +11,8 @@ import (
 	"time"
 
 	"go4.org/netipx"
-	"tailscale.com/tailcfg"
-	"tailscale.com/util/must"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/util/must"
 )
 
 func TestIPPoolExhaustion(t *testing.T) {

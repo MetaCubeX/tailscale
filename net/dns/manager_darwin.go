@@ -13,14 +13,14 @@ import (
 	"strings"
 
 	"go4.org/mem"
-	"tailscale.com/control/controlknobs"
-	"tailscale.com/health"
-	"tailscale.com/net/dns/resolvconffile"
-	"tailscale.com/net/tsaddr"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/eventbus"
-	"tailscale.com/util/mak"
-	"tailscale.com/util/syspolicy/policyclient"
+	"github.com/metacubex/tailscale/control/controlknobs"
+	"github.com/metacubex/tailscale/health"
+	"github.com/metacubex/tailscale/net/dns/resolvconffile"
+	"github.com/metacubex/tailscale/net/tsaddr"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/util/eventbus"
+	"github.com/metacubex/tailscale/util/mak"
+	"github.com/metacubex/tailscale/util/syspolicy/policyclient"
 )
 
 // NewOSConfigurator creates a new OS configurator.

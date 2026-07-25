@@ -6,7 +6,7 @@ package routecheck
 import (
 	"log"
 
-	"tailscale.com/envknob"
+	"github.com/metacubex/tailscale/envknob"
 )
 
 // Debugging tweakable.

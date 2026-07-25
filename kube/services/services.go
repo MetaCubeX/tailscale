@@ -10,10 +10,10 @@ import (
 	"fmt"
 	"time"
 
-	"tailscale.com/client/local"
-	"tailscale.com/ipn"
-	"tailscale.com/kube/localclient"
-	"tailscale.com/types/logger"
+	"github.com/metacubex/tailscale/client/local"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/kube/localclient"
+	"github.com/metacubex/tailscale/types/logger"
 )
 
 // EnsureServicesAdvertised is a function that gets called on containerboot

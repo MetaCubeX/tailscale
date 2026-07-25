@@ -10,7 +10,7 @@ import (
 	"strings"
 
 	"github.com/peterbourgon/ff/v3/ffcli"
-	"tailscale.com/atomicfile"
+	"github.com/metacubex/tailscale/atomicfile"
 )
 
 var metricsCmd = &ffcli.Command{

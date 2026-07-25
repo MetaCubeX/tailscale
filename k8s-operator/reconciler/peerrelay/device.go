@@ -17,9 +17,9 @@ import (
 
 	tailscaleclient "tailscale.com/client/tailscale/v2"
 
-	tsapi "tailscale.com/k8s-operator/apis/v1alpha1"
-	"tailscale.com/k8s-operator/reconciler/tailscaled"
-	"tailscale.com/kube/kubetypes"
+	tsapi "github.com/metacubex/tailscale/k8s-operator/apis/v1alpha1"
+	"github.com/metacubex/tailscale/k8s-operator/reconciler/tailscaled"
+	"github.com/metacubex/tailscale/kube/kubetypes"
 )
 
 func (r *Reconciler) deleteDevicesFrom(ctx context.Context, logger *zap.SugaredLogger, pr *tsapi.PeerRelay, fromIdx int32) error {

@@ -7,8 +7,8 @@ import (
 	"net/netip"
 	"testing"
 
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/netmap"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/types/netmap"
 )
 
 func TestResolveMagicDNS(t *testing.T) {

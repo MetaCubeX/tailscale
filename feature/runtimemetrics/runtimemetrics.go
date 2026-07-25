@@ -9,9 +9,9 @@ import (
 	"sync"
 	"time"
 
-	"tailscale.com/feature"
-	"tailscale.com/ipn/ipnlocal"
-	"tailscale.com/util/clientmetric"
+	"github.com/metacubex/tailscale/feature"
+	"github.com/metacubex/tailscale/ipn/ipnlocal"
+	"github.com/metacubex/tailscale/util/clientmetric"
 )
 
 func init() {

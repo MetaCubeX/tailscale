@@ -18,15 +18,15 @@ import (
 	"strings"
 	"time"
 
-	"tailscale.com/derp/derphttp"
-	"tailscale.com/ipn/ipnstate"
-	"tailscale.com/net/netaddr"
-	"tailscale.com/net/netns"
-	"tailscale.com/net/stun"
-	"tailscale.com/net/tlsdial"
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/key"
-	"tailscale.com/types/nettype"
+	"github.com/metacubex/tailscale/derp/derphttp"
+	"github.com/metacubex/tailscale/ipn/ipnstate"
+	"github.com/metacubex/tailscale/net/netaddr"
+	"github.com/metacubex/tailscale/net/netns"
+	"github.com/metacubex/tailscale/net/stun"
+	"github.com/metacubex/tailscale/net/tlsdial"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/types/key"
+	"github.com/metacubex/tailscale/types/nettype"
 )
 
 // tlsConfigForNode builds a *tls.Config for connecting to a DERP node,

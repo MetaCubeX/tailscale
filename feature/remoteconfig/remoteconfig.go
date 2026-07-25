@@ -26,10 +26,10 @@ import (
 	"net/http"
 	"strings"
 
-	"tailscale.com/feature"
-	"tailscale.com/ipn/ipnauth"
-	"tailscale.com/ipn/ipnlocal"
-	"tailscale.com/ipn/localapi"
+	"github.com/metacubex/tailscale/feature"
+	"github.com/metacubex/tailscale/ipn/ipnauth"
+	"github.com/metacubex/tailscale/ipn/ipnlocal"
+	"github.com/metacubex/tailscale/ipn/localapi"
 )
 
 // c2nPrefix is the c2n URL path prefix under which requests are

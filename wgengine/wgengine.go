@@ -10,17 +10,17 @@ import (
 	"time"
 
 	"github.com/gaissmai/bart"
-	"tailscale.com/ipn/ipnstate"
-	"tailscale.com/net/dns"
-	"tailscale.com/net/packet"
-	"tailscale.com/net/routemanager"
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/key"
-	"tailscale.com/types/netmap"
-	"tailscale.com/wgengine/filter"
-	"tailscale.com/wgengine/router"
-	"tailscale.com/wgengine/wgcfg"
-	"tailscale.com/wgengine/wgint"
+	"github.com/metacubex/tailscale/ipn/ipnstate"
+	"github.com/metacubex/tailscale/net/dns"
+	"github.com/metacubex/tailscale/net/packet"
+	"github.com/metacubex/tailscale/net/routemanager"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/types/key"
+	"github.com/metacubex/tailscale/types/netmap"
+	"github.com/metacubex/tailscale/wgengine/filter"
+	"github.com/metacubex/tailscale/wgengine/router"
+	"github.com/metacubex/tailscale/wgengine/wgcfg"
+	"github.com/metacubex/tailscale/wgengine/wgint"
 )
 
 // Status is the Engine status.

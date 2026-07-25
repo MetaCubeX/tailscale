@@ -18,14 +18,14 @@ import (
 	"strconv"
 	"sync"
 
-	"tailscale.com/control/ts2021"
-	"tailscale.com/health"
-	"tailscale.com/ipn"
-	"tailscale.com/net/tsdial"
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/key"
-	"tailscale.com/types/logger"
-	"tailscale.com/version"
+	"github.com/metacubex/tailscale/control/ts2021"
+	"github.com/metacubex/tailscale/health"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/net/tsdial"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/types/key"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/version"
 )
 
 // DefaultServerURL is the default coordination server base URL,

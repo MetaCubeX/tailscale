@@ -13,9 +13,9 @@ import (
 	"path"
 
 	"github.com/tailscale/hujson"
-	"tailscale.com/cmd/tsconnect/wasmbuild"
-	"tailscale.com/util/precompress"
-	"tailscale.com/version"
+	"github.com/metacubex/tailscale/cmd/tsconnect/wasmbuild"
+	"github.com/metacubex/tailscale/util/precompress"
+	"github.com/metacubex/tailscale/version"
 )
 
 func runBuildPkg() {

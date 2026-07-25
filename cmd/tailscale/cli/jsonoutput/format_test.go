@@ -10,7 +10,7 @@ import (
 	"strings"
 	"testing"
 
-	"tailscale.com/cmd/tailscale/cli/jsonoutput"
+	"github.com/metacubex/tailscale/cmd/tailscale/cli/jsonoutput"
 )
 
 func TestFormat(t *testing.T) {

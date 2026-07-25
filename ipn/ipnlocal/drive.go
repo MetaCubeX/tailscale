@@ -15,12 +15,12 @@ import (
 	"os"
 	"slices"
 
-	"tailscale.com/drive"
-	"tailscale.com/ipn"
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/logger"
-	"tailscale.com/types/views"
-	"tailscale.com/util/httpm"
+	"github.com/metacubex/tailscale/drive"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/types/views"
+	"github.com/metacubex/tailscale/util/httpm"
 )
 
 func init() {

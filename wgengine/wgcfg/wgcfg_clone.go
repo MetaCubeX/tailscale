@@ -8,7 +8,7 @@ package wgcfg
 import (
 	"net/netip"
 
-	"tailscale.com/types/key"
+	"github.com/metacubex/tailscale/types/key"
 )
 
 // Clone makes a deep copy of Config.

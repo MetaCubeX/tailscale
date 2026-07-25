@@ -12,9 +12,9 @@ import (
 	"slices"
 	"strconv"
 
-	"tailscale.com/ipn"
-	"tailscale.com/ipn/ipnstate"
-	"tailscale.com/tailcfg"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/ipn/ipnstate"
+	"github.com/metacubex/tailscale/tailcfg"
 )
 
 // isServeConfigEmpty reports whether sc has no user-visible configuration

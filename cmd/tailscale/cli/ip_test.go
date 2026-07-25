@@ -7,9 +7,9 @@ import (
 	"net/netip"
 	"testing"
 
-	"tailscale.com/ipn/ipnstate"
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/key"
+	"github.com/metacubex/tailscale/ipn/ipnstate"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/types/key"
 )
 
 func TestPeerMatchingIP(t *testing.T) {

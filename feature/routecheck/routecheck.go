@@ -18,12 +18,12 @@ import (
 	"fmt"
 	"sync"
 
-	"tailscale.com/ipn/ipnext"
-	"tailscale.com/ipn/ipnlocal"
-	"tailscale.com/net/routecheck"
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/eventbus"
+	"github.com/metacubex/tailscale/ipn/ipnext"
+	"github.com/metacubex/tailscale/ipn/ipnlocal"
+	"github.com/metacubex/tailscale/net/routecheck"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/util/eventbus"
 )
 
 // FeatureName is the name of the feature implemented by this package.

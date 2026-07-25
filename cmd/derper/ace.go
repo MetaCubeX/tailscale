@@ -12,8 +12,8 @@ import (
 	"net/http"
 	"strings"
 
-	"tailscale.com/derp/derpserver"
-	"tailscale.com/net/connectproxy"
+	"github.com/metacubex/tailscale/derp/derpserver"
+	"github.com/metacubex/tailscale/net/connectproxy"
 )
 
 // serveConnect handles a CONNECT request for ACE support.

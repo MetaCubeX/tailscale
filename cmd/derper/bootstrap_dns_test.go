@@ -15,8 +15,8 @@ import (
 	"reflect"
 	"testing"
 
-	"tailscale.com/tstest"
-	"tailscale.com/tstest/nettest"
+	"github.com/metacubex/tailscale/tstest"
+	"github.com/metacubex/tailscale/tstest/nettest"
 )
 
 func BenchmarkHandleBootstrapDNS(b *testing.B) {

@@ -14,7 +14,7 @@ import (
 	"log/syslog"
 	"sync"
 
-	"tailscale.com/feature"
+	"github.com/metacubex/tailscale/feature"
 )
 
 func init() {

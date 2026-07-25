@@ -11,8 +11,8 @@ import (
 	"strings"
 
 	"golang.org/x/sys/unix"
-	"tailscale.com/util/lineiter"
-	"tailscale.com/version/distro"
+	"github.com/metacubex/tailscale/util/lineiter"
+	"github.com/metacubex/tailscale/version/distro"
 )
 
 func init() {

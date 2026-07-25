@@ -14,12 +14,12 @@ import (
 
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
-	"tailscale.com/tstest"
-	"tailscale.com/util/syspolicy/pkey"
-	"tailscale.com/util/syspolicy/policyclient"
-	"tailscale.com/util/syspolicy/setting"
+	"github.com/metacubex/tailscale/tstest"
+	"github.com/metacubex/tailscale/util/syspolicy/pkey"
+	"github.com/metacubex/tailscale/util/syspolicy/policyclient"
+	"github.com/metacubex/tailscale/util/syspolicy/setting"
 
-	"tailscale.com/util/syspolicy/source"
+	"github.com/metacubex/tailscale/util/syspolicy/source"
 )
 
 func TestGetEffectivePolicyNoSource(t *testing.T) {

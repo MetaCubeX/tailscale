@@ -49,9 +49,9 @@ import (
 	"golang.org/x/image/font/basicfont"
 	"golang.org/x/image/math/fixed"
 	"golang.org/x/sys/unix"
-	"tailscale.com/client/local"
-	"tailscale.com/ipn"
-	"tailscale.com/util/cloudenv"
+	"github.com/metacubex/tailscale/client/local"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/util/cloudenv"
 )
 
 //go:embed tailscale.png

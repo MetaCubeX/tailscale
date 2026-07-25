@@ -14,11 +14,11 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/types"
 
-	"tailscale.com/ipn"
-	tsapi "tailscale.com/k8s-operator/apis/v1alpha1"
-	"tailscale.com/k8s-operator/reconciler"
-	"tailscale.com/k8s-operator/reconciler/tailscaled"
-	"tailscale.com/kube/kubetypes"
+	"github.com/metacubex/tailscale/ipn"
+	tsapi "github.com/metacubex/tailscale/k8s-operator/apis/v1alpha1"
+	"github.com/metacubex/tailscale/k8s-operator/reconciler"
+	"github.com/metacubex/tailscale/k8s-operator/reconciler/tailscaled"
+	"github.com/metacubex/tailscale/kube/kubetypes"
 )
 
 func configSecretName(prName string, idx int32) string {

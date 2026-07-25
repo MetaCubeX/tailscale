@@ -17,8 +17,8 @@ import (
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
 	"golang.org/x/crypto/blake2s"
-	"tailscale.com/tka"
-	"tailscale.com/util/must"
+	"github.com/metacubex/tailscale/tka"
+	"github.com/metacubex/tailscale/util/must"
 )
 
 // returns a random source based on the test name + extraSeed.

@@ -8,7 +8,7 @@ import (
 	"runtime"
 	"time"
 
-	"tailscale.com/util/testenv"
+	"github.com/metacubex/tailscale/util/testenv"
 )
 
 // MinAllocsPerRun asserts that f can run with no more than target allocations.

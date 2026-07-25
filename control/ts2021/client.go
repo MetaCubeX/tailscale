@@ -20,17 +20,17 @@ import (
 	"sync"
 	"time"
 
-	"tailscale.com/control/controlhttp"
-	"tailscale.com/health"
-	"tailscale.com/net/dnscache"
-	"tailscale.com/net/netmon"
-	"tailscale.com/net/tsdial"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tstime"
-	"tailscale.com/types/key"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/mak"
-	"tailscale.com/util/set"
+	"github.com/metacubex/tailscale/control/controlhttp"
+	"github.com/metacubex/tailscale/health"
+	"github.com/metacubex/tailscale/net/dnscache"
+	"github.com/metacubex/tailscale/net/netmon"
+	"github.com/metacubex/tailscale/net/tsdial"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/tstime"
+	"github.com/metacubex/tailscale/types/key"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/util/mak"
+	"github.com/metacubex/tailscale/util/set"
 )
 
 // Client provides a http.Client to connect to tailcontrol over

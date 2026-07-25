@@ -9,8 +9,8 @@ import (
 	"errors"
 	"net"
 
-	"tailscale.com/net/netmon"
-	"tailscale.com/net/netns"
+	"github.com/metacubex/tailscale/net/netmon"
+	"github.com/metacubex/tailscale/net/netns"
 )
 
 func init() {

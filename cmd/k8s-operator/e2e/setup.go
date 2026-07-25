@@ -55,12 +55,12 @@ import (
 	"sigs.k8s.io/kind/pkg/cmd"
 
 	"tailscale.com/client/tailscale/v2"
-	"tailscale.com/ipn"
-	"tailscale.com/ipn/store/mem"
-	tsoperator "tailscale.com/k8s-operator"
-	tsapi "tailscale.com/k8s-operator/apis/v1alpha1"
-	"tailscale.com/tsnet"
-	"tailscale.com/util/must"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/ipn/store/mem"
+	tsoperator "github.com/metacubex/tailscale/k8s-operator"
+	tsapi "github.com/metacubex/tailscale/k8s-operator/apis/v1alpha1"
+	"github.com/metacubex/tailscale/tsnet"
+	"github.com/metacubex/tailscale/util/must"
 )
 
 const (
@@ -419,7 +419,7 @@ func runTests(m *testing.M) (int, error) {
 	}
 
 	// Generate CRDs for the helm chart.
-	cmd := exec.CommandContext(ctx, "go", "run", "tailscale.com/cmd/k8s-operator/generate", "helmcrd")
+	cmd := exec.CommandContext(ctx, "go", "run", "github.com/metacubex/tailscale/cmd/k8s-operator/generate", "helmcrd")
 	cmd.Dir = ossDir
 	out, err := cmd.CombinedOutput()
 	if err != nil {

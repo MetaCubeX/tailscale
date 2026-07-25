@@ -8,8 +8,8 @@ import (
 	"sync"
 	"time"
 
-	"tailscale.com/types/logger"
-	"tailscale.com/util/eventbus"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/util/eventbus"
 )
 
 const cooldownSeconds = 300

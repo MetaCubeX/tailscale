@@ -16,7 +16,7 @@ import (
 	"testing"
 
 	qt "github.com/frankban/quicktest"
-	"tailscale.com/util/dnsname"
+	"github.com/metacubex/tailscale/util/dnsname"
 )
 
 func TestDirectManager(t *testing.T) {

@@ -29,12 +29,12 @@ import (
 	qt "github.com/frankban/quicktest"
 	"go4.org/mem"
 	"golang.org/x/time/rate"
-	"tailscale.com/derp"
-	"tailscale.com/derp/derpconst"
-	"tailscale.com/tstime"
-	"tailscale.com/types/key"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/set"
+	"github.com/metacubex/tailscale/derp"
+	"github.com/metacubex/tailscale/derp/derpconst"
+	"github.com/metacubex/tailscale/tstime"
+	"github.com/metacubex/tailscale/types/key"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/util/set"
 )
 
 const testMeshKey = "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"

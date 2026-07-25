@@ -23,9 +23,9 @@ import (
 	"net"
 	"strings"
 
-	_ "tailscale.com/feature/ssh"
-	"tailscale.com/ssh/tailssh"
-	"tailscale.com/tsnet"
+	_ "github.com/metacubex/tailscale/feature/ssh"
+	"github.com/metacubex/tailscale/ssh/tailssh"
+	"github.com/metacubex/tailscale/tsnet"
 )
 
 func main() {

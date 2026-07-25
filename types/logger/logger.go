@@ -24,9 +24,9 @@ import (
 	jsonv2 "github.com/go-json-experiment/json"
 	jsonv1 "github.com/go-json-experiment/json/v1"
 	"go4.org/mem"
-	"tailscale.com/envknob"
-	"tailscale.com/util/ctxkey"
-	"tailscale.com/util/testenv"
+	"github.com/metacubex/tailscale/envknob"
+	"github.com/metacubex/tailscale/util/ctxkey"
+	"github.com/metacubex/tailscale/util/testenv"
 )
 
 // Logf is the basic Tailscale logger type: a printf-like func.

@@ -7,8 +7,8 @@ import (
 	"reflect"
 	"testing"
 
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/key"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/types/key"
 )
 
 func fieldsOf(t reflect.Type) (fields []string) {

@@ -19,8 +19,8 @@ import (
 	"testing"
 	"time"
 
-	"tailscale.com/ipn"
-	"tailscale.com/tstest"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/tstest"
 )
 
 func TestExpandProxyArgUnix(t *testing.T) {

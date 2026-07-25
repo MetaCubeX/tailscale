@@ -10,12 +10,12 @@ package bird
 import (
 	"net/netip"
 
-	"tailscale.com/chirp"
-	"tailscale.com/feature"
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/logger"
-	"tailscale.com/types/views"
-	"tailscale.com/wgengine"
+	"github.com/metacubex/tailscale/chirp"
+	"github.com/metacubex/tailscale/feature"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/types/views"
+	"github.com/metacubex/tailscale/wgengine"
 )
 
 func init() {

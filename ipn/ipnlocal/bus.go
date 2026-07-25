@@ -8,10 +8,10 @@ import (
 	"runtime"
 	"time"
 
-	"tailscale.com/ipn"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tstime"
-	"tailscale.com/util/mak"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/tstime"
+	"github.com/metacubex/tailscale/util/mak"
 )
 
 // goosGetsLegacyNetmapNotify reports whether tailscaled, when running on the

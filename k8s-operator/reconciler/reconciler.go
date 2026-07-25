@@ -16,24 +16,24 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/handler"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 
-	"tailscale.com/kube/kubetypes"
+	"github.com/metacubex/tailscale/kube/kubetypes"
 )
 
 const (
 	// FinalizerName is the common finalizer used across all Tailscale Kubernetes resources.
-	FinalizerName = "tailscale.com/finalizer"
+	FinalizerName = "github.com/metacubex/tailscale/finalizer"
 
 	// LabelParentType identifies which Tailscale CRD kind owns a managed resource. Every resource that a Tailscale
 	// CRD reconciler creates should carry this label alongside LabelParentName.
-	LabelParentType = "tailscale.com/parent-resource-type"
+	LabelParentType = "github.com/metacubex/tailscale/parent-resource-type"
 
 	// LabelParentName identifies the name of the Tailscale CRD that owns a managed resource. Combined with
 	// LabelParentType, this uniquely identifies the parent within its scope.
-	LabelParentName = "tailscale.com/parent-resource"
+	LabelParentName = "github.com/metacubex/tailscale/parent-resource"
 
 	// LabelParentNamespace identifies the namespace of the owning Tailscale CRD. It is only stamped when the parent
 	// CRD is namespaced; cluster-scoped parents omit it.
-	LabelParentNamespace = "tailscale.com/parent-resource-ns"
+	LabelParentNamespace = "github.com/metacubex/tailscale/parent-resource-ns"
 )
 
 // SetFinalizer adds the finalizer to the resource if not already present.

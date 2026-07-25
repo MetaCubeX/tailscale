@@ -8,9 +8,9 @@ import (
 
 	jsonv2 "github.com/go-json-experiment/json"
 	"github.com/go-json-experiment/json/jsontext"
-	"tailscale.com/types/opt"
-	"tailscale.com/types/views"
-	"tailscale.com/util/must"
+	"github.com/metacubex/tailscale/types/opt"
+	"github.com/metacubex/tailscale/types/views"
+	"github.com/metacubex/tailscale/util/must"
 )
 
 // Item is a single preference item that can be configured.

@@ -16,7 +16,7 @@ import (
 
 	"github.com/creachadair/taskgroup"
 	"github.com/google/go-cmp/cmp"
-	"tailscale.com/util/eventbus"
+	"github.com/metacubex/tailscale/util/eventbus"
 )
 
 type EventA struct {

@@ -12,14 +12,14 @@ import (
 	"slices"
 	"strings"
 
-	"tailscale.com/envknob"
-	"tailscale.com/ipn/ipnlocal"
-	"tailscale.com/ipn/localapi"
-	"tailscale.com/types/appctype"
-	"tailscale.com/util/dnsname"
-	"tailscale.com/util/httpm"
-	"tailscale.com/util/mak"
-	"tailscale.com/util/testenv"
+	"github.com/metacubex/tailscale/envknob"
+	"github.com/metacubex/tailscale/ipn/ipnlocal"
+	"github.com/metacubex/tailscale/ipn/localapi"
+	"github.com/metacubex/tailscale/types/appctype"
+	"github.com/metacubex/tailscale/util/dnsname"
+	"github.com/metacubex/tailscale/util/httpm"
+	"github.com/metacubex/tailscale/util/mak"
+	"github.com/metacubex/tailscale/util/testenv"
 )
 
 // serveLocalAPIStateGet serves the localapi endpoint /conn25/state.

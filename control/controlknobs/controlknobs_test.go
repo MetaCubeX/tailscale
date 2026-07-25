@@ -7,7 +7,7 @@ import (
 	"reflect"
 	"testing"
 
-	"tailscale.com/types/logger"
+	"github.com/metacubex/tailscale/types/logger"
 )
 
 func TestAsDebugJSON(t *testing.T) {

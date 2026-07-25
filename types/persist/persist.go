@@ -8,9 +8,9 @@ import (
 	"fmt"
 	"reflect"
 
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/key"
-	"tailscale.com/types/structs"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/types/key"
+	"github.com/metacubex/tailscale/types/structs"
 )
 
 //go:generate go run tailscale.com/cmd/viewer -type=Persist

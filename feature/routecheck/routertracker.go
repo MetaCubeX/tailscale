@@ -9,13 +9,13 @@ import (
 	"fmt"
 	"sync"
 
-	"tailscale.com/ipn"
-	"tailscale.com/ipn/ipnext"
-	"tailscale.com/net/routecheck"
-	"tailscale.com/syncs"
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/set"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/ipn/ipnext"
+	"github.com/metacubex/tailscale/net/routecheck"
+	"github.com/metacubex/tailscale/syncs"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/util/set"
 )
 
 var ErrRouteCheckNotEnabled = errors.New("routecheck not enabled")

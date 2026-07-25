@@ -20,8 +20,8 @@ import (
 	"syscall"
 	"testing"
 
-	"tailscale.com/tstest"
-	"tailscale.com/types/logger"
+	"github.com/metacubex/tailscale/tstest"
+	"github.com/metacubex/tailscale/types/logger"
 )
 
 func TestDoDropPrivileges(t *testing.T) {

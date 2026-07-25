@@ -25,16 +25,16 @@ import (
 	"sync/atomic"
 	"time"
 
-	"tailscale.com/atomicfile"
-	"tailscale.com/feature"
-	"tailscale.com/health"
-	"tailscale.com/net/netmon"
-	"tailscale.com/net/netns"
-	"tailscale.com/net/netutil"
-	"tailscale.com/net/tlsdial"
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/slicesx"
+	"github.com/metacubex/tailscale/atomicfile"
+	"github.com/metacubex/tailscale/feature"
+	"github.com/metacubex/tailscale/health"
+	"github.com/metacubex/tailscale/net/netmon"
+	"github.com/metacubex/tailscale/net/netns"
+	"github.com/metacubex/tailscale/net/netutil"
+	"github.com/metacubex/tailscale/net/tlsdial"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/util/slicesx"
 )
 
 // MakeLookupFunc creates a function that can be used to resolve hostnames

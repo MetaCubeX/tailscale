@@ -6,9 +6,9 @@
 package main
 
 import (
-	"tailscale.com/client/local"
-	"tailscale.com/ipn/ipnlocal"
-	"tailscale.com/paths"
+	"github.com/metacubex/tailscale/client/local"
+	"github.com/metacubex/tailscale/ipn/ipnlocal"
+	"github.com/metacubex/tailscale/paths"
 )
 
 func init() {

@@ -7,12 +7,12 @@ import (
 	"testing"
 	"time"
 
-	"tailscale.com/client/tailscale/apitype"
-	"tailscale.com/ipn"
-	"tailscale.com/tsd"
-	"tailscale.com/tstest"
-	"tailscale.com/tstime"
-	"tailscale.com/types/logger"
+	"github.com/metacubex/tailscale/client/tailscale/apitype"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/tsd"
+	"github.com/metacubex/tailscale/tstest"
+	"github.com/metacubex/tailscale/tstime"
+	"github.com/metacubex/tailscale/types/logger"
 )
 
 // fakeBackend is a minimal [ipnext.SafeBackend] for tests. Only Clock and TailscaleVarRoot are

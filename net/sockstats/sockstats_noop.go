@@ -8,8 +8,8 @@ package sockstats
 import (
 	"context"
 
-	"tailscale.com/net/netmon"
-	"tailscale.com/types/logger"
+	"github.com/metacubex/tailscale/net/netmon"
+	"github.com/metacubex/tailscale/types/logger"
 )
 
 const IsAvailable = false

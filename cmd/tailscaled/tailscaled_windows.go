@@ -3,7 +3,7 @@
 
 //go:build go1.19
 
-package main // import "tailscale.com/cmd/tailscaled"
+package main // import "github.com/metacubex/tailscale/cmd/tailscaled"
 
 // TODO: check if administrator, like tswin does.
 //
@@ -42,24 +42,24 @@ import (
 	"golang.org/x/sys/windows/svc/eventlog"
 	"golang.zx2c4.com/wintun"
 	"golang.zx2c4.com/wireguard/windows/tunnel/winipcfg"
-	"tailscale.com/drive/driveimpl"
-	"tailscale.com/envknob"
-	_ "tailscale.com/ipn/auditlog"
-	"tailscale.com/logpolicy"
-	"tailscale.com/net/dns"
-	"tailscale.com/net/netmon"
-	"tailscale.com/net/tstun"
-	"tailscale.com/tsd"
-	"tailscale.com/types/logger"
-	"tailscale.com/types/logid"
-	"tailscale.com/util/backoff"
-	"tailscale.com/util/osdiag"
-	"tailscale.com/util/syspolicy/pkey"
-	"tailscale.com/util/syspolicy/policyclient"
-	"tailscale.com/util/winutil"
-	"tailscale.com/util/winutil/gp"
-	"tailscale.com/version"
-	"tailscale.com/wf"
+	"github.com/metacubex/tailscale/drive/driveimpl"
+	"github.com/metacubex/tailscale/envknob"
+	_ "github.com/metacubex/tailscale/ipn/auditlog"
+	"github.com/metacubex/tailscale/logpolicy"
+	"github.com/metacubex/tailscale/net/dns"
+	"github.com/metacubex/tailscale/net/netmon"
+	"github.com/metacubex/tailscale/net/tstun"
+	"github.com/metacubex/tailscale/tsd"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/types/logid"
+	"github.com/metacubex/tailscale/util/backoff"
+	"github.com/metacubex/tailscale/util/osdiag"
+	"github.com/metacubex/tailscale/util/syspolicy/pkey"
+	"github.com/metacubex/tailscale/util/syspolicy/policyclient"
+	"github.com/metacubex/tailscale/util/winutil"
+	"github.com/metacubex/tailscale/util/winutil/gp"
+	"github.com/metacubex/tailscale/version"
+	"github.com/metacubex/tailscale/wf"
 )
 
 func init() {

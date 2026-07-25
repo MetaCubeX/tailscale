@@ -15,10 +15,10 @@ import (
 
 	"github.com/gaissmai/bart"
 	"golang.org/x/net/dns/dnsmessage"
-	"tailscale.com/client/tailscale/apitype"
-	"tailscale.com/cmd/natc/ippool"
-	"tailscale.com/tailcfg"
-	"tailscale.com/util/must"
+	"github.com/metacubex/tailscale/client/tailscale/apitype"
+	"github.com/metacubex/tailscale/cmd/natc/ippool"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/util/must"
 )
 
 func prefixEqual(a, b netip.Prefix) bool {

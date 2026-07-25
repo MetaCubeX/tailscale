@@ -20,8 +20,8 @@ import (
 
 	"github.com/google/uuid"
 	"golang.org/x/sys/windows"
-	"tailscale.com/util/winutil"
-	"tailscale.com/util/winutil/authenticode"
+	"github.com/metacubex/tailscale/util/winutil"
+	"github.com/metacubex/tailscale/util/winutil/authenticode"
 )
 
 const (

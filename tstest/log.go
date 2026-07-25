@@ -11,8 +11,8 @@ import (
 	"sync"
 
 	"go4.org/mem"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/testenv"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/util/testenv"
 )
 
 type testLogWriter struct {

@@ -22,7 +22,7 @@ import (
 	"time"
 
 	esbuild "github.com/evanw/esbuild/pkg/api"
-	"tailscale.com/cmd/tsconnect/wasmbuild"
+	"github.com/metacubex/tailscale/cmd/tsconnect/wasmbuild"
 )
 
 // lastRawWasmSHA256 is set by buildWasm in non-dev mode after the

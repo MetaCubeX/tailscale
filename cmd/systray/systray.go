@@ -9,9 +9,9 @@ package main
 import (
 	"flag"
 
-	"tailscale.com/client/local"
-	"tailscale.com/client/systray"
-	"tailscale.com/paths"
+	"github.com/metacubex/tailscale/client/local"
+	"github.com/metacubex/tailscale/client/systray"
+	"github.com/metacubex/tailscale/paths"
 )
 
 var socket = flag.String("socket", paths.DefaultTailscaledSocket(), "path to tailscaled socket")

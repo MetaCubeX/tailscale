@@ -5,4 +5,4 @@
 
 package condregister
 
-import _ "tailscale.com/feature/serviceclientprefs"
+import _ "github.com/metacubex/tailscale/feature/serviceclientprefs"

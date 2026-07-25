@@ -48,23 +48,23 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 	"tailscale.com/client/tailscale/v2"
 
-	"tailscale.com/client/local"
-	"tailscale.com/envknob"
-	"tailscale.com/hostinfo"
-	"tailscale.com/ipn"
-	"tailscale.com/ipn/store/kubestore"
-	apiproxy "tailscale.com/k8s-operator/api-proxy"
-	tsapi "tailscale.com/k8s-operator/apis/v1alpha1"
-	"tailscale.com/k8s-operator/reconciler/peerrelay"
-	"tailscale.com/k8s-operator/reconciler/proxygrouppolicy"
-	"tailscale.com/k8s-operator/reconciler/tailnet"
-	"tailscale.com/k8s-operator/tsclient"
-	"tailscale.com/kube/kubetypes"
-	"tailscale.com/tsnet"
-	"tailscale.com/tstime"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/set"
-	"tailscale.com/version"
+	"github.com/metacubex/tailscale/client/local"
+	"github.com/metacubex/tailscale/envknob"
+	"github.com/metacubex/tailscale/hostinfo"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/ipn/store/kubestore"
+	apiproxy "github.com/metacubex/tailscale/k8s-operator/api-proxy"
+	tsapi "github.com/metacubex/tailscale/k8s-operator/apis/v1alpha1"
+	"github.com/metacubex/tailscale/k8s-operator/reconciler/peerrelay"
+	"github.com/metacubex/tailscale/k8s-operator/reconciler/proxygrouppolicy"
+	"github.com/metacubex/tailscale/k8s-operator/reconciler/tailnet"
+	"github.com/metacubex/tailscale/k8s-operator/tsclient"
+	"github.com/metacubex/tailscale/kube/kubetypes"
+	"github.com/metacubex/tailscale/tsnet"
+	"github.com/metacubex/tailscale/tstime"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/util/set"
+	"github.com/metacubex/tailscale/version"
 )
 
 // Generate Connector and ProxyClass CustomResourceDefinition yamls from their Go types.
@@ -433,7 +433,7 @@ func runReconcilers(opts reconcilerOpts) {
 	if opts.defaultProxyClass != "" {
 		// If a default ProxyClass is specified, we'll need to list all objects
 		// that could be affected. For L3 ingress, this is Services with the
-		// "tailscale.com/expose" annotation and LoadBalancer services (either
+		// "github.com/metacubex/tailscale/expose" annotation and LoadBalancer services (either
 		// with the loadBalancerClass "tailscale", or unset if we're the default).
 		if err := mgr.GetFieldIndexer().IndexField(context.Background(), new(corev1.Service), indexServiceExposed, indexExposed); err != nil {
 			startlog.Fatalf("failed setting up exposed indexer for Services: %v", err)

@@ -9,8 +9,8 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"tailscale.com/client/tailscale/apitype"
-	"tailscale.com/tailcfg"
+	"github.com/metacubex/tailscale/client/tailscale/apitype"
+	"github.com/metacubex/tailscale/tailcfg"
 )
 
 type mockWhoisSource struct {

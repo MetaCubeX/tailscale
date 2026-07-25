@@ -10,8 +10,8 @@ import (
 	"sync"
 	"time"
 
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/ipproto"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/types/ipproto"
 )
 
 // Message is the log message that captures network traffic.

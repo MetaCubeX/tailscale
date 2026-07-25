@@ -17,16 +17,16 @@ import (
 
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
-	"tailscale.com/metrics"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tsconst"
-	"tailscale.com/tstest"
-	"tailscale.com/tstime"
-	"tailscale.com/types/opt"
-	"tailscale.com/util/eventbus"
-	"tailscale.com/util/eventbus/eventbustest"
-	"tailscale.com/util/usermetric"
-	"tailscale.com/version"
+	"github.com/metacubex/tailscale/metrics"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/tsconst"
+	"github.com/metacubex/tailscale/tstest"
+	"github.com/metacubex/tailscale/tstime"
+	"github.com/metacubex/tailscale/types/opt"
+	"github.com/metacubex/tailscale/util/eventbus"
+	"github.com/metacubex/tailscale/util/eventbus/eventbustest"
+	"github.com/metacubex/tailscale/util/usermetric"
+	"github.com/metacubex/tailscale/version"
 )
 
 var doDebug = flag.Bool("debug", false, "Enable debug logging")

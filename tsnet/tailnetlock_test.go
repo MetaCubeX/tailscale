@@ -38,14 +38,14 @@ import (
 	"testing"
 	"time"
 
-	"tailscale.com/tailcfg"
-	"tailscale.com/tka"
-	"tailscale.com/tstest"
-	"tailscale.com/tstest/integration/testcontrol"
-	"tailscale.com/types/key"
-	"tailscale.com/types/netmap"
-	"tailscale.com/types/tkatype"
-	"tailscale.com/util/must"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/tka"
+	"github.com/metacubex/tailscale/tstest"
+	"github.com/metacubex/tailscale/tstest/integration/testcontrol"
+	"github.com/metacubex/tailscale/types/key"
+	"github.com/metacubex/tailscale/types/netmap"
+	"github.com/metacubex/tailscale/types/tkatype"
+	"github.com/metacubex/tailscale/util/must"
 )
 
 // setupTailnetLockedServer brings up a tsnet [Server] under a testcontrol

@@ -11,8 +11,8 @@ import (
 	extwgdevice "github.com/tailscale/wireguard-go/device"
 	"github.com/tailscale/wireguard-go/tun/tuntest"
 	"go4.org/mem"
-	"tailscale.com/types/key"
-	"tailscale.com/wgengine/wglog"
+	"github.com/metacubex/tailscale/types/key"
+	"github.com/metacubex/tailscale/wgengine/wglog"
 )
 
 func TestLogger(t *testing.T) {

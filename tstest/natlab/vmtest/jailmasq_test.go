@@ -10,11 +10,11 @@ import (
 	"testing"
 	"time"
 
-	"tailscale.com/tailcfg"
-	"tailscale.com/tstest/integration/testcontrol"
-	"tailscale.com/tstest/natlab/vmtest"
-	"tailscale.com/tstest/natlab/vnet"
-	"tailscale.com/types/key"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/tstest/integration/testcontrol"
+	"github.com/metacubex/tailscale/tstest/natlab/vmtest"
+	"github.com/metacubex/tailscale/tstest/natlab/vnet"
+	"github.com/metacubex/tailscale/types/key"
 )
 
 // TestJailedAndMasqueradedPeers exercises the tun-layer per-peer data

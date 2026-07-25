@@ -11,7 +11,7 @@ import (
 	"net/http"
 	"time"
 
-	"tailscale.com/syncs"
+	"github.com/metacubex/tailscale/syncs"
 )
 
 // NewDefaultTransport returns a new *http.Transport configured identically to

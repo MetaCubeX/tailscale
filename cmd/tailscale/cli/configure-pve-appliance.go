@@ -19,9 +19,9 @@ import (
 	"strings"
 
 	"github.com/peterbourgon/ff/v3/ffcli"
-	"tailscale.com/clientupdate"
-	"tailscale.com/gokrazy/mkfs"
-	"tailscale.com/util/prompt"
+	"github.com/metacubex/tailscale/clientupdate"
+	"github.com/metacubex/tailscale/gokrazy/mkfs"
+	"github.com/metacubex/tailscale/util/prompt"
 )
 
 var pveApplianceArgs struct {

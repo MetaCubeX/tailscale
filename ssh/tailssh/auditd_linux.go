@@ -13,7 +13,7 @@ import (
 	"syscall"
 
 	"golang.org/x/sys/unix"
-	"tailscale.com/types/logger"
+	"github.com/metacubex/tailscale/types/logger"
 )
 
 const (

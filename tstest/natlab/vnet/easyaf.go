@@ -9,7 +9,7 @@ import (
 	"net/netip"
 	"time"
 
-	"tailscale.com/util/mak"
+	"github.com/metacubex/tailscale/util/mak"
 )
 
 // easyAFNAT is an "Endpoint Independent" NAT, like Linux and most home routers

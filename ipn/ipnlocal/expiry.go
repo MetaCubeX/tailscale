@@ -6,14 +6,14 @@ package ipnlocal
 import (
 	"time"
 
-	"tailscale.com/control/controlclient"
-	"tailscale.com/syncs"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tstime"
-	"tailscale.com/types/key"
-	"tailscale.com/types/logger"
-	"tailscale.com/types/netmap"
-	"tailscale.com/util/eventbus"
+	"github.com/metacubex/tailscale/control/controlclient"
+	"github.com/metacubex/tailscale/syncs"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/tstime"
+	"github.com/metacubex/tailscale/types/key"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/types/netmap"
+	"github.com/metacubex/tailscale/util/eventbus"
 )
 
 // For extra defense-in-depth, when we're testing expired nodes we check

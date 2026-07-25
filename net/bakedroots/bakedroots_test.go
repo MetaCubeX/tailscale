@@ -12,7 +12,7 @@ import (
 	"testing"
 	"time"
 
-	"tailscale.com/util/cibuild"
+	"github.com/metacubex/tailscale/util/cibuild"
 )
 
 func TestBakedInRoots(t *testing.T) {

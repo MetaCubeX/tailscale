@@ -15,15 +15,15 @@ import (
 	"time"
 
 	"go4.org/mem"
-	"tailscale.com/ipn/ipnstate"
-	"tailscale.com/net/netaddr"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tstest"
-	"tailscale.com/types/key"
-	"tailscale.com/types/opt"
-	"tailscale.com/types/persist"
-	"tailscale.com/types/preftype"
-	"tailscale.com/util/syspolicy/policyclient"
+	"github.com/metacubex/tailscale/ipn/ipnstate"
+	"github.com/metacubex/tailscale/net/netaddr"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/tstest"
+	"github.com/metacubex/tailscale/types/key"
+	"github.com/metacubex/tailscale/types/opt"
+	"github.com/metacubex/tailscale/types/persist"
+	"github.com/metacubex/tailscale/types/preftype"
+	"github.com/metacubex/tailscale/util/syspolicy/policyclient"
 )
 
 func fieldsOf(t reflect.Type) (fields []string) {

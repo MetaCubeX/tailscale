@@ -7,7 +7,7 @@ import (
 	"math/rand/v2"
 	"testing"
 
-	"tailscale.com/util/eventbus"
+	"github.com/metacubex/tailscale/util/eventbus"
 )
 
 func BenchmarkBasicThroughput(b *testing.B) {

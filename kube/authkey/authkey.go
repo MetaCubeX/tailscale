@@ -19,11 +19,11 @@ import (
 	"log"
 	"time"
 
-	"tailscale.com/ipn"
-	"tailscale.com/ipn/conffile"
-	"tailscale.com/kube/kubeapi"
-	"tailscale.com/kube/kubeclient"
-	"tailscale.com/kube/kubetypes"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/ipn/conffile"
+	"github.com/metacubex/tailscale/kube/kubeapi"
+	"github.com/metacubex/tailscale/kube/kubeclient"
+	"github.com/metacubex/tailscale/kube/kubetypes"
 )
 
 const (

@@ -37,9 +37,9 @@ import (
 
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/raft"
-	"tailscale.com/ipn/ipnstate"
-	"tailscale.com/tsnet"
-	"tailscale.com/types/views"
+	"github.com/metacubex/tailscale/ipn/ipnstate"
+	"github.com/metacubex/tailscale/tsnet"
+	"github.com/metacubex/tailscale/types/views"
 )
 
 func raftAddr(host netip.Addr, cfg Config) string {

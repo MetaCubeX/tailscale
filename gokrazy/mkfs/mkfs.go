@@ -24,7 +24,7 @@ import (
 	"github.com/bradfitz/monogok/disklayout"
 	"github.com/diskfs/go-diskfs/backend"
 	"github.com/diskfs/go-diskfs/filesystem/ext4"
-	"tailscale.com/util/progresstracking"
+	"github.com/metacubex/tailscale/util/progresstracking"
 )
 
 // gptSecondaryReservedSectors is the number of 512-byte sectors that

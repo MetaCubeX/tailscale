@@ -14,8 +14,8 @@ import (
 	"strings"
 
 	"github.com/peterbourgon/ff/v3/ffcli"
-	"tailscale.com/hostinfo"
-	"tailscale.com/version/distro"
+	"github.com/metacubex/tailscale/hostinfo"
+	"github.com/metacubex/tailscale/version/distro"
 )
 
 // configureHostCmd is the "tailscale configure-host" command which was once

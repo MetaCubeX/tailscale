@@ -7,9 +7,9 @@ import (
 	"encoding/json"
 	"errors"
 
-	"tailscale.com/client/tailscale/apitype"
-	"tailscale.com/feature/serviceclientprefs/serviceclient"
-	"tailscale.com/ipn"
+	"github.com/metacubex/tailscale/client/tailscale/apitype"
+	"github.com/metacubex/tailscale/feature/serviceclientprefs/serviceclient"
+	"github.com/metacubex/tailscale/ipn"
 )
 
 // errInvalidServiceClientPref is returned by [extension.setServiceClientPref] for a request that

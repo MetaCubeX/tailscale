@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: BSD-3-Clause
 
 // netlogfmt parses a stream of JSON log messages from stdin and
-// formats the network traffic logs produced by "tailscale.com/wgengine/netlog"
-// according to the schema in "tailscale.com/types/netlogtype.Message"
+// formats the network traffic logs produced by "github.com/metacubex/tailscale/wgengine/netlog"
+// according to the schema in "github.com/metacubex/tailscale/types/netlogtype.Message"
 // in a more humanly readable format.
 //
 // Example usage:
@@ -44,12 +44,12 @@ import (
 	"github.com/dsnet/try"
 	jsonv2 "github.com/go-json-experiment/json"
 	"github.com/go-json-experiment/json/jsontext"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tstime"
-	"tailscale.com/types/bools"
-	"tailscale.com/types/logid"
-	"tailscale.com/types/netlogtype"
-	"tailscale.com/util/must"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/tstime"
+	"github.com/metacubex/tailscale/types/bools"
+	"github.com/metacubex/tailscale/types/logid"
+	"github.com/metacubex/tailscale/types/netlogtype"
+	"github.com/metacubex/tailscale/util/must"
 )
 
 var (

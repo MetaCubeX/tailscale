@@ -10,7 +10,7 @@ import (
 	"strings"
 	"testing"
 
-	"tailscale.com/internal/client/tailscale"
+	"github.com/metacubex/tailscale/internal/client/tailscale"
 )
 
 func TestResolveAuthKey(t *testing.T) {

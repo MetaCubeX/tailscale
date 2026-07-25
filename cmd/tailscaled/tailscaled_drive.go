@@ -9,10 +9,10 @@ import (
 	"errors"
 	"fmt"
 
-	"tailscale.com/drive/driveimpl"
-	"tailscale.com/tsd"
-	"tailscale.com/types/logger"
-	"tailscale.com/wgengine"
+	"github.com/metacubex/tailscale/drive/driveimpl"
+	"github.com/metacubex/tailscale/tsd"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/wgengine"
 )
 
 func init() {

@@ -13,11 +13,11 @@ import (
 	"os"
 	"slices"
 
-	"tailscale.com/release/dist"
-	"tailscale.com/release/dist/cli"
-	"tailscale.com/release/dist/qnap"
-	"tailscale.com/release/dist/synology"
-	"tailscale.com/release/dist/unixpkgs"
+	"github.com/metacubex/tailscale/release/dist"
+	"github.com/metacubex/tailscale/release/dist/cli"
+	"github.com/metacubex/tailscale/release/dist/qnap"
+	"github.com/metacubex/tailscale/release/dist/synology"
+	"github.com/metacubex/tailscale/release/dist/unixpkgs"
 )
 
 var (

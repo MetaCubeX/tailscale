@@ -15,7 +15,7 @@ import (
 	"strings"
 	"time"
 
-	"tailscale.com/types/logid"
+	"github.com/metacubex/tailscale/types/logid"
 )
 
 func main() {

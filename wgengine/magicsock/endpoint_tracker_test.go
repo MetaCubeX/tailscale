@@ -11,7 +11,7 @@ import (
 	"testing"
 	"time"
 
-	"tailscale.com/tailcfg"
+	"github.com/metacubex/tailscale/tailcfg"
 )
 
 func TestEndpointTracker(t *testing.T) {

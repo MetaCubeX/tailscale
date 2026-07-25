@@ -16,17 +16,17 @@ import (
 	"sync"
 	"sync/atomic"
 
-	"tailscale.com/client/tailscale/apitype"
-	"tailscale.com/cmd/tailscaled/tailscaledhooks"
-	"tailscale.com/ipn"
-	"tailscale.com/ipn/ipnext"
-	"tailscale.com/ipn/ipnstate"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tstime"
-	"tailscale.com/types/empty"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/osshare"
-	"tailscale.com/util/set"
+	"github.com/metacubex/tailscale/client/tailscale/apitype"
+	"github.com/metacubex/tailscale/cmd/tailscaled/tailscaledhooks"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/ipn/ipnext"
+	"github.com/metacubex/tailscale/ipn/ipnstate"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/tstime"
+	"github.com/metacubex/tailscale/types/empty"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/util/osshare"
+	"github.com/metacubex/tailscale/util/set"
 )
 
 func init() {

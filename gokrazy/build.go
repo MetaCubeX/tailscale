@@ -19,7 +19,7 @@ import (
 	"log"
 	"os"
 
-	"tailscale.com/gokrazy/build"
+	"github.com/metacubex/tailscale/gokrazy/build"
 )
 
 var (

@@ -12,10 +12,10 @@ import (
 	"strings"
 
 	"github.com/tailscale/wireguard-go/tun"
-	"tailscale.com/health"
-	"tailscale.com/net/netmon"
-	"tailscale.com/types/logger"
-	"tailscale.com/wgengine/router"
+	"github.com/metacubex/tailscale/health"
+	"github.com/metacubex/tailscale/net/netmon"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/wgengine/router"
 )
 
 func init() {

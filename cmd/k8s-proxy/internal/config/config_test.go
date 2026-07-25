@@ -18,8 +18,8 @@ import (
 	"k8s.io/apimachinery/pkg/watch"
 	"k8s.io/client-go/kubernetes/fake"
 	ktesting "k8s.io/client-go/testing"
-	"tailscale.com/kube/k8s-proxy/conf"
-	"tailscale.com/kube/kubetypes"
+	"github.com/metacubex/tailscale/kube/k8s-proxy/conf"
+	"github.com/metacubex/tailscale/kube/kubetypes"
 )
 
 func TestWatchConfig(t *testing.T) {

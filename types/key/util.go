@@ -14,8 +14,8 @@ import (
 	"slices"
 
 	"go4.org/mem"
-	"tailscale.com/util/set"
-	"tailscale.com/util/testenv"
+	"github.com/metacubex/tailscale/util/set"
+	"github.com/metacubex/tailscale/util/testenv"
 )
 
 // rand fills b with cryptographically strong random bytes. Panics if

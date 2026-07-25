@@ -33,7 +33,7 @@ import (
 	"strings"
 
 	"golang.org/x/sync/errgroup"
-	"tailscale.com/cmd/nardump/nardump"
+	"github.com/metacubex/tailscale/cmd/nardump/nardump"
 )
 
 const (

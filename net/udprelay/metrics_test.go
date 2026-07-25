@@ -9,7 +9,7 @@ import (
 	"testing"
 
 	qt "github.com/frankban/quicktest"
-	"tailscale.com/util/usermetric"
+	"github.com/metacubex/tailscale/util/usermetric"
 )
 
 func TestMetricsLifecycle(t *testing.T) {

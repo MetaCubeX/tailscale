@@ -17,14 +17,14 @@ import (
 	"sync"
 	"time"
 
-	"tailscale.com/client/local"
-	"tailscale.com/client/web"
-	"tailscale.com/net/netutil"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tsconst"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/backoff"
-	"tailscale.com/util/mak"
+	"github.com/metacubex/tailscale/client/local"
+	"github.com/metacubex/tailscale/client/web"
+	"github.com/metacubex/tailscale/net/netutil"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/tsconst"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/util/backoff"
+	"github.com/metacubex/tailscale/util/mak"
 )
 
 const webClientPort = tsconst.WebListenPort

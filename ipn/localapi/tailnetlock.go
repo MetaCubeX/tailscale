@@ -11,10 +11,10 @@ import (
 	"net/http"
 	"strconv"
 
-	"tailscale.com/tka"
-	"tailscale.com/types/key"
-	"tailscale.com/types/tkatype"
-	"tailscale.com/util/httpm"
+	"github.com/metacubex/tailscale/tka"
+	"github.com/metacubex/tailscale/types/key"
+	"github.com/metacubex/tailscale/types/tkatype"
+	"github.com/metacubex/tailscale/util/httpm"
 )
 
 func init() {

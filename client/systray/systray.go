@@ -29,12 +29,12 @@ import (
 	"github.com/atotto/clipboard"
 	dbus "github.com/godbus/dbus/v5"
 	"github.com/toqueteos/webbrowser"
-	"tailscale.com/client/local"
-	"tailscale.com/ipn"
-	"tailscale.com/ipn/ipnstate"
-	"tailscale.com/tailcfg"
-	"tailscale.com/util/slicesx"
-	"tailscale.com/util/stringsx"
+	"github.com/metacubex/tailscale/client/local"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/ipn/ipnstate"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/util/slicesx"
+	"github.com/metacubex/tailscale/util/stringsx"
 )
 
 var (

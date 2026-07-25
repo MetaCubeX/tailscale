@@ -13,8 +13,8 @@ import (
 	"strings"
 	"time"
 
-	"tailscale.com/ipn/ipnlocal"
-	"tailscale.com/tsweb"
+	"github.com/metacubex/tailscale/ipn/ipnlocal"
+	"github.com/metacubex/tailscale/tsweb"
 )
 
 func init() {

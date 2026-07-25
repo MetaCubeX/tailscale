@@ -12,7 +12,7 @@ import (
 	"path/filepath"
 	"runtime"
 
-	"tailscale.com/util/syspolicy"
+	"github.com/metacubex/tailscale/util/syspolicy"
 )
 
 // syspolicyFile is the path to a JSON syspolicy file, set via the

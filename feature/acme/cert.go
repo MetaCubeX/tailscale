@@ -22,17 +22,17 @@ import (
 	"strings"
 	"time"
 
-	"tailscale.com/envknob"
-	"tailscale.com/health"
-	"tailscale.com/ipn"
-	"tailscale.com/ipn/ipnlocal"
-	"tailscale.com/tailcfg"
-	xacme "tailscale.com/tempfork/acme"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/mak"
-	"tailscale.com/util/set"
-	"tailscale.com/util/slicesx"
-	"tailscale.com/util/testenv"
+	"github.com/metacubex/tailscale/envknob"
+	"github.com/metacubex/tailscale/health"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/ipn/ipnlocal"
+	"github.com/metacubex/tailscale/tailcfg"
+	xacme "github.com/metacubex/tailscale/tempfork/acme"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/util/mak"
+	"github.com/metacubex/tailscale/util/set"
+	"github.com/metacubex/tailscale/util/slicesx"
+	"github.com/metacubex/tailscale/util/testenv"
 )
 
 type acmeChallengeType string

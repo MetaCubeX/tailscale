@@ -44,11 +44,11 @@ import (
 
 	cdpruntime "github.com/chromedp/cdproto/runtime"
 	"github.com/chromedp/chromedp"
-	"tailscale.com/cmd/tsconnect/wasmbuild"
-	"tailscale.com/ipn/store/mem"
-	"tailscale.com/tsnet"
-	"tailscale.com/tstest/integration"
-	"tailscale.com/tstest/integration/testcontrol"
+	"github.com/metacubex/tailscale/cmd/tsconnect/wasmbuild"
+	"github.com/metacubex/tailscale/ipn/store/mem"
+	"github.com/metacubex/tailscale/tsnet"
+	"github.com/metacubex/tailscale/tstest/integration"
+	"github.com/metacubex/tailscale/tstest/integration/testcontrol"
 )
 
 // pkgDir is the path to cmd/tsconnect/pkg/ (the directory written by

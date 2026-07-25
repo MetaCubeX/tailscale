@@ -14,15 +14,15 @@ import (
 	"sync/atomic"
 	"time"
 
-	"tailscale.com/control/controlclient"
-	"tailscale.com/ipn"
-	"tailscale.com/ipn/ipnauth"
-	"tailscale.com/ipn/ipnext"
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/execqueue"
-	"tailscale.com/util/mak"
-	"tailscale.com/util/testenv"
+	"github.com/metacubex/tailscale/control/controlclient"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/ipn/ipnauth"
+	"github.com/metacubex/tailscale/ipn/ipnext"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/util/execqueue"
+	"github.com/metacubex/tailscale/util/mak"
+	"github.com/metacubex/tailscale/util/testenv"
 )
 
 // ExtensionHost is a bridge between the [LocalBackend] and the registered [ipnext.Extension]s.

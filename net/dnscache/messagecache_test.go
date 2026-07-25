@@ -13,7 +13,7 @@ import (
 	"time"
 
 	"golang.org/x/net/dns/dnsmessage"
-	"tailscale.com/tstest"
+	"github.com/metacubex/tailscale/tstest"
 )
 
 func TestMessageCache(t *testing.T) {

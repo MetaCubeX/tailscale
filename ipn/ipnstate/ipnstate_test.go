@@ -7,8 +7,8 @@ import (
 	"net/netip"
 	"testing"
 
-	"tailscale.com/ipn/ipnstate"
-	"tailscale.com/types/views"
+	"github.com/metacubex/tailscale/ipn/ipnstate"
+	"github.com/metacubex/tailscale/types/views"
 )
 
 func TestPeerStatusIsRouter(t *testing.T) {

@@ -15,9 +15,9 @@ import (
 
 	"golang.org/x/tools/go/packages"
 
-	"tailscale.com/health"
-	"tailscale.com/types/empty"
-	"tailscale.com/util/mak"
+	"github.com/metacubex/tailscale/health"
+	"github.com/metacubex/tailscale/types/empty"
+	"github.com/metacubex/tailscale/util/mak"
 )
 
 func TestNotifyString(t *testing.T) {

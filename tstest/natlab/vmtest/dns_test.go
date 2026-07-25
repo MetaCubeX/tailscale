@@ -9,11 +9,11 @@ import (
 	"testing"
 	"time"
 
-	"tailscale.com/tailcfg"
-	"tailscale.com/tstest"
-	"tailscale.com/tstest/natlab/vmtest"
-	"tailscale.com/tstest/natlab/vnet"
-	"tailscale.com/types/dnstype"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/tstest"
+	"github.com/metacubex/tailscale/tstest/natlab/vmtest"
+	"github.com/metacubex/tailscale/tstest/natlab/vnet"
+	"github.com/metacubex/tailscale/types/dnstype"
 )
 
 // TestDNSExtraRecordsSearchDomains verifies that control-plane DNS config

@@ -14,8 +14,8 @@ import (
 	"testing/synctest"
 	"time"
 
-	"tailscale.com/util/dnsname"
-	"tailscale.com/util/eventbus/eventbustest"
+	"github.com/metacubex/tailscale/util/dnsname"
+	"github.com/metacubex/tailscale/util/eventbus/eventbustest"
 )
 
 func TestDNSTrampleRecovery(t *testing.T) {

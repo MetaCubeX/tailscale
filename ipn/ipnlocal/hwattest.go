@@ -8,10 +8,10 @@ package ipnlocal
 import (
 	"errors"
 
-	"tailscale.com/feature"
-	"tailscale.com/types/key"
-	"tailscale.com/types/logger"
-	"tailscale.com/types/persist"
+	"github.com/metacubex/tailscale/feature"
+	"github.com/metacubex/tailscale/types/key"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/types/persist"
 )
 
 func init() {

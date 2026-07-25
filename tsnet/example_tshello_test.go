@@ -11,7 +11,7 @@ import (
 	"net/http"
 	"strings"
 
-	"tailscale.com/tsnet"
+	"github.com/metacubex/tailscale/tsnet"
 )
 
 func firstLabel(s string) string {

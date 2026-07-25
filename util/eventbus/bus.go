@@ -9,9 +9,9 @@ import (
 	"reflect"
 	"slices"
 
-	"tailscale.com/syncs"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/set"
+	"github.com/metacubex/tailscale/syncs"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/util/set"
 )
 
 type PublishedEvent struct {

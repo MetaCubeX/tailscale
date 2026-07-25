@@ -26,9 +26,9 @@ import (
 	"sync"
 	"time"
 
-	"tailscale.com/atomicfile"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tempfork/acme"
+	"github.com/metacubex/tailscale/atomicfile"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/tempfork/acme"
 )
 
 // shortlivedProfile is the ACME certificate profile required by

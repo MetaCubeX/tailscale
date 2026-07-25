@@ -12,7 +12,7 @@ import (
 	"strings"
 	"testing"
 
-	"tailscale.com/util/must"
+	"github.com/metacubex/tailscale/util/must"
 )
 
 func TestGocrossWrapper(t *testing.T) {

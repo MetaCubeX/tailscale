@@ -10,8 +10,8 @@ import (
 	"testing"
 
 	"github.com/creachadair/mds/shell"
-	"tailscale.com/tstest/natlab/vmtest"
-	"tailscale.com/tstest/natlab/vnet"
+	"github.com/metacubex/tailscale/tstest/natlab/vmtest"
+	"github.com/metacubex/tailscale/tstest/natlab/vnet"
 )
 
 func TestACMECertServeHTTPS(t *testing.T) {

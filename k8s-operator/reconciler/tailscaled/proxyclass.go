@@ -11,7 +11,7 @@ import (
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 
-	tsapi "tailscale.com/k8s-operator/apis/v1alpha1"
+	tsapi "github.com/metacubex/tailscale/k8s-operator/apis/v1alpha1"
 )
 
 // ApplyProxyClass overlays the settings in pc onto ss. It's the generic slice of ProxyClass application used by

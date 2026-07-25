@@ -6,8 +6,8 @@
 package batching
 
 import (
-	"tailscale.com/control/controlknobs"
-	"tailscale.com/types/nettype"
+	"github.com/metacubex/tailscale/control/controlknobs"
+	"github.com/metacubex/tailscale/types/nettype"
 )
 
 // TryUpgradeToConn is no-op on all platforms except linux.

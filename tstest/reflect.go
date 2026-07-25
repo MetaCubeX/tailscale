@@ -8,7 +8,7 @@ import (
 	"reflect"
 	"time"
 
-	"tailscale.com/util/testenv"
+	"github.com/metacubex/tailscale/util/testenv"
 )
 
 // IsZeroable is the interface for things with an IsZero method.

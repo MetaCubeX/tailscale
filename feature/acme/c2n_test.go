@@ -17,11 +17,11 @@ import (
 	"testing"
 	"time"
 
-	"tailscale.com/ipn/ipnlocal/ipnlocaltest"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tstest"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/must"
+	"github.com/metacubex/tailscale/ipn/ipnlocal/ipnlocaltest"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/tstest"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/util/must"
 )
 
 func TestHandleC2NTLSCertStatus(t *testing.T) {

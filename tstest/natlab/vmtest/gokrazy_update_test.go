@@ -16,9 +16,9 @@ import (
 	"testing"
 	"time"
 
-	"tailscale.com/tstest"
-	"tailscale.com/tstest/natlab/vmtest"
-	"tailscale.com/tstest/natlab/vnet"
+	"github.com/metacubex/tailscale/tstest"
+	"github.com/metacubex/tailscale/tstest/natlab/vmtest"
+	"github.com/metacubex/tailscale/tstest/natlab/vnet"
 )
 
 // TestGokrazyUpdatesItselfToSameImage exercises the Gokrazy appliance update

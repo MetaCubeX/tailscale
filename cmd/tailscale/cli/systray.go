@@ -10,7 +10,7 @@ import (
 	"flag"
 
 	"github.com/peterbourgon/ff/v3/ffcli"
-	"tailscale.com/client/systray"
+	"github.com/metacubex/tailscale/client/systray"
 )
 
 var systrayCmd = &ffcli.Command{

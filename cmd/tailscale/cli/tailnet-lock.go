@@ -22,13 +22,13 @@ import (
 
 	"github.com/mattn/go-isatty"
 	"github.com/peterbourgon/ff/v3/ffcli"
-	"tailscale.com/cmd/tailscale/cli/jsonoutput"
-	"tailscale.com/ipn/ipnstate"
-	"tailscale.com/tka"
-	"tailscale.com/tsconst"
-	"tailscale.com/types/key"
-	"tailscale.com/types/tkatype"
-	"tailscale.com/util/prompt"
+	"github.com/metacubex/tailscale/cmd/tailscale/cli/jsonoutput"
+	"github.com/metacubex/tailscale/ipn/ipnstate"
+	"github.com/metacubex/tailscale/tka"
+	"github.com/metacubex/tailscale/tsconst"
+	"github.com/metacubex/tailscale/types/key"
+	"github.com/metacubex/tailscale/types/tkatype"
+	"github.com/metacubex/tailscale/util/prompt"
 )
 
 func init() {

@@ -20,16 +20,16 @@ import (
 	"sync"
 	"time"
 
-	"tailscale.com/client/tailscale/apitype"
-	"tailscale.com/ipn"
-	"tailscale.com/ipn/ipnlocal"
-	"tailscale.com/ipn/localapi"
-	"tailscale.com/tailcfg"
-	"tailscale.com/util/clientmetric"
-	"tailscale.com/util/httphdr"
-	"tailscale.com/util/mak"
-	"tailscale.com/util/progresstracking"
-	"tailscale.com/util/rands"
+	"github.com/metacubex/tailscale/client/tailscale/apitype"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/ipn/ipnlocal"
+	"github.com/metacubex/tailscale/ipn/localapi"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/util/clientmetric"
+	"github.com/metacubex/tailscale/util/httphdr"
+	"github.com/metacubex/tailscale/util/mak"
+	"github.com/metacubex/tailscale/util/progresstracking"
+	"github.com/metacubex/tailscale/util/rands"
 )
 
 func init() {

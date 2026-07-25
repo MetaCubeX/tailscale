@@ -7,4 +7,4 @@ package cli
 
 // Import the netcheck captive portal hook package so that the netcheck
 // command also probes for captive portals during its report.
-import _ "tailscale.com/feature/captiveportal/netcheckhook"
+import _ "github.com/metacubex/tailscale/feature/captiveportal/netcheckhook"

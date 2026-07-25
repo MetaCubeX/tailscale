@@ -17,7 +17,7 @@ import (
 
 	"github.com/goreleaser/nfpm/v2"
 	"github.com/goreleaser/nfpm/v2/files"
-	"tailscale.com/release/dist"
+	"github.com/metacubex/tailscale/release/dist"
 )
 
 type tgzTarget struct {
@@ -53,11 +53,11 @@ func (t *tgzTarget) Build(b *dist.Build) ([]string, error) {
 	if err := b.BuildWebClientAssets(); err != nil {
 		return nil, err
 	}
-	ts, err := b.BuildGoBinary("tailscale.com/cmd/tailscale", t.goEnv)
+	ts, err := b.BuildGoBinary("github.com/metacubex/tailscale/cmd/tailscale", t.goEnv)
 	if err != nil {
 		return nil, err
 	}
-	tsd, err := b.BuildGoBinary("tailscale.com/cmd/tailscaled", t.goEnv)
+	tsd, err := b.BuildGoBinary("github.com/metacubex/tailscale/cmd/tailscaled", t.goEnv)
 	if err != nil {
 		return nil, err
 	}
@@ -130,7 +130,7 @@ func (t *tgzTarget) Build(b *dist.Build) ([]string, error) {
 		if err := addDir(dir); err != nil {
 			return nil, err
 		}
-		tailscaledDir, err := b.GoPkg("tailscale.com/cmd/tailscaled")
+		tailscaledDir, err := b.GoPkg("github.com/metacubex/tailscale/cmd/tailscaled")
 		if err != nil {
 			return nil, err
 		}
@@ -194,16 +194,16 @@ func (t *debTarget) Build(b *dist.Build) ([]string, error) {
 	if err := b.BuildWebClientAssets(); err != nil {
 		return nil, err
 	}
-	ts, err := b.BuildGoBinary("tailscale.com/cmd/tailscale", t.goEnv)
+	ts, err := b.BuildGoBinary("github.com/metacubex/tailscale/cmd/tailscale", t.goEnv)
 	if err != nil {
 		return nil, err
 	}
-	tsd, err := b.BuildGoBinary("tailscale.com/cmd/tailscaled", t.goEnv)
+	tsd, err := b.BuildGoBinary("github.com/metacubex/tailscale/cmd/tailscaled", t.goEnv)
 	if err != nil {
 		return nil, err
 	}
 
-	tailscaledDir, err := b.GoPkg("tailscale.com/cmd/tailscaled")
+	tailscaledDir, err := b.GoPkg("github.com/metacubex/tailscale/cmd/tailscaled")
 	if err != nil {
 		return nil, err
 	}
@@ -341,16 +341,16 @@ func (t *rpmTarget) Build(b *dist.Build) ([]string, error) {
 	if err := b.BuildWebClientAssets(); err != nil {
 		return nil, err
 	}
-	ts, err := b.BuildGoBinary("tailscale.com/cmd/tailscale", t.goEnv)
+	ts, err := b.BuildGoBinary("github.com/metacubex/tailscale/cmd/tailscale", t.goEnv)
 	if err != nil {
 		return nil, err
 	}
-	tsd, err := b.BuildGoBinary("tailscale.com/cmd/tailscaled", t.goEnv)
+	tsd, err := b.BuildGoBinary("github.com/metacubex/tailscale/cmd/tailscaled", t.goEnv)
 	if err != nil {
 		return nil, err
 	}
 
-	tailscaledDir, err := b.GoPkg("tailscale.com/cmd/tailscaled")
+	tailscaledDir, err := b.GoPkg("github.com/metacubex/tailscale/cmd/tailscaled")
 	if err != nil {
 		return nil, err
 	}

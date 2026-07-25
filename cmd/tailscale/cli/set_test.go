@@ -9,8 +9,8 @@ import (
 	"reflect"
 	"testing"
 
-	"tailscale.com/ipn"
-	"tailscale.com/net/tsaddr"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/net/tsaddr"
 )
 
 func TestCalcAdvertiseRoutesForSet(t *testing.T) {

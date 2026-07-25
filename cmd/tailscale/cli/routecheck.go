@@ -18,10 +18,10 @@ import (
 	"github.com/go-json-experiment/json/jsontext"
 	"github.com/peterbourgon/ff/v3/ffcli"
 
-	"tailscale.com/cmd/tailscale/cli/jsonoutput"
-	"tailscale.com/cmd/tailscale/tsroutecheckjsonv0"
-	"tailscale.com/net/routecheck"
-	"tailscale.com/tstime"
+	"github.com/metacubex/tailscale/cmd/tailscale/cli/jsonoutput"
+	"github.com/metacubex/tailscale/cmd/tailscale/tsroutecheckjsonv0"
+	"github.com/metacubex/tailscale/net/routecheck"
+	"github.com/metacubex/tailscale/tstime"
 )
 
 func init() {

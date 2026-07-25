@@ -7,8 +7,8 @@ import (
 	"strings"
 	"testing"
 
-	"tailscale.com/tstest/natlab/vmtest"
-	"tailscale.com/tstest/natlab/vnet"
+	"github.com/metacubex/tailscale/tstest/natlab/vmtest"
+	"github.com/metacubex/tailscale/tstest/natlab/vnet"
 )
 
 // TestUbuntuSystemdUnit runs tailscaled on an Ubuntu node via the stock

@@ -8,7 +8,7 @@ import (
 	"runtime"
 	"testing"
 
-	"tailscale.com/net/netmon"
+	"github.com/metacubex/tailscale/net/netmon"
 )
 
 func deriveBindhost(t *testing.T) string {

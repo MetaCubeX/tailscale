@@ -14,8 +14,8 @@ import (
 	"syscall"
 
 	"golang.org/x/sys/unix"
-	"tailscale.com/net/netmon"
-	"tailscale.com/types/logger"
+	"github.com/metacubex/tailscale/net/netmon"
+	"github.com/metacubex/tailscale/types/logger"
 )
 
 var (

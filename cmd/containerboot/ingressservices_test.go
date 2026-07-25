@@ -10,8 +10,8 @@ import (
 	"slices"
 	"testing"
 
-	"tailscale.com/kube/ingressservices"
-	"tailscale.com/util/linuxfw"
+	"github.com/metacubex/tailscale/kube/ingressservices"
+	"github.com/metacubex/tailscale/util/linuxfw"
 )
 
 func TestSyncIngressConfigs(t *testing.T) {

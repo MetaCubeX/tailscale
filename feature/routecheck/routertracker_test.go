@@ -12,12 +12,12 @@ import (
 
 	gcmp "github.com/google/go-cmp/cmp"
 
-	"tailscale.com/feature/routecheck"
-	"tailscale.com/ipn"
-	"tailscale.com/ipn/ipnstate"
-	netroutecheck "tailscale.com/net/routecheck"
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/opt"
+	"github.com/metacubex/tailscale/feature/routecheck"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/ipn/ipnstate"
+	netroutecheck "github.com/metacubex/tailscale/net/routecheck"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/types/opt"
 )
 
 func TestRouterTracker(t *testing.T) {

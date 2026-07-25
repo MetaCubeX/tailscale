@@ -15,8 +15,8 @@ import (
 	"k8s.io/client-go/rest"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	"tailscale.com/ipn"
-	"tailscale.com/tstest"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/tstest"
 )
 
 // See [TestMain] for test requirements.

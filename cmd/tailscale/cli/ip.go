@@ -12,8 +12,8 @@ import (
 	"slices"
 
 	"github.com/peterbourgon/ff/v3/ffcli"
-	"tailscale.com/ipn/ipnstate"
-	"tailscale.com/tailcfg"
+	"github.com/metacubex/tailscale/ipn/ipnstate"
+	"github.com/metacubex/tailscale/tailcfg"
 )
 
 var ipCmd = &ffcli.Command{

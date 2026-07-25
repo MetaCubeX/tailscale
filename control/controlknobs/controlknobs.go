@@ -10,9 +10,9 @@ import (
 	"reflect"
 	"sync/atomic"
 
-	"tailscale.com/syncs"
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/opt"
+	"github.com/metacubex/tailscale/syncs"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/types/opt"
 )
 
 // Knobs is the set of knobs that the control plane's coordination server can

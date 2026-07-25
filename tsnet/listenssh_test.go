@@ -17,9 +17,9 @@ import (
 
 	gossh "golang.org/x/crypto/ssh"
 
-	_ "tailscale.com/feature/ssh"
-	"tailscale.com/ssh/tailssh"
-	"tailscale.com/tstest"
+	_ "github.com/metacubex/tailscale/feature/ssh"
+	"github.com/metacubex/tailscale/ssh/tailssh"
+	"github.com/metacubex/tailscale/tstest"
 )
 
 // TestListenSSH starts two tsnet nodes on a test tailnet, has one listen

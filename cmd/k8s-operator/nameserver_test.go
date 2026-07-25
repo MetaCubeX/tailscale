@@ -20,15 +20,15 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
 	"sigs.k8s.io/yaml"
 
-	operatorutils "tailscale.com/k8s-operator"
-	tsapi "tailscale.com/k8s-operator/apis/v1alpha1"
-	"tailscale.com/tstest"
-	"tailscale.com/util/mak"
+	operatorutils "github.com/metacubex/tailscale/k8s-operator"
+	tsapi "github.com/metacubex/tailscale/k8s-operator/apis/v1alpha1"
+	"github.com/metacubex/tailscale/tstest"
+	"github.com/metacubex/tailscale/util/mak"
 )
 
 func TestNameserverReconciler(t *testing.T) {
 	dnsConfig := &tsapi.DNSConfig{
-		TypeMeta: metav1.TypeMeta{Kind: "DNSConfig", APIVersion: "tailscale.com/v1alpha1"},
+		TypeMeta: metav1.TypeMeta{Kind: "DNSConfig", APIVersion: "github.com/metacubex/tailscale/v1alpha1"},
 		ObjectMeta: metav1.ObjectMeta{
 			Name: "test",
 		},

@@ -10,12 +10,12 @@ import (
 
 	"github.com/google/go-cmp/cmp"
 	"go4.org/mem"
-	"tailscale.com/cmd/tailscale/cli/jsonoutput"
-	"tailscale.com/ipn/ipnstate"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tka"
-	"tailscale.com/types/key"
-	"tailscale.com/types/tkatype"
+	"github.com/metacubex/tailscale/cmd/tailscale/cli/jsonoutput"
+	"github.com/metacubex/tailscale/ipn/ipnstate"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/tka"
+	"github.com/metacubex/tailscale/types/key"
+	"github.com/metacubex/tailscale/types/tkatype"
 )
 
 func TestTailnetLockLogOutput(t *testing.T) {

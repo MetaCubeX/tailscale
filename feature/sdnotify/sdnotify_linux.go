@@ -12,7 +12,7 @@ import (
 	"sync"
 
 	"github.com/mdlayher/sdnotify"
-	"tailscale.com/feature"
+	"github.com/metacubex/tailscale/feature"
 )
 
 func init() {

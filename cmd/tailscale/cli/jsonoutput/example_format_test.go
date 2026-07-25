@@ -7,7 +7,7 @@ import (
 	"flag"
 	"fmt"
 
-	"tailscale.com/cmd/tailscale/cli/jsonoutput"
+	"github.com/metacubex/tailscale/cmd/tailscale/cli/jsonoutput"
 )
 
 func ExampleFormat_JSONBool() {

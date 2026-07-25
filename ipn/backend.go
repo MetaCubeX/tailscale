@@ -10,16 +10,16 @@ import (
 	"strings"
 	"time"
 
-	"tailscale.com/drive"
-	"tailscale.com/health"
-	"tailscale.com/ipn/ipnstate"
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/empty"
-	"tailscale.com/types/key"
-	"tailscale.com/types/netmap"
-	"tailscale.com/types/structs"
-	"tailscale.com/types/views"
-	"tailscale.com/util/syspolicy/policyclient"
+	"github.com/metacubex/tailscale/drive"
+	"github.com/metacubex/tailscale/health"
+	"github.com/metacubex/tailscale/ipn/ipnstate"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/types/empty"
+	"github.com/metacubex/tailscale/types/key"
+	"github.com/metacubex/tailscale/types/netmap"
+	"github.com/metacubex/tailscale/types/structs"
+	"github.com/metacubex/tailscale/types/views"
+	"github.com/metacubex/tailscale/util/syspolicy/policyclient"
 )
 
 type State int

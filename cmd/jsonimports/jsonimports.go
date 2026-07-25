@@ -55,9 +55,9 @@ import (
 	"strings"
 	"sync"
 
-	"tailscale.com/syncs"
-	"tailscale.com/util/must"
-	"tailscale.com/util/safediff"
+	"github.com/metacubex/tailscale/syncs"
+	"github.com/metacubex/tailscale/util/must"
+	"github.com/metacubex/tailscale/util/safediff"
 )
 
 func main() {

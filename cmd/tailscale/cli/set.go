@@ -16,17 +16,17 @@ import (
 	"strings"
 
 	"github.com/peterbourgon/ff/v3/ffcli"
-	"tailscale.com/cmd/tailscale/cli/ffcomplete"
-	"tailscale.com/feature/buildfeatures"
-	"tailscale.com/ipn"
-	"tailscale.com/net/netutil"
-	"tailscale.com/net/tsaddr"
-	"tailscale.com/safesocket"
-	"tailscale.com/tsconst"
-	"tailscale.com/types/opt"
-	"tailscale.com/types/views"
-	"tailscale.com/util/set"
-	"tailscale.com/version"
+	"github.com/metacubex/tailscale/cmd/tailscale/cli/ffcomplete"
+	"github.com/metacubex/tailscale/feature/buildfeatures"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/net/netutil"
+	"github.com/metacubex/tailscale/net/tsaddr"
+	"github.com/metacubex/tailscale/safesocket"
+	"github.com/metacubex/tailscale/tsconst"
+	"github.com/metacubex/tailscale/types/opt"
+	"github.com/metacubex/tailscale/types/views"
+	"github.com/metacubex/tailscale/util/set"
+	"github.com/metacubex/tailscale/version"
 )
 
 var setCmd = &ffcli.Command{

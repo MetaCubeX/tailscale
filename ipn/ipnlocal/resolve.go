@@ -7,13 +7,13 @@ import (
 	"net/netip"
 	"strings"
 
-	"tailscale.com/feature/buildfeatures"
-	"tailscale.com/net/dns/resolver"
-	"tailscale.com/net/tsaddr"
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/key"
-	"tailscale.com/util/dnsname"
-	"tailscale.com/wgengine"
+	"github.com/metacubex/tailscale/feature/buildfeatures"
+	"github.com/metacubex/tailscale/net/dns/resolver"
+	"github.com/metacubex/tailscale/net/tsaddr"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/types/key"
+	"github.com/metacubex/tailscale/util/dnsname"
+	"github.com/metacubex/tailscale/wgengine"
 )
 
 // lookupPeerByIP returns the node public key for the peer that should

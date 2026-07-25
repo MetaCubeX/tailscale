@@ -18,10 +18,10 @@ import (
 	"sync/atomic"
 	"time"
 
-	"tailscale.com/net/netutil"
-	"tailscale.com/net/netx"
-	"tailscale.com/tailcfg"
-	"tailscale.com/util/httpm"
+	"github.com/metacubex/tailscale/net/netutil"
+	"github.com/metacubex/tailscale/net/netx"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/util/httpm"
 )
 
 const (

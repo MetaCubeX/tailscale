@@ -15,13 +15,13 @@ import (
 	"testing"
 	"time"
 
-	"tailscale.com/control/ts2021"
-	"tailscale.com/control/tsp"
-	"tailscale.com/net/tsdial"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tstest/integration/testcontrol"
-	"tailscale.com/types/key"
-	"tailscale.com/util/must"
+	"github.com/metacubex/tailscale/control/ts2021"
+	"github.com/metacubex/tailscale/control/tsp"
+	"github.com/metacubex/tailscale/net/tsdial"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/tstest/integration/testcontrol"
+	"github.com/metacubex/tailscale/types/key"
+	"github.com/metacubex/tailscale/util/must"
 )
 
 // TestStreamingMapReqReadOnlyByVersion verifies that testcontrol matches

@@ -8,11 +8,11 @@ import (
 	"fmt"
 	"os/user"
 
-	"tailscale.com/util/syspolicy/internal"
-	"tailscale.com/util/syspolicy/rsop"
-	"tailscale.com/util/syspolicy/setting"
-	"tailscale.com/util/syspolicy/source"
-	"tailscale.com/util/testenv"
+	"github.com/metacubex/tailscale/util/syspolicy/internal"
+	"github.com/metacubex/tailscale/util/syspolicy/rsop"
+	"github.com/metacubex/tailscale/util/syspolicy/setting"
+	"github.com/metacubex/tailscale/util/syspolicy/source"
+	"github.com/metacubex/tailscale/util/testenv"
 )
 
 func init() {

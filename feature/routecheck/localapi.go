@@ -12,11 +12,11 @@ import (
 	jsonv2 "github.com/go-json-experiment/json"
 	jsonv1 "github.com/go-json-experiment/json/v1"
 
-	"tailscale.com/ipn/ipnlocal"
-	"tailscale.com/ipn/localapi"
-	"tailscale.com/net/routecheck"
-	"tailscale.com/util/def"
-	"tailscale.com/util/httpm"
+	"github.com/metacubex/tailscale/ipn/ipnlocal"
+	"github.com/metacubex/tailscale/ipn/localapi"
+	"github.com/metacubex/tailscale/net/routecheck"
+	"github.com/metacubex/tailscale/util/def"
+	"github.com/metacubex/tailscale/util/httpm"
 )
 
 func init() {

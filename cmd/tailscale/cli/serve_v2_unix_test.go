@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"tailscale.com/ipn"
+	"github.com/metacubex/tailscale/ipn"
 )
 
 func TestServeUnixSocketCLI(t *testing.T) {

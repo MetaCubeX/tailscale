@@ -11,7 +11,7 @@ import (
 	"os/exec"
 	"strings"
 
-	"tailscale.com/types/logger"
+	"github.com/metacubex/tailscale/types/logger"
 )
 
 // openresolvManager manages DNS configuration using the openresolv

@@ -10,11 +10,11 @@ import (
 	"net/netip"
 	"time"
 
-	"tailscale.com/drive"
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/opt"
-	"tailscale.com/types/persist"
-	"tailscale.com/types/preftype"
+	"github.com/metacubex/tailscale/drive"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/types/opt"
+	"github.com/metacubex/tailscale/types/persist"
+	"github.com/metacubex/tailscale/types/preftype"
 )
 
 // Clone makes a deep copy of LoginProfile.

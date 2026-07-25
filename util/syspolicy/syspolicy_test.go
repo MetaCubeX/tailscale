@@ -9,15 +9,15 @@ import (
 	"testing"
 	"time"
 
-	"tailscale.com/types/logger"
-	"tailscale.com/util/syspolicy/internal/loggerx"
-	"tailscale.com/util/syspolicy/internal/metrics"
-	"tailscale.com/util/syspolicy/pkey"
-	"tailscale.com/util/syspolicy/ptype"
-	"tailscale.com/util/syspolicy/rsop"
-	"tailscale.com/util/syspolicy/setting"
-	"tailscale.com/util/syspolicy/source"
-	"tailscale.com/util/testenv"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/util/syspolicy/internal/loggerx"
+	"github.com/metacubex/tailscale/util/syspolicy/internal/metrics"
+	"github.com/metacubex/tailscale/util/syspolicy/pkey"
+	"github.com/metacubex/tailscale/util/syspolicy/ptype"
+	"github.com/metacubex/tailscale/util/syspolicy/rsop"
+	"github.com/metacubex/tailscale/util/syspolicy/setting"
+	"github.com/metacubex/tailscale/util/syspolicy/source"
+	"github.com/metacubex/tailscale/util/testenv"
 )
 
 var someOtherError = errors.New("error other than not found")

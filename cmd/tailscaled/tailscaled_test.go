@@ -1,20 +1,20 @@
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
-package main // import "tailscale.com/cmd/tailscaled"
+package main // import "github.com/metacubex/tailscale/cmd/tailscaled"
 
 import (
 	"os"
 	"strings"
 	"testing"
 
-	"tailscale.com/envknob"
-	"tailscale.com/ipn"
-	"tailscale.com/net/netmon"
-	"tailscale.com/tsd"
-	"tailscale.com/tstest/deptest"
-	"tailscale.com/types/logid"
-	"tailscale.com/util/must"
+	"github.com/metacubex/tailscale/envknob"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/net/netmon"
+	"github.com/metacubex/tailscale/tsd"
+	"github.com/metacubex/tailscale/tstest/deptest"
+	"github.com/metacubex/tailscale/types/logid"
+	"github.com/metacubex/tailscale/util/must"
 )
 
 func TestNothing(t *testing.T) {

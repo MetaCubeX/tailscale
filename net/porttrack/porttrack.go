@@ -28,7 +28,7 @@ import (
 	"strings"
 	"sync"
 
-	"tailscale.com/util/testenv"
+	"github.com/metacubex/tailscale/util/testenv"
 )
 
 const magicPrefix = "testport-report-"

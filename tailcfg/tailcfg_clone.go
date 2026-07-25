@@ -10,11 +10,11 @@ import (
 	"net/netip"
 	"time"
 
-	"tailscale.com/types/dnstype"
-	"tailscale.com/types/key"
-	"tailscale.com/types/opt"
-	"tailscale.com/types/structs"
-	"tailscale.com/types/tkatype"
+	"github.com/metacubex/tailscale/types/dnstype"
+	"github.com/metacubex/tailscale/types/key"
+	"github.com/metacubex/tailscale/types/opt"
+	"github.com/metacubex/tailscale/types/structs"
+	"github.com/metacubex/tailscale/types/tkatype"
 )
 
 // Clone makes a deep copy of User.

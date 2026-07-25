@@ -15,9 +15,9 @@ import (
 	"golang.org/x/sys/windows"
 	"golang.org/x/sys/windows/svc"
 	"golang.org/x/sys/windows/svc/mgr"
-	"tailscale.com/cmd/tailscaled/tailscaledhooks"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/backoff"
+	"github.com/metacubex/tailscale/cmd/tailscaled/tailscaledhooks"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/util/backoff"
 )
 
 func init() {

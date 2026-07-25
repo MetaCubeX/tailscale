@@ -17,7 +17,7 @@ import (
 	"slices"
 	"strings"
 
-	"tailscale.com/feature/featuretags"
+	"github.com/metacubex/tailscale/feature/featuretags"
 )
 
 // baseTags are the non-featuretag build tags always set for the wasm
@@ -146,7 +146,7 @@ func ProdCommand(goBin, outputPath string) *exec.Cmd {
 		"-trimpath",
 		"-ldflags", ProdLDFlags,
 		"-o", outputPath,
-		"tailscale.com/cmd/tsconnect/wasm",
+		"github.com/metacubex/tailscale/cmd/tsconnect/wasm",
 	)
 	cmd.Env = append(os.Environ(), "GOOS=js", "GOARCH=wasm")
 	return cmd

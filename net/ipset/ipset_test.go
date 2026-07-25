@@ -7,8 +7,8 @@ import (
 	"net/netip"
 	"testing"
 
-	"tailscale.com/tstest"
-	"tailscale.com/types/views"
+	"github.com/metacubex/tailscale/tstest"
+	"github.com/metacubex/tailscale/types/views"
 )
 
 func pp(ss ...string) (ret []netip.Prefix) {

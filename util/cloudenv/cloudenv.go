@@ -16,9 +16,9 @@ import (
 	"strings"
 	"time"
 
-	"tailscale.com/feature/buildfeatures"
-	"tailscale.com/syncs"
-	"tailscale.com/types/lazy"
+	"github.com/metacubex/tailscale/feature/buildfeatures"
+	"github.com/metacubex/tailscale/syncs"
+	"github.com/metacubex/tailscale/types/lazy"
 )
 
 // CommonNonRoutableMetadataIP is the IP address of the metadata server

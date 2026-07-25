@@ -24,16 +24,16 @@ import (
 	"sync/atomic"
 	"time"
 
-	"tailscale.com/feature"
-	"tailscale.com/health"
-	"tailscale.com/hostinfo"
-	"tailscale.com/net/dns/resolvconffile"
-	"tailscale.com/net/tsaddr"
-	"tailscale.com/types/lazy"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/dnsname"
-	"tailscale.com/util/eventbus"
-	"tailscale.com/version/distro"
+	"github.com/metacubex/tailscale/feature"
+	"github.com/metacubex/tailscale/health"
+	"github.com/metacubex/tailscale/hostinfo"
+	"github.com/metacubex/tailscale/net/dns/resolvconffile"
+	"github.com/metacubex/tailscale/net/tsaddr"
+	"github.com/metacubex/tailscale/types/lazy"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/util/dnsname"
+	"github.com/metacubex/tailscale/util/eventbus"
+	"github.com/metacubex/tailscale/version/distro"
 )
 
 // writeResolvConf writes DNS configuration in resolv.conf format to the given writer.

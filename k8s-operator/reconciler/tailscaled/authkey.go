@@ -14,8 +14,8 @@ import (
 
 	tailscaleclient "tailscale.com/client/tailscale/v2"
 
-	"tailscale.com/ipn"
-	"tailscale.com/k8s-operator/tsclient"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/k8s-operator/tsclient"
 )
 
 // ClientProvider returns a Tailscale API client for the given tailnet name. A blank name should return the

@@ -55,12 +55,12 @@ import (
 
 	"github.com/hdevalence/ed25519consensus"
 	"golang.org/x/crypto/blake2s"
-	"tailscale.com/feature"
-	"tailscale.com/net/netutil"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/httpm"
-	"tailscale.com/util/must"
-	"tailscale.com/util/progresstracking"
+	"github.com/metacubex/tailscale/feature"
+	"github.com/metacubex/tailscale/net/netutil"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/util/httpm"
+	"github.com/metacubex/tailscale/util/must"
+	"github.com/metacubex/tailscale/util/progresstracking"
 )
 
 const (

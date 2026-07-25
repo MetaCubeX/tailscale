@@ -9,7 +9,7 @@ import (
 	"strings"
 	"testing"
 
-	"tailscale.com/tstest/natlab/vmtest"
+	"github.com/metacubex/tailscale/tstest/natlab/vmtest"
 )
 
 // TestWebClientLocalAccess verifies that, after enabling the web client on a

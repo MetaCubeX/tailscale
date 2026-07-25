@@ -6,10 +6,10 @@
 package ipnlocal
 
 import (
-	"tailscale.com/ipn"
-	"tailscale.com/ipn/ipnstate"
-	"tailscale.com/tka"
-	"tailscale.com/types/netmap"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/ipn/ipnstate"
+	"github.com/metacubex/tailscale/tka"
+	"github.com/metacubex/tailscale/types/netmap"
 )
 
 type tkaState struct {

@@ -10,8 +10,8 @@ import (
 	"os"
 	"sync"
 
-	"tailscale.com/types/logger"
-	"tailscale.com/types/persist"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/types/persist"
 )
 
 // HookRegisterLogSinkFlags is a hook for the syslog feature to register

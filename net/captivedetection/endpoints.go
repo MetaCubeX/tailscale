@@ -12,9 +12,9 @@ import (
 	"slices"
 
 	"go4.org/mem"
-	"tailscale.com/net/dnsfallback"
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/logger"
+	"github.com/metacubex/tailscale/net/dnsfallback"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/types/logger"
 )
 
 // EndpointProvider is an enum that represents the source of an Endpoint.

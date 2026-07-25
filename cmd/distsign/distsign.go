@@ -12,7 +12,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"tailscale.com/clientupdate/distsign"
+	"github.com/metacubex/tailscale/clientupdate/distsign"
 )
 
 var (

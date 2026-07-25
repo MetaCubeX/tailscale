@@ -15,7 +15,7 @@ import (
 	"time"
 
 	gliderssh "github.com/tailscale/gliderssh"
-	"tailscale.com/tailcfg"
+	"github.com/metacubex/tailscale/tailcfg"
 )
 
 var errNoDeadline = errors.New("tailssh.Session: deadlines not supported")

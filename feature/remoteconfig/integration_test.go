@@ -13,9 +13,9 @@ import (
 	"testing"
 	"time"
 
-	"tailscale.com/ipn"
-	"tailscale.com/tstest"
-	"tailscale.com/tstest/integration"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/tstest"
+	"github.com/metacubex/tailscale/tstest/integration"
 )
 
 // TestRemoteConfigIntegration verifies that the /remoteapi/localapi/*

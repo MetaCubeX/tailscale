@@ -15,9 +15,9 @@ import (
 	"gvisor.dev/gvisor/pkg/tcpip"
 	"gvisor.dev/gvisor/pkg/tcpip/checksum"
 	"gvisor.dev/gvisor/pkg/tcpip/header"
-	"tailscale.com/control/controlknobs"
-	"tailscale.com/envknob"
-	"tailscale.com/net/tsaddr"
+	"github.com/metacubex/tailscale/control/controlknobs"
+	"github.com/metacubex/tailscale/envknob"
+	"github.com/metacubex/tailscale/net/tsaddr"
 )
 
 // SetLinkFeaturesPostUp configures link features on t based on select TS_TUN_

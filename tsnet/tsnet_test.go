@@ -44,27 +44,27 @@ import (
 	"github.com/tailscale/wireguard-go/tun"
 	"golang.org/x/net/proxy"
 
-	"tailscale.com/client/local"
-	"tailscale.com/cmd/testwrapper/flakytest"
-	"tailscale.com/internal/client/tailscale"
-	"tailscale.com/ipn"
-	"tailscale.com/ipn/ipnlocal"
-	"tailscale.com/ipn/store/mem"
-	"tailscale.com/net/netns"
-	"tailscale.com/net/packet"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tstest"
-	"tailscale.com/tstest/deptest"
-	"tailscale.com/tstest/integration"
-	"tailscale.com/tstest/integration/testcontrol"
-	"tailscale.com/types/ipproto"
-	"tailscale.com/types/key"
-	"tailscale.com/types/logger"
-	"tailscale.com/types/netmap"
-	"tailscale.com/types/views"
-	"tailscale.com/util/mak"
-	"tailscale.com/util/must"
-	"tailscale.com/wgengine/filter"
+	"github.com/metacubex/tailscale/client/local"
+	"github.com/metacubex/tailscale/cmd/testwrapper/flakytest"
+	"github.com/metacubex/tailscale/internal/client/tailscale"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/ipn/ipnlocal"
+	"github.com/metacubex/tailscale/ipn/store/mem"
+	"github.com/metacubex/tailscale/net/netns"
+	"github.com/metacubex/tailscale/net/packet"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/tstest"
+	"github.com/metacubex/tailscale/tstest/deptest"
+	"github.com/metacubex/tailscale/tstest/integration"
+	"github.com/metacubex/tailscale/tstest/integration/testcontrol"
+	"github.com/metacubex/tailscale/types/ipproto"
+	"github.com/metacubex/tailscale/types/key"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/types/netmap"
+	"github.com/metacubex/tailscale/types/views"
+	"github.com/metacubex/tailscale/util/mak"
+	"github.com/metacubex/tailscale/util/must"
+	"github.com/metacubex/tailscale/wgengine/filter"
 )
 
 // pingTimeout returns a per-ping budget for use within the larger test ctx:
@@ -3420,15 +3420,15 @@ func TestDeps(t *testing.T) {
 		BadDeps: map[string]string{
 			"golang.org/x/crypto/ssh":                       "tsnet should not depend on SSH",
 			"golang.org/x/crypto/ssh/internal/bcrypt_pbkdf": "tsnet should not depend on SSH",
-			"tailscale.com/chirp":                           "tsnet should not depend on BIRD integration",
-			"tailscale.com/feature/bird":                    "tsnet should not depend on BIRD integration",
-			"tailscale.com/feature/captiveportal":           "tsnet apps don't need captive portal detection; import it explicitly if desired",
-			"tailscale.com/feature/clientupdate":            "tsnet should not depend on feature/clientupdate",
-			"tailscale.com/feature/remoteconfig":            "tsnet should not depend on feature/remoteconfig",
-			"tailscale.com/feature/syspolicy":               "tsnet should not depend on syspolicy",
-			"tailscale.com/ipn/store/awsstore":              "tsnet callers wanting AWS state storage should import awsstore themselves",
-			"tailscale.com/ipn/store/kubestore":             "tsnet callers wanting Kubernetes state storage should import kubestore themselves",
-			"tailscale.com/wif":                             "tsnet callers wanting workload identity federation should import tailscale.com/feature/identityfederation themselves",
+			"github.com/metacubex/tailscale/chirp":                           "tsnet should not depend on BIRD integration",
+			"github.com/metacubex/tailscale/feature/bird":                    "tsnet should not depend on BIRD integration",
+			"github.com/metacubex/tailscale/feature/captiveportal":           "tsnet apps don't need captive portal detection; import it explicitly if desired",
+			"github.com/metacubex/tailscale/feature/clientupdate":            "tsnet should not depend on feature/clientupdate",
+			"github.com/metacubex/tailscale/feature/remoteconfig":            "tsnet should not depend on feature/remoteconfig",
+			"github.com/metacubex/tailscale/feature/syspolicy":               "tsnet should not depend on syspolicy",
+			"github.com/metacubex/tailscale/ipn/store/awsstore":              "tsnet callers wanting AWS state storage should import awsstore themselves",
+			"github.com/metacubex/tailscale/ipn/store/kubestore":             "tsnet callers wanting Kubernetes state storage should import kubestore themselves",
+			"github.com/metacubex/tailscale/wif":                             "tsnet callers wanting workload identity federation should import tailscale.com/feature/identityfederation themselves",
 		},
 		OnDep: func(dep string) {
 			if strings.Contains(dep, "portlist") ||

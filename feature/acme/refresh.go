@@ -8,10 +8,10 @@ import (
 	"net"
 	"time"
 
-	"tailscale.com/envknob"
-	"tailscale.com/ipn"
-	"tailscale.com/ipn/ipnlocal"
-	"tailscale.com/util/set"
+	"github.com/metacubex/tailscale/envknob"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/ipn/ipnlocal"
+	"github.com/metacubex/tailscale/util/set"
 )
 
 // certRefreshInterval is how often the background loop iterates the set

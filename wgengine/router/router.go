@@ -14,13 +14,13 @@ import (
 	"slices"
 
 	"github.com/tailscale/wireguard-go/tun"
-	"tailscale.com/feature"
-	"tailscale.com/feature/buildfeatures"
-	"tailscale.com/health"
-	"tailscale.com/net/netmon"
-	"tailscale.com/types/logger"
-	"tailscale.com/types/preftype"
-	"tailscale.com/util/eventbus"
+	"github.com/metacubex/tailscale/feature"
+	"github.com/metacubex/tailscale/feature/buildfeatures"
+	"github.com/metacubex/tailscale/health"
+	"github.com/metacubex/tailscale/net/netmon"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/types/preftype"
+	"github.com/metacubex/tailscale/util/eventbus"
 )
 
 // Router is responsible for managing the system network stack.

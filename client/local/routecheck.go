@@ -11,7 +11,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"tailscale.com/net/routecheck"
+	"github.com/metacubex/tailscale/net/routecheck"
 )
 
 // ErrReportPending is returned by [Client.RouteCheck] and [Client.RouteCheckProbe]

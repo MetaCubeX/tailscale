@@ -12,9 +12,9 @@ import (
 	"runtime"
 
 	"golang.org/x/sys/windows/registry"
-	"tailscale.com/types/lazy"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/winutil"
+	"github.com/metacubex/tailscale/types/lazy"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/util/winutil"
 )
 
 const (

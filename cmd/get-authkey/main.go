@@ -16,7 +16,7 @@ import (
 	"strings"
 
 	"golang.org/x/oauth2/clientcredentials"
-	"tailscale.com/internal/client/tailscale"
+	"github.com/metacubex/tailscale/internal/client/tailscale"
 )
 
 func main() {

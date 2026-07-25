@@ -10,15 +10,15 @@ import (
 	"slices"
 	"testing"
 
-	"tailscale.com/ipn"
-	"tailscale.com/net/udprelay/endpoint"
-	"tailscale.com/net/udprelay/status"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tsd"
-	"tailscale.com/tstime"
-	"tailscale.com/types/key"
-	"tailscale.com/types/logger"
-	"tailscale.com/types/views"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/net/udprelay/endpoint"
+	"github.com/metacubex/tailscale/net/udprelay/status"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/tsd"
+	"github.com/metacubex/tailscale/tstime"
+	"github.com/metacubex/tailscale/types/key"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/types/views"
 )
 
 func Test_extension_profileStateChanged(t *testing.T) {

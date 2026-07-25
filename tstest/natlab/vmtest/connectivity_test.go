@@ -7,9 +7,9 @@ import (
 	"fmt"
 	"testing"
 
-	"tailscale.com/tailcfg"
-	"tailscale.com/tstest/natlab/vmtest"
-	"tailscale.com/tstest/natlab/vnet"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/tstest/natlab/vmtest"
+	"github.com/metacubex/tailscale/tstest/natlab/vnet"
 )
 
 func v6cidr(n int) string {

@@ -20,9 +20,9 @@ import (
 	"strings"
 
 	"github.com/peterbourgon/ff/v3/ffcli"
-	"tailscale.com/hostinfo"
-	"tailscale.com/ipn"
-	"tailscale.com/version/distro"
+	"github.com/metacubex/tailscale/hostinfo"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/version/distro"
 )
 
 func init() {

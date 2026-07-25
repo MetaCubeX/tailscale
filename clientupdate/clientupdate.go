@@ -28,14 +28,14 @@ import (
 	"strconv"
 	"strings"
 
-	"tailscale.com/envknob"
-	"tailscale.com/feature"
-	"tailscale.com/hostinfo"
-	"tailscale.com/types/lazy"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/cmpver"
-	"tailscale.com/version"
-	"tailscale.com/version/distro"
+	"github.com/metacubex/tailscale/envknob"
+	"github.com/metacubex/tailscale/feature"
+	"github.com/metacubex/tailscale/hostinfo"
+	"github.com/metacubex/tailscale/types/lazy"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/util/cmpver"
+	"github.com/metacubex/tailscale/version"
+	"github.com/metacubex/tailscale/version/distro"
 )
 
 // GokrazyUpdateArgs contains arguments for updating a Gokrazy appliance from a

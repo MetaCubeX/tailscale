@@ -11,7 +11,7 @@ import (
 	"net"
 	"strconv"
 
-	"tailscale.com/health"
+	"github.com/metacubex/tailscale/health"
 )
 
 // ErrStateNotExist is returned by StateStore.ReadState when the

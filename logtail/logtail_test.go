@@ -20,12 +20,12 @@ import (
 	"time"
 
 	"github.com/go-json-experiment/json/jsontext"
-	"tailscale.com/envknob"
-	"tailscale.com/net/memnet"
-	"tailscale.com/tstest"
-	"tailscale.com/tstime"
-	"tailscale.com/util/eventbus/eventbustest"
-	"tailscale.com/util/must"
+	"github.com/metacubex/tailscale/envknob"
+	"github.com/metacubex/tailscale/net/memnet"
+	"github.com/metacubex/tailscale/tstest"
+	"github.com/metacubex/tailscale/tstime"
+	"github.com/metacubex/tailscale/util/eventbus/eventbustest"
+	"github.com/metacubex/tailscale/util/must"
 )
 
 // TestMain installs a safety net that refuses non-localhost dials for any

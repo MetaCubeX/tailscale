@@ -5,9 +5,9 @@
 package apitype
 
 import (
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/dnstype"
-	"tailscale.com/util/ctxkey"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/types/dnstype"
+	"github.com/metacubex/tailscale/util/ctxkey"
 )
 
 // LocalAPIHost is the Host header value used by the LocalAPI.

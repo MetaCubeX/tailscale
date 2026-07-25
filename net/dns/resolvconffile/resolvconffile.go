@@ -19,7 +19,7 @@ import (
 	"os"
 	"strings"
 
-	"tailscale.com/util/dnsname"
+	"github.com/metacubex/tailscale/util/dnsname"
 )
 
 // Path is the canonical location of resolv.conf.

@@ -8,10 +8,10 @@ import (
 	"fmt"
 	"net/netip"
 
-	"tailscale.com/net/tsaddr"
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/opt"
-	"tailscale.com/types/preftype"
+	"github.com/metacubex/tailscale/net/tsaddr"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/types/opt"
+	"github.com/metacubex/tailscale/types/preftype"
 )
 
 // ConfigVAlpha is the config file format for the "alpha0" version.

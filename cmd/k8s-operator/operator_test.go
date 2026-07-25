@@ -25,15 +25,15 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 
-	"tailscale.com/k8s-operator/apis/v1alpha1"
-	tsapi "tailscale.com/k8s-operator/apis/v1alpha1"
-	"tailscale.com/k8s-operator/tsclient"
-	"tailscale.com/kube/kubetypes"
-	"tailscale.com/net/dns/resolvconffile"
-	"tailscale.com/tstest"
-	"tailscale.com/tstime"
-	"tailscale.com/util/dnsname"
-	"tailscale.com/util/mak"
+	"github.com/metacubex/tailscale/k8s-operator/apis/v1alpha1"
+	tsapi "github.com/metacubex/tailscale/k8s-operator/apis/v1alpha1"
+	"github.com/metacubex/tailscale/k8s-operator/tsclient"
+	"github.com/metacubex/tailscale/kube/kubetypes"
+	"github.com/metacubex/tailscale/net/dns/resolvconffile"
+	"github.com/metacubex/tailscale/tstest"
+	"github.com/metacubex/tailscale/tstime"
+	"github.com/metacubex/tailscale/util/dnsname"
+	"github.com/metacubex/tailscale/util/mak"
 )
 
 func TestLoadBalancerClass(t *testing.T) {
@@ -135,7 +135,7 @@ func TestLoadBalancerClass(t *testing.T) {
 	expectEqual(t, fc, expectedSTS(t, fc, opts), removeResourceReqs)
 
 	want.Annotations = nil
-	want.ObjectMeta.Finalizers = []string{"tailscale.com/finalizer"}
+	want.ObjectMeta.Finalizers = []string{"github.com/metacubex/tailscale/finalizer"}
 	want.Status = corev1.ServiceStatus{
 		Conditions: []metav1.Condition{{
 			Type:               string(tsapi.ProxyReady),
@@ -277,7 +277,7 @@ func TestTailnetTargetFQDNAnnotation(t *testing.T) {
 		ObjectMeta: metav1.ObjectMeta{
 			Name:       "test",
 			Namespace:  "default",
-			Finalizers: []string{"tailscale.com/finalizer"},
+			Finalizers: []string{"github.com/metacubex/tailscale/finalizer"},
 			UID:        types.UID("1234-UID"),
 			Annotations: map[string]string{
 				AnnotationTailnetTargetFQDN: tailnetTargetFQDN,
@@ -387,7 +387,7 @@ func TestTailnetTargetIPAnnotation(t *testing.T) {
 		ObjectMeta: metav1.ObjectMeta{
 			Name:       "test",
 			Namespace:  "default",
-			Finalizers: []string{"tailscale.com/finalizer"},
+			Finalizers: []string{"github.com/metacubex/tailscale/finalizer"},
 			UID:        types.UID("1234-UID"),
 			Annotations: map[string]string{
 				AnnotationTailnetTargetIP: tailnetTargetIP,
@@ -600,7 +600,7 @@ func TestAnnotations(t *testing.T) {
 			// on it being set.
 			UID: "1234-UID",
 			Annotations: map[string]string{
-				"tailscale.com/expose": "true",
+				"github.com/metacubex/tailscale/expose": "true",
 			},
 		},
 		Spec: corev1.ServiceSpec{
@@ -630,10 +630,10 @@ func TestAnnotations(t *testing.T) {
 		ObjectMeta: metav1.ObjectMeta{
 			Name:       "test",
 			Namespace:  "default",
-			Finalizers: []string{"tailscale.com/finalizer"},
+			Finalizers: []string{"github.com/metacubex/tailscale/finalizer"},
 			UID:        types.UID("1234-UID"),
 			Annotations: map[string]string{
-				"tailscale.com/expose": "true",
+				"github.com/metacubex/tailscale/expose": "true",
 			},
 		},
 		Spec: corev1.ServiceSpec{
@@ -649,7 +649,7 @@ func TestAnnotations(t *testing.T) {
 	// Turn the service back into a ClusterIP service, which should make the
 	// operator clean up.
 	mustUpdate(t, fc, "default", "test", func(s *corev1.Service) {
-		delete(s.ObjectMeta.Annotations, "tailscale.com/expose")
+		delete(s.ObjectMeta.Annotations, "github.com/metacubex/tailscale/expose")
 	})
 	// synchronous StatefulSet deletion triggers a requeue. But, the StatefulSet
 	// didn't create any child resources since this is all faked, so the
@@ -704,7 +704,7 @@ func TestAnnotationIntoLB(t *testing.T) {
 			// on it being set.
 			UID: "1234-UID",
 			Annotations: map[string]string{
-				"tailscale.com/expose": "true",
+				"github.com/metacubex/tailscale/expose": "true",
 			},
 		},
 		Spec: corev1.ServiceSpec{
@@ -747,10 +747,10 @@ func TestAnnotationIntoLB(t *testing.T) {
 		ObjectMeta: metav1.ObjectMeta{
 			Name:       "test",
 			Namespace:  "default",
-			Finalizers: []string{"tailscale.com/finalizer"},
+			Finalizers: []string{"github.com/metacubex/tailscale/finalizer"},
 			UID:        types.UID("1234-UID"),
 			Annotations: map[string]string{
-				"tailscale.com/expose": "true",
+				"github.com/metacubex/tailscale/expose": "true",
 			},
 		},
 		Spec: corev1.ServiceSpec{
@@ -766,7 +766,7 @@ func TestAnnotationIntoLB(t *testing.T) {
 	// Remove Tailscale's annotation, and at the same time convert the service
 	// into a tailscale LoadBalancer.
 	mustUpdate(t, fc, "default", "test", func(s *corev1.Service) {
-		delete(s.ObjectMeta.Annotations, "tailscale.com/expose")
+		delete(s.ObjectMeta.Annotations, "github.com/metacubex/tailscale/expose")
 		s.Spec.Type = corev1.ServiceTypeLoadBalancer
 		s.Spec.LoadBalancerClass = new("tailscale")
 	})
@@ -780,7 +780,7 @@ func TestAnnotationIntoLB(t *testing.T) {
 		ObjectMeta: metav1.ObjectMeta{
 			Name:       "test",
 			Namespace:  "default",
-			Finalizers: []string{"tailscale.com/finalizer"},
+			Finalizers: []string{"github.com/metacubex/tailscale/finalizer"},
 			UID:        "1234-UID",
 		},
 		Spec: corev1.ServiceSpec{
@@ -875,7 +875,7 @@ func TestLBIntoAnnotation(t *testing.T) {
 		ObjectMeta: metav1.ObjectMeta{
 			Name:       "test",
 			Namespace:  "default",
-			Finalizers: []string{"tailscale.com/finalizer"},
+			Finalizers: []string{"github.com/metacubex/tailscale/finalizer"},
 			UID:        types.UID("1234-UID"),
 		},
 		Spec: corev1.ServiceSpec{
@@ -903,7 +903,7 @@ func TestLBIntoAnnotation(t *testing.T) {
 	// tailscale annotation.
 	mustUpdate(t, fc, "default", "test", func(s *corev1.Service) {
 		s.ObjectMeta.Annotations = map[string]string{
-			"tailscale.com/expose": "true",
+			"github.com/metacubex/tailscale/expose": "true",
 		}
 		s.Spec.Type = corev1.ServiceTypeClusterIP
 		s.Spec.LoadBalancerClass = nil
@@ -923,9 +923,9 @@ func TestLBIntoAnnotation(t *testing.T) {
 		ObjectMeta: metav1.ObjectMeta{
 			Name:       "test",
 			Namespace:  "default",
-			Finalizers: []string{"tailscale.com/finalizer"},
+			Finalizers: []string{"github.com/metacubex/tailscale/finalizer"},
 			Annotations: map[string]string{
-				"tailscale.com/expose": "true",
+				"github.com/metacubex/tailscale/expose": "true",
 			},
 			UID: "1234-UID",
 		},
@@ -969,8 +969,8 @@ func TestCustomHostname(t *testing.T) {
 			// on it being set.
 			UID: "1234-UID",
 			Annotations: map[string]string{
-				"tailscale.com/expose":   "true",
-				"tailscale.com/hostname": "reindeer-flotilla",
+				"github.com/metacubex/tailscale/expose":   "true",
+				"github.com/metacubex/tailscale/hostname": "reindeer-flotilla",
 			},
 		},
 		Spec: corev1.ServiceSpec{
@@ -1000,11 +1000,11 @@ func TestCustomHostname(t *testing.T) {
 		ObjectMeta: metav1.ObjectMeta{
 			Name:       "test",
 			Namespace:  "default",
-			Finalizers: []string{"tailscale.com/finalizer"},
+			Finalizers: []string{"github.com/metacubex/tailscale/finalizer"},
 			UID:        types.UID("1234-UID"),
 			Annotations: map[string]string{
-				"tailscale.com/expose":   "true",
-				"tailscale.com/hostname": "reindeer-flotilla",
+				"github.com/metacubex/tailscale/expose":   "true",
+				"github.com/metacubex/tailscale/hostname": "reindeer-flotilla",
 			},
 		},
 		Spec: corev1.ServiceSpec{
@@ -1020,7 +1020,7 @@ func TestCustomHostname(t *testing.T) {
 	// Turn the service back into a ClusterIP service, which should make the
 	// operator clean up.
 	mustUpdate(t, fc, "default", "test", func(s *corev1.Service) {
-		delete(s.ObjectMeta.Annotations, "tailscale.com/expose")
+		delete(s.ObjectMeta.Annotations, "github.com/metacubex/tailscale/expose")
 	})
 	// synchronous StatefulSet deletion triggers a requeue. But, the StatefulSet
 	// didn't create any child resources since this is all faked, so the
@@ -1038,7 +1038,7 @@ func TestCustomHostname(t *testing.T) {
 			Namespace: "default",
 			UID:       "1234-UID",
 			Annotations: map[string]string{
-				"tailscale.com/hostname": "reindeer-flotilla",
+				"github.com/metacubex/tailscale/hostname": "reindeer-flotilla",
 			},
 		},
 		Spec: corev1.ServiceSpec{
@@ -1079,8 +1079,8 @@ func TestCustomPriorityClassName(t *testing.T) {
 			// on it being set.
 			UID: "1234-UID",
 			Annotations: map[string]string{
-				"tailscale.com/expose":   "true",
-				"tailscale.com/hostname": "tailscale-critical",
+				"github.com/metacubex/tailscale/expose":   "true",
+				"github.com/metacubex/tailscale/hostname": "tailscale-critical",
 			},
 		},
 		Spec: corev1.ServiceSpec{
@@ -2081,7 +2081,7 @@ func TestIgnorePGService(t *testing.T) {
 			// on it being set.
 			UID: "1234-UID",
 			Annotations: map[string]string{
-				"tailscale.com/proxygroup": "test-pg",
+				"github.com/metacubex/tailscale/proxygroup": "test-pg",
 			},
 		},
 		Spec: corev1.ServiceSpec{

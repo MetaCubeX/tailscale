@@ -12,12 +12,12 @@ import (
 	"testing"
 	"time"
 
-	"tailscale.com/client/local"
-	"tailscale.com/client/tailscale/apitype"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tstest"
-	"tailscale.com/tstest/integration"
-	"tailscale.com/tstest/integration/testcontrol"
+	"github.com/metacubex/tailscale/client/local"
+	"github.com/metacubex/tailscale/client/tailscale/apitype"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/tstest"
+	"github.com/metacubex/tailscale/tstest/integration"
+	"github.com/metacubex/tailscale/tstest/integration/testcontrol"
 )
 
 // TODO(bradfitz): add test where control doesn't send tailcfg.CapabilityFileSharing

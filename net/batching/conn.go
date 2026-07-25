@@ -9,8 +9,8 @@ import (
 
 	"golang.org/x/net/ipv4"
 	"golang.org/x/net/ipv6"
-	"tailscale.com/net/packet"
-	"tailscale.com/types/nettype"
+	"github.com/metacubex/tailscale/net/packet"
+	"github.com/metacubex/tailscale/types/nettype"
 )
 
 var (

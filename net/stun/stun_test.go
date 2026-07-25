@@ -10,8 +10,8 @@ import (
 	"net/netip"
 	"testing"
 
-	"tailscale.com/net/stun"
-	"tailscale.com/util/must"
+	"github.com/metacubex/tailscale/net/stun"
+	"github.com/metacubex/tailscale/util/must"
 )
 
 // TODO(bradfitz): fuzz this.

@@ -7,11 +7,11 @@ import (
 	"errors"
 	"testing"
 
-	"tailscale.com/types/lazy"
-	"tailscale.com/util/clientmetric"
-	"tailscale.com/util/syspolicy/internal"
-	"tailscale.com/util/syspolicy/pkey"
-	"tailscale.com/util/syspolicy/setting"
+	"github.com/metacubex/tailscale/types/lazy"
+	"github.com/metacubex/tailscale/util/clientmetric"
+	"github.com/metacubex/tailscale/util/syspolicy/internal"
+	"github.com/metacubex/tailscale/util/syspolicy/pkey"
+	"github.com/metacubex/tailscale/util/syspolicy/setting"
 )
 
 func TestSettingMetricNames(t *testing.T) {

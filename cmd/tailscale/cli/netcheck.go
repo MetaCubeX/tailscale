@@ -18,18 +18,18 @@ import (
 	"time"
 
 	"github.com/peterbourgon/ff/v3/ffcli"
-	"tailscale.com/envknob"
-	"tailscale.com/feature/buildfeatures"
-	"tailscale.com/ipn"
-	"tailscale.com/net/netcheck"
-	"tailscale.com/net/netmon"
-	"tailscale.com/net/portmapper/portmappertype"
-	"tailscale.com/net/tlsdial"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tstime"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/eventbus"
-	"tailscale.com/util/set"
+	"github.com/metacubex/tailscale/envknob"
+	"github.com/metacubex/tailscale/feature/buildfeatures"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/net/netcheck"
+	"github.com/metacubex/tailscale/net/netmon"
+	"github.com/metacubex/tailscale/net/portmapper/portmappertype"
+	"github.com/metacubex/tailscale/net/tlsdial"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/tstime"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/util/eventbus"
+	"github.com/metacubex/tailscale/util/set"
 
 	// The "netcheck" command also wants the portmapper linked.
 	//
@@ -37,7 +37,7 @@ import (
 	// tailscaled subcommand, to avoid making the CLI also link in the portmapper.
 	// For now (2025-09-15), keep doing what we've done for the past five years and
 	// keep linking it here.
-	_ "tailscale.com/feature/condregister/portmapper"
+	_ "github.com/metacubex/tailscale/feature/condregister/portmapper"
 )
 
 var netcheckCmd = &ffcli.Command{

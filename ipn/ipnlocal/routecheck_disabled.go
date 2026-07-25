@@ -5,7 +5,7 @@
 
 package ipnlocal
 
-import "tailscale.com/tailcfg"
+import "github.com/metacubex/tailscale/tailcfg"
 
 func isRouteCheckEnabled(self tailcfg.NodeView) bool {
 	return false

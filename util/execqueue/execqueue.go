@@ -8,7 +8,7 @@ import (
 	"context"
 	"errors"
 
-	"tailscale.com/syncs"
+	"github.com/metacubex/tailscale/syncs"
 )
 
 type ExecQueue struct {

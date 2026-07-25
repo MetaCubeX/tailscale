@@ -10,7 +10,7 @@ import (
 	"context"
 	"log"
 
-	"tailscale.com/tstest/natlab/vmtest"
+	"github.com/metacubex/tailscale/tstest/natlab/vmtest"
 )
 
 func main() {

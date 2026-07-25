@@ -22,12 +22,12 @@ import (
 
 	"github.com/peterbourgon/ff/v3/ffcli"
 	"software.sslmate.com/src/go-pkcs12"
-	"tailscale.com/atomicfile"
-	"tailscale.com/feature/buildfeatures"
-	"tailscale.com/health"
-	"tailscale.com/ipn"
-	"tailscale.com/tsconst"
-	"tailscale.com/version"
+	"github.com/metacubex/tailscale/atomicfile"
+	"github.com/metacubex/tailscale/feature/buildfeatures"
+	"github.com/metacubex/tailscale/health"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/tsconst"
+	"github.com/metacubex/tailscale/version"
 )
 
 func init() {

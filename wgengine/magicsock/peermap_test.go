@@ -7,8 +7,8 @@ import (
 	"net/netip"
 	"testing"
 
-	"tailscale.com/net/packet"
-	"tailscale.com/types/key"
+	"github.com/metacubex/tailscale/net/packet"
+	"github.com/metacubex/tailscale/types/key"
 )
 
 func Test_peerMap_oneRelayEpAddrPerNK(t *testing.T) {

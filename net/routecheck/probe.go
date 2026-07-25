@@ -12,13 +12,13 @@ import (
 	"time"
 
 	"golang.org/x/sync/errgroup"
-	"tailscale.com/ipn/ipnstate"
-	"tailscale.com/net/traffic"
-	"tailscale.com/syncs"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tsconst"
-	"tailscale.com/util/clientmetric"
-	"tailscale.com/util/mak"
+	"github.com/metacubex/tailscale/ipn/ipnstate"
+	"github.com/metacubex/tailscale/net/traffic"
+	"github.com/metacubex/tailscale/syncs"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/tsconst"
+	"github.com/metacubex/tailscale/util/clientmetric"
+	"github.com/metacubex/tailscale/util/mak"
 )
 
 var (

@@ -8,9 +8,9 @@ import (
 	"net/http"
 	"time"
 
-	"tailscale.com/tstime"
-	"tailscale.com/types/logid"
-	"tailscale.com/util/eventbus"
+	"github.com/metacubex/tailscale/tstime"
+	"github.com/metacubex/tailscale/types/logid"
+	"github.com/metacubex/tailscale/util/eventbus"
 )
 
 // DefaultHost is the default host name to upload logs to when

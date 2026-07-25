@@ -24,10 +24,10 @@ import (
 	"unicode/utf8"
 
 	"golang.org/x/exp/constraints"
-	"tailscale.com/metrics"
-	"tailscale.com/syncs"
-	"tailscale.com/types/logger"
-	"tailscale.com/version"
+	"github.com/metacubex/tailscale/metrics"
+	"github.com/metacubex/tailscale/syncs"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/version"
 )
 
 // StaticStringVar returns a new expvar.Var that always returns s.

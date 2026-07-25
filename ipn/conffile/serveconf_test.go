@@ -8,7 +8,7 @@ package conffile
 import (
 	"testing"
 
-	"tailscale.com/tailcfg"
+	"github.com/metacubex/tailscale/tailcfg"
 )
 
 func TestTargetUnixSocketRoundtrip(t *testing.T) {

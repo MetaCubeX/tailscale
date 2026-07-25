@@ -14,10 +14,10 @@ import (
 	"sync"
 	"testing"
 
-	"tailscale.com/net/memnet"
-	"tailscale.com/net/netmon"
-	"tailscale.com/net/netx"
-	"tailscale.com/util/testenv"
+	"github.com/metacubex/tailscale/net/memnet"
+	"github.com/metacubex/tailscale/net/netmon"
+	"github.com/metacubex/tailscale/net/netx"
+	"github.com/metacubex/tailscale/util/testenv"
 )
 
 var useMemNet = flag.Bool("use-test-memnet", false, "prefer using in-memory network for tests")

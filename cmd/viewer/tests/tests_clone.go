@@ -10,7 +10,7 @@ import (
 	"net/netip"
 
 	"golang.org/x/exp/constraints"
-	"tailscale.com/types/views"
+	"github.com/metacubex/tailscale/types/views"
 )
 
 // Clone makes a deep copy of StructWithPtrs.

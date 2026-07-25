@@ -30,10 +30,10 @@ import (
 	"syscall"
 	"time"
 
-	"tailscale.com/client/local"
-	"tailscale.com/types/bools"
-	"tailscale.com/types/lazy"
-	"tailscale.com/util/mak"
+	"github.com/metacubex/tailscale/client/local"
+	"github.com/metacubex/tailscale/types/bools"
+	"github.com/metacubex/tailscale/types/lazy"
+	"github.com/metacubex/tailscale/util/mak"
 )
 
 func usage(args ...any) {
@@ -292,7 +292,7 @@ func (c *Client) RunCommand(name string, args []string) {
 	if _, err := lc.StatusWithoutPeers(probeCtx); err != nil {
 		log.Fatalf("instance %q not running? start with 'mts server start %q'; got error: %v", name, name, err)
 	}
-	args = append([]string{"run", "tailscale.com/cmd/tailscale", "--socket=" + sock}, args...)
+	args = append([]string{"run", "github.com/metacubex/tailscale/cmd/tailscale", "--socket=" + sock}, args...)
 	cmd := exec.Command("go", args...)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
@@ -316,7 +316,7 @@ type Server struct {
 
 func (s *Server) tailscaled() string {
 	v, err := s.lazyTailscaled.GetErr(func() (string, error) {
-		out, err := exec.Command("go", "list", "-f", "{{.Target}}", "tailscale.com/cmd/tailscaled").CombinedOutput()
+		out, err := exec.Command("go", "list", "-f", "{{.Target}}", "github.com/metacubex/tailscale/cmd/tailscaled").CombinedOutput()
 		if err != nil {
 			return "", err
 		}

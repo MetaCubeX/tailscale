@@ -64,7 +64,7 @@ func TestRetry(t *testing.T) {
 import (
 	"os"
 	"testing"
-	"tailscale.com/cmd/testwrapper/flakytest"
+	"github.com/metacubex/tailscale/cmd/testwrapper/flakytest"
 )
 
 func TestOK(t *testing.T) {}
@@ -225,7 +225,7 @@ func TestRaceSuppressesFlakyRetry(t *testing.T) {
 import (
 	"sync"
 	"testing"
-	"tailscale.com/cmd/testwrapper/flakytest"
+	"github.com/metacubex/tailscale/cmd/testwrapper/flakytest"
 )
 
 var counter int

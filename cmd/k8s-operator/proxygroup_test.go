@@ -32,15 +32,15 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
 	"tailscale.com/client/tailscale/v2"
 
-	"tailscale.com/ipn"
-	tsoperator "tailscale.com/k8s-operator"
-	tsapi "tailscale.com/k8s-operator/apis/v1alpha1"
-	"tailscale.com/k8s-operator/tsclient"
-	"tailscale.com/kube/k8s-proxy/conf"
-	"tailscale.com/kube/kubetypes"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tstest"
-	"tailscale.com/types/opt"
+	"github.com/metacubex/tailscale/ipn"
+	tsoperator "github.com/metacubex/tailscale/k8s-operator"
+	tsapi "github.com/metacubex/tailscale/k8s-operator/apis/v1alpha1"
+	"github.com/metacubex/tailscale/k8s-operator/tsclient"
+	"github.com/metacubex/tailscale/kube/k8s-proxy/conf"
+	"github.com/metacubex/tailscale/kube/kubetypes"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/tstest"
+	"github.com/metacubex/tailscale/types/opt"
 )
 
 const (
@@ -620,7 +620,7 @@ func TestProxyGroupWithStaticEndpoints(t *testing.T) {
 			pg := &tsapi.ProxyGroup{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:       "test",
-					Finalizers: []string{"tailscale.com/finalizer"},
+					Finalizers: []string{"github.com/metacubex/tailscale/finalizer"},
 				},
 				Spec: tsapi.ProxyGroupSpec{
 					Type:       tsapi.ProxyGroupTypeEgress,
@@ -909,7 +909,7 @@ func TestProxyGroup(t *testing.T) {
 	pg := &tsapi.ProxyGroup{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:       "test",
-			Finalizers: []string{"tailscale.com/finalizer"},
+			Finalizers: []string{"github.com/metacubex/tailscale/finalizer"},
 			Generation: 1,
 		},
 		Spec: tsapi.ProxyGroupSpec{
@@ -1756,7 +1756,7 @@ func TestProxyGroupGetAuthKey(t *testing.T) {
 	pg := &tsapi.ProxyGroup{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:       "test",
-			Finalizers: []string{"tailscale.com/finalizer"},
+			Finalizers: []string{"github.com/metacubex/tailscale/finalizer"},
 		},
 		Spec: tsapi.ProxyGroupSpec{
 			Type:     tsapi.ProxyGroupTypeEgress,

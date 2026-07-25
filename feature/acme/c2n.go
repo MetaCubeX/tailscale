@@ -12,9 +12,9 @@ import (
 	"net/http"
 	"time"
 
-	"tailscale.com/ipn"
-	"tailscale.com/ipn/ipnlocal"
-	"tailscale.com/tailcfg"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/ipn/ipnlocal"
+	"github.com/metacubex/tailscale/tailcfg"
 )
 
 // handleC2NTLSCertStatus returns info about the last TLS certificate

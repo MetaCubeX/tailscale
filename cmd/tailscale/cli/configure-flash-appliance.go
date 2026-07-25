@@ -21,11 +21,11 @@ import (
 
 	"github.com/bradfitz/monogok/disklayout"
 	"github.com/peterbourgon/ff/v3/ffcli"
-	"tailscale.com/clientupdate"
-	"tailscale.com/clientupdate/distsign"
-	"tailscale.com/gokrazy/mkfs"
-	"tailscale.com/util/progresstracking"
-	"tailscale.com/util/prompt"
+	"github.com/metacubex/tailscale/clientupdate"
+	"github.com/metacubex/tailscale/clientupdate/distsign"
+	"github.com/metacubex/tailscale/gokrazy/mkfs"
+	"github.com/metacubex/tailscale/util/progresstracking"
+	"github.com/metacubex/tailscale/util/prompt"
 )
 
 var flashApplianceArgs struct {

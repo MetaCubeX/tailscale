@@ -31,46 +31,46 @@ import (
 	"sigs.k8s.io/yaml"
 	"tailscale.com/client/tailscale/v2"
 
-	"tailscale.com/ipn"
-	tsoperator "tailscale.com/k8s-operator"
-	tsapi "tailscale.com/k8s-operator/apis/v1alpha1"
-	"tailscale.com/k8s-operator/tsclient"
-	"tailscale.com/kube/kubetypes"
-	"tailscale.com/net/netutil"
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/opt"
-	"tailscale.com/util/mak"
+	"github.com/metacubex/tailscale/ipn"
+	tsoperator "github.com/metacubex/tailscale/k8s-operator"
+	tsapi "github.com/metacubex/tailscale/k8s-operator/apis/v1alpha1"
+	"github.com/metacubex/tailscale/k8s-operator/tsclient"
+	"github.com/metacubex/tailscale/kube/kubetypes"
+	"github.com/metacubex/tailscale/net/netutil"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/types/opt"
+	"github.com/metacubex/tailscale/util/mak"
 )
 
 const (
 	// Labels that the operator sets on StatefulSets and Pods. If you add a
 	// new label here, do also add it to tailscaleManagedLabels var to
 	// ensure that it does not get overwritten by ProxyClass configuration.
-	LabelParentType      = "tailscale.com/parent-resource-type"
-	LabelParentName      = "tailscale.com/parent-resource"
-	LabelParentNamespace = "tailscale.com/parent-resource-ns"
+	LabelParentType      = "github.com/metacubex/tailscale/parent-resource-type"
+	LabelParentName      = "github.com/metacubex/tailscale/parent-resource"
+	LabelParentNamespace = "github.com/metacubex/tailscale/parent-resource-ns"
 
 	// LabelProxyClass can be set by users on tailscale Ingresses and Services that define cluster ingress or
 	// cluster egress, to specify that configuration in this ProxyClass should be applied to resources created for
 	// the Ingress or Service.
-	LabelAnnotationProxyClass = "tailscale.com/proxy-class"
+	LabelAnnotationProxyClass = "github.com/metacubex/tailscale/proxy-class"
 
-	FinalizerName = "tailscale.com/finalizer"
+	FinalizerName = "github.com/metacubex/tailscale/finalizer"
 
 	// Annotations settable by users on services.
-	AnnotationExpose             = "tailscale.com/expose"
-	AnnotationTags               = "tailscale.com/tags"
-	AnnotationHostname           = "tailscale.com/hostname"
-	annotationTailnetTargetIPOld = "tailscale.com/ts-tailnet-target-ip"
-	AnnotationTailnetTargetIP    = "tailscale.com/tailnet-ip"
+	AnnotationExpose             = "github.com/metacubex/tailscale/expose"
+	AnnotationTags               = "github.com/metacubex/tailscale/tags"
+	AnnotationHostname           = "github.com/metacubex/tailscale/hostname"
+	annotationTailnetTargetIPOld = "github.com/metacubex/tailscale/ts-tailnet-target-ip"
+	AnnotationTailnetTargetIP    = "github.com/metacubex/tailscale/tailnet-ip"
 	// MagicDNS name of tailnet node.
-	AnnotationTailnetTargetFQDN = "tailscale.com/tailnet-fqdn"
+	AnnotationTailnetTargetFQDN = "github.com/metacubex/tailscale/tailnet-fqdn"
 
-	AnnotationProxyGroup = "tailscale.com/proxy-group"
+	AnnotationProxyGroup = "github.com/metacubex/tailscale/proxy-group"
 
 	// Annotations settable by users on ingresses.
-	AnnotationFunnel       = "tailscale.com/funnel"
-	AnnotationHTTPRedirect = "tailscale.com/http-redirect"
+	AnnotationFunnel       = "github.com/metacubex/tailscale/funnel"
+	AnnotationHTTPRedirect = "github.com/metacubex/tailscale/http-redirect"
 
 	// If set to true, set up iptables/nftables rules in the proxy forward
 	// cluster traffic to the tailnet IP of that proxy. This can only be set
@@ -83,17 +83,17 @@ const (
 	// container and will also run a privileged init container that enables
 	// forwarding.
 	// Eventually this behaviour might become the default.
-	AnnotationExperimentalForwardClusterTrafficViaL7IngresProxy = "tailscale.com/experimental-forward-cluster-traffic-via-ingress"
+	AnnotationExperimentalForwardClusterTrafficViaL7IngresProxy = "github.com/metacubex/tailscale/experimental-forward-cluster-traffic-via-ingress"
 
 	// Annotations set by the operator on pods to trigger restarts when the
 	// hostname, IP, FQDN or tailscaled config changes. If you add a new
 	// annotation here, also add it to tailscaleManagedAnnotations var to
 	// ensure that it does not get removed when a ProxyClass configuration
 	// is applied.
-	podAnnotationLastSetClusterIP         = "tailscale.com/operator-last-set-cluster-ip"
-	podAnnotationLastSetClusterDNSName    = "tailscale.com/operator-last-set-cluster-dns-name"
-	podAnnotationLastSetTailnetTargetIP   = "tailscale.com/operator-last-set-ts-tailnet-target-ip"
-	podAnnotationLastSetTailnetTargetFQDN = "tailscale.com/operator-last-set-ts-tailnet-target-fqdn"
+	podAnnotationLastSetClusterIP         = "github.com/metacubex/tailscale/operator-last-set-cluster-ip"
+	podAnnotationLastSetClusterDNSName    = "github.com/metacubex/tailscale/operator-last-set-cluster-dns-name"
+	podAnnotationLastSetTailnetTargetIP   = "github.com/metacubex/tailscale/operator-last-set-ts-tailnet-target-ip"
+	podAnnotationLastSetTailnetTargetFQDN = "github.com/metacubex/tailscale/operator-last-set-ts-tailnet-target-fqdn"
 
 	proxyTypeEgress          = "egress_service"
 	proxyTypeIngressService  = "ingress_service"

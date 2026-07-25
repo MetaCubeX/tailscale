@@ -12,8 +12,8 @@ import (
 	"fmt"
 	"io"
 
-	"tailscale.com/ipn/ipnstate"
-	"tailscale.com/tka"
+	"github.com/metacubex/tailscale/ipn/ipnstate"
+	"github.com/metacubex/tailscale/tka"
 )
 
 // PrintTailnetLockLogJSONV1 prints the stored TKA state as a JSON object to the CLI,

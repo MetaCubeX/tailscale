@@ -20,11 +20,11 @@ import (
 	"github.com/alexbrainman/sspi/negotiate"
 	"github.com/dblohm7/wingoes"
 	"golang.org/x/sys/windows"
-	"tailscale.com/hostinfo"
-	"tailscale.com/syncs"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/clientmetric"
-	"tailscale.com/util/cmpver"
+	"github.com/metacubex/tailscale/hostinfo"
+	"github.com/metacubex/tailscale/syncs"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/util/clientmetric"
+	"github.com/metacubex/tailscale/util/cmpver"
 )
 
 func init() {

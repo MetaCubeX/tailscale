@@ -28,7 +28,7 @@ import (
 	"time"
 
 	"go4.org/mem"
-	"tailscale.com/types/key"
+	"github.com/metacubex/tailscale/types/key"
 )
 
 // Magic is the 6 byte header of all discovery messages.

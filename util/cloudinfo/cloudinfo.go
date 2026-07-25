@@ -18,9 +18,9 @@ import (
 	"strings"
 	"time"
 
-	"tailscale.com/feature/buildfeatures"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/cloudenv"
+	"github.com/metacubex/tailscale/feature/buildfeatures"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/util/cloudenv"
 )
 
 const maxCloudInfoWait = 2 * time.Second

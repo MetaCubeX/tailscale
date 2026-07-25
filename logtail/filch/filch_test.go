@@ -20,8 +20,8 @@ import (
 	"time"
 
 	jsonv2 "github.com/go-json-experiment/json"
-	"tailscale.com/tstest"
-	"tailscale.com/util/must"
+	"github.com/metacubex/tailscale/tstest"
+	"github.com/metacubex/tailscale/util/must"
 )
 
 func init() { alwaysStatForTests = true }

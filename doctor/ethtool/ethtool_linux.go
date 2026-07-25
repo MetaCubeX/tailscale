@@ -10,9 +10,9 @@ import (
 	"sort"
 
 	"github.com/safchain/ethtool"
-	"tailscale.com/net/netmon"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/set"
+	"github.com/metacubex/tailscale/net/netmon"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/util/set"
 )
 
 func ethtoolImpl(logf logger.Logf) error {

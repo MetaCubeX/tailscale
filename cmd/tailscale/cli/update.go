@@ -14,10 +14,10 @@ import (
 	"runtime"
 
 	"github.com/peterbourgon/ff/v3/ffcli"
-	"tailscale.com/clientupdate"
-	"tailscale.com/util/prompt"
-	"tailscale.com/version"
-	"tailscale.com/version/distro"
+	"github.com/metacubex/tailscale/clientupdate"
+	"github.com/metacubex/tailscale/util/prompt"
+	"github.com/metacubex/tailscale/version"
+	"github.com/metacubex/tailscale/version/distro"
 )
 
 func init() {

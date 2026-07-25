@@ -19,14 +19,14 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/intstr"
 
-	tsapi "tailscale.com/k8s-operator/apis/v1alpha1"
-	"tailscale.com/k8s-operator/reconciler"
+	tsapi "github.com/metacubex/tailscale/k8s-operator/apis/v1alpha1"
+	"github.com/metacubex/tailscale/k8s-operator/reconciler"
 )
 
 const (
 	// labelReplicaIndex stores the replica index of a managed Service so it can be matched back to a specific
 	// peer relay instance.
-	labelReplicaIndex = "tailscale.com/peer-relay-replica"
+	labelReplicaIndex = "github.com/metacubex/tailscale/peer-relay-replica"
 
 	// parentTypePeerRelay is the value used for reconciler.LabelParentType on PeerRelay-managed resources.
 	parentTypePeerRelay = "peerrelay"

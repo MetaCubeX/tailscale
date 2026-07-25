@@ -13,10 +13,10 @@ import (
 	"net/http"
 	"sync"
 
-	"tailscale.com/client/local"
-	"tailscale.com/ipn"
-	"tailscale.com/kube/kubetypes"
-	"tailscale.com/types/logger"
+	"github.com/metacubex/tailscale/client/local"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/kube/kubetypes"
+	"github.com/metacubex/tailscale/types/logger"
 )
 
 // Healthz is a simple health check server, if enabled it returns 200 OK if

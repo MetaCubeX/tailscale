@@ -8,9 +8,9 @@ import (
 	"net/http"
 	"time"
 
-	"tailscale.com/tstime"
-	"tailscale.com/util/ctxkey"
-	"tailscale.com/util/rands"
+	"github.com/metacubex/tailscale/tstime"
+	"github.com/metacubex/tailscale/util/ctxkey"
+	"github.com/metacubex/tailscale/util/rands"
 )
 
 // RequestID is an opaque identifier for a HTTP request, used to correlate

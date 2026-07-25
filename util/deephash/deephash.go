@@ -71,8 +71,8 @@ import (
 	"sync"
 	"time"
 
-	"tailscale.com/util/hashx"
-	"tailscale.com/util/set"
+	"github.com/metacubex/tailscale/util/hashx"
+	"github.com/metacubex/tailscale/util/set"
 )
 
 // There is much overlap between the theory of serialization and hashing.

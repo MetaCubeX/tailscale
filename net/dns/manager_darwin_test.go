@@ -13,8 +13,8 @@ import (
 	"strings"
 	"testing"
 
-	"tailscale.com/types/logger"
-	"tailscale.com/util/dnsname"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/util/dnsname"
 )
 
 func newTestConfigurator(t *testing.T) *darwinConfigurator {

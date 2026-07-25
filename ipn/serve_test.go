@@ -6,8 +6,8 @@ package ipn
 import (
 	"testing"
 
-	"tailscale.com/ipn/ipnstate"
-	"tailscale.com/tailcfg"
+	"github.com/metacubex/tailscale/ipn/ipnstate"
+	"github.com/metacubex/tailscale/tailcfg"
 )
 
 func TestCheckFunnelAccess(t *testing.T) {

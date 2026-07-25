@@ -14,15 +14,15 @@ import (
 	"runtime"
 	"strconv"
 
-	"tailscale.com/envknob"
-	"tailscale.com/feature/buildfeatures"
-	"tailscale.com/ipn"
-	"tailscale.com/safesocket"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/clientmetric"
-	"tailscale.com/util/groupmember"
-	"tailscale.com/util/winutil"
-	"tailscale.com/version/distro"
+	"github.com/metacubex/tailscale/envknob"
+	"github.com/metacubex/tailscale/feature/buildfeatures"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/safesocket"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/util/clientmetric"
+	"github.com/metacubex/tailscale/util/groupmember"
+	"github.com/metacubex/tailscale/util/winutil"
+	"github.com/metacubex/tailscale/version/distro"
 )
 
 // ErrNotImplemented is returned by ConnIdentity.WindowsToken when it is not

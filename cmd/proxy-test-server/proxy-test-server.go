@@ -16,8 +16,8 @@ import (
 	"strings"
 
 	"golang.org/x/crypto/acme/autocert"
-	"tailscale.com/net/connectproxy"
-	"tailscale.com/tempfork/acme"
+	"github.com/metacubex/tailscale/net/connectproxy"
+	"github.com/metacubex/tailscale/tempfork/acme"
 )
 
 var (

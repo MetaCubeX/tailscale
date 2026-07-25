@@ -13,7 +13,7 @@ import (
 	"go.uber.org/zap"
 	"tailscale.com/client/tailscale/v2"
 
-	"tailscale.com/ipn"
+	"github.com/metacubex/tailscale/ipn"
 )
 
 const (

@@ -11,8 +11,8 @@ import (
 	"net"
 	"testing"
 
-	"tailscale.com/tailcfg"
-	"tailscale.com/util/usermetric"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/util/usermetric"
 )
 
 func counterValue(m *usermetric.MultiLabelMap[serveLabels], svc string) int64 {

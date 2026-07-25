@@ -11,10 +11,10 @@ import (
 	"testing/synctest"
 	"time"
 
-	"tailscale.com/net/flowtrack"
-	"tailscale.com/net/packet"
-	"tailscale.com/tstime/mono"
-	"tailscale.com/types/ipproto"
+	"github.com/metacubex/tailscale/net/flowtrack"
+	"github.com/metacubex/tailscale/net/packet"
+	"github.com/metacubex/tailscale/tstime/mono"
+	"github.com/metacubex/tailscale/types/ipproto"
 )
 
 var nilPacket *packet.Parsed // nil packet to perform actions against

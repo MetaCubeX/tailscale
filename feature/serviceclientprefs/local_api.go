@@ -8,11 +8,11 @@ import (
 	"errors"
 	"net/http"
 
-	"tailscale.com/client/tailscale/apitype"
-	"tailscale.com/feature/serviceclientprefs/serviceclient"
-	"tailscale.com/ipn/ipnlocal"
-	"tailscale.com/ipn/localapi"
-	"tailscale.com/util/httpm"
+	"github.com/metacubex/tailscale/client/tailscale/apitype"
+	"github.com/metacubex/tailscale/feature/serviceclientprefs/serviceclient"
+	"github.com/metacubex/tailscale/ipn/ipnlocal"
+	"github.com/metacubex/tailscale/ipn/localapi"
+	"github.com/metacubex/tailscale/util/httpm"
 )
 
 func init() {

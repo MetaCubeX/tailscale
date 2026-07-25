@@ -12,7 +12,7 @@ import (
 	"strings"
 
 	"github.com/peterbourgon/ff/v3/ffcli"
-	"tailscale.com/types/appctype"
+	"github.com/metacubex/tailscale/types/appctype"
 )
 
 var appcRoutesArgs struct {

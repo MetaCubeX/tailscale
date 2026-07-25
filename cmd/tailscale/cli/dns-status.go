@@ -13,8 +13,8 @@ import (
 	"strings"
 
 	"github.com/peterbourgon/ff/v3/ffcli"
-	"tailscale.com/cmd/tailscale/cli/jsonoutput"
-	"tailscale.com/types/dnstype"
+	"github.com/metacubex/tailscale/cmd/tailscale/cli/jsonoutput"
+	"github.com/metacubex/tailscale/types/dnstype"
 )
 
 var dnsStatusCmd = &ffcli.Command{

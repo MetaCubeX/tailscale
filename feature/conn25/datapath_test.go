@@ -12,14 +12,14 @@ import (
 
 	"github.com/tailscale/wireguard-go/tun/tuntest"
 	"go4.org/netipx"
-	"tailscale.com/net/packet"
-	"tailscale.com/net/tstun"
-	"tailscale.com/types/ipproto"
-	"tailscale.com/types/views"
-	"tailscale.com/util/eventbus/eventbustest"
-	"tailscale.com/util/usermetric"
-	"tailscale.com/wgengine/filter"
-	"tailscale.com/wgengine/filter/filtertype"
+	"github.com/metacubex/tailscale/net/packet"
+	"github.com/metacubex/tailscale/net/tstun"
+	"github.com/metacubex/tailscale/types/ipproto"
+	"github.com/metacubex/tailscale/types/views"
+	"github.com/metacubex/tailscale/util/eventbus/eventbustest"
+	"github.com/metacubex/tailscale/util/usermetric"
+	"github.com/metacubex/tailscale/wgengine/filter"
+	"github.com/metacubex/tailscale/wgengine/filter/filtertype"
 )
 
 type testConn25 struct {

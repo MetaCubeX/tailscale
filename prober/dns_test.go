@@ -11,7 +11,7 @@ import (
 	"sync"
 	"testing"
 
-	"tailscale.com/syncs"
+	"github.com/metacubex/tailscale/syncs"
 )
 
 func TestForEachAddr(t *testing.T) {

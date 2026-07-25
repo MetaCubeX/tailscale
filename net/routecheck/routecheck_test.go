@@ -17,13 +17,13 @@ import (
 	gcmp "github.com/google/go-cmp/cmp"
 	gcmpopts "github.com/google/go-cmp/cmp/cmpopts"
 
-	"tailscale.com/ipn/ipnstate"
-	"tailscale.com/net/routecheck"
-	"tailscale.com/net/tsaddr"
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/netmap"
-	"tailscale.com/util/mak"
-	"tailscale.com/util/set"
+	"github.com/metacubex/tailscale/ipn/ipnstate"
+	"github.com/metacubex/tailscale/net/routecheck"
+	"github.com/metacubex/tailscale/net/tsaddr"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/types/netmap"
+	"github.com/metacubex/tailscale/util/mak"
+	"github.com/metacubex/tailscale/util/set"
 )
 
 func TestRefresh(t *testing.T) {

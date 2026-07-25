@@ -15,8 +15,8 @@ import (
 	"os/signal"
 	"time"
 
-	"tailscale.com/prober"
-	"tailscale.com/types/logger"
+	"github.com/metacubex/tailscale/prober"
+	"github.com/metacubex/tailscale/types/logger"
 )
 
 const (

@@ -15,10 +15,10 @@ import (
 	"github.com/go-json-experiment/json/jsontext"
 	jsonv1 "github.com/go-json-experiment/json/v1"
 
-	"tailscale.com/net/routecheck/peernode"
-	"tailscale.com/tailcfg"
-	"tailscale.com/util/clientmetric"
-	"tailscale.com/util/mak"
+	"github.com/metacubex/tailscale/net/routecheck/peernode"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/util/clientmetric"
+	"github.com/metacubex/tailscale/util/mak"
 )
 
 var (

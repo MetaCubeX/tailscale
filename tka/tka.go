@@ -14,9 +14,9 @@ import (
 	"sort"
 
 	"github.com/fxamacker/cbor/v2"
-	"tailscale.com/types/key"
-	"tailscale.com/types/tkatype"
-	"tailscale.com/util/set"
+	"github.com/metacubex/tailscale/types/key"
+	"github.com/metacubex/tailscale/types/tkatype"
+	"github.com/metacubex/tailscale/util/set"
 )
 
 // Strict settings for the CBOR decoder.

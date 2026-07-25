@@ -10,16 +10,16 @@ import (
 	"context"
 	"time"
 
-	"tailscale.com/feature"
-	_ "tailscale.com/feature/captiveportal/netcheckhook" // install the netcheck probe hook too
-	"tailscale.com/health"
-	"tailscale.com/ipn"
-	"tailscale.com/ipn/ipnext"
-	"tailscale.com/net/captivedetection"
-	"tailscale.com/syncs"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/clientmetric"
-	"tailscale.com/util/eventbus"
+	"github.com/metacubex/tailscale/feature"
+	_ "github.com/metacubex/tailscale/feature/captiveportal/netcheckhook" // install the netcheck probe hook too
+	"github.com/metacubex/tailscale/health"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/ipn/ipnext"
+	"github.com/metacubex/tailscale/net/captivedetection"
+	"github.com/metacubex/tailscale/syncs"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/util/clientmetric"
+	"github.com/metacubex/tailscale/util/eventbus"
 )
 
 const featureName = "captiveportal"

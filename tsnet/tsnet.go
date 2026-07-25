@@ -28,7 +28,7 @@
 //
 // # Usage
 //
-//	import "tailscale.com/tsnet"
+//	import "github.com/metacubex/tailscale/tsnet"
 //
 //	s := &tsnet.Server{
 //		Hostname: "my-service",
@@ -63,7 +63,7 @@
 //     [Server.IDToken] or [Server.Audience]). Available only if the
 //     program imports the feature:
 //
-//     import _ "tailscale.com/feature/identityfederation"
+//     import _ "github.com/metacubex/tailscale/feature/identityfederation"
 //
 //     The feature is not linked by default to keep the AWS SDK and
 //     other cloud-provider dependencies out of programs that don't
@@ -159,45 +159,45 @@ import (
 	"time"
 
 	"github.com/tailscale/wireguard-go/tun"
-	"tailscale.com/client/local"
-	"tailscale.com/control/controlclient"
-	"tailscale.com/envknob"
-	_ "tailscale.com/feature/c2n"
-	_ "tailscale.com/feature/condregister/netlog"
-	_ "tailscale.com/feature/condregister/oauthkey"
-	_ "tailscale.com/feature/condregister/portmapper"
-	_ "tailscale.com/feature/condregister/useproxy"
-	"tailscale.com/health"
-	"tailscale.com/hostinfo"
-	"tailscale.com/internal/client/tailscale"
-	"tailscale.com/ipn"
-	"tailscale.com/ipn/ipnauth"
-	"tailscale.com/ipn/ipnlocal"
-	"tailscale.com/ipn/ipnstate"
-	"tailscale.com/ipn/localapi"
-	"tailscale.com/ipn/store"
-	"tailscale.com/ipn/store/mem"
-	"tailscale.com/logpolicy"
-	"tailscale.com/logtail"
-	"tailscale.com/logtail/filch"
-	"tailscale.com/net/memnet"
-	"tailscale.com/net/netmon"
-	"tailscale.com/net/proxymux"
-	"tailscale.com/net/socks5"
-	"tailscale.com/net/tsdial"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tsd"
-	"tailscale.com/types/bools"
-	"tailscale.com/types/logger"
-	"tailscale.com/types/logid"
-	"tailscale.com/types/nettype"
-	"tailscale.com/types/views"
-	"tailscale.com/util/clientmetric"
-	"tailscale.com/util/mak"
-	"tailscale.com/util/set"
-	"tailscale.com/util/testenv"
-	"tailscale.com/wgengine"
-	"tailscale.com/wgengine/netstack"
+	"github.com/metacubex/tailscale/client/local"
+	"github.com/metacubex/tailscale/control/controlclient"
+	"github.com/metacubex/tailscale/envknob"
+	_ "github.com/metacubex/tailscale/feature/c2n"
+	_ "github.com/metacubex/tailscale/feature/condregister/netlog"
+	_ "github.com/metacubex/tailscale/feature/condregister/oauthkey"
+	_ "github.com/metacubex/tailscale/feature/condregister/portmapper"
+	_ "github.com/metacubex/tailscale/feature/condregister/useproxy"
+	"github.com/metacubex/tailscale/health"
+	"github.com/metacubex/tailscale/hostinfo"
+	"github.com/metacubex/tailscale/internal/client/tailscale"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/ipn/ipnauth"
+	"github.com/metacubex/tailscale/ipn/ipnlocal"
+	"github.com/metacubex/tailscale/ipn/ipnstate"
+	"github.com/metacubex/tailscale/ipn/localapi"
+	"github.com/metacubex/tailscale/ipn/store"
+	"github.com/metacubex/tailscale/ipn/store/mem"
+	"github.com/metacubex/tailscale/logpolicy"
+	"github.com/metacubex/tailscale/logtail"
+	"github.com/metacubex/tailscale/logtail/filch"
+	"github.com/metacubex/tailscale/net/memnet"
+	"github.com/metacubex/tailscale/net/netmon"
+	"github.com/metacubex/tailscale/net/proxymux"
+	"github.com/metacubex/tailscale/net/socks5"
+	"github.com/metacubex/tailscale/net/tsdial"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/tsd"
+	"github.com/metacubex/tailscale/types/bools"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/types/logid"
+	"github.com/metacubex/tailscale/types/nettype"
+	"github.com/metacubex/tailscale/types/views"
+	"github.com/metacubex/tailscale/util/clientmetric"
+	"github.com/metacubex/tailscale/util/mak"
+	"github.com/metacubex/tailscale/util/set"
+	"github.com/metacubex/tailscale/util/testenv"
+	"github.com/metacubex/tailscale/wgengine"
+	"github.com/metacubex/tailscale/wgengine/netstack"
 )
 
 // Server is an embedded Tailscale server.
@@ -1285,7 +1285,7 @@ func (s *Server) Listen(network, addr string) (net.Listener, error) {
 // type-assert to *tailssh.Session.
 //
 // SSH support must be linked into the binary by importing
-// _ "tailscale.com/feature/ssh". Without that import, ListenSSH returns an
+// _ "github.com/metacubex/tailscale/feature/ssh". Without that import, ListenSSH returns an
 // error.
 //
 // If s has not been started yet, it will be started.

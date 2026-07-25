@@ -16,7 +16,7 @@ import (
 	"github.com/google/go-tpm/tpm2/transport"
 	"golang.org/x/crypto/cryptobyte"
 	"golang.org/x/crypto/cryptobyte/asn1"
-	"tailscale.com/types/key"
+	"github.com/metacubex/tailscale/types/key"
 )
 
 type attestationKey struct {

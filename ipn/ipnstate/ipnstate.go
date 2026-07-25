@@ -17,12 +17,12 @@ import (
 	"strings"
 	"time"
 
-	"tailscale.com/tailcfg"
-	"tailscale.com/tka"
-	"tailscale.com/types/key"
-	"tailscale.com/types/views"
-	"tailscale.com/util/dnsname"
-	"tailscale.com/version"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/tka"
+	"github.com/metacubex/tailscale/types/key"
+	"github.com/metacubex/tailscale/types/views"
+	"github.com/metacubex/tailscale/util/dnsname"
+	"github.com/metacubex/tailscale/version"
 )
 
 //go:generate go run tailscale.com/cmd/cloner  -clonefunc=false -type=TKAPeer

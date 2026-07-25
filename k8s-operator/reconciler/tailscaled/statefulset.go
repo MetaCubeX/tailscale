@@ -18,10 +18,10 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
-	"tailscale.com/ipn"
-	tsoperator "tailscale.com/k8s-operator"
-	"tailscale.com/kube/kubetypes"
-	"tailscale.com/tailcfg"
+	"github.com/metacubex/tailscale/ipn"
+	tsoperator "github.com/metacubex/tailscale/k8s-operator"
+	"github.com/metacubex/tailscale/kube/kubetypes"
+	"github.com/metacubex/tailscale/tailcfg"
 )
 
 const (

@@ -15,12 +15,12 @@ import (
 
 	jsonv2 "github.com/go-json-experiment/json"
 	"github.com/go-json-experiment/json/jsontext"
-	"tailscale.com/drive"
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/opt"
-	"tailscale.com/types/persist"
-	"tailscale.com/types/prefs"
-	"tailscale.com/types/preftype"
+	"github.com/metacubex/tailscale/drive"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/types/opt"
+	"github.com/metacubex/tailscale/types/persist"
+	"github.com/metacubex/tailscale/types/prefs"
+	"github.com/metacubex/tailscale/types/preftype"
 )
 
 //go:generate go run tailscale.com/cmd/viewer --type=Prefs,AutoUpdatePrefs,AppConnectorPrefs

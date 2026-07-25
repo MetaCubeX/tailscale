@@ -19,9 +19,9 @@ import (
 	"github.com/google/nftables/expr"
 	"github.com/mdlayher/netlink"
 	"github.com/vishvananda/netns"
-	"tailscale.com/net/tsaddr"
-	"tailscale.com/tstest"
-	"tailscale.com/types/logger"
+	"github.com/metacubex/tailscale/net/tsaddr"
+	"github.com/metacubex/tailscale/tstest"
+	"github.com/metacubex/tailscale/types/logger"
 )
 
 func toAnySlice[T any](s []T) []any {

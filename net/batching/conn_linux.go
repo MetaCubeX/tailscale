@@ -20,13 +20,13 @@ import (
 	"golang.org/x/net/ipv4"
 	"golang.org/x/net/ipv6"
 	"golang.org/x/sys/unix"
-	"tailscale.com/control/controlknobs"
-	"tailscale.com/envknob"
-	"tailscale.com/hostinfo"
-	"tailscale.com/net/neterror"
-	"tailscale.com/net/packet"
-	"tailscale.com/types/nettype"
-	"tailscale.com/util/clientmetric"
+	"github.com/metacubex/tailscale/control/controlknobs"
+	"github.com/metacubex/tailscale/envknob"
+	"github.com/metacubex/tailscale/hostinfo"
+	"github.com/metacubex/tailscale/net/neterror"
+	"github.com/metacubex/tailscale/net/packet"
+	"github.com/metacubex/tailscale/types/nettype"
+	"github.com/metacubex/tailscale/util/clientmetric"
 )
 
 // xnetBatchReaderWriter defines the batching i/o methods of

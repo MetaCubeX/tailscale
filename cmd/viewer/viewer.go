@@ -18,9 +18,9 @@ import (
 	"slices"
 	"strings"
 
-	"tailscale.com/util/codegen"
-	"tailscale.com/util/mak"
-	"tailscale.com/util/must"
+	"github.com/metacubex/tailscale/util/codegen"
+	"github.com/metacubex/tailscale/util/mak"
+	"github.com/metacubex/tailscale/util/must"
 )
 
 const viewTemplateStr = `{{define "common"}}
@@ -305,11 +305,11 @@ func genView(buf *bytes.Buffer, it *codegen.ImportTracker, typ *types.Named, fie
 			switch elem.String() {
 			case "byte":
 				args.FieldType = it.QualifiedName(fieldType)
-				it.Import("", "tailscale.com/types/views")
+				it.Import("", "github.com/metacubex/tailscale/types/views")
 				writeTemplateWithComment("byteSliceField", fname)
 			default:
 				args.FieldType = it.QualifiedName(elem)
-				it.Import("", "tailscale.com/types/views")
+				it.Import("", "github.com/metacubex/tailscale/types/views")
 				shallow, deep, base := requiresCloning(elem)
 				if deep {
 					switch elem.Underlying().(type) {
@@ -375,7 +375,7 @@ func genView(buf *bytes.Buffer, it *codegen.ImportTracker, typ *types.Named, fie
 				writeTemplateWithComment("unsupportedField", fname)
 				continue
 			}
-			it.Import("", "tailscale.com/types/views")
+			it.Import("", "github.com/metacubex/tailscale/types/views")
 			args.MapKeyType = it.QualifiedName(key)
 			mElem := m.Elem()
 			var template string

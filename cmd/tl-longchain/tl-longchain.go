@@ -22,10 +22,10 @@ import (
 	"log"
 	"time"
 
-	"tailscale.com/client/local"
-	"tailscale.com/ipn/ipnstate"
-	"tailscale.com/tka"
-	"tailscale.com/types/key"
+	"github.com/metacubex/tailscale/client/local"
+	"github.com/metacubex/tailscale/ipn/ipnstate"
+	"github.com/metacubex/tailscale/tka"
+	"github.com/metacubex/tailscale/types/key"
 )
 
 var (

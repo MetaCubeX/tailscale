@@ -7,15 +7,15 @@ import (
 	"crypto/tls"
 	"net/http"
 
-	"tailscale.com/control/controlclient"
-	"tailscale.com/ipn"
-	"tailscale.com/ipn/ipnauth"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tstime"
-	"tailscale.com/types/key"
-	"tailscale.com/types/netmap"
-	"tailscale.com/util/testenv"
-	"tailscale.com/wgengine/filter"
+	"github.com/metacubex/tailscale/control/controlclient"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/ipn/ipnauth"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/tstime"
+	"github.com/metacubex/tailscale/types/key"
+	"github.com/metacubex/tailscale/types/netmap"
+	"github.com/metacubex/tailscale/util/testenv"
+	"github.com/metacubex/tailscale/wgengine/filter"
 )
 
 // forTest is an unexported type to hide all the test-only

@@ -12,15 +12,15 @@ import (
 	"sync/atomic"
 	"time"
 
-	"tailscale.com/disco"
-	"tailscale.com/net/packet"
-	"tailscale.com/net/stun"
-	udprelay "tailscale.com/net/udprelay/endpoint"
-	"tailscale.com/syncs"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tstime"
-	"tailscale.com/types/key"
-	"tailscale.com/util/set"
+	"github.com/metacubex/tailscale/disco"
+	"github.com/metacubex/tailscale/net/packet"
+	"github.com/metacubex/tailscale/net/stun"
+	udprelay "github.com/metacubex/tailscale/net/udprelay/endpoint"
+	"github.com/metacubex/tailscale/syncs"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/tstime"
+	"github.com/metacubex/tailscale/types/key"
+	"github.com/metacubex/tailscale/util/set"
 )
 
 // relayManager manages allocation, handshaking, and initial probing (disco

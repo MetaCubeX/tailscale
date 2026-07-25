@@ -7,7 +7,7 @@ import (
 	"reflect"
 	"testing"
 
-	"tailscale.com/version/mkversion"
+	"github.com/metacubex/tailscale/version/mkversion"
 )
 
 var fakeVersion = mkversion.VersionInfo{

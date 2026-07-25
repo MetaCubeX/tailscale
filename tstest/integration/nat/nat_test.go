@@ -26,11 +26,11 @@ import (
 
 	"golang.org/x/mod/modfile"
 	"golang.org/x/sync/errgroup"
-	"tailscale.com/client/tailscale"
-	"tailscale.com/ipn/ipnstate"
-	"tailscale.com/syncs"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tstest/natlab/vnet"
+	"github.com/metacubex/tailscale/client/tailscale"
+	"github.com/metacubex/tailscale/ipn/ipnstate"
+	"github.com/metacubex/tailscale/syncs"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/tstest/natlab/vnet"
 )
 
 var (

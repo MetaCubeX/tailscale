@@ -18,7 +18,7 @@ import (
 	"github.com/creachadair/mds/shell"
 	"github.com/kdomanski/iso9660"
 	"golang.org/x/crypto/ssh"
-	"tailscale.com/tstest/natlab/vnet"
+	"github.com/metacubex/tailscale/tstest/natlab/vnet"
 )
 
 // createCloudInitISO creates a cidata seed ISO for the given cloud VM node.

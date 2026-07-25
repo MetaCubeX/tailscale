@@ -18,11 +18,11 @@ import (
 	"time"
 
 	"github.com/coder/websocket"
-	"tailscale.com/control/controlbase"
-	"tailscale.com/control/controlhttp/controlhttpcommon"
-	"tailscale.com/net/netutil"
-	"tailscale.com/net/wsconn"
-	"tailscale.com/types/key"
+	"github.com/metacubex/tailscale/control/controlbase"
+	"github.com/metacubex/tailscale/control/controlhttp/controlhttpcommon"
+	"github.com/metacubex/tailscale/net/netutil"
+	"github.com/metacubex/tailscale/net/wsconn"
+	"github.com/metacubex/tailscale/types/key"
 )
 
 // AcceptHTTP upgrades the HTTP request given by w and r into a Tailscale

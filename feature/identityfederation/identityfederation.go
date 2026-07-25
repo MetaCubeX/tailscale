@@ -16,10 +16,10 @@ import (
 	"time"
 
 	"golang.org/x/oauth2"
-	"tailscale.com/feature"
-	"tailscale.com/internal/client/tailscale"
-	"tailscale.com/ipn"
-	"tailscale.com/wif"
+	"github.com/metacubex/tailscale/feature"
+	"github.com/metacubex/tailscale/internal/client/tailscale"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/wif"
 )
 
 func init() {

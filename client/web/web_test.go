@@ -20,15 +20,15 @@ import (
 	"time"
 
 	"github.com/google/go-cmp/cmp"
-	"tailscale.com/client/local"
-	"tailscale.com/client/tailscale/apitype"
-	"tailscale.com/ipn"
-	"tailscale.com/ipn/ipnstate"
-	"tailscale.com/net/memnet"
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/views"
-	"tailscale.com/util/httpm"
-	"tailscale.com/util/syspolicy/policyclient"
+	"github.com/metacubex/tailscale/client/local"
+	"github.com/metacubex/tailscale/client/tailscale/apitype"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/ipn/ipnstate"
+	"github.com/metacubex/tailscale/net/memnet"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/types/views"
+	"github.com/metacubex/tailscale/util/httpm"
+	"github.com/metacubex/tailscale/util/syspolicy/policyclient"
 )
 
 func TestQnapAuthnURL(t *testing.T) {

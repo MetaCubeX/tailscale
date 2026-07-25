@@ -10,8 +10,8 @@ import (
 	"testing"
 
 	gocmp "github.com/google/go-cmp/cmp"
-	"tailscale.com/net/traffic"
-	"tailscale.com/tailcfg"
+	"github.com/metacubex/tailscale/net/traffic"
+	"github.com/metacubex/tailscale/tailcfg"
 )
 
 // WantScores is a convenience alias for the type of [traffic.Score.scores].

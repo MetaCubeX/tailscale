@@ -23,14 +23,14 @@ import (
 
 	"github.com/fsnotify/fsnotify"
 
-	"tailscale.com/client/local"
-	"tailscale.com/kube/egressservices"
-	"tailscale.com/kube/kubeclient"
-	"tailscale.com/kube/kubetypes"
-	"tailscale.com/types/views"
-	"tailscale.com/util/httpm"
-	"tailscale.com/util/linuxfw"
-	"tailscale.com/util/mak"
+	"github.com/metacubex/tailscale/client/local"
+	"github.com/metacubex/tailscale/kube/egressservices"
+	"github.com/metacubex/tailscale/kube/kubeclient"
+	"github.com/metacubex/tailscale/kube/kubetypes"
+	"github.com/metacubex/tailscale/types/views"
+	"github.com/metacubex/tailscale/util/httpm"
+	"github.com/metacubex/tailscale/util/linuxfw"
+	"github.com/metacubex/tailscale/util/mak"
 )
 
 const tailscaleTunInterface = "tailscale0"

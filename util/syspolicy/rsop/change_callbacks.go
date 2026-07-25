@@ -9,13 +9,13 @@ import (
 	"sync"
 	"time"
 
-	"tailscale.com/syncs"
-	"tailscale.com/util/set"
-	"tailscale.com/util/syspolicy/internal/loggerx"
-	"tailscale.com/util/syspolicy/pkey"
-	"tailscale.com/util/syspolicy/policyclient"
-	"tailscale.com/util/syspolicy/ptype"
-	"tailscale.com/util/syspolicy/setting"
+	"github.com/metacubex/tailscale/syncs"
+	"github.com/metacubex/tailscale/util/set"
+	"github.com/metacubex/tailscale/util/syspolicy/internal/loggerx"
+	"github.com/metacubex/tailscale/util/syspolicy/pkey"
+	"github.com/metacubex/tailscale/util/syspolicy/policyclient"
+	"github.com/metacubex/tailscale/util/syspolicy/ptype"
+	"github.com/metacubex/tailscale/util/syspolicy/setting"
 )
 
 // Change represents a change from the Old to the New value of type T.

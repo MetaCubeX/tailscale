@@ -11,7 +11,7 @@ import (
 	"strings"
 	"testing"
 
-	"tailscale.com/util/set"
+	"github.com/metacubex/tailscale/util/set"
 )
 
 func TestKnownDeps(t *testing.T) {

@@ -11,10 +11,10 @@ import (
 	"gvisor.dev/gvisor/pkg/tcpip"
 	"gvisor.dev/gvisor/pkg/tcpip/header"
 	"gvisor.dev/gvisor/pkg/tcpip/stack"
-	"tailscale.com/feature/buildfeatures"
-	"tailscale.com/net/packet"
-	"tailscale.com/types/ipproto"
-	"tailscale.com/wgengine/netstack/gro"
+	"github.com/metacubex/tailscale/feature/buildfeatures"
+	"github.com/metacubex/tailscale/net/packet"
+	"github.com/metacubex/tailscale/types/ipproto"
+	"github.com/metacubex/tailscale/wgengine/netstack/gro"
 )
 
 type queue struct {

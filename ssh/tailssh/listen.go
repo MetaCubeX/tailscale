@@ -12,8 +12,8 @@ import (
 	"sync"
 
 	gliderssh "github.com/tailscale/gliderssh"
-	"tailscale.com/ipn/ipnlocal"
-	"tailscale.com/types/logger"
+	"github.com/metacubex/tailscale/ipn/ipnlocal"
+	"github.com/metacubex/tailscale/types/logger"
 )
 
 func init() {

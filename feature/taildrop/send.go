@@ -9,10 +9,10 @@ import (
 	"sync"
 	"time"
 
-	"tailscale.com/envknob"
-	"tailscale.com/ipn"
-	"tailscale.com/tstime"
-	"tailscale.com/version/distro"
+	"github.com/metacubex/tailscale/envknob"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/tstime"
+	"github.com/metacubex/tailscale/version/distro"
 )
 
 type incomingFileKey struct {

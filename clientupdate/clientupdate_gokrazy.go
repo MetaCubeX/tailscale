@@ -17,9 +17,9 @@ import (
 	"strings"
 	"time"
 
-	"tailscale.com/clientupdate/distsign"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/progresstracking"
+	"github.com/metacubex/tailscale/clientupdate/distsign"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/util/progresstracking"
 )
 
 const (

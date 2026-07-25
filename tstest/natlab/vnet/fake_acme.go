@@ -35,7 +35,7 @@ import (
 	"sync"
 	"time"
 
-	"tailscale.com/util/httpm"
+	"github.com/metacubex/tailscale/util/httpm"
 )
 
 // fakeACMEServer is an in-process fake ACME (RFC 8555) CA used by natlab

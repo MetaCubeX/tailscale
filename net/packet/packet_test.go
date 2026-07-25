@@ -12,9 +12,9 @@ import (
 	"testing"
 	"unicode"
 
-	"tailscale.com/tstest"
-	"tailscale.com/types/ipproto"
-	"tailscale.com/util/must"
+	"github.com/metacubex/tailscale/tstest"
+	"github.com/metacubex/tailscale/types/ipproto"
+	"github.com/metacubex/tailscale/util/must"
 )
 
 const (

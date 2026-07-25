@@ -22,9 +22,9 @@ import (
 	"strings"
 
 	"github.com/peterbourgon/ff/v3/ffcli"
-	"tailscale.com/client/web"
-	"tailscale.com/ipn"
-	"tailscale.com/tsconst"
+	"github.com/metacubex/tailscale/client/web"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/tsconst"
 )
 
 func init() {

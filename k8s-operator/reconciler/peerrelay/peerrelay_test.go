@@ -31,10 +31,10 @@ import (
 
 	tailscaleclient "tailscale.com/client/tailscale/v2"
 
-	"tailscale.com/ipn"
-	tsapi "tailscale.com/k8s-operator/apis/v1alpha1"
-	"tailscale.com/k8s-operator/reconciler/peerrelay"
-	"tailscale.com/k8s-operator/tsclient"
+	"github.com/metacubex/tailscale/ipn"
+	tsapi "github.com/metacubex/tailscale/k8s-operator/apis/v1alpha1"
+	"github.com/metacubex/tailscale/k8s-operator/reconciler/peerrelay"
+	"github.com/metacubex/tailscale/k8s-operator/tsclient"
 )
 
 const (
@@ -114,10 +114,10 @@ func TestReconciler_Reconcile(t *testing.T) {
 					Protocol: corev1.ProtocolUDP,
 					Selector: map[string]string{"statefulset.kubernetes.io/pod-name": "peerrelay-test-0"},
 					Labels: map[string]string{
-						"tailscale.com/managed":              "true",
-						"tailscale.com/parent-resource-type": "peerrelay",
-						"tailscale.com/parent-resource":      "test",
-						"tailscale.com/peer-relay-replica":   "0",
+						"github.com/metacubex/tailscale/managed":              "true",
+						"github.com/metacubex/tailscale/parent-resource-type": "peerrelay",
+						"github.com/metacubex/tailscale/parent-resource":      "test",
+						"github.com/metacubex/tailscale/peer-relay-replica":   "0",
 					},
 					Annotations: map[string]string{
 						"service.beta.kubernetes.io/aws-load-balancer-type":            "external",
@@ -139,9 +139,9 @@ func TestReconciler_Reconcile(t *testing.T) {
 				Spec:       tsapi.PeerRelaySpec{Replicas: new(int32(3))},
 			},
 			ExpectedServices: []expectedService{
-				{Name: "peerrelay-test-0", Labels: map[string]string{"tailscale.com/peer-relay-replica": "0"}},
-				{Name: "peerrelay-test-1", Labels: map[string]string{"tailscale.com/peer-relay-replica": "1"}},
-				{Name: "peerrelay-test-2", Labels: map[string]string{"tailscale.com/peer-relay-replica": "2"}},
+				{Name: "peerrelay-test-0", Labels: map[string]string{"github.com/metacubex/tailscale/peer-relay-replica": "0"}},
+				{Name: "peerrelay-test-1", Labels: map[string]string{"github.com/metacubex/tailscale/peer-relay-replica": "1"}},
+				{Name: "peerrelay-test-2", Labels: map[string]string{"github.com/metacubex/tailscale/peer-relay-replica": "2"}},
 			},
 			ExpectStatefulSetSpec: &statefulSetSpec{Replicas: 3, Image: testProxyImage},
 		},
@@ -265,10 +265,10 @@ func TestReconciler_Reconcile(t *testing.T) {
 						Name:      "peerrelay-test-0",
 						Namespace: tailscaleNamespace,
 						Labels: map[string]string{
-							"tailscale.com/managed":              "true",
-							"tailscale.com/parent-resource-type": "peerrelay",
-							"tailscale.com/parent-resource":      "test",
-							"tailscale.com/peer-relay-replica":   "0",
+							"github.com/metacubex/tailscale/managed":              "true",
+							"github.com/metacubex/tailscale/parent-resource-type": "peerrelay",
+							"github.com/metacubex/tailscale/parent-resource":      "test",
+							"github.com/metacubex/tailscale/peer-relay-replica":   "0",
 						},
 						Annotations: map[string]string{
 							"service.beta.kubernetes.io/aws-load-balancer-scheme": "internal",
@@ -289,7 +289,7 @@ func TestReconciler_Reconcile(t *testing.T) {
 					Port:     41641,
 					Protocol: corev1.ProtocolUDP,
 					Labels: map[string]string{
-						"tailscale.com/managed": "true",
+						"github.com/metacubex/tailscale/managed": "true",
 					},
 					Annotations: map[string]string{
 						"service.beta.kubernetes.io/aws-load-balancer-scheme": "internet-facing", // drift corrected
@@ -533,10 +533,10 @@ func TestReconciler_Reconcile(t *testing.T) {
 						Name:      "peerrelay-test-0",
 						Namespace: tailscaleNamespace,
 						Labels: map[string]string{
-							"tailscale.com/managed":              "true",
-							"tailscale.com/parent-resource-type": "peerrelay",
-							"tailscale.com/parent-resource":      "test",
-							"tailscale.com/peer-relay-replica":   "0",
+							"github.com/metacubex/tailscale/managed":              "true",
+							"github.com/metacubex/tailscale/parent-resource-type": "peerrelay",
+							"github.com/metacubex/tailscale/parent-resource":      "test",
+							"github.com/metacubex/tailscale/peer-relay-replica":   "0",
 						},
 						Annotations: map[string]string{
 							eipAllocationsAnnotation: "eipalloc-stale",
@@ -581,7 +581,7 @@ func TestReconciler_Reconcile(t *testing.T) {
 			PeerRelay: &tsapi.PeerRelay{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:              "test",
-					Finalizers:        []string{"tailscale.com/finalizer"},
+					Finalizers:        []string{"github.com/metacubex/tailscale/finalizer"},
 					DeletionTimestamp: new(metav1.Now()),
 				},
 				Spec: tsapi.PeerRelaySpec{Replicas: new(int32(2))},
@@ -676,7 +676,7 @@ func TestReconciler_Reconcile(t *testing.T) {
 			case err != nil:
 				t.Fatalf("failed to refetch PeerRelay: %v", err)
 			case tc.ExpectFinalizer:
-				if !slices.Contains(pr.Finalizers, "tailscale.com/finalizer") {
+				if !slices.Contains(pr.Finalizers, "github.com/metacubex/tailscale/finalizer") {
 					t.Errorf("expected finalizer to be set, got %v", pr.Finalizers)
 				}
 			}
@@ -769,9 +769,9 @@ func assertSecretsForType(t *testing.T, fc client.Client, prName, secretType, la
 
 	var list corev1.SecretList
 	if err := fc.List(t.Context(), &list, client.InNamespace(tailscaleNamespace), client.MatchingLabels(map[string]string{
-		"tailscale.com/parent-resource-type": "peerrelay",
-		"tailscale.com/parent-resource":      prName,
-		"tailscale.com/secret-type":          secretType,
+		"github.com/metacubex/tailscale/parent-resource-type": "peerrelay",
+		"github.com/metacubex/tailscale/parent-resource":      prName,
+		"github.com/metacubex/tailscale/secret-type":          secretType,
 	})); err != nil {
 		t.Fatal(err)
 	}
@@ -859,10 +859,10 @@ func managedService(prName string, idx int) *corev1.Service {
 			Name:      fmt.Sprintf("peerrelay-%s-%d", prName, idx),
 			Namespace: tailscaleNamespace,
 			Labels: map[string]string{
-				"tailscale.com/managed":              "true",
-				"tailscale.com/parent-resource-type": "peerrelay",
-				"tailscale.com/parent-resource":      prName,
-				"tailscale.com/peer-relay-replica":   fmt.Sprintf("%d", idx),
+				"github.com/metacubex/tailscale/managed":              "true",
+				"github.com/metacubex/tailscale/parent-resource-type": "peerrelay",
+				"github.com/metacubex/tailscale/parent-resource":      prName,
+				"github.com/metacubex/tailscale/peer-relay-replica":   fmt.Sprintf("%d", idx),
 			},
 		},
 		Spec: corev1.ServiceSpec{Type: corev1.ServiceTypeLoadBalancer},
@@ -882,9 +882,9 @@ const (
 
 func managedStatefulSet(prName string, replicas, ready int32) *appsv1.StatefulSet {
 	labels := map[string]string{
-		"tailscale.com/managed":              "true",
-		"tailscale.com/parent-resource-type": "peerrelay",
-		"tailscale.com/parent-resource":      prName,
+		"github.com/metacubex/tailscale/managed":              "true",
+		"github.com/metacubex/tailscale/parent-resource-type": "peerrelay",
+		"github.com/metacubex/tailscale/parent-resource":      prName,
 	}
 	stsName := "peerrelay-" + prName
 	return &appsv1.StatefulSet{
@@ -912,10 +912,10 @@ func managedConfigSecret(prName string, idx int) *corev1.Secret {
 			Name:      fmt.Sprintf("peerrelay-%s-%d-config", prName, idx),
 			Namespace: tailscaleNamespace,
 			Labels: map[string]string{
-				"tailscale.com/managed":              "true",
-				"tailscale.com/parent-resource-type": "peerrelay",
-				"tailscale.com/parent-resource":      prName,
-				"tailscale.com/peer-relay-replica":   fmt.Sprintf("%d", idx),
+				"github.com/metacubex/tailscale/managed":              "true",
+				"github.com/metacubex/tailscale/parent-resource-type": "peerrelay",
+				"github.com/metacubex/tailscale/parent-resource":      prName,
+				"github.com/metacubex/tailscale/peer-relay-replica":   fmt.Sprintf("%d", idx),
 			},
 		},
 	}
@@ -1227,11 +1227,11 @@ func TestReconciler_DeletesTailnetDevices(t *testing.T) {
 	// written it.
 	stateSecret := func(prName, name string, idx int32, deviceID string) *corev1.Secret {
 		labels := map[string]string{
-			"tailscale.com/managed":              "true",
-			"tailscale.com/parent-resource-type": "peerrelay",
-			"tailscale.com/parent-resource":      prName,
-			"tailscale.com/peer-relay-replica":   fmt.Sprintf("%d", idx),
-			"tailscale.com/secret-type":          "state",
+			"github.com/metacubex/tailscale/managed":              "true",
+			"github.com/metacubex/tailscale/parent-resource-type": "peerrelay",
+			"github.com/metacubex/tailscale/parent-resource":      prName,
+			"github.com/metacubex/tailscale/peer-relay-replica":   fmt.Sprintf("%d", idx),
+			"github.com/metacubex/tailscale/secret-type":          "state",
 		}
 		s := &corev1.Secret{
 			ObjectMeta: metav1.ObjectMeta{Name: name, Namespace: tailscaleNamespace, Labels: labels},
@@ -1246,7 +1246,7 @@ func TestReconciler_DeletesTailnetDevices(t *testing.T) {
 		pr := &tsapi.PeerRelay{
 			ObjectMeta: metav1.ObjectMeta{
 				Name:              "test",
-				Finalizers:        []string{"tailscale.com/finalizer"},
+				Finalizers:        []string{"github.com/metacubex/tailscale/finalizer"},
 				DeletionTimestamp: new(metav1.Now()),
 			},
 			Spec: tsapi.PeerRelaySpec{Replicas: new(int32(2))},
@@ -1425,7 +1425,7 @@ func TestReconciler_AppliesProxyClass(t *testing.T) {
 			StatefulSet: &tsapi.StatefulSet{
 				Labels: tsapi.Labels{
 					"team":                          "networking",
-					"tailscale.com/parent-resource": "hijack-attempt", // must NOT overwrite reconciler-managed value
+					"github.com/metacubex/tailscale/parent-resource": "hijack-attempt", // must NOT overwrite reconciler-managed value
 				},
 				Annotations: map[string]string{"observability.example.com/scrape": "true"},
 				Pod: &tsapi.Pod{
@@ -1471,7 +1471,7 @@ func TestReconciler_AppliesProxyClass(t *testing.T) {
 		t.Errorf("expected StatefulSet label team=networking, got %q", got)
 	}
 
-	if got := ss.Labels["tailscale.com/parent-resource"]; got != "test" {
+	if got := ss.Labels["github.com/metacubex/tailscale/parent-resource"]; got != "test" {
 		t.Errorf("expected reconciler-managed parent-resource label preserved as %q, got %q", "test", got)
 	}
 

@@ -22,11 +22,11 @@ import (
 
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
-	"tailscale.com/metrics"
-	"tailscale.com/tstest"
-	"tailscale.com/util/httpm"
-	"tailscale.com/util/must"
-	"tailscale.com/util/vizerror"
+	"github.com/metacubex/tailscale/metrics"
+	"github.com/metacubex/tailscale/tstest"
+	"github.com/metacubex/tailscale/util/httpm"
+	"github.com/metacubex/tailscale/util/must"
+	"github.com/metacubex/tailscale/util/vizerror"
 )
 
 type noopHijacker struct {

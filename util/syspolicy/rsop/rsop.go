@@ -11,11 +11,11 @@ import (
 	"fmt"
 	"slices"
 
-	"tailscale.com/syncs"
-	"tailscale.com/util/slicesx"
-	"tailscale.com/util/syspolicy/internal"
-	"tailscale.com/util/syspolicy/setting"
-	"tailscale.com/util/syspolicy/source"
+	"github.com/metacubex/tailscale/syncs"
+	"github.com/metacubex/tailscale/util/slicesx"
+	"github.com/metacubex/tailscale/util/syspolicy/internal"
+	"github.com/metacubex/tailscale/util/syspolicy/setting"
+	"github.com/metacubex/tailscale/util/syspolicy/source"
 )
 
 var (

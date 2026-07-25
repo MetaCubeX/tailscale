@@ -38,9 +38,9 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/aws-sdk-go-v2/service/sts"
 	"github.com/mattn/go-isatty"
-	"tailscale.com/gokrazy/mkfs"
-	tsrate "tailscale.com/tstime/rate"
-	"tailscale.com/types/logger"
+	"github.com/metacubex/tailscale/gokrazy/mkfs"
+	tsrate "github.com/metacubex/tailscale/tstime/rate"
+	"github.com/metacubex/tailscale/types/logger"
 )
 
 // Result is the machine-readable outcome of a build. Fields are

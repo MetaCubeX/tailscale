@@ -10,7 +10,7 @@ import (
 	"os"
 	"os/exec"
 
-	"tailscale.com/cmd/tailscale/cli/jsonoutput"
+	"github.com/metacubex/tailscale/cmd/tailscale/cli/jsonoutput"
 )
 
 func ExampleDNSQueryResult() {

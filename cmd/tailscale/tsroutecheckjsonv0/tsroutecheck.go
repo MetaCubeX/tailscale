@@ -17,7 +17,7 @@ package tsroutecheckjsonv0
 import (
 	"time"
 
-	"tailscale.com/net/routecheck"
+	"github.com/metacubex/tailscale/net/routecheck"
 )
 
 // ReportResponse is the JSON form of [routecheck.Report].

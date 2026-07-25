@@ -13,8 +13,8 @@ import (
 	"sync"
 
 	"go4.org/netipx"
-	"tailscale.com/net/netaddr"
-	"tailscale.com/types/views"
+	"github.com/metacubex/tailscale/net/netaddr"
+	"github.com/metacubex/tailscale/types/views"
 )
 
 // ChromeOSVMRange returns the subset of the CGNAT IPv4 range used by

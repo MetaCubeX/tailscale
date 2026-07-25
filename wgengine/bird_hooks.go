@@ -4,9 +4,9 @@
 package wgengine
 
 import (
-	"tailscale.com/feature"
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/logger"
+	"github.com/metacubex/tailscale/feature"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/types/logger"
 )
 
 // Bird is the engine's handle on the BIRD Internet Routing Daemon

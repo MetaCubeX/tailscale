@@ -13,9 +13,9 @@ import (
 	"time"
 
 	"github.com/peterbourgon/ff/v3/ffcli"
-	"tailscale.com/ipn"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/backoff"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/util/backoff"
 )
 
 var waitCmd = &ffcli.Command{

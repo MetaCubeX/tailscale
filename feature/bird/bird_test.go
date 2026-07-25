@@ -16,9 +16,9 @@ import (
 
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
-	"tailscale.com/feature"
-	"tailscale.com/tailcfg"
-	"tailscale.com/wgengine"
+	"github.com/metacubex/tailscale/feature"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/wgengine"
 )
 
 // fakeBIRD is a fake BIRD server listening on a unix socket. It speaks

@@ -10,10 +10,10 @@ import (
 	"strings"
 	"testing"
 
-	"tailscale.com/ipn/ipnlocal"
-	"tailscale.com/tka"
-	"tailscale.com/types/key"
-	"tailscale.com/util/must"
+	"github.com/metacubex/tailscale/ipn/ipnlocal"
+	"github.com/metacubex/tailscale/tka"
+	"github.com/metacubex/tailscale/types/key"
+	"github.com/metacubex/tailscale/util/must"
 )
 
 func TestHandleC2NDebugTKA(t *testing.T) {

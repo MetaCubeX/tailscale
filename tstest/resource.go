@@ -11,7 +11,7 @@ import (
 	"strings"
 	"time"
 
-	"tailscale.com/util/testenv"
+	"github.com/metacubex/tailscale/util/testenv"
 )
 
 // ResourceCheck takes a snapshot of the current goroutines and registers a

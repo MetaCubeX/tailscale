@@ -14,9 +14,9 @@ import (
 	"strconv"
 	"strings"
 
-	"tailscale.com/net/tsaddr"
-	"tailscale.com/tailcfg"
-	"tailscale.com/util/dnsname"
+	"github.com/metacubex/tailscale/net/tsaddr"
+	"github.com/metacubex/tailscale/tailcfg"
+	"github.com/metacubex/tailscale/util/dnsname"
 )
 
 const (

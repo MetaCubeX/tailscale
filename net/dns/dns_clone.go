@@ -8,9 +8,9 @@ package dns
 import (
 	"net/netip"
 
-	"tailscale.com/types/dnstype"
-	"tailscale.com/util/dnsname"
-	"tailscale.com/util/set"
+	"github.com/metacubex/tailscale/types/dnstype"
+	"github.com/metacubex/tailscale/util/dnsname"
+	"github.com/metacubex/tailscale/util/set"
 )
 
 // Clone makes a deep copy of Config.

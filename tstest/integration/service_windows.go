@@ -23,7 +23,7 @@ import (
 
 	"golang.org/x/sys/windows/svc"
 	"golang.org/x/sys/windows/svc/mgr"
-	"tailscale.com/tsconst/wintun"
+	"github.com/metacubex/tailscale/tsconst/wintun"
 )
 
 // serviceName is the Windows service tailscaled installs itself as.

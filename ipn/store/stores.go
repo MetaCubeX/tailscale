@@ -18,13 +18,13 @@ import (
 	"strings"
 	"sync"
 
-	"tailscale.com/atomicfile"
-	"tailscale.com/ipn"
-	"tailscale.com/ipn/store/mem"
-	"tailscale.com/paths"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/mak"
-	"tailscale.com/util/testenv"
+	"github.com/metacubex/tailscale/atomicfile"
+	"github.com/metacubex/tailscale/ipn"
+	"github.com/metacubex/tailscale/ipn/store/mem"
+	"github.com/metacubex/tailscale/paths"
+	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/util/mak"
+	"github.com/metacubex/tailscale/util/testenv"
 )
 
 // Provider returns a StateStore for the provided path.

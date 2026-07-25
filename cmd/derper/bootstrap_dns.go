@@ -18,9 +18,9 @@ import (
 	"sync/atomic"
 	"time"
 
-	"tailscale.com/syncs"
-	"tailscale.com/util/mak"
-	"tailscale.com/util/slicesx"
+	"github.com/metacubex/tailscale/syncs"
+	"github.com/metacubex/tailscale/util/mak"
+	"github.com/metacubex/tailscale/util/slicesx"
 )
 
 const refreshTimeout = time.Minute

@@ -12,7 +12,7 @@ import (
 	"net/http"
 	"os"
 
-	"tailscale.com/tailcfg"
+	"github.com/metacubex/tailscale/tailcfg"
 )
 
 func main() {

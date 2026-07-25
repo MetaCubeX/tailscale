@@ -11,8 +11,8 @@ import (
 	"net/http"
 	"time"
 
-	"tailscale.com/feature"
-	"tailscale.com/ipn"
+	"github.com/metacubex/tailscale/feature"
+	"github.com/metacubex/tailscale/ipn"
 )
 
 // TLSCertKeyPair is a TLS public and private key, and whether they were
