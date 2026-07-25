@@ -26,6 +26,7 @@ import (
 	"github.com/metacubex/tailscale/health"
 	"github.com/metacubex/tailscale/ipn"
 	"github.com/metacubex/tailscale/ipn/ipnlocal"
+	"github.com/metacubex/tailscale/net/netx"
 	"github.com/metacubex/tailscale/tailcfg"
 	xacme "github.com/metacubex/tailscale/tempfork/acme"
 	"github.com/metacubex/tailscale/types/logger"
@@ -584,7 +585,7 @@ func fulfillACMEDNS01Challenge(ctx context.Context, b *ipnlocal.LocalBackend, ac
 		// Do a best-effort lookup to see if we've already created this DNS name
 		// in a previous attempt. Don't burn too much time on it, though. Worst
 		// case we ask the server to create something that already exists.
-		var resolver net.Resolver
+		resolver := newSystemResolver(b.Dialer().SystemDial)
 		lookupCtx, lookupCancel := context.WithTimeout(ctx, 500*time.Millisecond)
 		txts, _ := resolver.LookupTXT(lookupCtx, key)
 		lookupCancel()
@@ -607,6 +608,13 @@ func fulfillACMEDNS01Challenge(ctx context.Context, b *ipnlocal.LocalBackend, ac
 		return nil
 	}
 	return errors.New("dns-01 challenge not offered")
+}
+
+func newSystemResolver(dialer netx.DialFunc) *net.Resolver {
+	return &net.Resolver{
+		PreferGo: true,
+		Dial:     dialer,
+	}
 }
 
 // validLookingCertDomain reports whether name looks like a valid domain

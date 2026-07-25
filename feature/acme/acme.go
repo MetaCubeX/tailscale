@@ -27,6 +27,8 @@ import (
 	"github.com/metacubex/tailscale/ipn"
 	"github.com/metacubex/tailscale/ipn/ipnext"
 	"github.com/metacubex/tailscale/ipn/ipnlocal"
+	"github.com/metacubex/tailscale/net/netutil"
+	"github.com/metacubex/tailscale/net/netx"
 	"github.com/metacubex/tailscale/syncs"
 	xacme "github.com/metacubex/tailscale/tempfork/acme"
 	"github.com/metacubex/tailscale/tsconst"
@@ -67,7 +69,8 @@ var errNoExt = errors.New("acme extension not registered on this LocalBackend")
 // the extension, which keeps the extension's lifecycle independent of
 // any specific backend reference.
 type extension struct {
-	logf logger.Logf
+	logf       logger.Logf
+	httpClient *http.Client
 
 	// domainsMu guards domainLocks.
 	domainsMu syncs.Mutex
@@ -149,9 +152,15 @@ func (e *extension) Go(f func()) {
 
 // newExtension is the [ipnext.NewExtensionFn] registered for this
 // feature. It is called once per [*ipnlocal.LocalBackend].
-func newExtension(logf logger.Logf, _ ipnext.SafeBackend) (ipnext.Extension, error) {
+func newExtension(logf logger.Logf, sb ipnext.SafeBackend) (ipnext.Extension, error) {
+	sys := sb.Sys()
+	var dial netx.DialFunc
+	if systemDialer, ok := sys.Dialer.GetOK(); ok && systemDialer != nil {
+		dial = systemDialer.SystemDial
+	}
 	return &extension{
-		logf: logger.WithPrefix(logf, featureName+": "),
+		logf:       logger.WithPrefix(logf, featureName+": "),
+		httpClient: netutil.NewSystemHTTPClient(dial, sys.ExtraRootCAs),
 	}, nil
 }
 

@@ -10,12 +10,12 @@ import (
 	"crypto/elliptic"
 	"crypto/rand"
 	"crypto/rsa"
-	"github.com/metacubex/tls"
 	"crypto/x509"
 	"crypto/x509/pkix"
 	"encoding/pem"
 	"errors"
 	"fmt"
+	"github.com/metacubex/tls"
 	"io"
 	"os"
 	"path/filepath"
@@ -369,6 +369,7 @@ func (e *extension) acmeClient(cs certStore) (*xacme.Client, error) {
 	// shouldStartDomainRenewalARI).
 	return &xacme.Client{
 		Key:          key,
+		HTTPClient:   e.httpClient,
 		UserAgent:    "tailscaled/" + version.Long(),
 		DirectoryURL: envknob.String("TS_DEBUG_ACME_DIRECTORY_URL"),
 	}, nil
