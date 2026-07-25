@@ -13,6 +13,7 @@ import (
 
 	"github.com/metacubex/tailscale/feature"
 	"github.com/metacubex/tailscale/net/netmon"
+	"github.com/metacubex/tailscale/net/netx"
 	"github.com/metacubex/tailscale/types/logger"
 	"github.com/metacubex/tailscale/util/eventbus"
 )
@@ -22,6 +23,8 @@ import (
 var HookNewPortMapper feature.Hook[func(logf logger.Logf,
 	bus *eventbus.Bus,
 	netMon *netmon.Monitor,
+	dialer netx.DialFunc,
+	packetListener netx.ListenPacketFunc,
 	disableUPnPOrNil,
 	onlyTCP443OrNil func() bool) Client]
 

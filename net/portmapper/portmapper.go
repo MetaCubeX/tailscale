@@ -23,6 +23,7 @@ import (
 	"github.com/metacubex/tailscale/net/neterror"
 	"github.com/metacubex/tailscale/net/netmon"
 	"github.com/metacubex/tailscale/net/netns"
+	"github.com/metacubex/tailscale/net/netx"
 	"github.com/metacubex/tailscale/net/portmapper/portmappertype"
 	"github.com/metacubex/tailscale/net/sockstats"
 	"github.com/metacubex/tailscale/syncs"
@@ -116,6 +117,8 @@ type Client struct {
 
 	logf         logger.Logf
 	netMon       *netmon.Monitor // optional; nil means interfaces will be looked up on-demand
+	dialer       netx.DialFunc
+	packetListen netx.ListenPacketFunc
 	ipAndGateway func() (gw, ip netip.Addr, ok bool)
 	onChange     func() // or nil
 	debug        DebugKnobs
@@ -243,6 +246,12 @@ type Config struct {
 	// NetMon is the network monitor used by the client. It must be non-nil.
 	NetMon *netmon.Monitor
 
+	// Dialer optionally specifies how UPnP HTTP connections are dialed.
+	Dialer netx.DialFunc
+
+	// PacketListener optionally specifies how port mapping UDP sockets are opened.
+	PacketListener netx.ListenPacketFunc
+
 	// DebugKnobs, if non-nil, configure the behaviour of the portmapper for
 	// debugging.  If nil, a sensible set of defaults will be used.
 	DebugKnobs *DebugKnobs
@@ -262,9 +271,11 @@ func NewClient(c Config) *Client {
 		panic("nil EventBus")
 	}
 	ret := &Client{
-		logf:     c.Logf,
-		netMon:   c.NetMon,
-		onChange: c.OnChange,
+		logf:         c.Logf,
+		netMon:       c.NetMon,
+		dialer:       c.Dialer,
+		packetListen: c.PacketListener,
+		onChange:     c.OnChange,
 	}
 	if buildfeatures.HasPortMapper {
 		// TODO(bradfitz): move this to method on netMon
@@ -363,6 +374,13 @@ func (c *Client) upnpPort() uint16 {
 
 func (c *Client) listenPacket(ctx context.Context, network, addr string) (nettype.PacketConn, error) {
 	ctx = sockstats.WithSockStats(ctx, sockstats.LabelPortmapperClient, c.logf)
+	if c.packetListen != nil {
+		pc, err := c.packetListen(ctx, network, addr)
+		if err != nil {
+			return nil, err
+		}
+		return nettype.MakePacketConn(pc), nil
+	}
 
 	// When running under testing conditions, we bind the IGD server
 	// to localhost, and may be running in an environment where our

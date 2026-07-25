@@ -714,7 +714,7 @@ func NewConn(opts Options) (*Conn, error) {
 		}
 		newPortMapper, ok := portmappertype.HookNewPortMapper.GetOk()
 		if ok {
-			c.portMapper = newPortMapper(portmapperLogf, opts.EventBus, opts.NetMon, disableUPnP, c.onlyTCP443.Load)
+			c.portMapper = newPortMapper(portmapperLogf, opts.EventBus, opts.NetMon, opts.SystemDialer, opts.PacketListener, disableUPnP, c.onlyTCP443.Load)
 		}
 		// If !ok, the HookNewPortMapper hook is not set (so feature/portmapper
 		// isn't linked), but the build tag to explicitly omit the portmapper

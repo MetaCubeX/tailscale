@@ -314,12 +314,15 @@ func selectBestService(ctx context.Context, logf logger.Logf, root *goupnp.RootD
 
 	var clients []upnpClient
 	for _, v := range wanIP2 {
+		setUPnPHTTPClient(ctx, v.SOAPClient)
 		clients = append(clients, v)
 	}
 	for _, v := range wanIP1 {
+		setUPnPHTTPClient(ctx, v.SOAPClient)
 		clients = append(clients, v)
 	}
 	for _, v := range wanPPP {
+		setUPnPHTTPClient(ctx, v.SOAPClient)
 		clients = append(clients, v)
 	}
 
@@ -430,6 +433,12 @@ func selectBestService(ctx context.Context, logf logger.Logf, root *goupnp.RootD
 	return clients[0], nil
 }
 
+func setUPnPHTTPClient(ctx context.Context, client *soap.SOAPClient) {
+	if httpClient := upnpHTTPClientKey.Value(ctx); httpClient != nil {
+		client.HTTPClient = *httpClient
+	}
+}
+
 // serviceIsConnected returns whether a given UPnP service is connected, based
 // on the NewConnectionStatus field returned from GetStatusInfo.
 func serviceIsConnected(ctx context.Context, logf logger.Logf, svc upnpClient) bool {
@@ -442,9 +451,13 @@ func serviceIsConnected(ctx context.Context, logf logger.Logf, svc upnpClient) b
 
 func (c *Client) upnpHTTPClientLocked() *http.Client {
 	if c.uPnPHTTPClient == nil {
+		dial := c.dialer
+		if dial == nil {
+			dial = netns.NewDialer(c.logf, c.netMon).DialContext
+		}
 		c.uPnPHTTPClient = &http.Client{
 			Transport: &http.Transport{
-				DialContext:     netns.NewDialer(c.logf, c.netMon).DialContext,
+				DialContext:     dial,
 				IdleConnTimeout: 2 * time.Second, // LAN is cheap
 			},
 		}
