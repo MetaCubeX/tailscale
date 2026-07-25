@@ -10,7 +10,7 @@ import (
 	"log"
 	"math/rand/v2"
 	"net"
-	"net/http"
+	"github.com/metacubex/http"
 	"os"
 	"runtime"
 	"strings"

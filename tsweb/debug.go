@@ -4,11 +4,12 @@
 package tsweb
 
 import (
+	"encoding/json"
 	"expvar"
 	"fmt"
+	"github.com/metacubex/http"
 	"html"
 	"io"
-	"net/http"
 	"net/url"
 	"os"
 	"runtime"
@@ -56,7 +57,7 @@ func Debugger(mux *http.ServeMux) *DebugHandler {
 
 	ret.KVFunc("Uptime", func() any { return varz.Uptime() })
 	ret.KV("Version", version.Long())
-	ret.Handle("vars", "Metrics (Go)", expvar.Handler())
+	ret.Handle("vars", "Metrics (Go)", http.HandlerFunc(expvarHandler))
 	if PrometheusHandler.IsSet() {
 		PrometheusHandler.Get()(ret)
 	} else {
@@ -70,6 +71,21 @@ func Debugger(mux *http.ServeMux) *DebugHandler {
 		ret.KV("Machine", hostname)
 	}
 	return ret
+}
+
+func expvarHandler(w http.ResponseWriter, _ *http.Request) {
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	io.WriteString(w, "{\n")
+	first := true
+	expvar.Do(func(kv expvar.KeyValue) {
+		if !first {
+			io.WriteString(w, ",\n")
+		}
+		first = false
+		name, _ := json.Marshal(kv.Key)
+		fmt.Fprintf(w, "%s: %s", name, kv.Value)
+	})
+	io.WriteString(w, "\n}\n")
 }
 
 // ServeHTTP implements http.Handler.

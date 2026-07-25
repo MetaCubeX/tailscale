@@ -11,7 +11,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-	"net/http"
+	"github.com/metacubex/http"
 	"net/url"
 
 	"github.com/metacubex/tailscale/types/opt"

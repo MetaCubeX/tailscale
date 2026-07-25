@@ -8,7 +8,7 @@ package tailscale
 import (
 	"context"
 	"fmt"
-	"net/http"
+	"github.com/metacubex/http"
 
 	"github.com/metacubex/tailscale/util/httpm"
 )

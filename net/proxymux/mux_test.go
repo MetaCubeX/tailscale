@@ -6,8 +6,8 @@ package proxymux
 import (
 	"fmt"
 	"net"
-	"net/http"
-	"net/http/httputil"
+	"github.com/metacubex/http"
+	"github.com/metacubex/http/httputil"
 	"net/url"
 	"testing"
 

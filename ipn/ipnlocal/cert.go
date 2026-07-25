@@ -5,10 +5,10 @@ package ipnlocal
 
 import (
 	"context"
-	"crypto/tls"
+	"github.com/metacubex/tls"
 	"errors"
 	"io"
-	"net/http"
+	"github.com/metacubex/http"
 	"time"
 
 	"github.com/metacubex/tailscale/feature"

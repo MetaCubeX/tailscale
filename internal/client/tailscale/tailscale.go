@@ -10,7 +10,7 @@ package tailscale
 import (
 	"errors"
 	"io"
-	"net/http"
+	"github.com/metacubex/http"
 
 	tsclient "github.com/metacubex/tailscale/client/tailscale"
 )

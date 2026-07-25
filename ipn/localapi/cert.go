@@ -9,7 +9,7 @@ import (
 	"errors"
 	"fmt"
 	"maps"
-	"net/http"
+	"github.com/metacubex/http"
 	"strings"
 	"time"
 

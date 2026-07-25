@@ -7,7 +7,7 @@ package local
 
 import (
 	"context"
-	"net/http"
+	"github.com/metacubex/http"
 
 	"github.com/metacubex/tailscale/client/tailscale/apitype"
 	"github.com/metacubex/tailscale/feature/serviceclientprefs/serviceclient"

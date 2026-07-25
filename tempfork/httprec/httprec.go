@@ -11,7 +11,7 @@ import (
 	"bytes"
 	"fmt"
 	"io"
-	"net/http"
+	"github.com/metacubex/http"
 	"net/textproto"
 	"strconv"
 )

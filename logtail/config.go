@@ -5,7 +5,7 @@ package logtail
 
 import (
 	"io"
-	"net/http"
+	"github.com/metacubex/http"
 	"time"
 
 	"github.com/metacubex/tailscale/tstime"

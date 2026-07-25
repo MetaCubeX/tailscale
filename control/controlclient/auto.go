@@ -7,7 +7,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
+	"github.com/metacubex/http"
 	"sync"
 	"sync/atomic"
 	"time"

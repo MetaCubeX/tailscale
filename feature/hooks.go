@@ -5,7 +5,7 @@ package feature
 
 import (
 	"io"
-	"net/http"
+	"github.com/metacubex/http"
 	"net/url"
 	"os"
 	"sync"

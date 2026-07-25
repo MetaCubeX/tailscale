@@ -6,8 +6,8 @@
 package tsweb
 
 import (
-	"net/http"
-	"net/http/pprof"
+	"github.com/metacubex/http"
+	"github.com/metacubex/http/pprof"
 )
 
 func addProfilingHandlers(d *DebugHandler) {

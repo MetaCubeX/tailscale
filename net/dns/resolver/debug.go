@@ -6,7 +6,7 @@ package resolver
 import (
 	"fmt"
 	"html"
-	"net/http"
+	"github.com/metacubex/http"
 	"strconv"
 	"sync/atomic"
 	"time"

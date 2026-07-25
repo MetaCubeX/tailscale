@@ -17,7 +17,7 @@ import (
 	"errors"
 	"fmt"
 	"net"
-	"net/http"
+	"github.com/metacubex/http"
 	"net/netip"
 	"net/url"
 	"os"

@@ -8,7 +8,7 @@ package drive
 import (
 	"bytes"
 	"errors"
-	"net/http"
+	"github.com/metacubex/http"
 	"strings"
 )
 

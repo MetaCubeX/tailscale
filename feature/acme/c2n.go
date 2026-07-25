@@ -9,7 +9,7 @@ import (
 	"encoding/pem"
 	"errors"
 	"fmt"
-	"net/http"
+	"github.com/metacubex/http"
 	"time"
 
 	"github.com/metacubex/tailscale/ipn"

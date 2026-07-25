@@ -6,7 +6,7 @@
 package localapi
 
 import (
-	"net/http"
+	"github.com/metacubex/http"
 	"runtime"
 )
 

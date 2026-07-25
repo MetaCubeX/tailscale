@@ -20,7 +20,7 @@ package tsd
 import (
 	"crypto/x509"
 	"fmt"
-	"net/http"
+	"github.com/metacubex/http"
 	"reflect"
 
 	"github.com/metacubex/tailscale/control/controlknobs"

@@ -139,7 +139,7 @@ package tsnet
 import (
 	"context"
 	crand "crypto/rand"
-	"crypto/tls"
+	"github.com/metacubex/tls"
 	"encoding/hex"
 	"errors"
 	"fmt"
@@ -147,7 +147,7 @@ import (
 	"log"
 	"math"
 	"net"
-	"net/http"
+	"github.com/metacubex/http"
 	"net/netip"
 	"os"
 	"path/filepath"

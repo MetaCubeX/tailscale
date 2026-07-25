@@ -6,7 +6,7 @@ package netutil
 import (
 	"io"
 	"net"
-	"net/http"
+	"github.com/metacubex/http"
 	"runtime"
 	"testing"
 	"time"

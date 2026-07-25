@@ -43,7 +43,9 @@ require (
 	github.com/frankban/quicktest v1.14.6
 	github.com/fxamacker/cbor/v2 v2.9.0
 	github.com/metacubex/bart v0.29.0
+	github.com/metacubex/http v0.1.7
 	github.com/metacubex/jsonv2 v0.0.0-20260721082349-16b4998c8f89
+	github.com/metacubex/tls v0.1.7
 	github.com/go-logr/zapr v1.3.0
 	github.com/go-ole/go-ole v1.3.0
 	github.com/go4org/hashtriemap v0.0.0-20251130024219-545ba229f689

@@ -7,10 +7,10 @@ package local
 
 import (
 	"context"
-	"crypto/tls"
+	"github.com/metacubex/tls"
 	"errors"
 	"fmt"
-	"net/http"
+	"github.com/metacubex/http"
 	"net/url"
 	"strconv"
 	"strings"

@@ -15,9 +15,9 @@ package acme
 
 import (
 	"context"
-	"crypto/tls"
+	"github.com/metacubex/tls"
 	"errors"
-	"net/http"
+	"github.com/metacubex/http"
 	"sync"
 	"sync/atomic"
 	"time"

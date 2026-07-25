@@ -6,7 +6,7 @@ package controlclient
 import (
 	"errors"
 	"fmt"
-	"net/http"
+	"github.com/metacubex/http"
 )
 
 // apiResponseError is an error type that can be returned by controlclient

@@ -5,7 +5,7 @@ package tsweb
 
 import (
 	"context"
-	"net/http"
+	"github.com/metacubex/http"
 	"time"
 
 	"github.com/metacubex/tailscale/tstime"

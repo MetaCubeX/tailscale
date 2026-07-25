@@ -11,7 +11,7 @@ import (
 	"fmt"
 	"io"
 	"net"
-	"net/http"
+	"github.com/metacubex/http"
 	"net/netip"
 	"slices"
 	"sync/atomic"

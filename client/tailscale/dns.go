@@ -10,7 +10,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"net/http"
+	"github.com/metacubex/http"
 
 	"github.com/metacubex/tailscale/client/tailscale/apitype"
 )

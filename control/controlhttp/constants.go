@@ -5,7 +5,7 @@ package controlhttp
 
 import (
 	"crypto/x509"
-	"net/http"
+	"github.com/metacubex/http"
 	"net/url"
 	"sync/atomic"
 	"time"

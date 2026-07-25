@@ -22,14 +22,14 @@ package controlhttp
 import (
 	"cmp"
 	"context"
-	"crypto/tls"
 	"encoding/base64"
 	"errors"
 	"fmt"
+	"github.com/metacubex/http"
+	"github.com/metacubex/http/httptrace"
+	"github.com/metacubex/tls"
 	"io"
 	"net"
-	"net/http"
-	"net/http/httptrace"
 	"net/netip"
 	"net/url"
 	"runtime"
@@ -478,7 +478,7 @@ func (a *Dialer) tryURLUpgrade(ctx context.Context, u *url.URL, optAddr netip.Ad
 	}
 	// Disable HTTP2, since h2 can't do protocol switching.
 	tr.TLSClientConfig.NextProtos = []string{}
-	tr.TLSNextProto = map[string]func(string, *tls.Conn) http.RoundTripper{}
+	tr.TLSNextProto = map[string]func(string, http.TLSConn) http.RoundTripper{}
 	if a.ExtraRootCAs != nil {
 		tr.TLSClientConfig.RootCAs = a.ExtraRootCAs
 	}

@@ -10,7 +10,7 @@ import (
 	"context"
 	"fmt"
 	"io"
-	"net/http"
+	"github.com/metacubex/http"
 	"net/netip"
 	"net/url"
 	"strconv"

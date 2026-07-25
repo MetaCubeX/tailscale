@@ -7,7 +7,7 @@ package tailscale
 
 import (
 	"context"
-	"crypto/tls"
+	"github.com/metacubex/tls"
 
 	"github.com/metacubex/tailscale/client/local"
 )

@@ -4,7 +4,7 @@
 package acme
 
 import (
-	"net/http"
+	"github.com/metacubex/http"
 	"strconv"
 	"time"
 

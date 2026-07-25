@@ -17,7 +17,7 @@ import (
 	"io"
 	"math/rand/v2"
 	"net"
-	"net/http"
+	"github.com/metacubex/http"
 	"net/netip"
 	"net/url"
 	"slices"

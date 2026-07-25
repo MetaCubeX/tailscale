@@ -10,7 +10,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"net/http"
+	"github.com/metacubex/http"
 	"strings"
 	"time"
 )

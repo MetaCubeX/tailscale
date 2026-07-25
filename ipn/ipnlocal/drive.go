@@ -10,7 +10,7 @@ import (
 	"fmt"
 	"io"
 	"iter"
-	"net/http"
+	"github.com/metacubex/http"
 	"net/netip"
 	"os"
 	"slices"

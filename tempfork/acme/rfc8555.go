@@ -14,7 +14,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"net/http"
+	"github.com/metacubex/http"
 	"time"
 )
 

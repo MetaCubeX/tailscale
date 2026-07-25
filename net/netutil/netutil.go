@@ -8,7 +8,7 @@ import (
 	"bufio"
 	"io"
 	"net"
-	"net/http"
+	"github.com/metacubex/http"
 	"time"
 
 	"github.com/metacubex/tailscale/syncs"

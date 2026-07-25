@@ -15,7 +15,7 @@ import (
 	"fmt"
 	"io"
 	"log"
-	"net/http"
+	"github.com/metacubex/http"
 	"os"
 )
 

@@ -6,7 +6,7 @@
 package ipnlocal
 
 import (
-	"net/http"
+	"github.com/metacubex/http"
 	"path/filepath"
 	"strings"
 

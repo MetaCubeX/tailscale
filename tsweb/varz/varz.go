@@ -10,7 +10,7 @@ import (
 	"expvar"
 	"fmt"
 	"io"
-	"net/http"
+	"github.com/metacubex/http"
 	"os"
 	"path/filepath"
 	"reflect"

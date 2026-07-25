@@ -5,8 +5,8 @@ package cloudinfo
 
 import (
 	"context"
-	"net/http"
-	"net/http/httptest"
+	"github.com/metacubex/http"
+	"github.com/metacubex/http/httptest"
 	"net/netip"
 	"slices"
 	"testing"

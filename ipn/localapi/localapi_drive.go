@@ -9,7 +9,7 @@ import (
 	"encoding/json"
 	"errors"
 	"io"
-	"net/http"
+	"github.com/metacubex/http"
 	"os"
 	"path"
 

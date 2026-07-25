@@ -9,7 +9,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
+	"github.com/metacubex/http"
 
 	"github.com/metacubex/tailscale/net/routecheck"
 )

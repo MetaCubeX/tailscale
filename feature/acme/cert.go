@@ -9,7 +9,7 @@ import (
 	"crypto/ecdsa"
 	"crypto/elliptic"
 	"crypto/rand"
-	"crypto/tls"
+	"github.com/metacubex/tls"
 	"crypto/x509"
 	"encoding/json"
 	"encoding/pem"

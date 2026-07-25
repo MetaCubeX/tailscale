@@ -8,7 +8,7 @@ package localapi
 import (
 	"encoding/json"
 	"io"
-	"net/http"
+	"github.com/metacubex/http"
 	"strconv"
 
 	"github.com/metacubex/tailscale/tka"

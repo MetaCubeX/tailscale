@@ -10,7 +10,7 @@ import (
 	"errors"
 	"fmt"
 	"maps"
-	"net/http"
+	"github.com/metacubex/http"
 	"os"
 	"runtime"
 	"sort"

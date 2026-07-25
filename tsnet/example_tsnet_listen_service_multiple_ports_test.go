@@ -6,14 +6,14 @@ package tsnet_test
 import (
 	"fmt"
 	"log"
-	"net/http"
-	_ "net/http/pprof"
+	"github.com/metacubex/http"
+	_ "github.com/metacubex/http/pprof"
 	"strings"
 
 	"github.com/metacubex/tailscale/tsnet"
 )
 
-// This example function is in a separate file for the "net/http/pprof" import.
+// This example function is in a separate file for the "github.com/metacubex/http/pprof" import.
 
 // ExampleServer_ListenService_multiplePorts demonstrates how to advertise a
 // Service on multiple ports. In this example, we run an HTTPS server on 443 and

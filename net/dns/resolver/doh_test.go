@@ -6,7 +6,7 @@ package resolver
 import (
 	"context"
 	"flag"
-	"net/http"
+	"github.com/metacubex/http"
 	"testing"
 
 	"golang.org/x/net/dns/dnsmessage"

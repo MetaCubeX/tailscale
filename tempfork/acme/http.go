@@ -14,7 +14,7 @@ import (
 	"fmt"
 	"io"
 	"math/big"
-	"net/http"
+	"github.com/metacubex/http"
 	"runtime/debug"
 	"strconv"
 	"strings"

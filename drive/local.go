@@ -12,7 +12,7 @@ package drive
 import (
 	"iter"
 	"net"
-	"net/http"
+	"github.com/metacubex/http"
 )
 
 // Remote represents a remote Taildrive node.

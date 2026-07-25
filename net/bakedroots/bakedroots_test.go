@@ -4,10 +4,10 @@
 package bakedroots
 
 import (
-	"crypto/tls"
+	"github.com/metacubex/tls"
 	"flag"
 	"io"
-	"net/http"
+	"github.com/metacubex/http"
 	"slices"
 	"testing"
 	"time"

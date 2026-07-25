@@ -10,14 +10,14 @@ import (
 	"bufio"
 	"bytes"
 	"context"
-	"crypto/tls"
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/metacubex/http"
+	"github.com/metacubex/tls"
 	"io"
 	"log"
 	"net"
-	"net/http"
 	"net/netip"
 	"net/url"
 	"os"
@@ -28,7 +28,6 @@ import (
 	"sync"
 	"time"
 
-	"golang.org/x/term"
 	"github.com/metacubex/tailscale/atomicfile"
 	"github.com/metacubex/tailscale/envknob"
 	"github.com/metacubex/tailscale/feature"
@@ -57,6 +56,7 @@ import (
 	"github.com/metacubex/tailscale/util/testenv"
 	"github.com/metacubex/tailscale/version"
 	"github.com/metacubex/tailscale/version/distro"
+	"golang.org/x/term"
 )
 
 // GetLogTarget is an optional hook to register a function
@@ -936,7 +936,7 @@ func (opts TransportOptions) New() http.RoundTripper {
 	if envknob.Bool("TS_DEBUG_FORCE_H1_LOGS") {
 		tr.TLSClientConfig = nil // DefaultTransport's was already initialized w/ h2
 		tr.ForceAttemptHTTP2 = false
-		tr.TLSNextProto = map[string]func(authority string, c *tls.Conn) http.RoundTripper{}
+		tr.TLSNextProto = map[string]func(authority string, c http.TLSConn) http.RoundTripper{}
 	}
 
 	tr.TLSClientConfig = tlsdial.Config(opts.Health, tr.TLSClientConfig)

@@ -6,7 +6,7 @@ package acme
 
 import (
 	"errors"
-	"net/http"
+	"github.com/metacubex/http"
 	"reflect"
 	"testing"
 	"time"

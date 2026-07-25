@@ -14,7 +14,7 @@ import (
 	"log"
 	"math"
 	"net"
-	"net/http"
+	"github.com/metacubex/http"
 	"net/netip"
 	"net/url"
 	"sync"

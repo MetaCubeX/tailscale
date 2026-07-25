@@ -9,7 +9,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-	"net/http"
+	"github.com/metacubex/http"
 	"os"
 
 	"github.com/metacubex/tailscale/tailcfg"

@@ -4,7 +4,7 @@
 package logpolicy
 
 import (
-	"net/http"
+	"github.com/metacubex/http"
 	"os"
 	"reflect"
 	"testing"

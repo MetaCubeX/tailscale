@@ -7,7 +7,7 @@ package dnscache
 
 import (
 	"context"
-	"crypto/tls"
+	"github.com/metacubex/tls"
 	"errors"
 	"fmt"
 	"log"

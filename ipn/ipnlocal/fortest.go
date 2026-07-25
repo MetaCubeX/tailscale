@@ -4,8 +4,8 @@
 package ipnlocal
 
 import (
-	"crypto/tls"
-	"net/http"
+	"github.com/metacubex/tls"
+	"github.com/metacubex/http"
 
 	"github.com/metacubex/tailscale/control/controlclient"
 	"github.com/metacubex/tailscale/ipn"

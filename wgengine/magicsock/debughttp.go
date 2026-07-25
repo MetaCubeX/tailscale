@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"html"
 	"io"
-	"net/http"
+	"github.com/metacubex/http"
 	"net/netip"
 	"sort"
 	"strings"

@@ -6,7 +6,7 @@ package magicsock
 import (
 	"bufio"
 	"context"
-	"crypto/tls"
+	"github.com/metacubex/tls"
 	"fmt"
 	"maps"
 	"net"

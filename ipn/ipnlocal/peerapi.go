@@ -13,7 +13,7 @@ import (
 	"html"
 	"io"
 	"net"
-	"net/http"
+	"github.com/metacubex/http"
 	"net/netip"
 	"os"
 	"runtime"

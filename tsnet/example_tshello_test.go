@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"html"
 	"log"
-	"net/http"
+	"github.com/metacubex/http"
 	"strings"
 
 	"github.com/metacubex/tailscale/tsnet"

@@ -6,7 +6,7 @@ package portmapper
 import (
 	"context"
 	"encoding/xml"
-	"net/http"
+	"github.com/metacubex/http"
 	"net/url"
 	"strings"
 	"testing"
