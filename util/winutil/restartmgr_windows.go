@@ -16,7 +16,7 @@ import (
 	"unicode/utf16"
 	"unsafe"
 
-	"github.com/dblohm7/wingoes"
+	"github.com/metacubex/tailscale/util/wingoes"
 	"golang.org/x/sys/windows"
 	"github.com/metacubex/tailscale/types/logger"
 )

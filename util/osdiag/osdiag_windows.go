@@ -12,8 +12,8 @@ import (
 	"unicode/utf16"
 	"unsafe"
 
-	"github.com/dblohm7/wingoes/com"
-	"github.com/dblohm7/wingoes/pe"
+	"github.com/metacubex/tailscale/util/wingoes/com"
+	"github.com/metacubex/tailscale/util/wingoes/pe"
 	"golang.org/x/sys/windows"
 	"golang.org/x/sys/windows/registry"
 	"github.com/metacubex/tailscale/util/osdiag/internal/wsc"

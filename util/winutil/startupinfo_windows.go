@@ -10,7 +10,7 @@ import (
 	"slices"
 	"unsafe"
 
-	"github.com/dblohm7/wingoes"
+	"github.com/metacubex/tailscale/util/wingoes"
 	"golang.org/x/sys/windows"
 )
 
