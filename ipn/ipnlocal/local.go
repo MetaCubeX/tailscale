@@ -5915,7 +5915,7 @@ func (b *LocalBackend) reconfigAppConnectorLocked(selfNode tailcfg.NodeView, pre
 	if !buildfeatures.HasAppConnectors {
 		return
 	}
-	const appConnectorCapName = "github.com/metacubex/tailscale/app-connectors"
+	const appConnectorCapName = "tailscale.com/app-connectors"
 	defer func() {
 		if b.hostinfo != nil {
 			b.hostinfo.AppConnector.Set(b.appConnector != nil)

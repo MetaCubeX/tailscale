@@ -1593,31 +1593,31 @@ const (
 	PeerCapabilityIngress PeerCapability = "https://tailscale.com/cap/ingress"
 	// PeerCapabilityWebUI grants the ability for a peer to edit features from the
 	// device Web UI.
-	PeerCapabilityWebUI PeerCapability = "github.com/metacubex/tailscale/cap/webui"
+	PeerCapabilityWebUI PeerCapability = "tailscale.com/cap/webui"
 	// PeerCapabilityTaildrive grants the ability for a peer to access Taildrive
 	// shares.
-	PeerCapabilityTaildrive PeerCapability = "github.com/metacubex/tailscale/cap/drive"
+	PeerCapabilityTaildrive PeerCapability = "tailscale.com/cap/drive"
 	// PeerCapabilityTaildriveSharer indicates that a peer has the ability to
 	// share folders with us.
-	PeerCapabilityTaildriveSharer PeerCapability = "github.com/metacubex/tailscale/cap/drive-sharer"
+	PeerCapabilityTaildriveSharer PeerCapability = "tailscale.com/cap/drive-sharer"
 
 	// PeerCapabilityKubernetes grants a peer Kubernetes-specific
 	// capabilities, such as the ability to impersonate specific Tailscale
 	// user groups as Kubernetes user groups. This capability is read by
 	// peers that are Tailscale Kubernetes operator instances.
-	PeerCapabilityKubernetes PeerCapability = "github.com/metacubex/tailscale/cap/kubernetes"
+	PeerCapabilityKubernetes PeerCapability = "tailscale.com/cap/kubernetes"
 
 	// PeerCapabilityRelay grants the ability for a peer to allocate relay
 	// endpoints.
-	PeerCapabilityRelay PeerCapability = "github.com/metacubex/tailscale/cap/relay"
+	PeerCapabilityRelay PeerCapability = "tailscale.com/cap/relay"
 	// PeerCapabilityRelayTarget grants the current node the ability to allocate
 	// relay endpoints to the peer which has this capability.
-	PeerCapabilityRelayTarget PeerCapability = "github.com/metacubex/tailscale/cap/relay-target"
+	PeerCapabilityRelayTarget PeerCapability = "tailscale.com/cap/relay-target"
 
 	// PeerCapabilityTsIDP grants a peer tsidp-specific
 	// capabilities, such as the ability to add user groups to the OIDC
 	// claim
-	PeerCapabilityTsIDP PeerCapability = "github.com/metacubex/tailscale/cap/tsidp"
+	PeerCapabilityTsIDP PeerCapability = "tailscale.com/cap/tsidp"
 )
 
 // NodeCapMap is a map of capabilities to their optional values. It is valid for
@@ -3559,7 +3559,7 @@ const (
 	// action is available at the URL in the value.
 	//
 	// The value is a JSON string containing a URL with an http(s) scheme.
-	ServiceActionAttributeWebClientURL ServiceActionAttribute = "github.com/metacubex/tailscale/cap/web-client-url"
+	ServiceActionAttributeWebClientURL ServiceActionAttribute = "tailscale.com/cap/web-client-url"
 
 	// ServiceActionAttributeResourceName is a [ServiceActionAttribute]
 	// that indicates to clients that the resource specified by the value
@@ -3571,7 +3571,7 @@ const (
 	//
 	// The value is a JSON string containing the resource name
 	// (e.g. a database name).
-	ServiceActionAttributeResourceName ServiceActionAttribute = "github.com/metacubex/tailscale/cap/resource-name"
+	ServiceActionAttributeResourceName ServiceActionAttribute = "tailscale.com/cap/resource-name"
 
 	// ServiceActionAttributeSkipUsername is a [ServiceActionAttribute]
 	// that indicates to clients that a username is not required.
@@ -3583,7 +3583,7 @@ const (
 	// username is irrelevant, and any username prompt should be skipped.
 	//
 	// The value is a JSON boolean.
-	ServiceActionAttributeSkipUsername ServiceActionAttribute = "github.com/metacubex/tailscale/cap/skip-username"
+	ServiceActionAttributeSkipUsername ServiceActionAttribute = "tailscale.com/cap/skip-username"
 )
 
 // ServiceAction describes an action that a Tailscale

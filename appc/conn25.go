@@ -16,7 +16,7 @@ import (
 	"github.com/metacubex/tailscale/util/set"
 )
 
-const AppConnectorsExperimentalAttrName = "github.com/metacubex/tailscale/app-connectors-experimental"
+const AppConnectorsExperimentalAttrName = "tailscale.com/app-connectors-experimental"
 
 func isPeerEligibleConnector(peer tailcfg.NodeView) bool {
 	if !peer.Valid() || !peer.Hostinfo().Valid() {

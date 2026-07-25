@@ -58,8 +58,8 @@ const (
 
 	EgessServicesPreshutdownEP = "/internal-egress-services-preshutdown"
 
-	LabelManaged    = "github.com/metacubex/tailscale/managed"
-	LabelSecretType = "github.com/metacubex/tailscale/secret-type" // "config", "state" "certs"
+	LabelManaged    = "tailscale.com/managed"
+	LabelSecretType = "tailscale.com/secret-type" // "config", "state" "certs"
 
 	LabelSecretTypeConfig = "config"
 	LabelSecretTypeState  = "state"

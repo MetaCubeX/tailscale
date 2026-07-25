@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: BSD-3-Clause
 
 // Package appcfg contains an experimental configuration structure for
-// "github.com/metacubex/tailscale/app-connectors" capmap extensions.
+// "tailscale.com/app-connectors" capmap extensions.
 package appctype
 
 import (
