@@ -947,7 +947,7 @@ func (opts TransportOptions) New() http.RoundTripper {
 		tr.TLSNextProto = map[string]func(authority string, c http.TLSConn) http.RoundTripper{}
 	}
 
-	tr.TLSClientConfig = tlsdial.Config(opts.Health, tr.TLSClientConfig)
+	tr.TLSClientConfig = tlsdial.ConfigWithLogf(opts.Health, tr.TLSClientConfig, opts.Logf)
 	// Force TLS 1.3 since we know log.tailscale.com supports it.
 	tr.TLSClientConfig.MinVersion = tls.VersionTLS13
 

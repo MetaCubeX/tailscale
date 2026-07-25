@@ -363,7 +363,7 @@ func NewDirect(opts Options) (*Direct, error) {
 			}
 			tr.TLSClientConfig.RootCAs = opts.ExtraRootCAs
 		}
-		tr.TLSClientConfig = tlsdial.Config(opts.HealthTracker, tr.TLSClientConfig)
+		tr.TLSClientConfig = tlsdial.ConfigWithLogf(opts.HealthTracker, tr.TLSClientConfig, opts.Logf)
 		var dialFunc netx.DialFunc
 		dialFunc, interceptedDial = makeScreenTimeDetectingDialFunc(opts.Dialer.SystemDial)
 		tr.DialContext = dnscache.Dialer(dialFunc, dnsCache)

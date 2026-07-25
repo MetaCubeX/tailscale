@@ -656,7 +656,7 @@ func (c *Client) dialRegion(ctx context.Context, reg *tailcfg.DERPRegion) (net.C
 }
 
 func (c *Client) tlsClient(nc net.Conn, node *tailcfg.DERPNode) *tls.Conn {
-	tlsConf := tlsdial.Config(c.HealthTracker, c.TLSConfig)
+	tlsConf := tlsdial.ConfigWithLogf(c.HealthTracker, c.TLSConfig, c.logf)
 	// node is allowed to be nil here, tlsServerName falls back to using the URL
 	// if node is nil.
 	tlsConf.ServerName = c.tlsServerName(node)
