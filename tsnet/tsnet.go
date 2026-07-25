@@ -163,6 +163,7 @@ import (
 	"github.com/metacubex/tailscale/client/local"
 	"github.com/metacubex/tailscale/control/controlclient"
 	"github.com/metacubex/tailscale/envknob"
+	"github.com/metacubex/tailscale/feature/buildfeatures"
 	_ "github.com/metacubex/tailscale/feature/c2n"
 	_ "github.com/metacubex/tailscale/feature/condregister/netlog"
 	_ "github.com/metacubex/tailscale/feature/condregister/oauthkey"
@@ -1454,12 +1455,17 @@ func (c *udpPacketConn) Close() error {
 	return c.PacketConn.Close()
 }
 
+var errACMEUnavailable = errors.New("tsnet: ACME support is disabled")
+
 // ListenTLS announces only on the Tailscale network.
 // It returns a TLS listener wrapping the tsnet listener.
 // It will start the server if it has not been started yet.
 func (s *Server) ListenTLS(network, addr string) (net.Listener, error) {
 	if network != "tcp" {
 		return nil, fmt.Errorf("ListenTLS(%q, %q): only tcp is supported", network, addr)
+	}
+	if !buildfeatures.HasACME {
+		return nil, errACMEUnavailable
 	}
 	ctx := context.Background()
 	st, err := s.Up(ctx)
@@ -1525,7 +1531,7 @@ func (s *Server) getCert(hi *tls.ClientHelloInfo) (*tls.Certificate, error) {
 	if err != nil {
 		return nil, err
 	}
-	return lc.GetCertificate(hi)
+	return getLocalClientCertificate(lc, hi)
 }
 
 // FunnelOption is an option passed to ListenFunnel to configure the listener.
@@ -1609,6 +1615,9 @@ func (s *Server) ListenFunnel(network, addr string, opts ...FunnelOption) (net.L
 		}
 	}
 	if tlsConfig == nil {
+		if !buildfeatures.HasACME {
+			return nil, errACMEUnavailable
+		}
 		tlsConfig = &tls.Config{GetCertificate: s.getCert}
 	}
 

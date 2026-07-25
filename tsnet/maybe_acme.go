@@ -9,4 +9,12 @@ package tsnet
 // [Server.ListenTLS], and related cert-fetch paths work out of the box.
 // Build with the ts_omit_acme tag to omit it.
 
-import _ "github.com/metacubex/tailscale/feature/acme"
+import (
+	"github.com/metacubex/tailscale/client/local"
+	_ "github.com/metacubex/tailscale/feature/acme"
+	"github.com/metacubex/tls"
+)
+
+func getLocalClientCertificate(lc *local.Client, hi *tls.ClientHelloInfo) (*tls.Certificate, error) {
+	return lc.GetCertificate(hi)
+}
