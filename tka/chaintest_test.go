@@ -7,7 +7,7 @@ import (
 	"bytes"
 	"crypto/ed25519"
 	"fmt"
-	"maps"
+	"github.com/metacubex/tailscale/util/go120/maps"
 	"strconv"
 	"strings"
 	"testing"
@@ -208,7 +208,7 @@ func (c *testChain) buildChain() {
 	// in O(n+1) where n is the number of AUMs.
 	c.AUMs = make(map[string]AUM, len(c.Nodes))
 	c.AUMHashes = make(map[string]AUMHash, len(c.Nodes))
-	for range len(c.Nodes) + 1 {
+	for i := 0; i < len(c.Nodes)+1; i++ {
 		if len(pending) == 0 {
 			return
 		}

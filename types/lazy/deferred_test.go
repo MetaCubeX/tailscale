@@ -9,7 +9,16 @@ import (
 	"sync"
 	"sync/atomic"
 	"testing"
+
+	"github.com/metacubex/tailscale/util/racebuild"
 )
+
+func stressRoutines() int {
+	if racebuild.On {
+		return 100
+	}
+	return 10000
+}
 
 func ExampleDeferredInit() {
 	// DeferredInit allows both registration and invocation of the
@@ -124,7 +133,8 @@ func TestDeferredInit(t *testing.T) {
 			// Defer funcs concurrently across multiple goroutines.
 			var wg sync.WaitGroup
 			wg.Add(tt.numFuncs)
-			for i := range tt.numFuncs {
+			for i := 0; i < tt.numFuncs; i++ {
+				i := i
 				go func() {
 					f := func() error {
 						if calls[i].Swap(true) {
@@ -143,13 +153,15 @@ func TestDeferredInit(t *testing.T) {
 			wg.Wait()
 
 			// Call [DeferredInit.Do] concurrently.
-			const N = 10000
-			for range N {
-				wg.Go(func() {
+			N := stressRoutines()
+			for i := 0; i < N; i++ {
+				wg.Add(1)
+				go func() {
+					defer wg.Done()
 					gotErr := di.Do()
 					checkError(t, gotErr, nil, false)
 					checkCalls()
-				})
+				}()
 			}
 			wg.Wait()
 		})
@@ -189,12 +201,14 @@ func TestDeferredErr(t *testing.T) {
 			}
 
 			var wg sync.WaitGroup
-			N := 10000
-			for range N {
-				wg.Go(func() {
+			N := stressRoutines()
+			for i := 0; i < N; i++ {
+				wg.Add(1)
+				go func() {
+					defer wg.Done()
 					gotErr := di.Do()
 					checkError(t, gotErr, tt.wantErr, false)
-				})
+				}()
 			}
 			wg.Wait()
 		})
@@ -247,12 +261,14 @@ func TestDeferAfterDo(t *testing.T) {
 	// Since we'll likely attempt to defer some funcs after [DeferredInit.Do] has been called,
 	// we expect these late defers to fail, and the funcs will not be deferred or executed.
 	// However, the number of the deferred and called funcs should always be equal when [DeferredInit.Do] exits.
-	const N = 10000
+	N := stressRoutines()
 	var wg sync.WaitGroup
-	for range N {
-		wg.Go(func() {
+	for i := 0; i < N; i++ {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
 			deferOnce()
-		})
+		}()
 	}
 
 	if err := di.Do(); err != nil {

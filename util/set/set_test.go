@@ -5,7 +5,7 @@ package set
 
 import (
 	"encoding/json"
-	"slices"
+	"github.com/metacubex/tailscale/util/go120/slices"
 	"testing"
 )
 

@@ -8,8 +8,9 @@ import (
 	"errors"
 	"os/user"
 	"reflect"
-	"sync"
 	"testing"
+
+	"github.com/metacubex/tailscale/syncs"
 )
 
 func TestProbeGetentDoubleDashSupport(t *testing.T) {
@@ -80,7 +81,7 @@ func TestUserLookupGetentUsesProbeResult(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			getentDoubleDashSupported = sync.OnceValue(func() bool { return tt.supported })
+			getentDoubleDashSupported = syncs.OnceValue(func() bool { return tt.supported })
 			execGetent = func(_ context.Context, args ...string) ([]byte, error) {
 				if !reflect.DeepEqual(args, tt.wantArgs) {
 					t.Fatalf("args = %q, want %q", args, tt.wantArgs)

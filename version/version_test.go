@@ -32,7 +32,7 @@ func readAlpineTag(t *testing.T, file string) string {
 	if err != nil {
 		t.Fatal(err)
 	}
-	for line := range bytes.SplitSeq(f, []byte{'\n'}) {
+	for _, line := range bytes.Split(f, []byte{'\n'}) {
 		line = bytes.TrimSpace(line)
 		_, suf, ok := bytes.Cut(line, []byte("FROM alpine:"))
 		if !ok {
@@ -54,14 +54,14 @@ func TestShortAllocs(t *testing.T) {
 
 func BenchmarkCmdName(b *testing.B) {
 	b.ReportAllocs()
-	for b.Loop() {
+	for i := 0; i < b.N; i++ {
 		_ = version.CmdName()
 	}
 }
 
 func BenchmarkReadBuildInfo(b *testing.B) {
 	b.ReportAllocs()
-	for b.Loop() {
+	for i := 0; i < b.N; i++ {
 		info, ok := debug.ReadBuildInfo()
 		if !ok {
 			b.Fatal("ReadBuildInfo failed")

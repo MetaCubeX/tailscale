@@ -6,9 +6,7 @@
 package testenv
 
 import (
-	"context"
 	"flag"
-	"io"
 
 	"github.com/metacubex/tailscale/types/lazy"
 )
@@ -37,8 +35,6 @@ func Verbose() bool {
 
 // TB is testing.TB, to avoid importing "testing" in non-test code.
 type TB interface {
-	ArtifactDir() string
-	Attr(key, value string)
 	Cleanup(func())
 	Error(args ...any)
 	Errorf(format string, args ...any)
@@ -51,15 +47,12 @@ type TB interface {
 	Log(args ...any)
 	Logf(format string, args ...any)
 	Name() string
-	Output() io.Writer
 	Setenv(key, value string)
-	Chdir(dir string)
 	Skip(args ...any)
 	SkipNow()
 	Skipf(format string, args ...any)
 	Skipped() bool
 	TempDir() string
-	Context() context.Context
 }
 
 // InParallelTest reports whether t is running as a parallel test.
@@ -72,7 +65,7 @@ func InParallelTest(t TB) (isParallel bool) {
 			isParallel = true
 		}
 	}()
-	t.Chdir(".") // panics in a t.Parallel test
+	t.Setenv("TS_TEST_PARALLEL_CHECK", "1") // panics in a t.Parallel test
 	return false
 }
 

@@ -11,16 +11,16 @@ import (
 	"fmt"
 	"io"
 	"net"
+	"runtime"
 	"strings"
 	"sync"
 	"testing"
 	"testing/iotest"
-	"testing/synctest"
 
-	chp "golang.org/x/crypto/chacha20poly1305"
-	"golang.org/x/net/nettest"
 	"github.com/metacubex/tailscale/net/memnet"
 	"github.com/metacubex/tailscale/types/key"
+	chp "golang.org/x/crypto/chacha20poly1305"
+	"golang.org/x/net/nettest"
 )
 
 const testProtocolVersion = 1
@@ -90,7 +90,7 @@ func TestFastPath(t *testing.T) {
 
 	const packets = 10
 	s := "test"
-	for range packets {
+	for i := 0; i < packets; i++ {
 		// Many separate writes, to force separate Noise frames that
 		// all get buffered up and then all sent as a single slice to
 		// the server.
@@ -229,27 +229,30 @@ func TestConnStd(t *testing.T) {
 // reasonable. It was previously over 8KB with two 4KB buffers for
 // rx/tx. This makes sure we don't regress.
 func TestConnMemoryOverhead(t *testing.T) {
-	synctest.Test(t, func(t *testing.T) {
-		// AllocsPerRun runs the function once for warmup (filling
-		// allocator slab caches, etc.) and then measures over the
-		// remaining runs, returning the average allocation count.
-		allocs := testing.AllocsPerRun(100, func() {
-			client, server := pair(t)
-			go func() {
-				var buf [1]byte
-				client.Read(buf[:])
-			}()
-			synctest.Wait()
-			client.Close()
-			server.Close()
-			synctest.Wait()
-		})
-		t.Logf("allocs per blocked-conn pair: %v", allocs)
-		const max = 400
-		if allocs > max {
-			t.Errorf("allocs per blocked-conn pair = %v, want <= %v", allocs, max)
-		}
+	// AllocsPerRun runs the function once for warmup (filling
+	// allocator slab caches, etc.) and then measures over the
+	// remaining runs, returning the average allocation count.
+	allocs := testing.AllocsPerRun(100, func() {
+		client, server := pair(t)
+		started := make(chan struct{})
+		done := make(chan struct{})
+		go func() {
+			close(started)
+			defer close(done)
+			var buf [1]byte
+			client.Read(buf[:])
+		}()
+		<-started
+		runtime.Gosched()
+		client.Close()
+		server.Close()
+		<-done
 	})
+	t.Logf("allocs per blocked-conn pair: %v", allocs)
+	const max = 400
+	if allocs > max {
+		t.Errorf("allocs per blocked-conn pair = %v, want <= %v", allocs, max)
+	}
 }
 
 type readSink struct {

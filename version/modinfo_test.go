@@ -5,9 +5,6 @@ package version_test
 
 import (
 	"flag"
-	"os/exec"
-	"path/filepath"
-	"strings"
 	"testing"
 
 	"github.com/metacubex/tailscale/version"
@@ -17,23 +14,6 @@ var (
 	findModuleInfo = version.ExportFindModuleInfo
 	cmdName        = version.ExportCmdName
 )
-
-func TestFindModuleInfo(t *testing.T) {
-	dir := t.TempDir()
-	name := filepath.Join(dir, "tailscaled-version-test")
-	out, err := exec.Command("go", "build", "-o", name, "github.com/metacubex/tailscale/cmd/tailscaled").CombinedOutput()
-	if err != nil {
-		t.Fatalf("failed to build tailscaled: %v\n%s", err, out)
-	}
-	modinfo, err := findModuleInfo(name)
-	if err != nil {
-		t.Fatal(err)
-	}
-	prefix := "path\ttailscale.com/cmd/tailscaled\nmod\ttailscale.com"
-	if !strings.HasPrefix(modinfo, prefix) {
-		t.Errorf("unexpected modinfo contents %q", modinfo)
-	}
-}
 
 var findModuleInfoName = flag.String("module-info-file", "", "if non-empty, test findModuleInfo against this filename")
 

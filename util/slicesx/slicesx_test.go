@@ -4,8 +4,8 @@
 package slicesx
 
 import (
+	"github.com/metacubex/tailscale/util/go120/slices"
 	"reflect"
-	"slices"
 	"testing"
 
 	qt "github.com/frankban/quicktest"
@@ -38,7 +38,7 @@ func TestInterleave(t *testing.T) {
 func BenchmarkInterleave(b *testing.B) {
 	b.ReportAllocs()
 	b.ResetTimer()
-	for range b.N {
+	for i := 0; i < b.N; i++ {
 		Interleave(
 			[]int{1, 2, 3},
 			[]int{9, 8, 7},
@@ -48,12 +48,12 @@ func BenchmarkInterleave(b *testing.B) {
 
 func TestShuffle(t *testing.T) {
 	var sl []int
-	for i := range 100 {
+	for i := 0; i < 100; i++ {
 		sl = append(sl, i)
 	}
 
 	var wasShuffled bool
-	for range 10 {
+	for i := 0; i < 10; i++ {
 		shuffled := slices.Clone(sl)
 		Shuffle(shuffled)
 		if !reflect.DeepEqual(shuffled, sl) {

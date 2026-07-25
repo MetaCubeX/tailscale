@@ -5,8 +5,8 @@ package traffic_test
 
 import (
 	rand "github.com/metacubex/randv2"
-	"maps"
-	"slices"
+	"github.com/metacubex/tailscale/util/go120/maps"
+	"github.com/metacubex/tailscale/util/go120/slices"
 	"testing"
 
 	gocmp "github.com/google/go-cmp/cmp"
@@ -169,7 +169,7 @@ func FuzzSortNodes(f *testing.F) {
 		// If the number of nodes is too small, the chances of one node
 		// getting ranked best becomes non-trivial.
 		nodes := make([]tailcfg.NodeView, rnd.IntN(20)+20)
-		for i := range len(nodes) {
+		for i := 0; i < len(nodes); i++ {
 			n := tailcfg.Node{
 				ID: tailcfg.NodeID(rnd.Int64()),
 				Hostinfo: (&tailcfg.Hostinfo{
@@ -195,7 +195,7 @@ func FuzzSortNodes(f *testing.F) {
 		// every node is equally represented by ensuring one node isn’t
 		// sorted highest too often.
 		best := make(map[tailcfg.NodeID][]tailcfg.NodeID, len(nodes))
-		for i := range len(nodes) {
+		for i := 0; i < len(nodes); i++ {
 			peers := slices.Clone(nodes)
 			selfID := peers[i].ID()
 			ss := traffic.ScoresFor(selfID, peers)

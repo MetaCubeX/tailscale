@@ -152,7 +152,7 @@ func TestSigNested_DeepNesting(t *testing.T) {
 
 	outer := nestedSig
 	var lastNodeKey key.NodePrivate
-	for range cborDecOpts.MaxNestedLevels - 1 {
+	for i := 0; i < cborDecOpts.MaxNestedLevels-1; i++ {
 		lastNodeKey = key.NewNode()
 		nodeKeyPub, _ := lastNodeKey.Public().MarshalBinary()
 
@@ -528,7 +528,7 @@ func TestResignNKS(t *testing.T) {
 
 	// Generate a bunch of node keys to be used by tests.
 	var nodeKeys []key.NodePublic
-	for range 20 {
+	for i := 0; i < 20; i++ {
 		n := key.NewNode()
 		nodeKeys = append(nodeKeys, n.Public())
 	}

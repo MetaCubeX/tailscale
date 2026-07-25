@@ -8,16 +8,15 @@ import (
 	"errors"
 	"flag"
 	"fmt"
-	"iter"
-	"maps"
+	"github.com/metacubex/tailscale/util/go120/iter"
+	"github.com/metacubex/tailscale/util/go120/maps"
+	"github.com/metacubex/tailscale/util/go120/slices"
 	"net/netip"
 	"os"
 	"reflect"
-	"slices"
 	"strings"
 	"testing"
 
-	"github.com/creachadair/mds/mtest"
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
 	"github.com/metacubex/tailscale/ipn/ipnlocal/netmapcache"
@@ -47,11 +46,13 @@ var (
 		ID:       99001,
 		StableID: "n99001FAKE",
 		Name:     "test1.example.com.",
+		Hostinfo: (&tailcfg.Hostinfo{Hostname: "test1"}).View(),
 	}).View()
 	testNode2 = (&tailcfg.Node{
 		ID:       99002,
 		StableID: "n99002FAKE",
 		Name:     "test2.example.com.",
+		Hostinfo: (&tailcfg.Hostinfo{Hostname: "test2"}).View(),
 	}).View()
 
 	// The following fields are set in init.
@@ -119,6 +120,7 @@ func init() {
 			User:         30337,
 			Name:         "test.example.com.",
 			Key:          testNodeKey,
+			Hostinfo:     (&tailcfg.Hostinfo{Hostname: "test"}).View(),
 			Capabilities: []tailcfg.NodeCapability{"cap1"},
 			CapMap: map[tailcfg.NodeCapability][]tailcfg.RawMessage{
 				"cap2": nil,
@@ -166,7 +168,12 @@ func init() {
 }
 
 func TestNewStore(t *testing.T) {
-	mtest.MustPanicf(t, func() { netmapcache.NewCache(nil) }, "NewCache should panic for a nil store")
+	defer func() {
+		if recover() == nil {
+			t.Fatal("NewCache should panic for a nil store")
+		}
+	}()
+	netmapcache.NewCache(nil)
 }
 
 func TestRoundTrip(t *testing.T) {
@@ -189,11 +196,11 @@ func TestRoundTrip(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			c := netmapcache.NewCache(tt.store)
-			if err := c.Store(t.Context(), testMap); err != nil {
+			if err := c.Store(context.Background(), testMap); err != nil {
 				t.Fatalf("Store netmap failed; %v", err)
 			}
 
-			cmap, err := c.Load(t.Context())
+			cmap, err := c.Load(context.Background())
 			if err != nil {
 				t.Fatalf("Load netmap failed: %v", err)
 			}
@@ -214,12 +221,12 @@ func TestRoundTrip(t *testing.T) {
 
 		s := make(testStore)
 		c := netmapcache.NewCache(s)
-		if err := c.Store(t.Context(), testMap); err != nil {
+		if err := c.Store(context.Background(), testMap); err != nil {
 			t.Fatalf("Store 1 netmap failed: %v", err)
 		}
 		scp := maps.Clone(s) // for comparison, see below
 
-		if err := c.Store(t.Context(), testMap); err != nil {
+		if err := c.Store(context.Background(), testMap); err != nil {
 			t.Fatalf("Store 2 netmap failed; %v", err)
 		}
 		if diff := cmp.Diff(s, scp); diff != "" {
@@ -231,7 +238,7 @@ func TestRoundTrip(t *testing.T) {
 func TestInvalidCache(t *testing.T) {
 	t.Run("Empty", func(t *testing.T) {
 		c := netmapcache.NewCache(make(testStore))
-		got, err := c.Load(t.Context())
+		got, err := c.Load(context.Background())
 		if !errors.Is(err, netmapcache.ErrCacheNotAvailable) {
 			t.Errorf("Load from empty cache: got %+v, %v; want nil, %v", got, err, netmapcache.ErrCacheNotAvailable)
 		}
@@ -241,17 +248,17 @@ func TestInvalidCache(t *testing.T) {
 		s := make(testStore)
 		c := netmapcache.NewCache(s)
 
-		if err := c.Store(t.Context(), testMap); err != nil {
+		if err := c.Store(context.Background(), testMap); err != nil {
 			t.Fatalf("Store initial netmap: %v", err)
 		}
 
 		// Drop the "self" node from the cache, and verify it makes the results
 		// unloadable.
-		if err := s.Remove(t.Context(), "self"); err != nil {
+		if err := s.Remove(context.Background(), "self"); err != nil {
 			t.Fatalf("Remove self: %v", err)
 		}
 
-		got, err := c.Load(t.Context())
+		got, err := c.Load(context.Background())
 		if !errors.Is(err, netmapcache.ErrCacheNotAvailable) {
 			t.Errorf("Load from invalid cache: got %+v, %v; want nil, %v", got, err, netmapcache.ErrCacheNotAvailable)
 		}
@@ -263,7 +270,7 @@ func TestUpdateSelfOnly(t *testing.T) {
 	c := netmapcache.NewCache(s)
 
 	// Initialize the cache with the test map so we get a baseline.
-	if err := c.Store(t.Context(), testMap); err != nil {
+	if err := c.Store(context.Background(), testMap); err != nil {
 		t.Fatalf("Store initial netmap: %v", err)
 	}
 
@@ -276,6 +283,7 @@ func TestUpdateSelfOnly(t *testing.T) {
 		Name:         "alt.example.com.",
 		Key:          testNodeKey,
 		HomeDERP:     6174,
+		Hostinfo:     (&tailcfg.Hostinfo{Hostname: "alt"}).View(),
 		Capabilities: []tailcfg.NodeCapability{"cap1", "cap3"},
 	}
 	updated := *testMap // shallow copy
@@ -288,7 +296,7 @@ func TestUpdateSelfOnly(t *testing.T) {
 	updated.Peers = nil
 	updated.UserProfiles = nil
 
-	if err := c.UpdateSelfOnly(t.Context(), &updated); err != nil {
+	if err := c.UpdateSelfOnly(context.Background(), &updated); err != nil {
 		t.Fatalf("UpdateSelfOnly failed: %v", err)
 	}
 
@@ -298,7 +306,7 @@ func TestUpdateSelfOnly(t *testing.T) {
 	updated.Peers = testMap.Peers
 	updated.UserProfiles = testMap.UserProfiles
 
-	got, err := c.Load(t.Context())
+	got, err := c.Load(context.Background())
 	if err != nil {
 		t.Fatalf("Load netmap failed: %v", err)
 	}
@@ -312,11 +320,13 @@ func TestUpdatePeers(t *testing.T) {
 		ID:       99001,
 		StableID: "n99001FAKE",
 		Name:     "test1altered.example.com.",
+		Hostinfo: (&tailcfg.Hostinfo{Hostname: "test1altered"}).View(),
 	}).View() // a modified version of testNode1
 	newNode3 := (&tailcfg.Node{
 		ID:       99003,
 		StableID: "n99003FAKE",
 		Name:     "test3.example.com.",
+		Hostinfo: (&tailcfg.Hostinfo{Hostname: "test3"}).View(),
 	}).View() // a new node hitherto unseen
 
 	update := []tailcfg.NodeView{newNode3, modNode1}
@@ -332,22 +342,22 @@ func TestUpdatePeers(t *testing.T) {
 
 	// Prior to storing anything, the cache should reject an update because it
 	// has no base netmap to apply changes to.
-	if err := c.UpdatePeers(t.Context(), update, remove); err == nil {
+	if err := c.UpdatePeers(context.Background(), update, remove); err == nil {
 		t.Error("UpdatePeers on empty cache unexpectedly succeeded")
 	} else {
 		t.Logf("UpdatePeers on empty cache: %v (OK)", err)
 	}
 
 	// Initialize the cache with the test map so we get a baseline.
-	if err := c.Store(t.Context(), testMap); err != nil {
+	if err := c.Store(context.Background(), testMap); err != nil {
 		t.Fatalf("Store initial netmap: %v", err)
 	}
 
-	if err := c.UpdatePeers(t.Context(), update, remove); err != nil {
+	if err := c.UpdatePeers(context.Background(), update, remove); err != nil {
 		t.Fatalf("UpdatePeers failed; %v", err)
 	}
 
-	got, err := c.Load(t.Context())
+	got, err := c.Load(context.Background())
 	if err != nil {
 		t.Fatalf("Load netmap failed: %v", err)
 	}
@@ -373,7 +383,7 @@ var skippedMapFields = []string{
 func checkFieldCoverage(t *testing.T, nm *netmap.NetworkMap) {
 	t.Helper()
 
-	mt := reflect.TypeFor[netmap.NetworkMap]()
+	mt := reflect.TypeOf((*netmap.NetworkMap)(nil)).Elem()
 	mv := reflect.ValueOf(nm).Elem()
 	for i := 0; i < mt.NumField(); i++ {
 		f := mt.Field(i)
@@ -405,7 +415,7 @@ func checkFieldCoverage(t *testing.T, nm *netmap.NetworkMap) {
 func TestPartial(t *testing.T) {
 	t.Run("Empty", func(t *testing.T) {
 		c := netmapcache.NewCache(make(testStore)) // empty
-		nm, err := c.Load(t.Context())
+		nm, err := c.Load(context.Background())
 		if !errors.Is(err, netmapcache.ErrCacheNotAvailable) {
 			t.Errorf("Load empty cache: got %+v, %v; want %v", nm, err, netmapcache.ErrCacheNotAvailable)
 		}
@@ -418,6 +428,7 @@ func TestPartial(t *testing.T) {
 			User:     6174,
 			Name:     "test.example.com.",
 			Key:      testNodeKey,
+			Hostinfo: (&tailcfg.Hostinfo{Hostname: "test"}).View(),
 		}).View()
 
 		// A cached netmap must at least have a self node to be loaded without error,
@@ -433,12 +444,12 @@ func TestPartial(t *testing.T) {
 		}
 
 		s := netmapcache.FileStore(t.TempDir())
-		if err := s.Store(t.Context(), "self", data); err != nil {
+		if err := s.Store(context.Background(), "self", data); err != nil {
 			t.Fatalf("Write test cache: %v", err)
 		}
 
 		c := netmapcache.NewCache(s)
-		got, err := c.Load(t.Context())
+		got, err := c.Load(context.Background())
 		if err != nil {
 			t.Fatalf("Load cached netmap: %v", err)
 		}
@@ -502,7 +513,7 @@ func eqViewsSlice[T any](eqVal func(x, y T) bool) func(a, b views.Slice[T]) bool
 		if a.Len() != b.Len() {
 			return false
 		}
-		for i := range a.Len() {
+		for i := 0; i < a.Len(); i++ {
 			if !eqVal(a.At(i), b.At(i)) {
 				return false
 			}

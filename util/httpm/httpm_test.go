@@ -34,7 +34,7 @@ func TestUsedConsistently(t *testing.T) {
 	cmd := exec.Command("git", "grep", "-l", "-F", "http.Method")
 	cmd.Dir = rootDir
 	matches, _ := cmd.Output()
-	for fn := range strings.SplitSeq(strings.TrimSpace(string(matches)), "\n") {
+	for _, fn := range strings.Split(strings.TrimSpace(string(matches)), "\n") {
 		if strings.HasPrefix(fn, "tempfork/") {
 			// Files under tempfork are vendored copies of upstream
 			// code that we want to keep as close to upstream as

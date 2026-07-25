@@ -6,7 +6,7 @@ package osdiag
 import (
 	"errors"
 	"fmt"
-	"maps"
+	"github.com/metacubex/tailscale/util/go120/maps"
 	"strings"
 	"testing"
 

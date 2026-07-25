@@ -9,10 +9,10 @@ import (
 	"net/netip"
 	"testing"
 
+	"github.com/metacubex/tailscale/disco"
 	"golang.org/x/net/bpf"
 	"golang.org/x/sys/cpu"
 	"golang.org/x/sys/unix"
-	"github.com/metacubex/tailscale/disco"
 )
 
 func TestParseUDPPacket(t *testing.T) {
@@ -121,7 +121,10 @@ func TestEthernetProto(t *testing.T) {
 		// byte swap on a little-endian platform.
 		var b [2]byte
 		binary.BigEndian.PutUint16(b[:], x)
-		return int(binary.NativeEndian.Uint16(b[:]))
+		if cpu.IsBigEndian {
+			return int(binary.BigEndian.Uint16(b[:]))
+		}
+		return int(binary.LittleEndian.Uint16(b[:]))
 	}
 
 	if v4 := ethernetProtoIPv4(); v4 != htons(unix.ETH_P_IP) {

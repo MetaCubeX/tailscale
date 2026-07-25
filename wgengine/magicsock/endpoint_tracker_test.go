@@ -4,9 +4,9 @@
 package magicsock
 
 import (
+	"github.com/metacubex/tailscale/util/go120/slices"
 	"net/netip"
 	"reflect"
-	"slices"
 	"strings"
 	"testing"
 	"time"
@@ -174,7 +174,7 @@ func TestEndpointTrackerMaxNum(t *testing.T) {
 	// the endpointTracker, we will return all of them (even if they're for
 	// the same address).
 	var inputEps []tailcfg.Endpoint
-	for i := range endpointTrackerMaxPerAddr + 5 {
+	for i := 0; i < endpointTrackerMaxPerAddr+5; i++ {
 		inputEps = append(inputEps, tailcfg.Endpoint{
 			Addr: netip.AddrPortFrom(netip.MustParseAddr("1.2.3.4"), 10200+uint16(i)),
 			Type: tailcfg.EndpointSTUN,

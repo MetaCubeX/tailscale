@@ -6,17 +6,17 @@ package views
 import (
 	jsonv1 "encoding/json"
 	"fmt"
+	"github.com/metacubex/tailscale/util/go120/slices"
 	"net/netip"
 	"reflect"
-	"slices"
 	"strings"
 	"testing"
 	"unsafe"
 
 	qt "github.com/frankban/quicktest"
-	jsonv2 "github.com/metacubex/jsonv2"
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
+	jsonv2 "github.com/metacubex/jsonv2"
 	"github.com/metacubex/tailscale/types/structs"
 )
 
@@ -55,7 +55,7 @@ type withPtrStruct struct {
 
 func BenchmarkSliceIteration(b *testing.B) {
 	var data []viewStruct
-	for i := range 10000 {
+	for i := 0; i < 10000; i++ {
 		data = append(data, viewStruct{Int: i})
 	}
 	b.ResetTimer()
@@ -64,7 +64,7 @@ func BenchmarkSliceIteration(b *testing.B) {
 		dv := SliceOf(data)
 		for it := 0; it < b.N; it++ {
 			sum := 0
-			for i := range dv.Len() {
+			for i := 0; i < dv.Len(); i++ {
 				sum += dv.At(i).Int
 			}
 		}
@@ -328,7 +328,7 @@ func BenchmarkSliceEqualAnyOrder(b *testing.B) {
 		b.ReportAllocs()
 		s1 := SliceOf([]string{"foo", "bar"})
 		s2 := SliceOf([]string{"bar", "foo"})
-		for range b.N {
+		for i := 0; i < b.N; i++ {
 			if !SliceEqualAnyOrder(s1, s2) {
 				b.Fatal()
 			}
@@ -338,7 +338,7 @@ func BenchmarkSliceEqualAnyOrder(b *testing.B) {
 		b.ReportAllocs()
 		s1 := SliceOf([]string{"a", "b", "c", "d", "e", "f", "g", "h", "i", "j"})
 		s2 := SliceOf([]string{"c", "b", "a", "e", "d", "f", "g", "h", "i", "j"})
-		for range b.N {
+		for i := 0; i < b.N; i++ {
 			if !SliceEqualAnyOrder(s1, s2) {
 				b.Fatal()
 			}
@@ -386,7 +386,7 @@ func TestSliceMapKey(t *testing.T) {
 	}
 
 	wantDiff := []Slice[string]{nilSlice, empty, sub1, sub2, sub3, u3}
-	for i := range len(wantDiff) {
+	for i := 0; i < len(wantDiff); i++ {
 		for j := i + 1; j < len(wantDiff); j++ {
 			si, sj := wantDiff[i], wantDiff[j]
 			ki, kj := wantDiff[i].MapKey(), wantDiff[j].MapKey()
@@ -405,197 +405,197 @@ func TestContainsPointers(t *testing.T) {
 	}{
 		{
 			name:     "bool",
-			typ:      reflect.TypeFor[bool](),
+			typ:      reflect.TypeOf((*bool)(nil)).Elem(),
 			wantPtrs: false,
 		},
 		{
 			name:     "int",
-			typ:      reflect.TypeFor[int](),
+			typ:      reflect.TypeOf((*int)(nil)).Elem(),
 			wantPtrs: false,
 		},
 		{
 			name:     "int8",
-			typ:      reflect.TypeFor[int8](),
+			typ:      reflect.TypeOf((*int8)(nil)).Elem(),
 			wantPtrs: false,
 		},
 		{
 			name:     "int16",
-			typ:      reflect.TypeFor[int16](),
+			typ:      reflect.TypeOf((*int16)(nil)).Elem(),
 			wantPtrs: false,
 		},
 		{
 			name:     "int32",
-			typ:      reflect.TypeFor[int32](),
+			typ:      reflect.TypeOf((*int32)(nil)).Elem(),
 			wantPtrs: false,
 		},
 		{
 			name:     "int64",
-			typ:      reflect.TypeFor[int64](),
+			typ:      reflect.TypeOf((*int64)(nil)).Elem(),
 			wantPtrs: false,
 		},
 		{
 			name:     "uint",
-			typ:      reflect.TypeFor[uint](),
+			typ:      reflect.TypeOf((*uint)(nil)).Elem(),
 			wantPtrs: false,
 		},
 		{
 			name:     "uint8",
-			typ:      reflect.TypeFor[uint8](),
+			typ:      reflect.TypeOf((*uint8)(nil)).Elem(),
 			wantPtrs: false,
 		},
 		{
 			name:     "uint16",
-			typ:      reflect.TypeFor[uint16](),
+			typ:      reflect.TypeOf((*uint16)(nil)).Elem(),
 			wantPtrs: false,
 		},
 		{
 			name:     "uint32",
-			typ:      reflect.TypeFor[uint32](),
+			typ:      reflect.TypeOf((*uint32)(nil)).Elem(),
 			wantPtrs: false,
 		},
 		{
 			name:     "uint64",
-			typ:      reflect.TypeFor[uint64](),
+			typ:      reflect.TypeOf((*uint64)(nil)).Elem(),
 			wantPtrs: false,
 		},
 		{
 			name:     "uintptr",
-			typ:      reflect.TypeFor[uintptr](),
+			typ:      reflect.TypeOf((*uintptr)(nil)).Elem(),
 			wantPtrs: false,
 		},
 		{
 			name:     "string",
-			typ:      reflect.TypeFor[string](),
+			typ:      reflect.TypeOf((*string)(nil)).Elem(),
 			wantPtrs: false,
 		},
 		{
 			name:     "float32",
-			typ:      reflect.TypeFor[float32](),
+			typ:      reflect.TypeOf((*float32)(nil)).Elem(),
 			wantPtrs: false,
 		},
 		{
 			name:     "float64",
-			typ:      reflect.TypeFor[float64](),
+			typ:      reflect.TypeOf((*float64)(nil)).Elem(),
 			wantPtrs: false,
 		},
 		{
 			name:     "complex64",
-			typ:      reflect.TypeFor[complex64](),
+			typ:      reflect.TypeOf((*complex64)(nil)).Elem(),
 			wantPtrs: false,
 		},
 		{
 			name:     "complex128",
-			typ:      reflect.TypeFor[complex128](),
+			typ:      reflect.TypeOf((*complex128)(nil)).Elem(),
 			wantPtrs: false,
 		},
 		{
 			name:     "netip-Addr",
-			typ:      reflect.TypeFor[netip.Addr](),
+			typ:      reflect.TypeOf((*netip.Addr)(nil)).Elem(),
 			wantPtrs: false,
 		},
 		{
 			name:     "netip-Prefix",
-			typ:      reflect.TypeFor[netip.Prefix](),
+			typ:      reflect.TypeOf((*netip.Prefix)(nil)).Elem(),
 			wantPtrs: false,
 		},
 		{
 			name:     "netip-AddrPort",
-			typ:      reflect.TypeFor[netip.AddrPort](),
+			typ:      reflect.TypeOf((*netip.AddrPort)(nil)).Elem(),
 			wantPtrs: false,
 		},
 		{
 			name:     "bool-ptr",
-			typ:      reflect.TypeFor[*bool](),
+			typ:      reflect.TypeOf((**bool)(nil)).Elem(),
 			wantPtrs: true,
 		},
 		{
 			name:     "string-ptr",
-			typ:      reflect.TypeFor[*string](),
+			typ:      reflect.TypeOf((**string)(nil)).Elem(),
 			wantPtrs: true,
 		},
 		{
 			name:     "netip-Addr-ptr",
-			typ:      reflect.TypeFor[*netip.Addr](),
+			typ:      reflect.TypeOf((**netip.Addr)(nil)).Elem(),
 			wantPtrs: true,
 		},
 		{
 			name:     "unsafe-ptr",
-			typ:      reflect.TypeFor[unsafe.Pointer](),
+			typ:      reflect.TypeOf((*unsafe.Pointer)(nil)).Elem(),
 			wantPtrs: true,
 		},
 		{
 			name:     "no-ptr-struct",
-			typ:      reflect.TypeFor[noPtrStruct](),
+			typ:      reflect.TypeOf((*noPtrStruct)(nil)).Elem(),
 			wantPtrs: false,
 		},
 		{
 			name:     "ptr-struct",
-			typ:      reflect.TypeFor[withPtrStruct](),
+			typ:      reflect.TypeOf((*withPtrStruct)(nil)).Elem(),
 			wantPtrs: true,
 		},
 		{
 			name:     "string-array",
-			typ:      reflect.TypeFor[[5]string](),
+			typ:      reflect.TypeOf((*[5]string)(nil)).Elem(),
 			wantPtrs: false,
 		},
 		{
 			name:     "int-ptr-array",
-			typ:      reflect.TypeFor[[5]*int](),
+			typ:      reflect.TypeOf((*[5]*int)(nil)).Elem(),
 			wantPtrs: true,
 		},
 		{
 			name:     "no-ptr-struct-array",
-			typ:      reflect.TypeFor[[5]noPtrStruct](),
+			typ:      reflect.TypeOf((*[5]noPtrStruct)(nil)).Elem(),
 			wantPtrs: false,
 		},
 		{
 			name:     "with-ptr-struct-array",
-			typ:      reflect.TypeFor[[5]withPtrStruct](),
+			typ:      reflect.TypeOf((*[5]withPtrStruct)(nil)).Elem(),
 			wantPtrs: true,
 		},
 		{
 			name:     "string-slice",
-			typ:      reflect.TypeFor[[]string](),
+			typ:      reflect.TypeOf((*[]string)(nil)).Elem(),
 			wantPtrs: true,
 		},
 		{
 			name:     "int-ptr-slice",
-			typ:      reflect.TypeFor[[]int](),
+			typ:      reflect.TypeOf((*[]int)(nil)).Elem(),
 			wantPtrs: true,
 		},
 		{
 			name:     "no-ptr-struct-slice",
-			typ:      reflect.TypeFor[[]noPtrStruct](),
+			typ:      reflect.TypeOf((*[]noPtrStruct)(nil)).Elem(),
 			wantPtrs: true,
 		},
 		{
 			name:     "string-map",
-			typ:      reflect.TypeFor[map[string]string](),
+			typ:      reflect.TypeOf((*map[string]string)(nil)).Elem(),
 			wantPtrs: true,
 		},
 		{
 			name:     "int-map",
-			typ:      reflect.TypeFor[map[int]int](),
+			typ:      reflect.TypeOf((*map[int]int)(nil)).Elem(),
 			wantPtrs: true,
 		},
 		{
 			name:     "no-ptr-struct-map",
-			typ:      reflect.TypeFor[map[string]noPtrStruct](),
+			typ:      reflect.TypeOf((*map[string]noPtrStruct)(nil)).Elem(),
 			wantPtrs: true,
 		},
 		{
 			name:     "chan",
-			typ:      reflect.TypeFor[chan int](),
+			typ:      reflect.TypeOf((*chan int)(nil)).Elem(),
 			wantPtrs: true,
 		},
 		{
 			name:     "func",
-			typ:      reflect.TypeFor[func()](),
+			typ:      reflect.TypeOf((*func())(nil)).Elem(),
 			wantPtrs: true,
 		},
 		{
 			name:     "interface",
-			typ:      reflect.TypeFor[any](),
+			typ:      reflect.TypeOf((*any)(nil)).Elem(),
 			wantPtrs: true,
 		},
 	}
@@ -612,9 +612,10 @@ func TestContainsPointers(t *testing.T) {
 func TestSliceRange(t *testing.T) {
 	sv := SliceOf([]string{"foo", "bar"})
 	var got []string
-	for i, v := range sv.All() {
+	sv.All()(func(i int, v string) bool {
 		got = append(got, fmt.Sprintf("%d-%s", i, v))
-	}
+		return true
+	})
 	want := []string{"0-foo", "1-bar"}
 	if !slices.Equal(got, want) {
 		t.Errorf("got %q; want %q", got, want)
@@ -643,11 +644,12 @@ func (v testStructView) AsStruct() *testStruct {
 func (v testStructView) ValueForTest() string { return v.p.value }
 
 func TestSliceViewRange(t *testing.T) {
-	vs := SliceOfViews([]*testStruct{{value: "foo"}, {value: "bar"}})
+	vs := SliceOfViews[*testStruct, testStructView]([]*testStruct{{value: "foo"}, {value: "bar"}})
 	var got []string
-	for i, v := range vs.All() {
+	vs.All()(func(i int, v testStructView) bool {
 		got = append(got, fmt.Sprintf("%d-%s", i, v.AsStruct().value))
-	}
+		return true
+	})
 	want := []string{"0-foo", "1-bar"}
 	if !slices.Equal(got, want) {
 		t.Errorf("got %q; want %q", got, want)
@@ -657,9 +659,10 @@ func TestSliceViewRange(t *testing.T) {
 func TestMapIter(t *testing.T) {
 	m := MapOf(map[string]int{"foo": 1, "bar": 2})
 	var got []string
-	for k, v := range m.All() {
+	m.All()(func(k string, v int) bool {
 		got = append(got, fmt.Sprintf("%s-%d", k, v))
-	}
+		return true
+	})
 	slices.Sort(got)
 	want := []string{"bar-2", "foo-1"}
 	if !slices.Equal(got, want) {
@@ -670,9 +673,10 @@ func TestMapIter(t *testing.T) {
 func TestMapSliceIter(t *testing.T) {
 	m := MapSliceOf(map[string][]int{"foo": {3, 4}, "bar": {1, 2}})
 	var got []string
-	for k, v := range m.All() {
+	m.All()(func(k string, v Slice[int]) bool {
 		got = append(got, fmt.Sprintf("%s-%d", k, v))
-	}
+		return true
+	})
 	slices.Sort(got)
 	want := []string{"bar-{[1 2]}", "foo-{[3 4]}"}
 	if !slices.Equal(got, want) {
@@ -686,9 +690,10 @@ func TestMapFnIter(t *testing.T) {
 		"bar": {value: "barVal"},
 	}, func(p *testStruct) testStructView { return testStructView{p} })
 	var got []string
-	for k, v := range m.All() {
+	m.All()(func(k string, v testStructView) bool {
 		got = append(got, fmt.Sprintf("%v-%v", k, v.ValueForTest()))
-	}
+		return true
+	})
 	slices.Sort(got)
 	want := []string{"bar-barVal", "foo-fooVal"}
 	if !slices.Equal(got, want) {

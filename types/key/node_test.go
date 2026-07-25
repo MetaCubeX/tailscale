@@ -134,7 +134,7 @@ func BenchmarkNodeReadRawWithoutAllocating(b *testing.B) {
 	r := bytes.NewReader(buf)
 	br := bufio.NewReader(r)
 	b.ReportAllocs()
-	for b.Loop() {
+	for i := 0; i < b.N; i++ {
 		r.Reset(buf)
 		br.Reset(r)
 		var k NodePublic
@@ -207,7 +207,7 @@ func BenchmarkNodeWriteRawWithoutAllocating(b *testing.B) {
 		k.k[i] = 0x42
 	}
 	b.ReportAllocs()
-	for b.Loop() {
+	for i := 0; i < b.N; i++ {
 		if err := k.WriteRawWithoutAllocating(bw); err != nil {
 			b.Fatal(err)
 		}
@@ -234,7 +234,7 @@ func TestChallenge(t *testing.T) {
 func TestShard(t *testing.T) {
 	const N = 1_000
 	var shardCount [256]int
-	for range N {
+	for i := 0; i < N; i++ {
 		shardCount[NewNode().Public().Shard()]++
 	}
 	e := float64(N) / 256 // expected

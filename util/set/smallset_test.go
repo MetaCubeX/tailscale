@@ -5,21 +5,21 @@ package set
 
 import (
 	"fmt"
-	"iter"
-	"maps"
+	"github.com/metacubex/tailscale/util/go120/iter"
+	"github.com/metacubex/tailscale/util/go120/maps"
+	"github.com/metacubex/tailscale/util/go120/slices"
 	"reflect"
-	"slices"
 	"testing"
 )
 
 func TestSmallSet(t *testing.T) {
 	t.Parallel()
 
-	wantSize := reflect.TypeFor[int64]().Size() + reflect.TypeFor[map[int]struct{}]().Size()
+	wantSize := reflect.TypeOf((*int64)(nil)).Elem().Size() + reflect.TypeOf((*map[int]struct{})(nil)).Elem().Size()
 	if wantSize > 16 {
 		t.Errorf("wantSize should be no more than 16") // it might be smaller on 32-bit systems
 	}
-	if size := reflect.TypeFor[SmallSet[int64]]().Size(); size != wantSize {
+	if size := reflect.TypeOf((*SmallSet[int64])(nil)).Elem().Size(); size != wantSize {
 		t.Errorf("SmallSet[int64] size is %d, want %v", size, wantSize)
 	}
 
@@ -29,13 +29,14 @@ func TestSmallSet(t *testing.T) {
 	}
 	ops := iter.Seq[op](func(yield func(op) bool) {
 		for _, add := range []bool{false, true} {
-			for v := range 4 {
+			for v := 0; v < 4; v++ {
 				if !yield(op{add: add, v: v}) {
 					return
 				}
 			}
 		}
 	})
+	opsList := slices.Collect(ops)
 	type setLike interface {
 		Add(int)
 		Delete(int)
@@ -52,10 +53,10 @@ func TestSmallSet(t *testing.T) {
 	// apply them to both a regular map and SmallSet
 	// and make sure all the invariants hold.
 
-	for op1 := range ops {
-		for op2 := range ops {
-			for op3 := range ops {
-				for op4 := range ops {
+	for _, op1 := range opsList {
+		for _, op2 := range opsList {
+			for _, op3 := range opsList {
+				for _, op4 := range opsList {
 
 					normal := Set[int]{}
 					small := &SmallSet[int]{}
@@ -79,7 +80,7 @@ func TestSmallSet(t *testing.T) {
 					if !slices.Equal(normalEle, smallEle) {
 						t.Errorf("elements mismatch after ops %s: normal=%v, small=%v", name(), normalEle, smallEle)
 					}
-					for e := range 5 {
+					for e := 0; e < 5; e++ {
 						if normal.Contains(e) != small.Contains(e) {
 							t.Errorf("contains(%v) mismatch after ops %s: normal=%v, small=%v", e, name(), normal.Contains(e), small.Contains(e))
 						}

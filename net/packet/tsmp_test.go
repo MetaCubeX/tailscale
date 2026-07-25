@@ -6,12 +6,13 @@ package packet
 import (
 	"bytes"
 	"encoding/hex"
+	"github.com/metacubex/tailscale/util/go120/slices"
 	"net/netip"
-	"slices"
 	"testing"
 
-	"go4.org/mem"
+	"github.com/metacubex/tailscale/types/ipproto"
 	"github.com/metacubex/tailscale/types/key"
+	"go4.org/mem"
 )
 
 func TestTailscaleRejectedHeader(t *testing.T) {
@@ -25,7 +26,7 @@ func TestTailscaleRejectedHeader(t *testing.T) {
 				IPDst:  netip.MustParseAddr("1.2.3.4"),
 				Src:    netip.MustParseAddrPort("1.2.3.4:567"),
 				Dst:    netip.MustParseAddrPort("5.5.5.5:443"),
-				Proto:  TCP,
+				Proto:  ipproto.TCP,
 				Reason: RejectedDueToACLs,
 			},
 			wantStr: "TSMP-reject-flow{TCP 1.2.3.4:567 > 5.5.5.5:443}: acl",
@@ -36,7 +37,7 @@ func TestTailscaleRejectedHeader(t *testing.T) {
 				IPDst:  netip.MustParseAddr("1::1"),
 				Src:    netip.MustParseAddrPort("[1::1]:567"),
 				Dst:    netip.MustParseAddrPort("[2::2]:443"),
-				Proto:  UDP,
+				Proto:  ipproto.UDP,
 				Reason: RejectedDueToShieldsUp,
 			},
 			wantStr: "TSMP-reject-flow{UDP [1::1]:567 > [2::2]:443}: shields",
@@ -47,7 +48,7 @@ func TestTailscaleRejectedHeader(t *testing.T) {
 				IPDst:       netip.MustParseAddr("1::1"),
 				Src:         netip.MustParseAddrPort("[1::1]:567"),
 				Dst:         netip.MustParseAddrPort("[2::2]:443"),
-				Proto:       UDP,
+				Proto:       ipproto.UDP,
 				Reason:      RejectedDueToIPForwarding,
 				MaybeBroken: true,
 			},

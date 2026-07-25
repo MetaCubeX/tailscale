@@ -50,14 +50,14 @@ func TestJSONRoundtrip(t *testing.T) {
 
 func BenchmarkMonoNow(b *testing.B) {
 	b.ReportAllocs()
-	for range b.N {
+	for i := 0; i < b.N; i++ {
 		Now()
 	}
 }
 
 func BenchmarkTimeNow(b *testing.B) {
 	b.ReportAllocs()
-	for range b.N {
+	for i := 0; i < b.N; i++ {
 		time.Now()
 	}
 }

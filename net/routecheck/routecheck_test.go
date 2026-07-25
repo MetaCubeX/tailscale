@@ -1,3 +1,7 @@
+//go:build go1.25
+
+//go:debug asynctimerchan=0
+
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
@@ -6,9 +10,9 @@ package routecheck_test
 import (
 	"context"
 	"fmt"
-	"maps"
+	"github.com/metacubex/tailscale/util/go120/maps"
+	"github.com/metacubex/tailscale/util/go120/slices"
 	"net/netip"
-	"slices"
 	"sync/atomic"
 	"testing"
 	"testing/synctest"
@@ -463,6 +467,7 @@ func TestRoutersByPrefix(t *testing.T) {
 type nodeOptFunc func(*tailcfg.Node)
 
 func makeNode(id tailcfg.NodeID, opts ...nodeOptFunc) tailcfg.NodeView {
+	online := true
 	addresses := []netip.Prefix{
 		netip.MustParsePrefix(fmt.Sprintf("192.168.0.%d/32", id)),
 		netip.MustParsePrefix(fmt.Sprintf("fd7a:115c:a1e0::%d/128", id)),
@@ -471,7 +476,7 @@ func makeNode(id tailcfg.NodeID, opts ...nodeOptFunc) tailcfg.NodeView {
 		ID:                id,
 		StableID:          tailcfg.StableNodeID(fmt.Sprintf("stable%d", id)),
 		Name:              fmt.Sprintf("node%d", id),
-		Online:            new(true),
+		Online:            &online,
 		MachineAuthorized: true,
 		HomeDERP:          int(id),
 		Addresses:         addresses,

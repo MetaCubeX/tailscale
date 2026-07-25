@@ -45,6 +45,13 @@ func Collect[K comparable, V any](seq iter.Seq2[K, V]) map[K]V {
 	return m
 }
 
+func Insert[M ~map[K]V, K comparable, V any](m M, seq iter.Seq2[K, V]) {
+	seq(func(k K, v V) bool {
+		m[k] = v
+		return true
+	})
+}
+
 func Clone[M ~map[K]V, K comparable, V any](m M) M {
 	if m == nil {
 		return nil

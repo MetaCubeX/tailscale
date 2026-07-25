@@ -147,7 +147,11 @@ func TestGenerateICMPHostUnreachable(t *testing.T) {
 			}
 			embedded := body[icmpDestUnreachableUnusedLen:]
 			if !bytes.HasPrefix(tt.invokingPacket.b, embedded) {
-				t.Errorf("embedded packet is not a prefix of the invoking packet:\n embedded=% x\n orig=% x", embedded, tt.invokingPacket.b[:min(len(tt.invokingPacket.b), len(embedded))])
+				prefixLen := len(tt.invokingPacket.b)
+				if len(embedded) < prefixLen {
+					prefixLen = len(embedded)
+				}
+				t.Errorf("embedded packet is not a prefix of the invoking packet:\n embedded=% x\n orig=% x", embedded, tt.invokingPacket.b[:prefixLen])
 			}
 			if !tt.fitsWhole {
 				// embedded should be truncated to the max

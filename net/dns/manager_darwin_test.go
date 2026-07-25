@@ -5,11 +5,11 @@ package dns
 
 import (
 	"errors"
-	"maps"
+	"github.com/metacubex/tailscale/util/go120/maps"
+	"github.com/metacubex/tailscale/util/go120/slices"
 	"net/netip"
 	"os"
 	"path/filepath"
-	"slices"
 	"strings"
 	"testing"
 

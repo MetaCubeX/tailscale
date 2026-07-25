@@ -89,7 +89,7 @@ func BenchmarkReadFull(b *testing.B) {
 	var buf [32]byte
 	b.ReportAllocs()
 	b.ResetTimer()
-	for range b.N {
+	for i := 0; i < b.N; i++ {
 		_, err := ReadFull(br, buf[:])
 		if err != nil {
 			b.Fatal(err)

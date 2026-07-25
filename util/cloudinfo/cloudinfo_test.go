@@ -7,8 +7,8 @@ import (
 	"context"
 	"github.com/metacubex/http"
 	"github.com/metacubex/http/httptest"
+	"github.com/metacubex/tailscale/util/go120/slices"
 	"net/netip"
-	"slices"
 	"testing"
 
 	"github.com/metacubex/tailscale/util/cloudenv"

@@ -77,7 +77,7 @@ func TestHammerGroupPolicyReadLock(t *testing.T) {
 	doWithCustomEnterLeaveFuncs(t, func(gpLock *PolicyLock) {
 		var wg sync.WaitGroup
 		wg.Add(N)
-		for range N {
+		for i := 0; i < N; i++ {
 			go func() {
 				defer wg.Done()
 				if err := gpLock.Lock(); err != nil {

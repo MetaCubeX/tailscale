@@ -136,7 +136,7 @@ func TestSimultaneousRequests(t *testing.T) {
 	}
 
 	wg.Add(numRequests)
-	for range numRequests {
+	for i := 0; i < numRequests; i++ {
 		go f()
 	}
 	wg.Wait()

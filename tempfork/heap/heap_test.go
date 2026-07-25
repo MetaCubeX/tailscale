@@ -118,7 +118,7 @@ func Test(t *testing.T) {
 
 func TestRemove0(t *testing.T) {
 	h := new(myHeap[int])
-	for i := range 10 {
+	for i := 0; i < 10; i++ {
 		h.Push(i)
 	}
 	h.verify(t, 0)
@@ -135,7 +135,7 @@ func TestRemove0(t *testing.T) {
 
 func TestRemove1(t *testing.T) {
 	h := new(myHeap[int])
-	for i := range 10 {
+	for i := 0; i < 10; i++ {
 		h.Push(i)
 	}
 	h.verify(t, 0)
@@ -153,7 +153,7 @@ func TestRemove2(t *testing.T) {
 	N := 10
 
 	h := new(myHeap[int])
-	for i := range N {
+	for i := 0; i < N; i++ {
 		h.Push(i)
 	}
 	h.verify(t, 0)
@@ -167,7 +167,7 @@ func TestRemove2(t *testing.T) {
 	if len(m) != N {
 		t.Errorf("len(m) = %d; want %d", len(m), N)
 	}
-	for i := range len(m) {
+	for i := 0; i < len(m); i++ {
 		if !m[i] {
 			t.Errorf("m[%d] doesn't exist", i)
 		}
@@ -177,7 +177,7 @@ func TestRemove2(t *testing.T) {
 func BenchmarkDup(b *testing.B) {
 	const n = 10000
 	h := make(myHeap[int], 0, n)
-	for range b.N {
+	for i := 0; i < b.N; i++ {
 		for j := 0; j < n; j++ {
 			Push[int](&h, 0) // all elements are the same
 		}

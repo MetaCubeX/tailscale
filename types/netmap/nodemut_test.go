@@ -16,6 +16,16 @@ import (
 	"github.com/metacubex/tailscale/types/opt"
 )
 
+func ptrTo[T any](v T) *T { return &v }
+
+func eps(addrs ...string) []netip.AddrPort {
+	ret := make([]netip.AddrPort, len(addrs))
+	for i, addr := range addrs {
+		ret[i] = netip.MustParseAddrPort(addr)
+	}
+	return ret
+}
+
 // tests mapResponseContainsNonPatchFields
 func TestMapResponseContainsNonPatchFields(t *testing.T) {
 
@@ -26,7 +36,7 @@ func TestMapResponseContainsNonPatchFields(t *testing.T) {
 		case reflect.Bool:
 			return reflect.ValueOf(true)
 		case reflect.String:
-			if reflect.TypeFor[opt.Bool]() == t {
+			if reflect.TypeOf((*opt.Bool)(nil)).Elem() == t {
 				return reflect.ValueOf("true").Convert(t)
 			}
 			return reflect.ValueOf("foo").Convert(t)
@@ -42,8 +52,9 @@ func TestMapResponseContainsNonPatchFields(t *testing.T) {
 		panic(fmt.Sprintf("unhandled %v", t))
 	}
 
-	rt := reflect.TypeFor[tailcfg.MapResponse]()
-	for f := range rt.Fields() {
+	rt := reflect.TypeOf((*tailcfg.MapResponse)(nil)).Elem()
+	for i := 0; i < rt.NumField(); i++ {
+		f := rt.Field(i)
 
 		var want bool
 		switch f.Name {
@@ -124,7 +135,7 @@ func TestMutationsFromMapResponse(t *testing.T) {
 			name: "patch-online",
 			mr: fromChanges(&tailcfg.PeerChange{
 				NodeID: 1,
-				Online: new(true),
+				Online: ptrTo(true),
 			}),
 			want: muts(NodeMutationOnline{1, true}),
 		},
@@ -132,7 +143,7 @@ func TestMutationsFromMapResponse(t *testing.T) {
 			name: "patch-online-false",
 			mr: fromChanges(&tailcfg.PeerChange{
 				NodeID: 1,
-				Online: new(false),
+				Online: ptrTo(false),
 			}),
 			want: muts(NodeMutationOnline{1, false}),
 		},
@@ -140,7 +151,7 @@ func TestMutationsFromMapResponse(t *testing.T) {
 			name: "patch-lastseen",
 			mr: fromChanges(&tailcfg.PeerChange{
 				NodeID:   1,
-				LastSeen: new(time.Unix(12345, 0)),
+				LastSeen: ptrTo(time.Unix(12345, 0)),
 			}),
 			want: muts(NodeMutationLastSeen{1, time.Unix(12345, 0)}),
 		},

@@ -5,7 +5,7 @@ package mapx
 
 import (
 	"fmt"
-	"slices"
+	"github.com/metacubex/tailscale/util/go120/slices"
 	"testing"
 )
 
@@ -47,9 +47,10 @@ func TestOrderedMap(t *testing.T) {
 		t.Errorf("Values() = %v, want %v", got, want)
 	}
 	var allGot []string
-	for k, v := range m.All() {
+	m.All()(func(k string, v int) bool {
 		allGot = append(allGot, fmt.Sprintf("%s:%d", k, v))
-	}
+		return true
+	})
 	if got, want := allGot, []string{"a:1", "b:2", "c:3"}; !slices.Equal(got, want) {
 		t.Errorf("All() = %q, want %q", got, want)
 	}

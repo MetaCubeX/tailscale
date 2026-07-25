@@ -4,8 +4,8 @@
 package tsaddr
 
 import (
+	"github.com/metacubex/tailscale/util/go120/slices"
 	"net/netip"
-	"slices"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
@@ -73,7 +73,7 @@ var sinkIP netip.Addr
 
 func BenchmarkTailscaleServiceAddr(b *testing.B) {
 	b.ReportAllocs()
-	for range b.N {
+	for i := 0; i < b.N; i++ {
 		sinkIP = TailscaleServiceIP()
 	}
 }

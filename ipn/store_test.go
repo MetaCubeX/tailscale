@@ -5,7 +5,7 @@ package ipn
 
 import (
 	"bytes"
-	"iter"
+	"github.com/metacubex/tailscale/util/go120/iter"
 	"sync"
 	"testing"
 

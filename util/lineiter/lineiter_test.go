@@ -4,14 +4,14 @@
 package lineiter
 
 import (
-	"slices"
+	"github.com/metacubex/tailscale/util/go120/slices"
 	"strings"
 	"testing"
 )
 
 func TestBytesLines(t *testing.T) {
 	var got []string
-	for line := range Bytes([]byte("foo\n\nbar\nbaz")) {
+	for _, line := range slices.Collect(Bytes([]byte("foo\n\nbar\nbaz"))) {
 		got = append(got, string(line))
 	}
 	want := []string{"foo", "", "bar", "baz"}
@@ -22,7 +22,7 @@ func TestBytesLines(t *testing.T) {
 
 func TestReader(t *testing.T) {
 	var got []string
-	for line := range Reader(strings.NewReader("foo\n\nbar\nbaz")) {
+	for _, line := range slices.Collect(Reader(strings.NewReader("foo\n\nbar\nbaz"))) {
 		got = append(got, string(line.MustValue()))
 	}
 	want := []string{"foo", "", "bar", "baz"}

@@ -52,7 +52,10 @@ type hasPointer struct {
 
 func checkContiguousBuffer[T any, BU BufUnit](t *testing.T, extra []BU, pt *T, ptLen uint32, slcs [][]BU) {
 	szBU := int(unsafe.Sizeof(BU(0)))
-	expectedAlign := max(reflect.TypeFor[T]().Align(), szBU)
+	expectedAlign := reflect.TypeOf((*T)(nil)).Elem().Align()
+	if szBU > expectedAlign {
+		expectedAlign = szBU
+	}
 	// Check that pointer is aligned
 	if rem := uintptr(unsafe.Pointer(pt)) % uintptr(expectedAlign); rem != 0 {
 		t.Errorf("pointer alignment got %d, want 0", rem)
@@ -102,7 +105,7 @@ const maxTestBufLen = 8
 func testNoPointers(t *testing.T) {
 	buf8 := make([]byte, maxTestBufLen)
 	buf16 := make([]uint16, maxTestBufLen)
-	for i := range maxTestBufLen {
+	for i := 0; i < maxTestBufLen; i++ {
 		s8, sl, slcs8 := AllocateContiguousBuffer[noPointers[byte]](buf8[:i])
 		checkContiguousBuffer(t, buf8[:i], s8, sl, slcs8)
 		s16, sl, slcs8 := AllocateContiguousBuffer[noPointers[uint16]](buf8[:i])
@@ -125,7 +128,7 @@ func testNoPointers(t *testing.T) {
 func testHasPointer(t *testing.T) {
 	buf8 := make([]byte, maxTestBufLen)
 	buf16 := make([]uint16, maxTestBufLen)
-	for i := range maxTestBufLen {
+	for i := 0; i < maxTestBufLen; i++ {
 		s, sl, slcs8 := AllocateContiguousBuffer[hasPointer](buf8[:i])
 		checkContiguousBuffer(t, buf8[:i], s, sl, slcs8)
 		s, sl, slcs16 := AllocateContiguousBuffer[hasPointer](buf16[:i])

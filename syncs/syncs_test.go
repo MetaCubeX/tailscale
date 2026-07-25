@@ -5,8 +5,8 @@ package syncs
 
 import (
 	"context"
+	"github.com/metacubex/tailscale/util/go120/maps"
 	"io"
-	"maps"
 	"os"
 	"sync"
 	"testing"
@@ -103,13 +103,16 @@ func TestMutexValue(t *testing.T) {
 	var group sync.WaitGroup
 	var v2 MutexValue[int]
 	var sum int
-	for i := range 10 {
-		group.Go(func() {
+	for i := 0; i < 10; i++ {
+		i := i
+		group.Add(1)
+		go func() {
+			defer group.Done()
 			old1 := v2.Load()
 			old2 := v2.Swap(old1 + i)
 			delta := old2 - old1
 			v2.WithLock(func(p *int) { *p += delta })
-		})
+		}()
 		sum += i
 	}
 	group.Wait()
@@ -152,7 +155,7 @@ func TestWaitGroupChan(t *testing.T) {
 
 func TestClosedChan(t *testing.T) {
 	ch := ClosedChan()
-	for range 2 {
+	for i := 0; i < 2; i++ {
 		select {
 		case <-ch:
 		default:
@@ -251,8 +254,15 @@ func TestMap(t *testing.T) {
 		var m Map[string, string]
 		var wg sync.WaitGroup
 		var ok1, ok2 bool
-		wg.Go(func() { _, ok1 = m.LoadOrStore("", "") })
-		wg.Go(func() { _, ok2 = m.LoadOrStore("", "") })
+		wg.Add(2)
+		go func() {
+			defer wg.Done()
+			_, ok1 = m.LoadOrStore("", "")
+		}()
+		go func() {
+			defer wg.Done()
+			_, ok2 = m.LoadOrStore("", "")
+		}()
 		wg.Wait()
 		if ok1 == ok2 {
 			t.Errorf("exactly one LoadOrStore should load")

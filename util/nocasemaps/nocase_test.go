@@ -112,13 +112,13 @@ func Benchmark(b *testing.B) {
 			b.Run("Get", func(b *testing.B) {
 				b.Run("Naive", func(b *testing.B) {
 					b.ReportAllocs()
-					for range b.N {
+					for i := 0; i < b.N; i++ {
 						testSink = testMap[strings.ToLower(key)]
 					}
 				})
 				b.Run("NoCase", func(b *testing.B) {
 					b.ReportAllocs()
-					for range b.N {
+					for i := 0; i < b.N; i++ {
 						testSink = Get(testMap, key)
 					}
 				})
@@ -127,7 +127,7 @@ func Benchmark(b *testing.B) {
 				b.Run("Naive", func(b *testing.B) {
 					b.ReportAllocs()
 					testMap[strings.ToLower(key)] = testValue
-					for range b.N {
+					for i := 0; i < b.N; i++ {
 						testMap[strings.ToLower(key)] = testValue
 					}
 					xmaps.Clear(testMap)
@@ -135,7 +135,7 @@ func Benchmark(b *testing.B) {
 				b.Run("NoCase", func(b *testing.B) {
 					b.ReportAllocs()
 					Set(testMap, key, testValue)
-					for range b.N {
+					for i := 0; i < b.N; i++ {
 						Set(testMap, key, testValue)
 					}
 					xmaps.Clear(testMap)
@@ -144,13 +144,13 @@ func Benchmark(b *testing.B) {
 			b.Run("Delete", func(b *testing.B) {
 				b.Run("Naive", func(b *testing.B) {
 					b.ReportAllocs()
-					for range b.N {
+					for i := 0; i < b.N; i++ {
 						delete(testMap, strings.ToLower(key))
 					}
 				})
 				b.Run("NoCase", func(b *testing.B) {
 					b.ReportAllocs()
-					for range b.N {
+					for i := 0; i < b.N; i++ {
 						Delete(testMap, key)
 					}
 				})

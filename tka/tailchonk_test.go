@@ -5,18 +5,18 @@ package tka
 
 import (
 	"bytes"
+	"github.com/metacubex/tailscale/util/go120/slices"
 	"os"
 	"path/filepath"
-	"slices"
 	"sync"
 	"testing"
 	"time"
 
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
-	"golang.org/x/crypto/blake2s"
 	"github.com/metacubex/tailscale/types/key"
 	"github.com/metacubex/tailscale/util/must"
+	"golang.org/x/crypto/blake2s"
 )
 
 // This package has implementation-specific tests for Mem and FS.
@@ -607,7 +607,7 @@ func TestCompactLongButYoung(t *testing.T) {
 
 	genesis := auth.Head()
 
-	for range 100 {
+	for i := 0; i < 100; i++ {
 		upd := auth.NewUpdater(ourPriv)
 		must.Do(upd.RemoveKey(someOtherKey.MustID()))
 		must.Do(upd.AddKey(someOtherKey))

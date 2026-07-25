@@ -77,7 +77,7 @@ func TestBasics(t *testing.T) {
 		errs <- nil
 	}()
 
-	for range 2 {
+	for i := 0; i < 2; i++ {
 		if err := <-errs; err != nil {
 			t.Fatal(err)
 		}

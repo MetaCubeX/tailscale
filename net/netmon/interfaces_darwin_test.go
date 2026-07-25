@@ -9,9 +9,10 @@ import (
 	"os/exec"
 	"testing"
 
-	"go4.org/mem"
+	"github.com/metacubex/tailscale/types/result"
 	"github.com/metacubex/tailscale/util/lineiter"
 	"github.com/metacubex/tailscale/version"
+	"go4.org/mem"
 )
 
 func TestLikelyHomeRouterIPSyscallExec(t *testing.T) {
@@ -72,40 +73,40 @@ func likelyHomeRouterIPDarwinExec() (ret netip.Addr, netif string, ok bool) {
 	defer io.Copy(io.Discard, stdout) // clear the pipe to prevent hangs
 
 	var f []mem.RO
-	for lr := range lineiter.Reader(stdout) {
+	lineiter.Reader(stdout)(func(lr result.Of[[]byte]) bool {
 		lineb, err := lr.Value()
 		if err != nil {
-			break
+			return false
 		}
 		line := mem.B(lineb)
 		if !mem.Contains(line, mem.S("default")) {
-			continue
+			return true
 		}
 		f = mem.AppendFields(f[:0], line)
 		if len(f) < 4 || !f[0].EqualString("default") {
-			continue
+			return true
 		}
 		ipm, flagsm, netifm := f[1], f[2], f[3]
 		if !mem.Contains(flagsm, mem.S("G")) {
-			continue
+			return true
 		}
 		if mem.Contains(flagsm, mem.S("I")) {
-			continue
+			return true
 		}
 		ip, err := netip.ParseAddr(string(mem.Append(nil, ipm)))
 		if err == nil && ip.IsPrivate() {
 			ret = ip
 			netif = netifm.StringCopy()
-			// We've found what we're looking for.
-			break
+			return false
 		}
-	}
+		return true
+	})
 	return ret, netif, ret.IsValid()
 }
 
 func TestFetchRoutingTable(t *testing.T) {
 	// Issue 1345: this used to be flaky on darwin.
-	for range 20 {
+	for i := 0; i < 20; i++ {
 		_, err := fetchRoutingTable()
 		if err != nil {
 			t.Fatal(err)

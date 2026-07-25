@@ -180,11 +180,11 @@ func TestUDP(t *testing.T) {
 
 	const echoServerNumber = 3
 	echoServerListener := make([]net.PacketConn, echoServerNumber)
-	for i := range echoServerNumber {
+	for i := 0; i < echoServerNumber; i++ {
 		echoServerListener[i] = newUDPEchoServer()
 	}
 	defer func() {
-		for i := range echoServerNumber {
+		for i := 0; i < echoServerNumber; i++ {
 			_ = echoServerListener[i].Close()
 		}
 	}()
@@ -277,7 +277,7 @@ func TestUDP(t *testing.T) {
 	}
 	defer socks5UDPConn.Close()
 
-	for i := range echoServerNumber {
+	for i := 0; i < echoServerNumber; i++ {
 		port := echoServerListener[i].LocalAddr().(*net.UDPAddr).Port
 		addr := socksAddr{addrType: ipv4, addr: "127.0.0.1", port: uint16(port)}
 		requestBody := fmt.Appendf(nil, "Test %d", i)

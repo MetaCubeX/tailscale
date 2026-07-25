@@ -4,9 +4,9 @@
 package routemanager
 
 import (
+	"github.com/metacubex/tailscale/util/go120/slices"
 	"net/netip"
 	"reflect"
-	"slices"
 	"testing"
 
 	"github.com/metacubex/tailscale/net/tsaddr"
@@ -14,6 +14,8 @@ import (
 	"github.com/metacubex/tailscale/types/key"
 	"github.com/metacubex/tailscale/util/set"
 )
+
+func ptrTo[T any](v T) *T { return &v }
 
 var (
 	k1 = key.NewNode().Public()
@@ -73,9 +75,10 @@ func wantOSRoutes(t *testing.T, rm *RouteManager, want ...string) {
 		wantSet.Add(pfx(s))
 	}
 	got := make(set.Set[netip.Prefix])
-	for p := range rm.OSRoutes().All() {
+	rm.OSRoutes().All()(func(p netip.Prefix) bool {
 		got.Add(p)
-	}
+		return true
+	})
 	if !got.Equal(wantSet) {
 		t.Errorf("OSRoutes = %v; want %v", got.Slice(), wantSet.Slice())
 	}
@@ -489,7 +492,7 @@ func TestPeerModifyRoutes(t *testing.T) {
 func BenchmarkUpsertOnePeer(b *testing.B) {
 	rm := New(nil)
 	m := rm.Begin()
-	for i := range 10_000 {
+	for i := 0; i < 10_000; i++ {
 		id := tailcfg.NodeID(i + 1)
 		m.upsertPeer(peerView{
 			ID:  id,
@@ -507,7 +510,7 @@ func BenchmarkUpsertOnePeer(b *testing.B) {
 		SelfAddrs: []netip.Prefix{pfx("100.100.1.1/32")},
 	}
 	b.ReportAllocs()
-	for i := 0; b.Loop(); i++ {
+	for i := 0; i < b.N; i++ {
 		p.SelfAddrs[0] = netip.PrefixFrom(netip.AddrFrom4([4]byte{100, 100, byte(i >> 8), byte(i)}), 32)
 		m := rm.Begin()
 		m.upsertPeer(p)
@@ -533,7 +536,7 @@ func TestUpsertPeerNodeView(t *testing.T) {
 			pfx("::/0"),
 		},
 		IsJailed:                      true,
-		SelfNodeV4MasqAddrForThisPeer: new(addr("100.99.0.5")),
+		SelfNodeV4MasqAddrForThisPeer: ptrTo(addr("100.99.0.5")),
 	}
 	commit(rm, func(m *Mutation) { m.UpsertPeer(n.View()) })
 

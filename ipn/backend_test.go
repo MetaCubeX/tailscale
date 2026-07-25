@@ -1,3 +1,5 @@
+//go:build ignore
+
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
@@ -5,10 +7,10 @@ package ipn
 
 import (
 	"encoding/json"
+	"github.com/metacubex/tailscale/util/go120/maps"
+	"github.com/metacubex/tailscale/util/go120/slices"
 	"go/types"
-	"maps"
 	"math/bits"
-	"slices"
 	"strconv"
 	"strings"
 	"testing"

@@ -4,11 +4,13 @@
 package ipn
 
 import (
+	"github.com/metacubex/tailscale/util/go120/slices"
 	"net/netip"
 	"reflect"
-	"slices"
 	"testing"
 )
+
+func ptrTo[T any](v T) *T { return &v }
 
 // TestConfigVAlpha_ToPrefs_AdvertiseRoutes tests that ToPrefs validates routes
 // provided directly as netip.Prefix values (not parsed from JSON).
@@ -93,12 +95,12 @@ func TestConfigVAlphaToPrefs(t *testing.T) {
 		{
 			name: "relay_server_port_and_static_endpoints",
 			cfg: &ConfigVAlpha{
-				RelayServerPort:            new(uint16(12345)),
+				RelayServerPort:            ptrTo(uint16(12345)),
 				RelayServerStaticEndpoints: aps(t, "[2001:db8::1]:40000", "192.0.2.1:40000"),
 			},
 			want: MaskedPrefs{
 				Prefs: Prefs{
-					RelayServerPort:            new(uint16(12345)),
+					RelayServerPort:            ptrTo(uint16(12345)),
 					RelayServerStaticEndpoints: aps(t, "[2001:db8::1]:40000", "192.0.2.1:40000"),
 				},
 				RelayServerPortSet:            true,
@@ -111,11 +113,11 @@ func TestConfigVAlphaToPrefs(t *testing.T) {
 			// server. The zero value must be propagated.
 			name: "relay_server_port_zero_is_random_not_disabled",
 			cfg: &ConfigVAlpha{
-				RelayServerPort: new(uint16(0)),
+				RelayServerPort: ptrTo(uint16(0)),
 			},
 			want: MaskedPrefs{
 				Prefs: Prefs{
-					RelayServerPort: new(uint16(0)),
+					RelayServerPort: ptrTo(uint16(0)),
 				},
 				RelayServerPortSet:            true,
 				RelayServerStaticEndpointsSet: true,

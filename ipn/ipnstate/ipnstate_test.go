@@ -11,6 +11,8 @@ import (
 	"github.com/metacubex/tailscale/types/views"
 )
 
+func ptrTo[T any](v T) *T { return &v }
+
 func TestPeerStatusIsRouter(t *testing.T) {
 	for _, tc := range []struct {
 		name   string
@@ -28,7 +30,7 @@ func TestPeerStatusIsRouter(t *testing.T) {
 				TailscaleIPs: []netip.Addr{
 					netip.MustParseAddr("100.64.0.1"),
 				},
-				AllowedIPs: new(views.SliceOf([]netip.Prefix{})),
+				AllowedIPs: ptrTo(views.SliceOf([]netip.Prefix{})),
 			},
 			want: false,
 		},
@@ -38,7 +40,7 @@ func TestPeerStatusIsRouter(t *testing.T) {
 				TailscaleIPs: []netip.Addr{
 					netip.MustParseAddr("100.64.0.1"),
 				},
-				AllowedIPs: new(views.SliceOf([]netip.Prefix{
+				AllowedIPs: ptrTo(views.SliceOf([]netip.Prefix{
 					netip.MustParsePrefix("100.64.0.1/32"),
 				})),
 			},
@@ -50,7 +52,7 @@ func TestPeerStatusIsRouter(t *testing.T) {
 				TailscaleIPs: []netip.Addr{
 					netip.MustParseAddr("fd7a:115c:a1e0::1"),
 				},
-				AllowedIPs: new(views.SliceOf([]netip.Prefix{
+				AllowedIPs: ptrTo(views.SliceOf([]netip.Prefix{
 					netip.MustParsePrefix("fd7a:115c:a1e0::1/128"),
 				})),
 			},
@@ -63,7 +65,7 @@ func TestPeerStatusIsRouter(t *testing.T) {
 					netip.MustParseAddr("100.64.0.1"),
 					netip.MustParseAddr("fd7a:115c:a1e0::1"),
 				},
-				AllowedIPs: new(views.SliceOf([]netip.Prefix{
+				AllowedIPs: ptrTo(views.SliceOf([]netip.Prefix{
 					netip.MustParsePrefix("100.64.0.1/32"),
 					netip.MustParsePrefix("fd7a:115c:a1e0::1/128"),
 				})),
@@ -76,7 +78,7 @@ func TestPeerStatusIsRouter(t *testing.T) {
 				TailscaleIPs: []netip.Addr{
 					netip.MustParseAddr("100.64.0.1"),
 				},
-				AllowedIPs: new(views.SliceOf([]netip.Prefix{
+				AllowedIPs: ptrTo(views.SliceOf([]netip.Prefix{
 					netip.MustParsePrefix("100.64.0.1/32"),
 					netip.MustParsePrefix("0.0.0.0/0"),
 				})),
@@ -89,7 +91,7 @@ func TestPeerStatusIsRouter(t *testing.T) {
 				TailscaleIPs: []netip.Addr{
 					netip.MustParseAddr("fd7a:115c:a1e0::1"),
 				},
-				AllowedIPs: new(views.SliceOf([]netip.Prefix{
+				AllowedIPs: ptrTo(views.SliceOf([]netip.Prefix{
 					netip.MustParsePrefix("fd7a:115c:a1e0::1/128"),
 					netip.MustParsePrefix("::/0"),
 				})),
@@ -103,7 +105,7 @@ func TestPeerStatusIsRouter(t *testing.T) {
 					netip.MustParseAddr("100.64.0.1"),
 					netip.MustParseAddr("fd7a:115c:a1e0::1"),
 				},
-				AllowedIPs: new(views.SliceOf([]netip.Prefix{
+				AllowedIPs: ptrTo(views.SliceOf([]netip.Prefix{
 					netip.MustParsePrefix("100.64.0.1/32"),
 					netip.MustParsePrefix("fd7a:115c:a1e0::1/128"),
 					netip.MustParsePrefix("0.0.0.0/0"),
@@ -118,7 +120,7 @@ func TestPeerStatusIsRouter(t *testing.T) {
 				TailscaleIPs: []netip.Addr{
 					netip.MustParseAddr("100.64.0.1"),
 				},
-				AllowedIPs: new(views.SliceOf([]netip.Prefix{
+				AllowedIPs: ptrTo(views.SliceOf([]netip.Prefix{
 					netip.MustParsePrefix("100.64.0.1/32"),
 					netip.MustParsePrefix("192.0.2.0/24"),
 				})),
@@ -131,7 +133,7 @@ func TestPeerStatusIsRouter(t *testing.T) {
 				TailscaleIPs: []netip.Addr{
 					netip.MustParseAddr("fd7a:115c:a1e0::1"),
 				},
-				AllowedIPs: new(views.SliceOf([]netip.Prefix{
+				AllowedIPs: ptrTo(views.SliceOf([]netip.Prefix{
 					netip.MustParsePrefix("fd7a:115c:a1e0::1/128"),
 					netip.MustParsePrefix("2001:db8::/32"),
 				})),
@@ -145,7 +147,7 @@ func TestPeerStatusIsRouter(t *testing.T) {
 					netip.MustParseAddr("100.64.0.1"),
 					netip.MustParseAddr("fd7a:115c:a1e0::1"),
 				},
-				AllowedIPs: new(views.SliceOf([]netip.Prefix{
+				AllowedIPs: ptrTo(views.SliceOf([]netip.Prefix{
 					netip.MustParsePrefix("100.64.0.1/32"),
 					netip.MustParsePrefix("fd7a:115c:a1e0::1/128"),
 					netip.MustParsePrefix("192.0.2.0/24"),

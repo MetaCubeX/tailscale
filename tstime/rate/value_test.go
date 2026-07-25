@@ -43,7 +43,7 @@ func TestValue(t *testing.T) {
 		c := qt.New(t)
 		var v Value
 		var now mono.Time
-		for range numStep {
+		for i := 0; i < numStep; i++ {
 			v.addNow(now, float64(step))
 			now += step
 		}
@@ -232,7 +232,7 @@ func stats(fs []float64) (mean, stddev float64) {
 func BenchmarkValue(b *testing.B) {
 	b.ReportAllocs()
 	v := Value{HalfLife: time.Second}
-	for range b.N {
+	for i := 0; i < b.N; i++ {
 		v.Add(1)
 	}
 }

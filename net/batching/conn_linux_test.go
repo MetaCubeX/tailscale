@@ -4,7 +4,6 @@
 package batching
 
 import (
-	"encoding/binary"
 	"errors"
 	"io"
 	"math"
@@ -18,10 +17,10 @@ import (
 
 	qt "github.com/frankban/quicktest"
 	"github.com/metacubex/tailscale-wireguard-go/conn"
-	"golang.org/x/net/ipv6"
-	"golang.org/x/sys/unix"
 	"github.com/metacubex/tailscale/net/neterror"
 	"github.com/metacubex/tailscale/net/packet"
+	"golang.org/x/net/ipv6"
+	"golang.org/x/sys/unix"
 )
 
 func Test_linuxBatchingConn_splitCoalescedMessages(t *testing.T) {
@@ -385,7 +384,7 @@ func Test_linuxBatchingConn_coalesceMessages(t *testing.T) {
 			if got != len(tt.wantLens) {
 				t.Fatalf("got len %d want: %d", got, len(tt.wantLens))
 			}
-			for i := range got {
+			for i := 0; i < got; i++ {
 				if msgs[i].Addr != addr {
 					t.Errorf("msgs[%d].Addr != passed addr", i)
 				}
@@ -419,7 +418,7 @@ func Test_linuxBatchingConn_coalesceMessages(t *testing.T) {
 				}
 				var gotGSO int
 				if len(data) >= 2 {
-					gotGSO = int(binary.NativeEndian.Uint16(data))
+					gotGSO = int(nativeEndian.Uint16(data))
 				}
 				if gotGSO != tt.wantGSO[i] {
 					t.Errorf("msgs[%d] gsoSize %d != %d", i, gotGSO, tt.wantGSO[i])
@@ -487,7 +486,8 @@ func Test_linuxBatchingConn_WriteBatchTo_resetsBuffersOnGSORetry(t *testing.T) {
 
 	// The retry path always returns ErrUDPGSODisabled wrapping the retry's
 	// result (nil here).
-	if _, ok := errors.AsType[neterror.ErrUDPGSODisabled](err); !ok {
+	var gsoDisabledErr neterror.ErrUDPGSODisabled
+	if !errors.As(err, &gsoDisabledErr) {
 		t.Fatalf("got %v, want ErrUDPGSODisabled", err)
 	}
 	if len(xpc.gotBuffersLen) != 2 {
@@ -565,7 +565,8 @@ func Test_linuxBatchingConn_WriteBatchTo_offsetStableOnNonCoalesceRetry(t *testi
 	// Must not panic: each pass recomputes the offset from the original.
 	err = c.WriteBatchTo(buffs, netip.MustParseAddrPort("127.0.0.1:1"), geneve, offset)
 
-	if _, ok := errors.AsType[neterror.ErrUDPGSODisabled](err); !ok {
+	var gsoDisabledErr neterror.ErrUDPGSODisabled
+	if !errors.As(err, &gsoDisabledErr) {
 		t.Fatalf("got %v, want ErrUDPGSODisabled", err)
 	}
 	if len(xpc.gotBuffersLen) != 2 {
@@ -600,13 +601,13 @@ func makeControlMsg(cmsgLevel, cmsgType int32, dataLen int) []byte {
 
 func gsoControl(gso uint16) []byte {
 	msg := makeControlMsg(unix.SOL_UDP, unix.UDP_GRO, 2)
-	binary.NativeEndian.PutUint16(msg[unix.SizeofCmsghdr:], gso)
+	nativeEndian.PutUint16(msg[unix.SizeofCmsghdr:], gso)
 	return msg
 }
 
 func rxqOverflowsControl(count uint32) []byte {
 	msg := makeControlMsg(unix.SOL_SOCKET, unix.SO_RXQ_OVFL, 4)
-	binary.NativeEndian.PutUint32(msg[unix.SizeofCmsghdr:], count)
+	nativeEndian.PutUint32(msg[unix.SizeofCmsghdr:], count)
 	return msg
 }
 

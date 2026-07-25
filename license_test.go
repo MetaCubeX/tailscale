@@ -28,6 +28,9 @@ func TestLicenseHeaders(t *testing.T) {
 `, "\n")))
 
 	exceptions := set.Of(
+		// Embedded third-party code.
+		"util/ed25519consensus/ed25519.go",
+
 		// Subprocess test harness code
 		"util/winutil/testdata/testrestartableprocesses/main.go",
 		"util/winutil/subprocess_windows_test.go",
@@ -53,6 +56,9 @@ func TestLicenseHeaders(t *testing.T) {
 		}
 		if exceptions.Contains(filepath.ToSlash(path)) {
 			return nil
+		}
+		if filepath.ToSlash(path) == "util/wingoes" {
+			return filepath.SkipDir
 		}
 		base := filepath.Base(path)
 		switch base {

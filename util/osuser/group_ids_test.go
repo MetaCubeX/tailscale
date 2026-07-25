@@ -4,7 +4,7 @@
 package osuser
 
 import (
-	"slices"
+	"github.com/metacubex/tailscale/util/go120/slices"
 	"testing"
 )
 

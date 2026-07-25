@@ -70,9 +70,11 @@ func TestDoDupSuppress(t *testing.T) {
 
 	const n = 10
 	wg1.Add(1)
-	for range n {
+	for i := 0; i < n; i++ {
 		wg1.Add(1)
-		wg2.Go(func() {
+		wg2.Add(1)
+		go func() {
+			defer wg2.Done()
 			wg1.Done()
 			v, err, _ := g.Do("key", fn)
 			if err != nil {
@@ -82,7 +84,7 @@ func TestDoDupSuppress(t *testing.T) {
 			if s, _ := v.(string); s != "bar" {
 				t.Errorf("Do = %T %v; want %q", v, v, "bar")
 			}
-		})
+		}()
 	}
 	wg1.Wait()
 	// At least one goroutine is in fn now and all of them have at
@@ -166,7 +168,7 @@ func TestPanicDo(t *testing.T) {
 	waited := int32(n)
 	panicCount := int32(0)
 	done := make(chan struct{})
-	for range n {
+	for i := 0; i < n; i++ {
 		go func() {
 			defer func() {
 				if err := recover(); err != nil {
@@ -203,7 +205,7 @@ func TestGoexitDo(t *testing.T) {
 	const n = 5
 	waited := int32(n)
 	done := make(chan struct{})
-	for range n {
+	for i := 0; i < n; i++ {
 		go func() {
 			var err error
 			defer func() {
@@ -323,7 +325,7 @@ func TestPanicDoSharedByDoChan(t *testing.T) {
 
 func TestDoChanContext(t *testing.T) {
 	t.Run("Basic", func(t *testing.T) {
-		ctx := t.Context()
+		ctx := context.Background()
 
 		var g Group[string, int]
 		ch := g.DoChanContext(ctx, "key", func(_ context.Context) (int, error) {
@@ -334,7 +336,7 @@ func TestDoChanContext(t *testing.T) {
 	})
 
 	t.Run("DoesNotPropagateValues", func(t *testing.T) {
-		ctx := t.Context()
+		ctx := context.Background()
 
 		key := new(int)
 		const value = "hello world"
@@ -360,7 +362,7 @@ func TestDoChanContext(t *testing.T) {
 
 		ctx1, cancel1 := context.WithCancel(context.Background())
 		defer cancel1()
-		ctx2 := t.Context()
+		ctx2 := context.Background()
 
 		fn := func(ctx context.Context) (int, error) {
 			select {
@@ -422,7 +424,7 @@ func TestDoChanContext(t *testing.T) {
 					chs     []<-chan Result[int]
 					cancels []context.CancelFunc
 				)
-				for i := range n {
+				for i := 0; i < n; i++ {
 					ctx, cancel := context.WithCancel(context.Background())
 					defer cancel()
 					cancels = append(cancels, cancel)

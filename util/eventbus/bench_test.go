@@ -33,7 +33,7 @@ func BenchmarkBasicThroughput(b *testing.B) {
 		}
 	}()
 
-	for b.Loop() {
+	for i := 0; i < b.N; i++ {
 		pub.Publish(emptyEvent{})
 	}
 	bus.Close()
@@ -54,7 +54,7 @@ func BenchmarkBasicFuncThroughput(b *testing.B) {
 	pub := eventbus.Publish[emptyEvent](pcli)
 	eventbus.SubscribeFunc(scli, func(emptyEvent) {})
 
-	for b.Loop() {
+	for i := 0; i < b.N; i++ {
 		pub.Publish(emptyEvent{})
 	}
 	bus.Close()
@@ -87,7 +87,7 @@ func BenchmarkSubsThroughput(b *testing.B) {
 		}()
 	}
 
-	for b.Loop() {
+	for i := 0; i < b.N; i++ {
 		pub.Publish(emptyEvent{})
 	}
 	bus.Close()
@@ -129,7 +129,7 @@ func BenchmarkMultiThroughput(b *testing.B) {
 
 	var rng uint64
 	var bits int
-	for b.Loop() {
+	for i := 0; i < b.N; i++ {
 		if bits == 0 {
 			rng = rand.Uint64()
 			bits = 64

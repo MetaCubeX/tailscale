@@ -126,7 +126,7 @@ func BenchmarkMultiLabelWriteAllocs(b *testing.B) {
 	var w io.Writer = io.Discard
 
 	b.ResetTimer()
-	for range b.N {
+	for i := 0; i < b.N; i++ {
 		m.WritePrometheus(w, "test")
 	}
 }

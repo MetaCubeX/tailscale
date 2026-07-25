@@ -4,12 +4,13 @@
 package netns
 
 import (
+	"errors"
 	"strings"
 	"testing"
 
-	"golang.org/x/sys/windows"
-	"github.com/metacubex/tailscale/util/winipcfg"
 	"github.com/metacubex/tailscale/tsconst"
+	"github.com/metacubex/tailscale/util/winipcfg"
+	"golang.org/x/sys/windows"
 )
 
 func TestGetInterfaceIndex(t *testing.T) {
@@ -45,6 +46,9 @@ func TestGetInterfaceIndex(t *testing.T) {
 
 			idx, err := getInterfaceIndex(t.Logf, addr, defIfaceIdxV4)
 			if err != nil {
+				if errors.Is(err, windows.ERROR_INVALID_PARAMETER) {
+					t.Skipf("route lookup is unavailable in this environment: %v", err)
+				}
 				if tc.err == "" {
 					t.Fatalf("got unexpected error: %v", err)
 				}

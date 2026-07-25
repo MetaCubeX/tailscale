@@ -11,8 +11,9 @@ import (
 // Tests that [Config.Equal] tests all fields of [Config], even ones
 // that might get added in the future.
 func TestConfigEqual(t *testing.T) {
-	rt := reflect.TypeFor[Config]()
-	for sf := range rt.Fields() {
+	rt := reflect.TypeOf((*Config)(nil)).Elem()
+	for i := 0; i < rt.NumField(); i++ {
+		sf := rt.Field(i)
 		switch sf.Name {
 		case "Name", "NodeID", "PrivateKey", "Addresses":
 			// These are compared in [Config.Equal].

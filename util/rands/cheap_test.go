@@ -4,7 +4,7 @@
 package rands
 
 import (
-	"slices"
+	"github.com/metacubex/tailscale/util/go120/slices"
 	"testing"
 
 	randv2 "github.com/metacubex/randv2"
@@ -30,7 +30,7 @@ func BenchmarkStdRandV2Shuffle(b *testing.B) {
 		data[i] = i
 	}
 	b.ReportAllocs()
-	for range b.N {
+	for i := 0; i < b.N; i++ {
 		// PCG is the lightest source, taking just two uint64s, the chacha8
 		// source has much larger state.
 		rng := randv2.New(randv2.NewPCG(seed, seed))
@@ -45,7 +45,7 @@ func BenchmarkLocalShuffle(b *testing.B) {
 		data[i] = i
 	}
 	b.ReportAllocs()
-	for range b.N {
+	for i := 0; i < b.N; i++ {
 		Shuffle(seed, data)
 	}
 }
@@ -63,7 +63,7 @@ func TestPerm(t *testing.T) {
 		{4, 5, 7, 1, 6, 3, 8, 2, 0, 9},
 		{5, 7, 0, 9, 2, 1, 8, 4, 6, 3},
 	}
-	for i := range 5 {
+	for i := 0; i < 5; i++ {
 		got := Perm(seed+uint64(i), 10)
 		want := expect[i]
 		if !slices.Equal(got, want) {
@@ -86,7 +86,7 @@ func TestShuffle(t *testing.T) {
 		{4, 5, 0, 6, 7, 8, 3, 2, 1, 9},
 		{8, 2, 4, 9, 0, 5, 1, 7, 3, 6},
 	}
-	for i := range 5 {
+	for i := 0; i < 5; i++ {
 		Shuffle(seed+uint64(i), p)
 		want := expect[i]
 		if !slices.Equal(p, want) {

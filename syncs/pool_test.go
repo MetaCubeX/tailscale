@@ -17,7 +17,7 @@ func TestPool(t *testing.T) {
 		t.Fatalf("got %q, want %q", s, "new")
 	}
 	var found bool
-	for range 1000 {
+	for i := 0; i < 1000; i++ {
 		pool.Put("something")
 		found = pool.Get() == "something"
 		if found {

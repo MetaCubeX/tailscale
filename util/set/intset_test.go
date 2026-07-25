@@ -4,9 +4,9 @@
 package set
 
 import (
-	"maps"
+	"github.com/metacubex/tailscale/util/go120/maps"
+	"github.com/metacubex/tailscale/util/go120/slices"
 	"math"
-	"slices"
 	"testing"
 
 	"golang.org/x/exp/constraints"

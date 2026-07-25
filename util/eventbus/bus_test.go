@@ -1,3 +1,7 @@
+//go:build go1.25
+
+//go:debug asynctimerchan=0
+
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
@@ -14,7 +18,6 @@ import (
 	"testing/synctest"
 	"time"
 
-	"github.com/creachadair/taskgroup"
 	"github.com/google/go-cmp/cmp"
 	"github.com/metacubex/tailscale/util/eventbus"
 )
@@ -134,7 +137,7 @@ func TestSubscriberFunc(t *testing.T) {
 			c.Close()
 
 			// Verify that the logger recorded that Close gave up on the slowpoke.
-			want := regexp.MustCompile(`^.* tailscale.com/util/eventbus_test bus_test.go:\d+: ` +
+			want := regexp.MustCompile(`^.* github.com/metacubex/tailscale/util/eventbus_test bus_test.go:\d+: ` +
 				`giving up on subscriber for eventbus_test.EventA after \d+s at close.*`)
 			if got := buf.String(); !want.MatchString(got) {
 				t.Errorf("Wrong log output\ngot:  %q\nwant %s", got, want)
@@ -279,30 +282,35 @@ func TestSpam(t *testing.T) {
 			subscribers        = 100
 		)
 
-		var g taskgroup.Group
+		var g sync.WaitGroup
+		errCh := make(chan error, subscribers)
 
 		// A bunch of subscribers receiving on channels.
 		chanReceived := make([][]EventA, subscribers)
 		for i := range subscribers {
+			i := i
 			c := b.Client(fmt.Sprintf("Subscriber%d", i))
 			defer c.Close()
 
 			s := eventbus.Subscribe[EventA](c)
-			g.Go(func() error {
+			g.Add(1)
+			go func() {
+				defer g.Done()
 				for range wantEvents {
 					select {
 					case evt := <-s.Events():
 						chanReceived[i] = append(chanReceived[i], evt)
 					case <-s.Done():
 						t.Errorf("queue done before expected number of events received")
-						return errors.New("queue prematurely closed")
+						errCh <- errors.New("queue prematurely closed")
+						return
 					case <-time.After(5 * time.Second):
 						t.Logf("timed out waiting for expected bus event after %d events", len(chanReceived[i]))
-						return errors.New("timeout")
+						errCh <- errors.New("timeout")
+						return
 					}
 				}
-				return nil
-			})
+			}()
 		}
 
 		// A bunch of subscribers receiving via a func.
@@ -317,20 +325,25 @@ func TestSpam(t *testing.T) {
 
 		published := make([][]EventA, publishers)
 		for i := range publishers {
+			i := i
 			c := b.Client(fmt.Sprintf("Publisher%d", i))
 			p := eventbus.Publish[EventA](c)
-			g.Run(func() {
+			g.Add(1)
+			go func() {
+				defer g.Done()
 				defer c.Close()
 				for j := range eventsPerPublisher {
 					evt := EventA{i*eventsPerPublisher + j}
 					p.Publish(evt)
 					published[i] = append(published[i], evt)
 				}
-			})
+			}()
 		}
 
-		if err := g.Wait(); err != nil {
-			t.Fatal(err)
+		g.Wait()
+		close(errCh)
+		for err := range errCh {
+			t.Error(err)
 		}
 		synctest.Wait()
 
@@ -519,7 +532,7 @@ func TestSlowSubs(t *testing.T) {
 			time.Sleep(7 * time.Second) // advance time...
 			synctest.Wait()             // subscriber is done
 
-			want := regexp.MustCompile(`^.* tailscale.com/util/eventbus_test bus_test.go:\d+: ` +
+			want := regexp.MustCompile(`^.* github.com/metacubex/tailscale/util/eventbus_test bus_test.go:\d+: ` +
 				`subscriber for eventbus_test.EventA is slow.*`)
 			if got := buf.String(); !want.MatchString(got) {
 				t.Errorf("Wrong log output\ngot:  %q\nwant: %s", got, want)
@@ -548,7 +561,7 @@ func TestSlowSubs(t *testing.T) {
 			time.Sleep(7 * time.Second) // advance time...
 			synctest.Wait()             // subscriber is done
 
-			want := regexp.MustCompile(`^.* tailscale.com/util/eventbus_test bus_test.go:\d+: ` +
+			want := regexp.MustCompile(`^.* github.com/metacubex/tailscale/util/eventbus_test bus_test.go:\d+: ` +
 				`subscriber for eventbus_test.EventB is slow.*`)
 			if got := buf.String(); !want.MatchString(got) {
 				t.Errorf("Wrong log output\ngot:  %q\nwant: %s", got, want)

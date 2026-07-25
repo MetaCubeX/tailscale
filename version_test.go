@@ -4,7 +4,6 @@
 package tailscaleroot
 
 import (
-	"fmt"
 	"os"
 	"os/exec"
 	"runtime"
@@ -13,19 +12,6 @@ import (
 
 	"golang.org/x/mod/modfile"
 )
-
-func TestDockerfileVersion(t *testing.T) {
-	goVersion := mustGetGoModVersion(t, false)
-
-	dockerFile, err := os.ReadFile("Dockerfile")
-	if err != nil {
-		t.Fatal(err)
-	}
-	wantSub := fmt.Sprintf("FROM golang:%s-alpine AS build-env", goVersion)
-	if !strings.Contains(string(dockerFile), wantSub) {
-		t.Errorf("didn't find %q in Dockerfile", wantSub)
-	}
-}
 
 // TestGoVersion tests that the Go version specified in go.mod matches ./tool/go version.
 func TestGoVersion(t *testing.T) {

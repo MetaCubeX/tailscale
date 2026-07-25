@@ -49,7 +49,7 @@ func TestAcceptedNamesContainsPreferredNames(t *testing.T) {
 }
 
 func TestProtoTextEncodingRoundTrip(t *testing.T) {
-	for i := range 256 {
+	for i := 0; i < 256; i++ {
 		text := must.Get(Proto(i).MarshalText())
 		var p Proto
 		must.Do(p.UnmarshalText(text))
@@ -67,7 +67,7 @@ func TestProtoUnmarshalText(t *testing.T) {
 		t.Fatalf("empty input, got err=%v, p=%v, want nil, 0", err, p)
 	}
 
-	for i := range 256 {
+	for i := 0; i < 256; i++ {
 		var p Proto
 		must.Do(p.UnmarshalText(fmt.Appendf(nil, "%d", i)))
 		if got, want := p, Proto(i); got != want {
@@ -93,7 +93,7 @@ func TestProtoUnmarshalText(t *testing.T) {
 }
 
 func TestProtoMarshalText(t *testing.T) {
-	for i := range 256 {
+	for i := 0; i < 256; i++ {
 		text := must.Get(Proto(i).MarshalText())
 
 		if wantName, ok := preferredNames[Proto(i)]; ok {
@@ -110,7 +110,7 @@ func TestProtoMarshalText(t *testing.T) {
 }
 
 func TestProtoMarshalJSON(t *testing.T) {
-	for i := range 256 {
+	for i := 0; i < 256; i++ {
 		j := must.Get(Proto(i).MarshalJSON())
 		if got, want := string(j), fmt.Sprintf(`%d`, i); got != want {
 			t.Errorf("Proto(%d).MarshalJSON() = %q, want %q", i, got, want)
@@ -121,7 +121,7 @@ func TestProtoMarshalJSON(t *testing.T) {
 func TestProtoUnmarshalJSON(t *testing.T) {
 	var p Proto
 
-	for i := range 256 {
+	for i := 0; i < 256; i++ {
 		j := fmt.Appendf(nil, `%d`, i)
 		must.Do(json.Unmarshal(j, &p))
 		if got, want := p, Proto(i); got != want {

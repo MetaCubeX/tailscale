@@ -1,3 +1,7 @@
+//go:build go1.25
+
+//go:debug asynctimerchan=0
+
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 

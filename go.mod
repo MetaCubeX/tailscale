@@ -5,12 +5,10 @@ go 1.20
 require (
 	github.com/akutz/memconn v0.1.0
 	github.com/coder/websocket v1.8.12
-	github.com/creachadair/mds v0.25.13
-	github.com/creachadair/taskgroup v0.13.2
 	github.com/frankban/quicktest v1.14.6
 	github.com/fxamacker/cbor/v2 v2.9.0
 	github.com/golang/groupcache v0.0.0-20241129210726-2c02b8208cf8
-	github.com/google/go-cmp v0.7.0
+	github.com/google/go-cmp v0.6.0
 	github.com/jsimonetti/rtnetlink v1.4.0
 	github.com/klauspost/compress v1.17.9
 	github.com/mdlayher/netlink v1.7.2
@@ -33,7 +31,7 @@ require (
 	go4.org/netipx v0.0.0-20231129151722-fdeea329fbba
 	golang.org/x/crypto v0.33.0
 	golang.org/x/exp v0.0.0-20240904232852-e7e105dedf7e
-	golang.org/x/mod v0.21.0
+	golang.org/x/mod v0.20.0
 	golang.org/x/net v0.35.0
 	golang.org/x/sync v0.11.0
 	golang.org/x/sys v0.30.0
@@ -42,14 +40,13 @@ require (
 )
 
 require (
-	github.com/cilium/ebpf v0.16.0 // indirect
 	github.com/google/pprof v0.0.0-20240727154555-813a5fbdbec8 // indirect
 	github.com/josharian/native v1.1.0 // indirect
 	github.com/metacubex/cpu v0.1.0 // indirect
 	github.com/metacubex/hkdf v0.1.0 // indirect
 	github.com/metacubex/hpke v0.1.0 // indirect
 	github.com/metacubex/mlkem v0.1.0 // indirect
-	golang.org/x/tools v0.26.0 // indirect
+	golang.org/x/tools v0.24.0 // indirect
 	software.sslmate.com/src/go-pkcs12 v0.4.0 // indirect
 )
 
@@ -58,7 +55,7 @@ require (
 	github.com/kr/pretty v0.3.1 // indirect
 	github.com/kr/text v0.2.0 // indirect
 	github.com/mdlayher/socket v0.5.1
-	github.com/rogpeppe/go-internal v1.14.1 // indirect
+	github.com/rogpeppe/go-internal v1.12.0 // indirect
 	github.com/tailscale/go-winio v0.0.0-20231025203758-c4f33415bf55
 	github.com/x448/float16 v0.8.4 // indirect
 	golang.org/x/text v0.22.0 // indirect

@@ -129,10 +129,10 @@ func TestSyncValueConcurrent(t *testing.T) {
 		lt       SyncValue[int]
 		wg       sync.WaitGroup
 		start    = make(chan struct{})
-		routines = 10000
+		routines = stressRoutines()
 	)
 	wg.Add(routines)
-	for range routines {
+	for i := 0; i < routines; i++ {
 		go func() {
 			defer wg.Done()
 			// Every goroutine waits for the go signal, so that more of them
@@ -218,7 +218,7 @@ func TestSyncValueSetForTest(t *testing.T) {
 			setForTestValue: 42,
 			getValue:        8,
 			wantValue:       42,
-			routines:        10000,
+			routines:        stressRoutines(),
 		},
 		{
 			name:            "Concurrent/GetOk/WithInitErr",
@@ -227,7 +227,7 @@ func TestSyncValueSetForTest(t *testing.T) {
 			setForTestValue: 42,
 			getValue:        8,
 			wantValue:       42,
-			routines:        10000,
+			routines:        stressRoutines(),
 		},
 		{
 			name:            "Concurrent/GetErr",
@@ -237,7 +237,7 @@ func TestSyncValueSetForTest(t *testing.T) {
 			getErr:          opt.ValueOf(errors.New("ka-boom")),
 			wantValue:       42,
 			wantErr:         testErr,
-			routines:        10000,
+			routines:        stressRoutines(),
 		},
 		{
 			name:            "Concurrent/GetErr/WithInitErr",
@@ -249,7 +249,7 @@ func TestSyncValueSetForTest(t *testing.T) {
 			getErr:          opt.ValueOf(errors.New("ka-boom")),
 			wantValue:       42,
 			wantErr:         testErr,
-			routines:        10000,
+			routines:        stressRoutines(),
 		},
 	}
 	for _, tt := range tests {
@@ -338,7 +338,7 @@ func TestSyncValueSetForTest(t *testing.T) {
 				var wg sync.WaitGroup
 				wg.Add(tt.routines)
 				start := make(chan struct{})
-				for range tt.routines {
+				for i := 0; i < tt.routines; i++ {
 					go func() {
 						defer wg.Done()
 						// Every goroutine waits for the go signal, so that more of them

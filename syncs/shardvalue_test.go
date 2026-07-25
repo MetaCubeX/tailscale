@@ -66,10 +66,10 @@ func TestShardValue(t *testing.T) {
 		iterations := 10000
 		var wg sync.WaitGroup
 		wg.Add(goroutines)
-		for range goroutines {
+		for i := 0; i < goroutines; i++ {
 			go func() {
 				defer wg.Done()
-				for range iterations {
+				for i := 0; i < iterations; i++ {
 					sv.One(func(v *intVal) {
 						v.Add(1)
 					})

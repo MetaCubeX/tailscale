@@ -58,7 +58,7 @@ func BenchmarkRepopulateNonzero(b *testing.B) {
 					}
 				})
 				b.ResetTimer()
-				for range b.N {
+				for i := 0; i < b.N; i++ {
 					RepopulateNonzero(&m, func() {
 						for i, k := range keys {
 							m[k] = i + 1
@@ -73,7 +73,7 @@ func BenchmarkRepopulateNonzero(b *testing.B) {
 					m[k] = i + 1
 				}
 				b.ResetTimer()
-				for range b.N {
+				for i := 0; i < b.N; i++ {
 					m = make(map[string]int, size)
 					for i, k := range keys {
 						m[k] = i + 1

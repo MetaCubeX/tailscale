@@ -11,6 +11,8 @@ import (
 	"github.com/google/go-cmp/cmp/cmpopts"
 )
 
+func ptrTo[T any](v T) *T { return &v }
+
 func TestGeneveHeader(t *testing.T) {
 	in := GeneveHeader{
 		Version:  3,
@@ -46,22 +48,22 @@ func TestVirtualNetworkID(t *testing.T) {
 		},
 		{
 			"Set 0",
-			new(uint32(0)),
+			ptrTo(uint32(0)),
 			0,
 		},
 		{
 			"Set 1",
-			new(uint32(1)),
+			ptrTo(uint32(1)),
 			1,
 		},
 		{
 			"Set math.MaxUint32",
-			new(uint32(math.MaxUint32)),
+			ptrTo(uint32(math.MaxUint32)),
 			1<<24 - 1,
 		},
 		{
 			"Set max 3-byte value",
-			new(uint32(1<<24 - 1)),
+			ptrTo(uint32(1<<24 - 1)),
 			1<<24 - 1,
 		},
 	}

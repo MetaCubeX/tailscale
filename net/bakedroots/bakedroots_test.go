@@ -4,11 +4,11 @@
 package bakedroots
 
 import (
-	"github.com/metacubex/tls"
 	"flag"
-	"io"
 	"github.com/metacubex/http"
-	"slices"
+	"github.com/metacubex/tailscale/util/go120/slices"
+	"github.com/metacubex/tls"
+	"io"
 	"testing"
 	"time"
 

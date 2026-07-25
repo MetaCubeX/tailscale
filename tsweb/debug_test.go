@@ -5,12 +5,12 @@ package tsweb
 
 import (
 	"fmt"
-	"io"
 	"github.com/metacubex/http"
 	"github.com/metacubex/http/httptest"
+	"github.com/metacubex/tailscale/util/go120/slices"
+	"io"
 	"net/netip"
 	"runtime"
-	"slices"
 	"strings"
 	"testing"
 )
