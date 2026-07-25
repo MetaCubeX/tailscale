@@ -1156,7 +1156,25 @@ func (s *Server) printAuthURLLoop() {
 	ctx, cancel := context.WithCancel(s.shutdownCtx)
 	defer cancel()
 	stateCh := make(chan struct{}, 1)
+	var authURLMu sync.Mutex
+	var lastAuthURL string
+	logAuthURL := func(authURL string) {
+		if authURL == "" {
+			return
+		}
+		authURLMu.Lock()
+		if authURL == lastAuthURL {
+			authURLMu.Unlock()
+			return
+		}
+		lastAuthURL = authURL
+		authURLMu.Unlock()
+		s.logf("To start this tsnet server, restart with TS_AUTHKEY set, or go to: %s", authURL)
+	}
 	go s.lb.WatchNotifications(ctx, ipn.NotifyInitialState, nil, func(n *ipn.Notify) (keepGoing bool) {
+		if n.BrowseToURL != nil {
+			logAuthURL(*n.BrowseToURL)
+		}
 		if n.State == nil {
 			return true
 		}
@@ -1178,9 +1196,7 @@ func (s *Server) printAuthURLLoop() {
 			return
 		}
 		st := s.lb.StatusWithoutPeers()
-		if st.AuthURL != "" {
-			s.logf("To start this tsnet server, restart with TS_AUTHKEY set, or go to: %s", st.AuthURL)
-		}
+		logAuthURL(st.AuthURL)
 		select {
 		case <-time.After(5 * time.Second):
 		case <-stateCh:
