@@ -196,6 +196,7 @@ import (
 	"github.com/metacubex/tailscale/types/nettype"
 	"github.com/metacubex/tailscale/types/views"
 	"github.com/metacubex/tailscale/util/clientmetric"
+	"github.com/metacubex/tailscale/util/eventbus"
 	"github.com/metacubex/tailscale/util/mak"
 	"github.com/metacubex/tailscale/util/set"
 	"github.com/metacubex/tailscale/util/testenv"
@@ -856,7 +857,7 @@ func (s *Server) start() (reterr error) {
 		s.Logf(format, a...)
 	}
 
-	sys := tsd.NewSystem()
+	sys := tsd.NewSystemWithBus(eventbus.NewWithOptions(eventbus.BusOptions{Logf: tsLogf}))
 	s.sys = sys
 	sys.ExtraRootCAs = s.ExtraRootCAs
 	sys.LookupHook = s.LookupHook
