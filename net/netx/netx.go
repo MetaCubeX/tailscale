@@ -22,6 +22,11 @@ type DialFunc func(ctx context.Context, network, address string) (net.Conn, erro
 // It's the type implemented by net.ListenConfig.ListenPacket.
 type ListenPacketFunc func(ctx context.Context, network, address string) (net.PacketConn, error)
 
+// ListenPacket calls f.
+func (f ListenPacketFunc) ListenPacket(ctx context.Context, network, address string) (net.PacketConn, error) {
+	return f(ctx, network, address)
+}
+
 // Network describes a network that can listen and dial. The two common
 // implementations are [RealNetwork], using the net package to use the real
 // network, or [memnet.Network], using an in-memory network (typically for testing)
