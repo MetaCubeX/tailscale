@@ -6,10 +6,15 @@ package winutil
 import (
 	"testing"
 
+	"github.com/metacubex/tailscale/util/winutil/winenv"
 	"golang.org/x/sys/windows"
 )
 
 func TestGetRoamingProfilePath(t *testing.T) {
+	if !winenv.IsDomainJoined() {
+		t.Skip("requires a domain-joined Windows machine")
+	}
+
 	token := windows.GetCurrentProcessToken()
 	computerName, userName, err := getComputerAndUserName(token, nil)
 	if err != nil {
