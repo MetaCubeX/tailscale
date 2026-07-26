@@ -5,7 +5,6 @@ package netmapcache_test
 
 import (
 	"context"
-	jsonv1 "encoding/json"
 	"errors"
 	"flag"
 	"fmt"
@@ -28,6 +27,7 @@ import (
 	"github.com/metacubex/tailscale/types/key"
 	"github.com/metacubex/tailscale/types/netmap"
 	"github.com/metacubex/tailscale/types/views"
+	"github.com/metacubex/tailscale/util/jsonv1"
 	"github.com/metacubex/tailscale/util/set"
 	"github.com/metacubex/tailscale/wgengine/filter"
 	"github.com/metacubex/tailscale/wgengine/filter/filtertype"

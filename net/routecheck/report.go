@@ -13,11 +13,11 @@ import (
 
 	jsonv2 "github.com/metacubex/jsonv2"
 	"github.com/metacubex/jsonv2/jsontext"
-	jsonv1 "github.com/metacubex/jsonv2/v1"
 
 	"github.com/metacubex/tailscale/net/routecheck/peernode"
 	"github.com/metacubex/tailscale/tailcfg"
 	"github.com/metacubex/tailscale/util/clientmetric"
+	"github.com/metacubex/tailscale/util/jsonv1"
 	"github.com/metacubex/tailscale/util/mak"
 )
 
@@ -139,13 +139,23 @@ func (ns *NodeSet) UnmarshalJSONFrom(dec *jsontext.Decoder) error {
 
 // MarshalJSON implements [jsonv1.Marshaler].
 func (ns *NodeSet) MarshalJSON() ([]byte, error) {
-	return jsonv2.Marshal(ns, jsonv1.DefaultOptionsV1())
+	nodes := slices.SortedFunc(maps.Values(*ns), Node.Compare)
+	return jsonv1.Marshal(nodes)
 }
 
 // UnmarshalJSON implements [jsonv1.Unmarshaler].
 func (ns *NodeSet) UnmarshalJSON(b []byte) error {
-	return jsonv2.Unmarshal(b, ns, jsonv1.DefaultOptionsV1())
-
+	var nodes []Node
+	if err := jsonv1.Unmarshal(b, &nodes); err != nil {
+		return err
+	}
+	if *ns == nil {
+		*ns = make(NodeSet, len(nodes))
+	}
+	for _, n := range nodes {
+		(*ns)[n.ID] = n
+	}
+	return nil
 }
 
 // RoutablePrefixes is a map of routers,

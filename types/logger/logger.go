@@ -21,12 +21,11 @@ import (
 
 	"context"
 
-	jsonv2 "github.com/metacubex/jsonv2"
-	jsonv1 "github.com/metacubex/jsonv2/v1"
-	"go4.org/mem"
 	"github.com/metacubex/tailscale/envknob"
 	"github.com/metacubex/tailscale/util/ctxkey"
+	"github.com/metacubex/tailscale/util/jsonv1"
 	"github.com/metacubex/tailscale/util/testenv"
+	"go4.org/mem"
 )
 
 // Logf is the basic Tailscale logger type: a printf-like func.
@@ -76,11 +75,10 @@ func (logf Logf) JSON(level int, recType string, v any) {
 	je.enc.Encode(recType)
 	je.buf.Truncate(je.buf.Len() - 1) // remove newline from prior Encode
 	je.buf.WriteByte(':')
-	if err := je.enc.Encode(v); err != nil {
+	if err := jsonv1.MarshalWrite(&je.buf, v); err != nil {
 		logf("[unexpected]: failed to encode structured JSON log record of type %q / %T: %v", recType, v, err)
 		return
 	}
-	je.buf.Truncate(je.buf.Len() - 1) // remove newline from prior Encode
 	je.buf.WriteByte('}')
 	// Magic prefix recognized by logtail:
 	logf("[v\x00JSON]%d%s", level%10, je.buf.Bytes())
@@ -381,10 +379,7 @@ func AsJSON(v any) fmt.Formatter {
 type asJSONResult struct{ v any }
 
 func (a asJSONResult) Format(s fmt.State, verb rune) {
-	// Write directly to s rather than going through json.Marshal's
-	// returned []byte to avoid an allocation. The explicit v1
-	// options keep the output identical to encoding/json.
-	err := jsonv2.MarshalWrite(s, a.v, jsonv1.DefaultOptionsV1())
+	err := jsonv1.MarshalWrite(s, a.v)
 	if err != nil {
 		fmt.Fprintf(s, "%%!JSON-ERROR:%v", err)
 	}
