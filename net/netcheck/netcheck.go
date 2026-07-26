@@ -1034,7 +1034,12 @@ func (c *Client) GetReport(ctx context.Context, dm *tailcfg.DERPMap, opts *GetRe
 	// Wait for captive portal check before finishing the report.
 	<-captivePortalDone
 
-	return c.finishAndStoreReport(rs, dm), nil
+	report := c.finishAndStoreReport(rs, dm)
+	if last != nil && !last.UDP && report.UDP {
+		c.logf("[v1] UDP connectivity recovered; making next report full")
+		c.MakeNextReportFull()
+	}
+	return report, nil
 }
 
 func (c *Client) finishAndStoreReport(rs *reportState, dm *tailcfg.DERPMap) *Report {
