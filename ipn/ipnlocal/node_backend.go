@@ -4,17 +4,16 @@
 package ipnlocal
 
 import (
-	"cmp"
 	"context"
-	"iter"
-	"maps"
+	"github.com/metacubex/tailscale/util/go120/cmp"
+	"github.com/metacubex/tailscale/util/go120/iter"
+	"github.com/metacubex/tailscale/util/go120/maps"
+	"github.com/metacubex/tailscale/util/go120/slices"
 	"net/netip"
-	"slices"
 	"strings"
 	"sync"
 	"sync/atomic"
 
-	"go4.org/netipx"
 	"github.com/metacubex/tailscale/appc"
 	"github.com/metacubex/tailscale/envknob"
 	"github.com/metacubex/tailscale/feature/buildfeatures"
@@ -38,6 +37,7 @@ import (
 	"github.com/metacubex/tailscale/util/slicesx"
 	"github.com/metacubex/tailscale/util/testenv"
 	"github.com/metacubex/tailscale/wgengine/filter"
+	"go4.org/netipx"
 )
 
 // nodeBackend is node-specific [LocalBackend] state. It is usually the current node.
@@ -444,7 +444,7 @@ func (nb *nodeBackend) peerCapsLocked(src netip.Addr) tailcfg.PeerCapMap {
 		return nil
 	}
 	addrs := nb.netMap.GetAddresses()
-	for i := range addrs.Len() {
+	for i := 0; i < addrs.Len(); i++ {
 		a := addrs.At(i)
 		if !a.IsSingleIP() {
 			continue
@@ -512,7 +512,9 @@ func (nb *nodeBackend) PeerHasCap(peer tailcfg.NodeView, wantCap tailcfg.PeerCap
 
 	nb.mu.Lock()
 	defer nb.mu.Unlock()
-	for _, ap := range peer.Addresses().All() {
+	addrs := peer.Addresses()
+	for i := 0; i < addrs.Len(); i++ {
+		ap := addrs.At(i)
 		if nb.peerHasCapLocked(ap.Addr(), wantCap) {
 			return true
 		}
@@ -606,7 +608,9 @@ func (nb *nodeBackend) PeerIsReachable(rp RouteCheckReport, p tailcfg.NodeView) 
 }
 
 func nodeIP(n tailcfg.NodeView, pred func(netip.Addr) bool) netip.Addr {
-	for _, pfx := range n.Addresses().All() {
+	addrs := n.Addresses()
+	for i := 0; i < addrs.Len(); i++ {
+		pfx := addrs.At(i)
 		if pfx.IsSingleIP() && pred(pfx.Addr()) {
 			return pfx.Addr()
 		}
@@ -626,7 +630,8 @@ func (nb *nodeBackend) netMapWithPeers() *netmap.NetworkMap {
 	if nb.netMap == nil {
 		return nil
 	}
-	nm := new(*nb.netMap) // shallow clone
+	nmValue := *nb.netMap // shallow clone
+	nm := &nmValue
 	nm.Peers = slicesx.MapValues(nb.peers)
 	slices.SortFunc(nm.Peers, func(a, b tailcfg.NodeView) int {
 		return cmp.Compare(a.ID(), b.ID())
@@ -706,7 +711,9 @@ func (nb *nodeBackend) updateNodeByAddrLocked() {
 	}
 
 	addNodeAddr := func(n tailcfg.NodeView) {
-		for _, ipp := range n.Addresses().All() {
+		addrs := n.Addresses()
+		for i := 0; i < addrs.Len(); i++ {
+			ipp := addrs.At(i)
 			if ipp.IsSingleIP() {
 				nb.nodeByAddr[ipp.Addr()] = n.ID()
 			}
@@ -1013,9 +1020,10 @@ func (nb *nodeBackend) updateRouteManagerExtras(fn func(peers iter.Seq2[tailcfg.
 // wants programmed into the OS routing table.
 func (nb *nodeBackend) osRoutes() []netip.Prefix {
 	var routes []netip.Prefix
-	for pfx := range nb.routeMgr.OSRoutes().All() {
+	nb.routeMgr.OSRoutes().All()(func(pfx netip.Prefix) bool {
 		routes = append(routes, pfx)
-	}
+		return true
+	})
 	tsaddr.SortPrefixes(routes)
 	return routes
 }
@@ -1102,7 +1110,9 @@ func (nb *nodeBackend) UpdateNetmapDelta(muts []netmap.NodeMutation) (res netmap
 				}
 			}
 			mak.Set(&nb.peers, nid, m.Node)
-			for _, ipp := range m.Node.Addresses().All() {
+			addrs := m.Node.Addresses()
+			for i := 0; i < addrs.Len(); i++ {
+				ipp := addrs.At(i)
 				if ipp.IsSingleIP() {
 					mak.Set(&nb.nodeByAddr, ipp.Addr(), nid)
 				}
@@ -1116,7 +1126,9 @@ func (nb *nodeBackend) UpdateNetmapDelta(muts []netmap.NodeMutation) (res netmap
 		case netmap.NodeMutationRemove:
 			nid := m.NodeIDBeingMutated()
 			if old, ok := nb.peers[nid]; ok {
-				for _, ipp := range old.Addresses().All() {
+				addrs := old.Addresses()
+				for i := 0; i < addrs.Len(); i++ {
+					ipp := addrs.At(i)
 					if ipp.IsSingleIP() {
 						delete(nb.nodeByAddr, ipp.Addr())
 					}
@@ -1277,13 +1289,15 @@ func magicDNSAddrs(addrs views.Slice[netip.Prefix], flags magicDNSAddrsFlags) (i
 	wantAAAA := flags&wantAAAA != 0
 	selfV6Only := flags&selfV6Only != 0
 	var have4 bool
-	for _, addr := range addrs.All() {
+	for i := 0; i < addrs.Len(); i++ {
+		addr := addrs.At(i)
 		if addr.Addr().Is4() {
 			have4 = true
 			break
 		}
 	}
-	for _, addr := range addrs.All() {
+	for i := 0; i < addrs.Len(); i++ {
+		addr := addrs.At(i)
 		if selfV6Only {
 			if addr.Addr().Is6() {
 				ips = append(ips, addr.Addr())

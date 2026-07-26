@@ -7,16 +7,16 @@ package tsweb
 import (
 	"bufio"
 	"bytes"
-	"cmp"
 	"context"
 	"errors"
 	"expvar"
 	"fmt"
+	"github.com/metacubex/http"
+	"github.com/metacubex/tailscale/util/go120/cmp"
+	"github.com/metacubex/tailscale/util/go120/maps"
 	"io"
 	"log"
-	"maps"
 	"net"
-	"github.com/metacubex/http"
 	"net/netip"
 	"net/url"
 	"os"
@@ -28,14 +28,15 @@ import (
 	"sync"
 	"time"
 
-	"go4.org/mem"
 	"github.com/metacubex/tailscale/envknob"
 	"github.com/metacubex/tailscale/metrics"
 	"github.com/metacubex/tailscale/net/tsaddr"
+	"github.com/metacubex/tailscale/syncs"
 	"github.com/metacubex/tailscale/tsweb/varz"
 	"github.com/metacubex/tailscale/types/logger"
 	"github.com/metacubex/tailscale/util/ctxkey"
 	"github.com/metacubex/tailscale/util/vizerror"
+	"go4.org/mem"
 )
 
 // DevMode controls whether extra output in shown, for when the binary is being run in dev mode.
@@ -63,7 +64,7 @@ func IsProd443(addr string) bool {
 var debugTrustedCIDRs = envknob.RegisterString("TS_DEBUG_TRUSTED_CIDRS")
 
 // trustedCIDRs returns the parsed CIDR prefixes from TS_DEBUG_TRUSTED_CIDRS.
-var trustedCIDRs = sync.OnceValue(func() []netip.Prefix {
+var trustedCIDRs = syncs.OnceValue(func() []netip.Prefix {
 	return parseTrustedCIDRs(debugTrustedCIDRs())
 })
 
@@ -74,7 +75,7 @@ func parseTrustedCIDRs(raw string) []netip.Prefix {
 		return nil
 	}
 	var prefixes []netip.Prefix
-	for s := range strings.SplitSeq(raw, ",") {
+	for _, s := range strings.Split(raw, ",") {
 		s = strings.TrimSpace(s)
 		if s == "" {
 			continue
@@ -783,9 +784,11 @@ func (h errorHandler) handleError(w http.ResponseWriter, r *http.Request, lw *lo
 
 	// Extract a presentable, loggable error.
 	var hOK bool
-	hErr, hAsOK := errors.AsType[HTTPError](err)
+	var hErr HTTPError
+	hAsOK := errors.As(err, &hErr)
 	if !hAsOK {
-		if hs, ok := errors.AsType[HTTPStatuser](err); ok {
+		var hs HTTPStatuser
+		if ok := errors.As(err, &hs); ok {
 			hErr = hs.HTTPStatus()
 			hAsOK = true
 		}

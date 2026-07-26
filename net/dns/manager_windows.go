@@ -8,21 +8,18 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"github.com/metacubex/tailscale/util/go120/maps"
+	"github.com/metacubex/tailscale/util/go120/slices"
 	"io/fs"
-	"maps"
 	"net/netip"
 	"os"
 	"os/exec"
 	"path/filepath"
-	"slices"
 	"sort"
 	"strings"
 	"syscall"
 	"time"
 
-	"golang.org/x/sys/windows"
-	"golang.org/x/sys/windows/registry"
-	"github.com/metacubex/tailscale/util/winipcfg"
 	"github.com/metacubex/tailscale/atomicfile"
 	"github.com/metacubex/tailscale/control/controlknobs"
 	"github.com/metacubex/tailscale/envknob"
@@ -34,8 +31,11 @@ import (
 	"github.com/metacubex/tailscale/util/syspolicy/pkey"
 	"github.com/metacubex/tailscale/util/syspolicy/policyclient"
 	"github.com/metacubex/tailscale/util/syspolicy/ptype"
+	"github.com/metacubex/tailscale/util/winipcfg"
 	"github.com/metacubex/tailscale/util/winutil"
 	"github.com/metacubex/tailscale/util/winutil/winenv"
+	"golang.org/x/sys/windows"
+	"golang.org/x/sys/windows/registry"
 )
 
 const (
@@ -269,7 +269,7 @@ func (m *windowsManager) setHosts(hosts []*HostEntry) error {
 
 	// This can fail spuriously with an access denied error, so retry it a
 	// few times.
-	for range 5 {
+	for i := 0; i < 5; i++ {
 		if err = atomicfile.WriteFile(hostsFile, outB, fileMode); err == nil {
 			return nil
 		}

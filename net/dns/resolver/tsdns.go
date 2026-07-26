@@ -11,18 +11,17 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
+	"github.com/metacubex/tailscale/util/go120/slices"
 	"io"
 	"net"
 	"net/netip"
 	"os"
 	"runtime"
-	"slices"
 	"strconv"
 	"strings"
 	"sync"
 	"time"
 
-	dns "golang.org/x/net/dns/dnsmessage"
 	"github.com/metacubex/tailscale/control/controlknobs"
 	"github.com/metacubex/tailscale/envknob"
 	"github.com/metacubex/tailscale/feature"
@@ -40,6 +39,7 @@ import (
 	"github.com/metacubex/tailscale/util/cloudenv"
 	"github.com/metacubex/tailscale/util/dnsname"
 	"github.com/metacubex/tailscale/util/set"
+	dns "golang.org/x/net/dns/dnsmessage"
 )
 
 const dnsSymbolicFQDN = "magicdns.localhost-tailscale-daemon."

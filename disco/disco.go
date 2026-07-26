@@ -27,8 +27,8 @@ import (
 	"net/netip"
 	"time"
 
-	"go4.org/mem"
 	"github.com/metacubex/tailscale/types/key"
+	"go4.org/mem"
 )
 
 // Magic is the 6 byte header of all discovery messages.
@@ -474,7 +474,7 @@ const allocateUDPRelayEndpointRequestLen = key.DiscoPublicRawLen*2 + // ClientDi
 
 func (m *AllocateUDPRelayEndpointRequest) AppendMarshal(b []byte) []byte {
 	ret, p := appendMsgHeader(b, TypeAllocateUDPRelayEndpointRequest, v0, allocateUDPRelayEndpointRequestLen)
-	for i := range len(m.ClientDisco) {
+	for i := 0; i < len(m.ClientDisco); i++ {
 		disco := m.ClientDisco[i].AppendTo(nil)
 		copy(p, disco)
 		p = p[key.DiscoPublicRawLen:]
@@ -491,7 +491,7 @@ func parseAllocateUDPRelayEndpointRequest(ver uint8, p []byte) (m *AllocateUDPRe
 	if len(p) < allocateUDPRelayEndpointRequestLen {
 		return m, errShort
 	}
-	for i := range len(m.ClientDisco) {
+	for i := 0; i < len(m.ClientDisco); i++ {
 		m.ClientDisco[i] = key.DiscoPublicFromRaw32(mem.B(p[:key.DiscoPublicRawLen]))
 		p = p[key.DiscoPublicRawLen:]
 	}
@@ -564,7 +564,7 @@ func (m *UDPRelayEndpoint) encode(b []byte) {
 	disco := m.ServerDisco.AppendTo(nil)
 	copy(b, disco)
 	b = b[key.DiscoPublicRawLen:]
-	for i := range len(m.ClientDisco) {
+	for i := 0; i < len(m.ClientDisco); i++ {
 		disco = m.ClientDisco[i].AppendTo(nil)
 		copy(b, disco)
 		b = b[key.DiscoPublicRawLen:]
@@ -593,7 +593,7 @@ func (m *UDPRelayEndpoint) decode(b []byte) error {
 	}
 	m.ServerDisco = key.DiscoPublicFromRaw32(mem.B(b[:key.DiscoPublicRawLen]))
 	b = b[key.DiscoPublicRawLen:]
-	for i := range len(m.ClientDisco) {
+	for i := 0; i < len(m.ClientDisco); i++ {
 		m.ClientDisco[i] = key.DiscoPublicFromRaw32(mem.B(b[:key.DiscoPublicRawLen]))
 		b = b[key.DiscoPublicRawLen:]
 	}

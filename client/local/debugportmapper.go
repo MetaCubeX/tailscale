@@ -6,11 +6,11 @@
 package local
 
 import (
-	"cmp"
 	"context"
 	"fmt"
-	"io"
 	"github.com/metacubex/http"
+	"github.com/metacubex/tailscale/util/go120/cmp"
+	"io"
 	"net/netip"
 	"net/url"
 	"strconv"

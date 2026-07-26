@@ -7,10 +7,11 @@ import (
 	"fmt"
 	"runtime"
 	"strings"
-	"sync"
+
+	"github.com/metacubex/tailscale/syncs"
 )
 
-var stringLazy = sync.OnceValue(func() string {
+var stringLazy = syncs.OnceValue(func() string {
 	var ret strings.Builder
 	ret.WriteString(Short())
 	ret.WriteByte('\n')

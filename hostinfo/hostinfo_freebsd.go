@@ -10,8 +10,8 @@ import (
 	"os"
 	"os/exec"
 
-	"golang.org/x/sys/unix"
 	"github.com/metacubex/tailscale/version/distro"
+	"golang.org/x/sys/unix"
 )
 
 func init() {
@@ -21,8 +21,8 @@ func init() {
 }
 
 var (
-	lazyVersionMeta = &lazyAtomicValue[versionMeta]{f: new(freebsdVersionMeta)}
-	lazyOSVersion   = &lazyAtomicValue[string]{f: new(osVersionFreeBSD)}
+	lazyVersionMeta = &lazyAtomicValue[versionMeta]{f: funcPtr(freebsdVersionMeta)}
+	lazyOSVersion   = &lazyAtomicValue[string]{f: funcPtr(osVersionFreeBSD)}
 )
 
 func distroNameFreeBSD() string {

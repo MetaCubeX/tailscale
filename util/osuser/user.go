@@ -15,10 +15,10 @@ import (
 	"reflect"
 	"runtime"
 	"strings"
-	"sync"
 	"time"
 	"unicode/utf8"
 
+	"github.com/metacubex/tailscale/syncs"
 	"github.com/metacubex/tailscale/version/distro"
 )
 
@@ -57,7 +57,7 @@ var execGetent = func(ctx context.Context, args ...string) ([]byte, error) {
 	return exec.CommandContext(ctx, "getent", args...).Output()
 }
 
-var getentDoubleDashSupported = sync.OnceValue(probeGetentDoubleDashSupport)
+var getentDoubleDashSupported = syncs.OnceValue(probeGetentDoubleDashSupport)
 
 func lookup(usernameOrUID string, std lookupStd, wantShell bool) (*user.User, string, error) {
 	// Skip getent entirely on Non-Unix platforms that won't ever have it.

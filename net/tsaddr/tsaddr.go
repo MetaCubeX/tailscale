@@ -7,14 +7,14 @@ package tsaddr
 import (
 	"encoding/binary"
 	"errors"
-	"iter"
+	"github.com/metacubex/tailscale/util/go120/iter"
+	"github.com/metacubex/tailscale/util/go120/slices"
 	"net/netip"
-	"slices"
 	"sync"
 
-	"go4.org/netipx"
 	"github.com/metacubex/tailscale/net/netaddr"
 	"github.com/metacubex/tailscale/types/views"
+	"go4.org/netipx"
 )
 
 // ChromeOSVMRange returns the subset of the CGNAT IPv4 range used by
@@ -189,36 +189,43 @@ func PrefixIs6(p netip.Prefix) bool { return p.Addr().Is6() }
 // IPv6 /0 route.
 func ContainsExitRoutes(rr views.Slice[netip.Prefix]) bool {
 	var v4, v6 bool
-	for _, r := range rr.All() {
+	rr.All()(func(_ int, r netip.Prefix) bool {
 		if r == allIPv4 {
 			v4 = true
 		} else if r == allIPv6 {
 			v6 = true
 		}
-	}
+		return true
+	})
 	return v4 && v6
 }
 
 // ContainsExitRoute reports whether rr contains at least one of IPv4 or
 // IPv6 /0 (exit) routes.
 func ContainsExitRoute(rr views.Slice[netip.Prefix]) bool {
-	for _, r := range rr.All() {
+	found := false
+	rr.All()(func(_ int, r netip.Prefix) bool {
 		if r.Bits() == 0 {
-			return true
+			found = true
+			return false
 		}
-	}
-	return false
+		return true
+	})
+	return found
 }
 
 // ContainsNonExitSubnetRoutes reports whether v contains Subnet
 // Routes other than ExitNode Routes.
 func ContainsNonExitSubnetRoutes(rr views.Slice[netip.Prefix]) bool {
-	for _, r := range rr.All() {
+	found := false
+	rr.All()(func(_ int, r netip.Prefix) bool {
 		if r.Bits() != 0 {
-			return true
+			found = true
+			return false
 		}
-	}
-	return false
+		return true
+	})
+	return found
 }
 
 // WithoutExitRoutes returns rr unchanged if it has only 1 or 0 /0
@@ -229,11 +236,12 @@ func WithoutExitRoutes(rr views.Slice[netip.Prefix]) views.Slice[netip.Prefix] {
 		return rr
 	}
 	var out []netip.Prefix
-	for _, r := range rr.All() {
+	rr.All()(func(_ int, r netip.Prefix) bool {
 		if r.Bits() > 0 {
 			out = append(out, r)
 		}
-	}
+		return true
+	})
 	return views.SliceOf(out)
 }
 
@@ -245,11 +253,12 @@ func WithoutExitRoute(rr views.Slice[netip.Prefix]) views.Slice[netip.Prefix] {
 		return rr
 	}
 	var out []netip.Prefix
-	for _, r := range rr.All() {
+	rr.All()(func(_ int, r netip.Prefix) bool {
 		if r.Bits() > 0 {
 			out = append(out, r)
 		}
-	}
+		return true
+	})
 	return views.SliceOf(out)
 }
 
@@ -281,7 +290,7 @@ func SortPrefixes(p []netip.Prefix) {
 // in that match f.
 func FilterPrefixesCopy(in views.Slice[netip.Prefix], f func(netip.Prefix) bool) []netip.Prefix {
 	var out []netip.Prefix
-	for i := range in.Len() {
+	for i := 0; i < in.Len(); i++ {
 		if v := in.At(i); f(v) {
 			out = append(out, v)
 		}
@@ -327,7 +336,7 @@ func MapVia(siteID uint32, v4 netip.Prefix) (via netip.Prefix, err error) {
 // address list, either a slice (via [slices.All]) or a view (via
 // [views.Slice.All]).
 func FirstTailscaleAddrs(addrs iter.Seq2[int, netip.Prefix]) (a4, a6 netip.Addr) {
-	for _, pfx := range addrs {
+	addrs(func(_ int, pfx netip.Prefix) bool {
 		a := pfx.Addr()
 		switch {
 		case a.Is4() && !a4.IsValid() && IsTailscaleIP(a):
@@ -336,8 +345,9 @@ func FirstTailscaleAddrs(addrs iter.Seq2[int, netip.Prefix]) (a4, a6 netip.Addr)
 			a6 = a
 		}
 		if a4.IsValid() && a6.IsValid() {
-			break
+			return false
 		}
-	}
+		return true
+	})
 	return a4, a6
 }

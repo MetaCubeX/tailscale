@@ -4,7 +4,7 @@
 package eventbus
 
 import (
-	"slices"
+	"github.com/metacubex/tailscale/util/go120/slices"
 )
 
 // queue is an ordered queue of length up to capacity,
@@ -44,7 +44,10 @@ func (q *queue[T]) Add(v T) {
 		// Slide remaining values back to the start of the array.
 		n := copy(q.vals, q.vals[q.start:])
 		toClear := len(q.vals) - n
-		clear(q.vals[len(q.vals)-toClear:])
+		for i := len(q.vals) - toClear; i < len(q.vals); i++ {
+			var zero T
+			q.vals[i] = zero
+		}
 		q.vals = q.vals[:n]
 		q.start = 0
 	}

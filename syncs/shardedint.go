@@ -41,9 +41,10 @@ type intShard struct {
 // Value returns the current value.
 func (m *ShardedInt) Value() int64 {
 	var v int64
-	for s := range m.sv.All {
+	m.sv.All(func(s *intShard) bool {
 		v += s.Load()
-	}
+		return true
+	})
 	return v
 }
 
@@ -51,9 +52,10 @@ func (m *ShardedInt) Value() int64 {
 // This is intended for observability/debugging only.
 func (m *ShardedInt) GetDistribution() []int64 {
 	v := make([]int64, 0, m.sv.Len())
-	for s := range m.sv.All {
+	m.sv.All(func(s *intShard) bool {
 		v = append(v, s.Load())
-	}
+		return true
+	})
 	return v
 }
 

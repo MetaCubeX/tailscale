@@ -7,7 +7,7 @@ import (
 	"crypto/ed25519"
 	"errors"
 	"fmt"
-	"maps"
+	"github.com/metacubex/tailscale/util/go120/maps"
 
 	"github.com/metacubex/tailscale/types/tkatype"
 )

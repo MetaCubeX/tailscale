@@ -8,10 +8,10 @@ package router
 import (
 	"errors"
 	"fmt"
+	"github.com/metacubex/tailscale/util/go120/slices"
 	"net/netip"
 	"reflect"
 	"runtime"
-	"slices"
 
 	"github.com/metacubex/tailscale-wireguard-go/tun"
 	"github.com/metacubex/tailscale/feature"

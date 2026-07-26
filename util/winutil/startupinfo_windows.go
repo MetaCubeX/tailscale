@@ -6,8 +6,8 @@ package winutil
 import (
 	"errors"
 	"fmt"
+	"github.com/metacubex/tailscale/util/go120/slices"
 	"os"
-	"slices"
 	"unsafe"
 
 	"github.com/metacubex/tailscale/util/wingoes"

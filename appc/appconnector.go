@@ -12,9 +12,9 @@ package appc
 import (
 	"context"
 	"fmt"
-	"maps"
+	"github.com/metacubex/tailscale/util/go120/maps"
+	"github.com/metacubex/tailscale/util/go120/slices"
 	"net/netip"
-	"slices"
 	"strings"
 	"time"
 

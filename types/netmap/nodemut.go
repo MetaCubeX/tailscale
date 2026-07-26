@@ -4,13 +4,13 @@
 package netmap
 
 import (
-	"cmp"
+	"github.com/metacubex/tailscale/util/go120/cmp"
+	"github.com/metacubex/tailscale/util/go120/slices"
 	"net/netip"
 	"reflect"
-	"slices"
-	"sync"
 	"time"
 
+	"github.com/metacubex/tailscale/syncs"
 	"github.com/metacubex/tailscale/tailcfg"
 )
 
@@ -54,7 +54,8 @@ type NodeMutationOnline struct {
 }
 
 func (m NodeMutationOnline) Apply(n *tailcfg.Node) {
-	n.Online = new(m.Online)
+	online := m.Online
+	n.Online = &online
 }
 
 // NodeMutationLastSeen is a NodeMutation that says a node's LastSeen
@@ -65,7 +66,8 @@ type NodeMutationLastSeen struct {
 }
 
 func (m NodeMutationLastSeen) Apply(n *tailcfg.Node) {
-	n.LastSeen = new(m.LastSeen)
+	lastSeen := m.LastSeen
+	n.LastSeen = &lastSeen
 }
 
 // NodeMutationUpsert is a NodeMutation that says a peer's full Node value
@@ -96,11 +98,11 @@ func MakeNodeMutationRemove(nodeID tailcfg.NodeID) NodeMutationRemove {
 	return NodeMutationRemove{mutatingNodeID(nodeID)}
 }
 
-var peerChangeFields = sync.OnceValue(func() []reflect.StructField {
+var peerChangeFields = syncs.OnceValue(func() []reflect.StructField {
 	var fields []reflect.StructField
-	rt := reflect.TypeFor[tailcfg.PeerChange]()
-	for field := range rt.Fields() {
-		fields = append(fields, field)
+	rt := reflect.TypeOf(tailcfg.PeerChange{})
+	for i := 0; i < rt.NumField(); i++ {
+		fields = append(fields, rt.Field(i))
 	}
 	return fields
 })

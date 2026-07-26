@@ -13,17 +13,17 @@ package local
 import (
 	"bufio"
 	"bytes"
-	"cmp"
 	"context"
 	"encoding/base64"
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io"
-	"iter"
-	"net"
 	"github.com/metacubex/http"
 	"github.com/metacubex/http/httptrace"
+	"github.com/metacubex/tailscale/util/go120/cmp"
+	"github.com/metacubex/tailscale/util/go120/iter"
+	"io"
+	"net"
 	"net/netip"
 	"net/url"
 	"os/exec"
@@ -201,7 +201,8 @@ func (e *AccessDeniedError) Unwrap() error { return e.err }
 
 // IsAccessDeniedError reports whether err is or wraps an AccessDeniedError.
 func IsAccessDeniedError(err error) bool {
-	_, ok := errors.AsType[*AccessDeniedError](err)
+	var accessDeniedErr *AccessDeniedError
+	ok := errors.As(err, &accessDeniedErr)
 	return ok
 }
 
@@ -219,7 +220,8 @@ func (e *PreconditionsFailedError) Unwrap() error { return e.err }
 
 // IsPreconditionsFailedError reports whether err is or wraps an PreconditionsFailedError.
 func IsPreconditionsFailedError(err error) bool {
-	_, ok := errors.AsType[*PreconditionsFailedError](err)
+	var preconditionsFailedErr *PreconditionsFailedError
+	ok := errors.As(err, &preconditionsFailedErr)
 	return ok
 }
 
@@ -1289,7 +1291,7 @@ func tailscaledConnectHint() string {
 	// ActiveState=inactive
 	// SubState=dead
 	st := map[string]string{}
-	for line := range strings.SplitSeq(string(out), "\n") {
+	for _, line := range strings.Split(string(out), "\n") {
 		if k, v, ok := strings.Cut(line, "="); ok {
 			st[k] = strings.TrimSpace(v)
 		}

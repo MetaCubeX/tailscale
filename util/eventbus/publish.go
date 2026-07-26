@@ -47,7 +47,7 @@ func newPublisher[T any](c *Client) *Publisher[T] {
 	return &Publisher[T]{
 		core: &publisherCore{
 			client: c,
-			typ:    reflect.TypeFor[T](),
+			typ:    reflect.TypeOf((*T)(nil)).Elem(),
 		},
 	}
 }

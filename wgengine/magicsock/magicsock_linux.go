@@ -18,17 +18,17 @@ import (
 	"time"
 
 	"github.com/mdlayher/socket"
-	"golang.org/x/net/bpf"
-	"golang.org/x/net/ipv4"
-	"golang.org/x/net/ipv6"
-	"golang.org/x/sys/cpu"
-	"golang.org/x/sys/unix"
 	"github.com/metacubex/tailscale/disco"
 	"github.com/metacubex/tailscale/envknob"
 	"github.com/metacubex/tailscale/net/netns"
 	"github.com/metacubex/tailscale/types/ipproto"
 	"github.com/metacubex/tailscale/types/key"
 	"github.com/metacubex/tailscale/types/logger"
+	"golang.org/x/net/bpf"
+	"golang.org/x/net/ipv4"
+	"golang.org/x/net/ipv6"
+	"golang.org/x/sys/cpu"
+	"golang.org/x/sys/unix"
 )
 
 const (
@@ -170,11 +170,11 @@ var (
 // https://github.com/tailscale/tailscale/issues/3824
 func (c *Conn) listenRawDisco(family string) (io.Closer, error) {
 	if !envknobEnableRawDisco() {
-		// Return an 'errors.ErrUnsupported' to prevent the callee from
+		// Return errUnsupported to prevent the callee from
 		// logging; when we switch this to an opt-out (vs. an opt-in),
 		// drop the ErrUnsupported so that the callee logs that it was
 		// disabled.
-		return nil, fmt.Errorf("raw disco not enabled: %w", errors.ErrUnsupported)
+		return nil, fmt.Errorf("raw disco not enabled: %w", errUnsupported)
 	}
 
 	// https://github.com/tailscale/tailscale/issues/5607

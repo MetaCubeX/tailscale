@@ -9,10 +9,10 @@ package netmon
 import (
 	"errors"
 	"fmt"
+	"github.com/metacubex/tailscale/util/go120/slices"
 	"log"
 	"net/netip"
 	"runtime"
-	"slices"
 	"strings"
 	"sync"
 	"time"

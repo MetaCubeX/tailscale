@@ -117,7 +117,8 @@ func nodeAddrForNetwork(n tailcfg.NodeView, network string) (_ netip.Addr, ok bo
 	want4 := strings.HasSuffix(network, "4")
 	want6 := strings.HasSuffix(network, "6")
 	var v6 netip.Addr
-	for _, pfx := range addrs.All() {
+	for i := 0; i < addrs.Len(); i++ {
+		pfx := addrs.At(i)
 		ip := pfx.Addr()
 		if want4 && ip.Is4() {
 			return ip, true

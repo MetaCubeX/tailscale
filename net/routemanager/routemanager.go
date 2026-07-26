@@ -17,8 +17,8 @@
 package routemanager
 
 import (
+	"github.com/metacubex/tailscale/util/go120/slices"
 	"net/netip"
-	"slices"
 	"sync"
 	"sync/atomic"
 
@@ -28,6 +28,7 @@ import (
 	"github.com/metacubex/tailscale/types/key"
 	"github.com/metacubex/tailscale/types/logger"
 	"github.com/metacubex/tailscale/types/views"
+	"github.com/metacubex/tailscale/util/go120/maps"
 	"github.com/metacubex/tailscale/util/mak"
 	"github.com/metacubex/tailscale/util/set"
 )
@@ -419,7 +420,7 @@ func peerViewOf(n tailcfg.NodeView) peerView {
 	if n.DiscoKey().IsZero() && n.HomeDERP() == 0 && !n.IsWireGuardOnly() {
 		return pv
 	}
-	for _, aip := range n.AllowedIPs().All() {
+	n.AllowedIPs().All()(func(_ int, aip netip.Prefix) bool {
 		isSelf := aip.IsSingleIP() && tsaddr.IsTailscaleIP(aip.Addr()) ||
 			views.SliceContains(n.Addresses(), aip)
 		if isSelf {
@@ -427,7 +428,8 @@ func peerViewOf(n tailcfg.NodeView) peerView {
 		} else {
 			pv.Routes = append(pv.Routes, aip)
 		}
-	}
+		return true
+	})
 	return pv
 }
 
@@ -745,7 +747,8 @@ func (rm *RouteManager) applyUpsert(p peerView, dirty set.Set[netip.Prefix]) {
 	if !had || attrsChanged {
 		// Intern a fresh PeerRoute rather than mutating the old
 		// one, which published snapshots may still reference.
-		rm.routes[p.ID] = new(p.routeAttrs())
+		attrs := p.routeAttrs()
+		rm.routes[p.ID] = &attrs
 	}
 	if had && old.hasDataPlaneAttrs() {
 		rm.attrPeers.Add(-1)
@@ -980,8 +983,8 @@ func (rm *RouteManager) applyDirty(dirty set.Set[netip.Prefix], res *Result) {
 func (rm *RouteManager) rebuildAll(res *Result) {
 	out := &bart.Table[*PeerRoute]{}
 	osr := &bart.Lite{}
-	clear(rm.cgnatPfxs)
-	clear(rm.ulaPfxs)
+	maps.Clear(rm.cgnatPfxs)
+	maps.Clear(rm.ulaPfxs)
 
 	var plain []netip.Prefix
 	for pfx := range rm.byPrefix {

@@ -15,9 +15,9 @@ package acme
 
 import (
 	"context"
-	"github.com/metacubex/tls"
 	"errors"
 	"github.com/metacubex/http"
+	"github.com/metacubex/tls"
 	"sync"
 	"sync/atomic"
 	"time"
@@ -196,7 +196,8 @@ func getCertPEMHook(ctx context.Context, b *ipnlocal.LocalBackend, domain string
 	}
 	pair, err := e.getCertPEMWithValidity(ctx, b, domain, minValidity)
 	if err != nil {
-		if ae, ok := errors.AsType[*xacme.Error](err); ok {
+		var ae *xacme.Error
+		if errors.As(err, &ae) {
 			if d, ok := xacme.RateLimit(ae); ok {
 				return nil, certRateLimitedError{retryAfter: d, underlying: err}
 			}

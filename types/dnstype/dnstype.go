@@ -7,8 +7,8 @@ package dnstype
 //go:generate go run tailscale.com/cmd/viewer --type=Resolver --clonefunc=true
 
 import (
+	"github.com/metacubex/tailscale/util/go120/slices"
 	"net/netip"
-	"slices"
 )
 
 // Resolver is the configuration for one DNS resolver.

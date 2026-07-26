@@ -201,7 +201,7 @@ func ipForwardingEnabledLinux(p protocol, iface string) (bool, error) {
 	// Open k under /proc/sys with os.OpenInRoot so a ".." or symlinked
 	// component in the interface name can't read outside /proc/sys. It's
 	// openat-based, so it's also TOCTOU-resistant. See https://go.dev/blog/osroot.
-	f, err := os.OpenInRoot("/proc/sys", k)
+	f, err := openInRoot("/proc/sys", k)
 	if err != nil {
 		if os.IsNotExist(err) {
 			// If IPv6 is disabled, sysctl keys like "net.ipv6.conf.all.forwarding" just don't

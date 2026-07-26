@@ -6,11 +6,11 @@ package tstun
 import (
 	"errors"
 	"fmt"
+	"github.com/metacubex/tailscale/util/go120/slices"
 	"io"
 	"net/netip"
 	"os"
 	"runtime"
-	"slices"
 	"strings"
 	"sync"
 	"sync/atomic"
@@ -20,7 +20,6 @@ import (
 	"github.com/metacubex/tailscale-wireguard-go/conn"
 	"github.com/metacubex/tailscale-wireguard-go/device"
 	"github.com/metacubex/tailscale-wireguard-go/tun"
-	"go4.org/mem"
 	"github.com/metacubex/tailscale/disco"
 	"github.com/metacubex/tailscale/envknob"
 	"github.com/metacubex/tailscale/feature"
@@ -42,6 +41,7 @@ import (
 	"github.com/metacubex/tailscale/wgengine/filter"
 	"github.com/metacubex/tailscale/wgengine/netstack/gro"
 	"github.com/metacubex/tailscale/wgengine/wgcfg"
+	"go4.org/mem"
 )
 
 const maxBufferSize = device.MaxMessageSize
@@ -1360,11 +1360,11 @@ func (t *Wrapper) InjectInboundPacketBuffer(pkt *netstack_PacketBuffer, buffs []
 			return err
 		}
 	}
-	for i := range n {
+	for i := 0; i < n; i++ {
 		buffs[i] = buffs[i][:PacketStartOffset+sizes[i]]
 	}
 	defer func() {
-		for i := range n {
+		for i := 0; i < n; i++ {
 			buffs[i] = buffs[i][:cap(buffs[i])]
 		}
 	}()

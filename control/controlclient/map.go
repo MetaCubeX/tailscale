@@ -4,20 +4,20 @@
 package controlclient
 
 import (
-	"cmp"
 	"context"
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
 	"errors"
+	"github.com/metacubex/tailscale/util/go120/cmp"
+	"github.com/metacubex/tailscale/util/go120/maps"
+	"github.com/metacubex/tailscale/util/go120/slices"
 	"io"
-	"maps"
 	"net"
 	"net/netip"
 	"reflect"
 	"runtime"
 	"runtime/debug"
-	"slices"
 	"strconv"
 	"sync"
 	"time"
@@ -25,8 +25,10 @@ import (
 	"github.com/metacubex/tailscale/control/controlknobs"
 	"github.com/metacubex/tailscale/envknob"
 	"github.com/metacubex/tailscale/hostinfo"
+	"github.com/metacubex/tailscale/syncs"
 	"github.com/metacubex/tailscale/tailcfg"
 	"github.com/metacubex/tailscale/tstime"
+	"github.com/metacubex/tailscale/types/dnstype"
 	"github.com/metacubex/tailscale/types/key"
 	"github.com/metacubex/tailscale/types/logger"
 	"github.com/metacubex/tailscale/types/netmap"
@@ -589,7 +591,8 @@ func (ms *mapSession) removeUnwantedDiscoUpdatesFromFullNetmapUpdate(resp *tailc
 		// Overwrite the key and last seen in the full netmap update.
 		peer.DiscoKey = existingNode.DiscoKey()
 		if t, ok := existingNode.LastSeen().GetOk(); ok {
-			peer.LastSeen = new(t)
+			lastSeen := t
+			peer.LastSeen = &lastSeen
 		} else {
 			peer.LastSeen = nil
 		}
@@ -832,7 +835,8 @@ func (ms *mapSession) updatePeersStateFromResponse(resp *tailcfg.MapResponse) (s
 		if vp, ok := ms.peers[nodeID]; ok {
 			mut := vp.AsStruct()
 			if seen {
-				mut.LastSeen = new(clock.Now())
+				lastSeen := clock.Now()
+				mut.LastSeen = &lastSeen
 			} else {
 				mut.LastSeen = nil
 			}
@@ -844,7 +848,8 @@ func (ms *mapSession) updatePeersStateFromResponse(resp *tailcfg.MapResponse) (s
 	for nodeID, online := range resp.OnlineChange {
 		if vp, ok := ms.peers[nodeID]; ok {
 			mut := vp.AsStruct()
-			mut.Online = new(online)
+			onlineValue := online
+			mut.Online = &onlineValue
 			ms.peers[nodeID] = mut.View()
 			stats.changed++
 		}
@@ -878,11 +883,13 @@ func (ms *mapSession) updatePeersStateFromResponse(resp *tailcfg.MapResponse) (s
 			patchDiscoKey.Add(1)
 		}
 		if v := pc.Online; v != nil {
-			mut.Online = new(*v)
+			online := *v
+			mut.Online = &online
 			patchOnline.Add(1)
 		}
 		if v := pc.LastSeen; v != nil {
-			mut.LastSeen = new(*v)
+			lastSeen := *v
+			mut.LastSeen = &lastSeen
 			patchLastSeen.Add(1)
 		}
 		if v := pc.KeyExpiry; v != nil {
@@ -953,14 +960,14 @@ func (ms *mapSession) patchifyPeersChanged(resp *tailcfg.MapResponse) {
 	}
 }
 
-var nodeFields = sync.OnceValue(getNodeFields)
+var nodeFields = syncs.OnceValue(getNodeFields)
 
 // getNodeFields returns the fields of tailcfg.Node.
 func getNodeFields() []string {
-	rt := reflect.TypeFor[tailcfg.Node]()
+	rt := reflect.TypeOf((*tailcfg.Node)(nil)).Elem()
 	ret := make([]string, 0, rt.NumField())
-	for f := range rt.Fields() {
-		ret = append(ret, f.Name)
+	for i := 0; i < rt.NumField(); i++ {
+		ret = append(ret, rt.Field(i).Name)
 	}
 	return ret
 }
@@ -1039,11 +1046,13 @@ func peerChangeDiff(was tailcfg.NodeView, n *tailcfg.Node, onFalse func(string))
 			}
 		case "Key":
 			if was.Key() != n.Key {
-				pc().Key = new(n.Key)
+				key := n.Key
+				pc().Key = &key
 			}
 		case "KeyExpiry":
 			if !was.KeyExpiry().Equal(n.KeyExpiry) {
-				pc().KeyExpiry = new(n.KeyExpiry)
+				keyExpiry := n.KeyExpiry
+				pc().KeyExpiry = &keyExpiry
 			}
 		case "KeySignature":
 			if !was.KeySignature().Equal(n.KeySignature) {
@@ -1056,7 +1065,8 @@ func peerChangeDiff(was tailcfg.NodeView, n *tailcfg.Node, onFalse func(string))
 			}
 		case "DiscoKey":
 			if was.DiscoKey() != n.DiscoKey {
-				pc().DiscoKey = new(n.DiscoKey)
+				discoKey := n.DiscoKey
+				pc().DiscoKey = &discoKey
 			}
 		case "Addresses":
 			if !views.SliceEqual(was.Addresses(), views.SliceOf(n.Addresses)) {
@@ -1112,13 +1122,14 @@ func peerChangeDiff(was tailcfg.NodeView, n *tailcfg.Node, onFalse func(string))
 			} else {
 				// If they have the same length, check that all their keys
 				// have the same values.
-				for k, v := range was.CapMap().All() {
+				was.CapMap().All()(func(k tailcfg.NodeCapability, v views.Slice[tailcfg.RawMessage]) bool {
 					nv, ok := n.CapMap[k]
 					if !ok || !views.SliceEqual(v, views.SliceOf(nv)) {
 						pc().CapMap = maps.Clone(n.CapMap)
-						break
+						return false
 					}
-				}
+					return true
+				})
 			}
 		case "Tags":
 			if !views.SliceEqual(was.Tags(), views.SliceOf(n.Tags)) {
@@ -1132,11 +1143,13 @@ func peerChangeDiff(was tailcfg.NodeView, n *tailcfg.Node, onFalse func(string))
 			}
 		case "Online":
 			if wasOnline, ok := was.Online().GetOk(); ok && n.Online != nil && *n.Online != wasOnline {
-				pc().Online = new(*n.Online)
+				online := *n.Online
+				pc().Online = &online
 			}
 		case "LastSeen":
 			if wasSeen, ok := was.LastSeen().GetOk(); ok && n.LastSeen != nil && !wasSeen.Equal(*n.LastSeen) {
-				pc().LastSeen = new(*n.LastSeen)
+				lastSeen := *n.LastSeen
+				pc().LastSeen = &lastSeen
 			}
 		case "MachineAuthorized":
 			if was.MachineAuthorized() != n.MachineAuthorized {
@@ -1182,14 +1195,14 @@ func peerChangeDiff(was tailcfg.NodeView, n *tailcfg.Node, onFalse func(string))
 				return nil, false
 			}
 		case "ExitNodeDNSResolvers":
-			va, vb := was.ExitNodeDNSResolvers(), views.SliceOfViews(n.ExitNodeDNSResolvers)
+			va, vb := was.ExitNodeDNSResolvers(), views.SliceOfViews[*dnstype.Resolver, dnstype.ResolverView](n.ExitNodeDNSResolvers)
 
 			if va.Len() != vb.Len() {
 				onFalse(field)
 				return nil, false
 			}
 
-			for i := range va.Len() {
+			for i := 0; i < va.Len(); i++ {
 				if !va.At(i).Equal(vb.At(i)) {
 					onFalse(field)
 					return nil, false
@@ -1212,7 +1225,7 @@ func (ms *mapSession) PeerIDAndKeyByTailscaleIP(ip netip.Addr) (tailcfg.NodeID, 
 	defer ms.peersMu.RUnlock()
 	for _, n := range ms.peers {
 		ad := n.Addresses()
-		for i := range ad.Len() {
+		for i := 0; i < ad.Len(); i++ {
 			a := ad.At(i)
 			if a.Addr() == ip {
 				return n.ID(), n.Key(), true

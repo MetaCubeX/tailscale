@@ -6,12 +6,12 @@ package ipn
 import (
 	"errors"
 	"fmt"
-	"iter"
+	"github.com/metacubex/tailscale/util/go120/iter"
+	"github.com/metacubex/tailscale/util/go120/slices"
 	"net"
 	"net/netip"
 	"net/url"
 	"runtime"
-	"slices"
 	"strconv"
 	"strings"
 
@@ -717,7 +717,7 @@ func CheckFunnelPort(wantedPort uint16, node *ipnstate.PeerStatus) error {
 		return deny("")
 	}
 	wantedPortString := strconv.Itoa(int(wantedPort))
-	for ps := range strings.SplitSeq(portsStr, ",") {
+	for _, ps := range strings.Split(portsStr, ",") {
 		if ps == "" {
 			continue
 		}
@@ -840,43 +840,52 @@ func ExpandProxyTargetValue(target string, supportedSchemes []string, defaultSch
 // The key is the port number.
 func (v ServeConfigView) TCPs() iter.Seq2[uint16, TCPPortHandlerView] {
 	return func(yield func(uint16, TCPPortHandlerView) bool) {
-		for k, v := range v.TCP().All() {
-			if !yield(k, v) {
-				return
-			}
+		keepGoing := true
+		v.TCP().All()(func(k uint16, handler TCPPortHandlerView) bool {
+			keepGoing = yield(k, handler)
+			return keepGoing
+		})
+		if !keepGoing {
+			return
 		}
-		for _, conf := range v.Foreground().All() {
-			for k, v := range conf.TCP().All() {
-				if !yield(k, v) {
-					return
-				}
-			}
-		}
+		v.Foreground().All()(func(_ string, conf ServeConfigView) bool {
+			conf.TCP().All()(func(k uint16, handler TCPPortHandlerView) bool {
+				keepGoing = yield(k, handler)
+				return keepGoing
+			})
+			return keepGoing
+		})
 	}
 }
 
 // Webs returns an iterator over both background and foreground Web configurations.
 func (v ServeConfigView) Webs() iter.Seq2[HostPort, WebServerConfigView] {
 	return func(yield func(HostPort, WebServerConfigView) bool) {
-		for k, v := range v.Web().All() {
-			if !yield(k, v) {
-				return
-			}
+		keepGoing := true
+		v.Web().All()(func(k HostPort, handler WebServerConfigView) bool {
+			keepGoing = yield(k, handler)
+			return keepGoing
+		})
+		if !keepGoing {
+			return
 		}
-		for _, conf := range v.Foreground().All() {
-			for k, v := range conf.Web().All() {
-				if !yield(k, v) {
-					return
-				}
-			}
+		v.Foreground().All()(func(_ string, conf ServeConfigView) bool {
+			conf.Web().All()(func(k HostPort, handler WebServerConfigView) bool {
+				keepGoing = yield(k, handler)
+				return keepGoing
+			})
+			return keepGoing
+		})
+		if !keepGoing {
+			return
 		}
-		for _, service := range v.Services().All() {
-			for k, v := range service.Web().All() {
-				if !yield(k, v) {
-					return
-				}
-			}
-		}
+		v.Services().All()(func(_ tailcfg.ServiceName, service ServiceConfigView) bool {
+			service.Web().All()(func(k HostPort, handler WebServerConfigView) bool {
+				keepGoing = yield(k, handler)
+				return keepGoing
+			})
+			return keepGoing
+		})
 	}
 }
 
@@ -914,10 +923,14 @@ func (v ServeConfigView) FindTCP(port uint16) (res TCPPortHandlerView, ok bool) 
 // prefers a foreground match first followed by a background search if none
 // existed.
 func (v ServeConfigView) FindWeb(hp HostPort) (res WebServerConfigView, ok bool) {
-	for _, conf := range v.Foreground().All() {
-		if res, ok := conf.Web().GetOk(hp); ok {
-			return res, ok
+	v.Foreground().All()(func(_ string, conf ServeConfigView) bool {
+		if res, ok = conf.Web().GetOk(hp); ok {
+			return false
 		}
+		return true
+	})
+	if ok {
+		return res, ok
 	}
 	return v.Web().GetOk(hp)
 }
@@ -925,12 +938,13 @@ func (v ServeConfigView) FindWeb(hp HostPort) (res WebServerConfigView, ok bool)
 // FindForegroundTCP returns the first foreground TCP handler matching the input
 // port.
 func (v ServeConfigView) FindForegroundTCP(port uint16) (res TCPPortHandlerView, ok bool) {
-	for _, conf := range v.Foreground().All() {
-		if res, ok := conf.TCP().GetOk(port); ok {
-			return res, ok
+	v.Foreground().All()(func(_ string, conf ServeConfigView) bool {
+		if res, ok = conf.TCP().GetOk(port); ok {
+			return false
 		}
-	}
-	return res, false
+		return true
+	})
+	return res, ok
 }
 
 // HasAllowFunnel returns whether this config has at least one AllowFunnel
@@ -939,12 +953,15 @@ func (v ServeConfigView) HasAllowFunnel() bool {
 	if v.AllowFunnel().Len() > 0 {
 		return true
 	}
-	for _, conf := range v.Foreground().All() {
+	found := false
+	v.Foreground().All()(func(_ string, conf ServeConfigView) bool {
 		if conf.AllowFunnel().Len() > 0 {
-			return true
+			found = true
+			return false
 		}
-	}
-	return false
+		return true
+	})
+	return found
 }
 
 // FindFunnel reports whether target exists in either the background AllowFunnel
@@ -953,12 +970,15 @@ func (v ServeConfigView) HasFunnelForTarget(target HostPort) bool {
 	if v.AllowFunnel().Get(target) {
 		return true
 	}
-	for _, conf := range v.Foreground().All() {
+	found := false
+	v.Foreground().All()(func(_ string, conf ServeConfigView) bool {
 		if conf.AllowFunnel().Get(target) {
-			return true
+			found = true
+			return false
 		}
-	}
-	return false
+		return true
+	})
+	return found
 }
 
 // ServicePortRange returns the list of tailcfg.ProtoPortRange that represents
@@ -974,11 +994,12 @@ func (v ServiceConfigView) ServicePortRange() []tailcfg.ProtoPortRange {
 
 	// Deduplicate the ports.
 	servePorts := make(set.Set[uint16])
-	for port := range v.TCP().All() {
+	v.TCP().All()(func(port uint16, _ TCPPortHandlerView) bool {
 		if port > 0 {
 			servePorts.Add(uint16(port))
 		}
-	}
+		return true
+	})
 	dedupedServePorts := servePorts.Slice()
 	slices.Sort(dedupedServePorts)
 

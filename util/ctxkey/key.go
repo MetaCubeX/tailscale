@@ -60,7 +60,7 @@ func New[Value any](name string, defaultValue Value) Key[Value] {
 	// since newly allocated pointers are globally unique within a process.
 	key := Key[Value]{name: new(stringer[string])}
 	if name == "" {
-		name = reflect.TypeFor[Value]().String()
+		name = typeFor[Value]().String()
 	}
 	key.name.v = name
 	if v := reflect.ValueOf(defaultValue); v.IsValid() && !v.IsZero() {
@@ -73,7 +73,7 @@ func New[Value any](name string, defaultValue Value) Key[Value] {
 func (key Key[Value]) contextKey() any {
 	if key.name == nil {
 		// Use the reflect.Type of the Value (implies key not created by New).
-		return reflect.TypeFor[Value]()
+		return typeFor[Value]()
 	} else {
 		// Use the name pointer directly (implies key created by New).
 		return key.name
@@ -114,9 +114,14 @@ func (key Key[Value]) Has(ctx context.Context) (ok bool) {
 // String returns the name of the key.
 func (key Key[Value]) String() string {
 	if key.name == nil {
-		return reflect.TypeFor[Value]().String()
+		return typeFor[Value]().String()
 	}
 	return key.name.String()
+}
+
+func typeFor[T any]() reflect.Type {
+	var zero *T
+	return reflect.TypeOf(zero).Elem()
 }
 
 // stringer implements [fmt.Stringer] on a generic T.

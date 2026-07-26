@@ -8,8 +8,8 @@ package localapi
 import (
 	"errors"
 	"fmt"
-	"maps"
 	"github.com/metacubex/http"
+	"github.com/metacubex/tailscale/util/go120/maps"
 	"strings"
 	"time"
 
@@ -42,7 +42,8 @@ func (h *Handler) serveCert(w http.ResponseWriter, r *http.Request) {
 	}
 	pair, err := h.b.GetCertPEMWithValidity(r.Context(), domain, minValidity)
 	if err != nil {
-		if hs, ok := errors.AsType[tsweb.HTTPStatuser](err); ok {
+		var hs tsweb.HTTPStatuser
+		if errors.As(err, &hs) {
 			resp := hs.HTTPStatus()
 			maps.Copy(w.Header(), resp.Header)
 			http.Error(w, resp.Msg, resp.Code)

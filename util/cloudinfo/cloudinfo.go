@@ -10,11 +10,11 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/metacubex/http"
+	"github.com/metacubex/tailscale/util/go120/slices"
 	"io"
 	"net"
-	"github.com/metacubex/http"
 	"net/netip"
-	"slices"
 	"strings"
 	"time"
 

@@ -4,12 +4,12 @@
 package feature
 
 import (
-	"io"
 	"github.com/metacubex/http"
+	"io"
 	"net/url"
 	"os"
-	"sync"
 
+	"github.com/metacubex/tailscale/syncs"
 	"github.com/metacubex/tailscale/types/logger"
 	"github.com/metacubex/tailscale/types/persist"
 )
@@ -33,7 +33,7 @@ var HookLogSink Hook[func() io.Writer]
 // to conditionally initialize.
 var HookCanAutoUpdate Hook[func() bool]
 
-var testAllowAutoUpdate = sync.OnceValue(func() bool {
+var testAllowAutoUpdate = syncs.OnceValue(func() bool {
 	return os.Getenv("TS_TEST_ALLOW_AUTO_UPDATE") == "1"
 })
 

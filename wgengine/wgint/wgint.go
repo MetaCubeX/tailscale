@@ -23,7 +23,7 @@ var (
 )
 
 func getPeerStatsOffset(name string) uintptr {
-	peerType := reflect.TypeFor[device.Peer]()
+	peerType := reflect.TypeOf((*device.Peer)(nil)).Elem()
 	field, ok := peerType.FieldByName(name)
 	if !ok {
 		panic("no " + name + " field in device.Peer")
@@ -35,7 +35,7 @@ func getPeerStatsOffset(name string) uintptr {
 }
 
 func getPeerHandshakeAttemptsOffset() uintptr {
-	peerType := reflect.TypeFor[device.Peer]()
+	peerType := reflect.TypeOf((*device.Peer)(nil)).Elem()
 	field, ok := peerType.FieldByName("timers")
 	if !ok {
 		panic("no timers field in device.Peer")

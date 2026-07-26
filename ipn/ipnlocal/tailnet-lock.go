@@ -15,12 +15,12 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io"
 	"github.com/metacubex/http"
+	"github.com/metacubex/tailscale/util/go120/slices"
+	"io"
 	"net/netip"
 	"os"
 	"path/filepath"
-	"slices"
 	"time"
 
 	"github.com/metacubex/tailscale/envknob"
@@ -541,7 +541,9 @@ func (b *LocalBackend) tkaBootstrapFromGenesisLocked(g tkatype.MarshaledAUM, per
 		}
 		bootstrapStateID := fmt.Sprintf("%d:%d", genesis.State.StateID1, genesis.State.StateID2)
 
-		for _, stateID := range persist.DisallowedTKAStateIDs().All() {
+		stateIDs := persist.DisallowedTKAStateIDs()
+		for i := 0; i < stateIDs.Len(); i++ {
+			stateID := stateIDs.At(i)
 			if stateID == bootstrapStateID {
 				return fmt.Errorf("TKA with stateID of %q is disallowed on this node", stateID)
 			}
@@ -632,7 +634,8 @@ func (b *LocalBackend) TailnetLockStatus() *ipnstate.TailnetLockStatus {
 
 	var filtered []*ipnstate.TKAPeer
 	for _, fp := range b.tka.filtered {
-		filtered = append(filtered, new(fp))
+		fpCopy := fp
+		filtered = append(filtered, &fpCopy)
 	}
 
 	var visible []*ipnstate.TKAPeer
@@ -673,7 +676,9 @@ func tkaStateFromPeer(p tailcfg.NodeView) ipnstate.TKAPeer {
 		TailscaleIPs: make([]netip.Addr, 0, p.Addresses().Len()),
 		NodeKey:      p.Key(),
 	}
-	for _, addr := range p.Addresses().All() {
+	addrs := p.Addresses()
+	for i := 0; i < addrs.Len(); i++ {
+		addr := addrs.At(i)
 		if addr.IsSingleIP() && tsaddr.IsTailscaleIP(addr.Addr()) {
 			fp.TailscaleIPs = append(fp.TailscaleIPs, addr.Addr())
 		}
@@ -1019,7 +1024,7 @@ func (b *LocalBackend) TailnetLockLog(maxEntries int) ([]ipnstate.TailnetLockUpd
 
 	var out []ipnstate.TailnetLockUpdate
 	cursor := b.tka.authority.Head()
-	for range maxEntries {
+	for i := 0; i < maxEntries; i++ {
 		aum, err := b.tka.storage.AUM(cursor)
 		if err != nil {
 			if err == os.ErrNotExist {

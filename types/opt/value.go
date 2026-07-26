@@ -94,7 +94,7 @@ func (o Value[T]) Equal(v Value[T]) bool {
 	if eq, ok := ov.(equatable[T]); ok {
 		return eq.Equal(v.value)
 	}
-	if reflect.TypeFor[T]().Comparable() {
+	if reflect.TypeOf((*T)(nil)).Elem().Comparable() {
 		return ov == any(v.value)
 	}
 	return false

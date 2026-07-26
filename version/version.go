@@ -9,9 +9,9 @@ import (
 	"runtime/debug"
 	"strconv"
 	"strings"
-	"sync"
 
 	tailscaleroot "github.com/metacubex/tailscale"
+	"github.com/metacubex/tailscale/syncs"
 	"github.com/metacubex/tailscale/types/lazy"
 )
 
@@ -118,7 +118,7 @@ func (i embeddedInfo) commitAbbrev() string {
 	return i.commit
 }
 
-var getEmbeddedInfo = sync.OnceValue(func() embeddedInfo {
+var getEmbeddedInfo = syncs.OnceValue(func() embeddedInfo {
 	bi, ok := debug.ReadBuildInfo()
 	if !ok {
 		return embeddedInfo{}
@@ -150,7 +150,7 @@ var getEmbeddedInfo = sync.OnceValue(func() embeddedInfo {
 // used to build this binary, if any. It is read separately from getEmbeddedInfo
 // because that function discards build info when VCS fields are missing (e.g.
 // in test binaries), but the toolchain rev is still present.
-var tailscaleToolchainRev = sync.OnceValue(func() string {
+var tailscaleToolchainRev = syncs.OnceValue(func() string {
 	bi, ok := debug.ReadBuildInfo()
 	if !ok {
 		return ""
@@ -202,7 +202,7 @@ func isValidLongWithTwoRepos(v string) bool {
 		if len(s) < 6 {
 			return false
 		}
-		for i := range len(s) {
+		for i := 0; i < len(s); i++ {
 			b := s[i]
 			if (b < '0' || b > '9') && (b < 'a' || b > 'f') {
 				return false

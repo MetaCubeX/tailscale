@@ -10,9 +10,10 @@ import (
 	"os"
 	"strings"
 
-	"golang.org/x/sys/unix"
+	"github.com/metacubex/tailscale/types/result"
 	"github.com/metacubex/tailscale/util/lineiter"
 	"github.com/metacubex/tailscale/version/distro"
+	"golang.org/x/sys/unix"
 )
 
 func init() {
@@ -25,8 +26,8 @@ func init() {
 }
 
 var (
-	lazyVersionMeta = &lazyAtomicValue[versionMeta]{f: new(linuxVersionMeta)}
-	lazyOSVersion   = &lazyAtomicValue[string]{f: new(osVersionLinux)}
+	lazyVersionMeta = &lazyAtomicValue[versionMeta]{f: funcPtr(linuxVersionMeta)}
+	lazyOSVersion   = &lazyAtomicValue[string]{f: funcPtr(osVersionLinux)}
 )
 
 type versionMeta struct {
@@ -68,7 +69,7 @@ func deviceModelLinux() string {
 }
 
 func getQnapQtsVersion(versionInfo string) string {
-	for field := range strings.FieldsSeq(versionInfo) {
+	for _, field := range strings.Fields(versionInfo) {
 		if suffix, ok := strings.CutPrefix(field, "QTSFW_"); ok {
 			return suffix
 		}
@@ -105,18 +106,19 @@ func linuxVersionMeta() (meta versionMeta) {
 	}
 
 	m := map[string]string{}
-	for lr := range lineiter.File(propFile) {
+	lineiter.File(propFile)(func(lr result.Of[[]byte]) bool {
 		line, err := lr.Value()
 		if err != nil {
-			break
+			return false
 		}
 		before, after, ok := bytes.Cut(line, []byte{'='})
 		if !ok {
-			continue
+			return true
 		}
 		k, v := string(before), strings.Trim(string(after), `"'`)
 		m[k] = v
-	}
+		return true
+	})
 
 	if v := m["VERSION_CODENAME"]; v != "" {
 		meta.DistroCodeName = v

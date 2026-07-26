@@ -44,6 +44,7 @@ func RaceDial(ctx context.Context, addrs []netip.AddrPort, dial DialFunc, fallba
 
 	go func() {
 		for i, addr := range ordered {
+			addr := addr
 			if i > 0 {
 				t := time.NewTimer(fallbackDelay)
 				select {

@@ -12,13 +12,13 @@ import (
 	"unicode/utf16"
 	"unsafe"
 
+	"github.com/metacubex/tailscale/util/osdiag/internal/wsc"
 	"github.com/metacubex/tailscale/util/wingoes/com"
 	"github.com/metacubex/tailscale/util/wingoes/pe"
-	"golang.org/x/sys/windows"
-	"golang.org/x/sys/windows/registry"
-	"github.com/metacubex/tailscale/util/osdiag/internal/wsc"
 	"github.com/metacubex/tailscale/util/winutil"
 	"github.com/metacubex/tailscale/util/winutil/authenticode"
+	"golang.org/x/sys/windows"
+	"golang.org/x/sys/windows/registry"
 )
 
 var (
@@ -541,7 +541,7 @@ func getSecurityInfo() map[string]any {
 			continue
 		}
 
-		n = min(n, maxProvCount)
+		n = minInt32(n, maxProvCount)
 		values := make([]any, 0, n)
 
 		for i := int32(0); i < n; i++ {
@@ -583,6 +583,13 @@ func getSecurityInfo() map[string]any {
 	}
 
 	return result
+}
+
+func minInt32(a, b int32) int32 {
+	if a < b {
+		return a
+	}
+	return b
 }
 
 type _MEMORYSTATUSEX struct {

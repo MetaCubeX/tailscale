@@ -72,9 +72,12 @@ var policyLockRestricted atomic.Int32
 // would result in a deadlock. See tailscale/tailscale#14416 for more information.
 func RestrictPolicyLocks() (removeRestriction func()) {
 	policyLockRestricted.Add(1)
-	return sync.OnceFunc(func() {
-		policyLockRestricted.Add(-1)
-	})
+	var once sync.Once
+	return func() {
+		once.Do(func() {
+			policyLockRestricted.Add(-1)
+		})
+	}
 }
 
 // NewMachinePolicyLock creates a PolicyLock that facilitates pausing the

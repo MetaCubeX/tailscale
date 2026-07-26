@@ -45,12 +45,13 @@ func GroupRoutersByPrefix(nodes []tailcfg.NodeView) RoutersByPrefix {
 // The result omits any prefix that is one of the node’s local addresses.
 func routes(n tailcfg.NodeView) []netip.Prefix {
 	var routes []netip.Prefix
-	for _, pfx := range n.AllowedIPs().All() {
+	n.AllowedIPs().All()(func(_ int, pfx netip.Prefix) bool {
 		// Routers never forward their own local addresses.
 		if views.SliceContains(n.Addresses(), pfx) {
-			continue
+			return true
 		}
 		routes = append(routes, pfx)
-	}
+		return true
+	})
 	return routes
 }

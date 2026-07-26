@@ -11,8 +11,8 @@ import (
 	"path/filepath"
 	"runtime"
 
-	"golang.org/x/sys/unix"
 	"github.com/metacubex/tailscale/version/distro"
+	"golang.org/x/sys/unix"
 )
 
 func init() {
@@ -48,7 +48,7 @@ func stateFileUnix() string {
 	}
 
 	try := path
-	for range 3 { // check writability of the file, /var/lib/tailscale, and /var/lib
+	for i := 0; i < 3; i++ { // check writability of the file, /var/lib/tailscale, and /var/lib
 		err := unix.Access(try, unix.O_RDWR)
 		if err == nil {
 			return path

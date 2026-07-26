@@ -8,11 +8,11 @@ package ipnstate
 
 import (
 	"fmt"
+	"github.com/metacubex/tailscale/util/go120/slices"
 	"html"
 	"io"
 	"log"
 	"net/netip"
-	"slices"
 	"sort"
 	"strings"
 	"time"
@@ -370,12 +370,15 @@ func (ps *PeerStatus) IsRouter() bool {
 		return false
 	}
 
-	for _, r := range ps.AllowedIPs.All() {
+	isRouter := false
+	ps.AllowedIPs.All()(func(_ int, r netip.Prefix) bool {
 		if !r.IsSingleIP() || !slices.Contains(ps.TailscaleIPs, r.Addr()) {
-			return true
+			isRouter = true
+			return false
 		}
-	}
-	return false
+		return true
+	})
+	return isRouter
 }
 
 // IsTagged reports whether ps is tagged.
@@ -565,7 +568,8 @@ func (sb *StatusBuilder) AddPeer(peer key.NodePublic, st *PeerStatus) {
 		e.Expired = true
 	}
 	if t := st.KeyExpiry; t != nil {
-		e.KeyExpiry = new(*t)
+		keyExpiry := *t
+		e.KeyExpiry = &keyExpiry
 	}
 	if v := st.CapMap; v != nil {
 		e.CapMap = v

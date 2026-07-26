@@ -4,14 +4,13 @@
 package routecheck
 
 import (
-	"cmp"
 	"context"
-	"iter"
+	"github.com/metacubex/tailscale/util/go120/cmp"
+	"github.com/metacubex/tailscale/util/go120/iter"
+	"github.com/metacubex/tailscale/util/go120/slices"
 	"net/netip"
-	"slices"
 	"time"
 
-	"golang.org/x/sync/errgroup"
 	"github.com/metacubex/tailscale/ipn/ipnstate"
 	"github.com/metacubex/tailscale/net/traffic"
 	"github.com/metacubex/tailscale/syncs"
@@ -19,6 +18,7 @@ import (
 	"github.com/metacubex/tailscale/tsconst"
 	"github.com/metacubex/tailscale/util/clientmetric"
 	"github.com/metacubex/tailscale/util/mak"
+	"golang.org/x/sync/errgroup"
 )
 
 var (
@@ -75,7 +75,7 @@ func (c *Client) probe(ctx context.Context, nodes iter.Seq[probed], limit int, t
 	// it should be possible to deprioritize or skip probes
 	// if there are already enough responses for a particular resource.
 	// This optimization has not been implemented yet, so all nodes are probed.
-	for n := range nodes {
+	nodes(func(n probed) bool {
 		// WireGuard-only nodes are assumed to be reachable, since
 		// we don’t want to probe nodes that don’t understand Disco pings.
 		//
@@ -89,7 +89,7 @@ func (c *Client) probe(ctx context.Context, nodes iter.Seq[probed], limit int, t
 		if n.IsWireGuardOnly() {
 			timestampProbe(n)
 			markReachable(n)
-			continue
+			return true
 		}
 
 		g.Go(func() error {
@@ -150,7 +150,8 @@ func (c *Client) probe(ctx context.Context, nodes iter.Seq[probed], limit int, t
 			markReachable(n)
 			return nil
 		})
-	}
+		return true
+	})
 	g.Wait()
 	r.Done = time.Now()
 	return r, nil
@@ -178,20 +179,21 @@ func (c *Client) Probe(ctx context.Context, nodes iter.Seq[tailcfg.NodeView], li
 	addrFor := addrPicker(can4, can6)
 
 	var dsts iter.Seq[probed] = func(yield func(probed) bool) {
-		for n := range nodes {
+		nodes(func(n tailcfg.NodeView) bool {
 			// Probe one of the tailnet addresses.
 			addr := addrFor(n)
 			if !addr.IsValid() {
-				continue // No valid addresses.
+				return true // No valid addresses.
 			}
 			if !yield(probed{
 				NodeView: n,
 				addr:     addr,
 				routes:   routes(n),
 			}) {
-				return
+				return false
 			}
-		}
+			return true
+		})
 	}
 
 	return c.probe(ctx, dsts, limit, timeout)
@@ -262,7 +264,7 @@ func supportsIPVersions(n tailcfg.NodeView) (can4, can6 bool) {
 	if !n.Valid() {
 		return false, false
 	}
-	for _, ip := range n.Addresses().All() {
+	n.Addresses().All()(func(_ int, ip netip.Prefix) bool {
 		addr := ip.Addr()
 		if addr.Is4() {
 			can4 = true
@@ -270,9 +272,10 @@ func supportsIPVersions(n tailcfg.NodeView) (can4, can6 bool) {
 			can6 = true
 		}
 		if can4 && can6 {
-			break
+			return false
 		}
-	}
+		return true
+	})
 	return can4, can6
 }
 
@@ -281,17 +284,20 @@ func addrPicker(can4, can6 bool) func(n tailcfg.NodeView) netip.Addr {
 	// because this picks just one address and there’s no fallback facility.
 	// [Client.Probe] is the caller that will need refactoring.
 	return func(n tailcfg.NodeView) netip.Addr {
-		var zero netip.Addr
-		for _, ip := range n.Addresses().All() {
+		var selected netip.Addr
+		n.Addresses().All()(func(_ int, ip netip.Prefix) bool {
 			// Find a compatible IP address.
 			addr := ip.Addr()
 			if can4 && addr.Is4() {
-				return addr
+				selected = addr
+				return false
 			}
 			if can6 && addr.Is6() {
-				return addr
+				selected = addr
+				return false
 			}
-		}
-		return zero
+			return true
+		})
+		return selected
 	}
 }

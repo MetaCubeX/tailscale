@@ -9,11 +9,11 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"github.com/metacubex/tailscale/util/go120/maps"
+	"github.com/metacubex/tailscale/util/go120/slices"
 	"log"
-	"maps"
 	"os"
 	"path/filepath"
-	"slices"
 	"sync"
 	"time"
 
@@ -709,7 +709,7 @@ func markActiveChain(storage Chonk, verdict map[AUMHash]retainState, minChain in
 		return AUMHash{}, err
 	}
 
-	for i := range minChain {
+	for i := 0; i < minChain; i++ {
 		h := next.Hash()
 		verdict[h] |= retainStateActive
 

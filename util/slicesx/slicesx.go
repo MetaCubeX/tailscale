@@ -6,7 +6,7 @@ package slicesx
 
 import (
 	rand "github.com/metacubex/randv2"
-	"slices"
+	"github.com/metacubex/tailscale/util/go120/slices"
 )
 
 // Interleave combines two slices of the form [a, b, c] and [x, y, z] into a

@@ -8,6 +8,8 @@ import (
 
 	"encoding/binary"
 	"net/netip"
+
+	"github.com/metacubex/tailscale/util/go120/cmp"
 )
 
 // ICMPEchoPayload generates a new random ID/Sequence pair, and returns a uint32
@@ -83,7 +85,7 @@ func GenerateICMPHostUnreachable(from, to netip.Addr, invoking *Parsed) []byte {
 
 // icmpDestUnreachablePayload composes the payload for an ICMP "Destination Unreachable" packet.
 func icmpDestUnreachablePayload(orig []byte, maxOrig int) []byte {
-	n := min(len(orig), maxOrig)
+	n := cmp.Min(len(orig), maxOrig)
 	payload := make([]byte, icmpDestUnreachableUnusedLen+n)
 	copy(payload[icmpDestUnreachableUnusedLen:], orig[:n])
 	return payload

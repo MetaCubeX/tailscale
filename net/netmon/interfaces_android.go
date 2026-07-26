@@ -8,11 +8,12 @@ import (
 	"net/netip"
 	"sync/atomic"
 
-	"go4.org/mem"
-	"golang.org/x/sys/unix"
 	"github.com/metacubex/tailscale/net/netaddr"
 	"github.com/metacubex/tailscale/syncs"
+	"github.com/metacubex/tailscale/types/result"
 	"github.com/metacubex/tailscale/util/lineiter"
+	"go4.org/mem"
+	"golang.org/x/sys/unix"
 )
 
 var (
@@ -52,42 +53,48 @@ func likelyHomeRouterIPAndroid() (ret netip.Addr, myIP netip.Addr, ok bool) {
 	if !procNetRouteErr.Load() {
 		lineNum := 0
 		var f []mem.RO
-		for lr := range lineiter.File(procNetRoutePath) {
+		var readError bool
+		lineiter.File(procNetRoutePath)(func(lr result.Of[[]byte]) bool {
 			line, err := lr.Value()
 			if err != nil {
 				procNetRouteErr.Store(true)
-				return likelyHomeRouterIP()
+				readError = true
+				return false
 			}
 
 			lineNum++
 			if lineNum == 1 {
 				// Skip header line.
-				continue
+				return true
 			}
 			if lineNum > maxProcNetRouteRead {
-				break
+				return false
 			}
 			f = mem.AppendFields(f[:0], mem.B(line))
 			if len(f) < 4 {
-				continue
+				return true
 			}
 			gwHex, flagsHex := f[2], f[3]
 			flags, err := mem.ParseUint(flagsHex, 16, 16)
 			if err != nil {
-				continue // ignore error, skip line and keep going
+				return true // ignore error, skip line and keep going
 			}
 			if flags&(unix.RTF_UP|unix.RTF_GATEWAY) != unix.RTF_UP|unix.RTF_GATEWAY {
-				continue
+				return true
 			}
 			ipu32, err := mem.ParseUint(gwHex, 16, 32)
 			if err != nil {
-				continue // ignore error, skip line and keep going
+				return true // ignore error, skip line and keep going
 			}
 			ip := netaddr.IPv4(byte(ipu32), byte(ipu32>>8), byte(ipu32>>16), byte(ipu32>>24))
 			if ip.IsPrivate() {
 				ret = ip
-				break
+				return false
 			}
+			return true
+		})
+		if readError {
+			return likelyHomeRouterIP()
 		}
 		if ret.IsValid() {
 			// Try to get the local IP of the interface associated with

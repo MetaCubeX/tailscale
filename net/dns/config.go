@@ -9,9 +9,9 @@ package dns
 import (
 	"bufio"
 	"fmt"
+	"github.com/metacubex/tailscale/util/go120/slices"
 	"net/netip"
 	"reflect"
-	"slices"
 	"sort"
 
 	"github.com/metacubex/tailscale/control/controlknobs"

@@ -126,15 +126,16 @@ func (b *LocalBackend) discardDiskCacheLocked() {
 // clearStoreLocked discards all the keys in the specified store.
 func (b *LocalBackend) clearStoreLocked(ctx context.Context, store netmapcache.Store) error {
 	var errs []error
-	for key, err := range store.List(ctx, "") {
+	store.List(ctx, "")(func(key string, err error) bool {
 		if err != nil {
 			errs = append(errs, fmt.Errorf("list cache contest: %w", err))
-			break
+			return false
 		}
 		if err := store.Remove(ctx, key); err != nil {
 			errs = append(errs, fmt.Errorf("discard cache key %q: %w", key, err))
 		}
-	}
+		return true
+	})
 	return errors.Join(errs...)
 }
 

@@ -10,6 +10,8 @@ import (
 	"bytes"
 	"encoding/binary"
 	"unicode/utf16"
+
+	"github.com/metacubex/tailscale/util/go120/cmp"
 )
 
 // maybeUnUTF16 tries to detect whether bs contains UTF-16, and if so
@@ -28,7 +30,7 @@ func maybeUnUTF16(bs []byte) []byte {
 		// Can't be complete UTF-16.
 		return bs
 	}
-	checkLen := min(len(bs), 20)
+	checkLen := cmp.Min(len(bs), 20)
 	zeroOff := bytes.IndexByte(bs[:checkLen], 0)
 	if zeroOff == -1 {
 		return bs

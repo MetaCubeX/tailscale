@@ -50,7 +50,10 @@ func NewConn(conn *controlbase.Conn, onClose func()) *Conn {
 	return &Conn{
 		Conn:              conn,
 		earlyPayloadReady: make(chan struct{}),
-		onClose:           sync.OnceFunc(onClose),
+		onClose: func() func() {
+			var once sync.Once
+			return func() { once.Do(onClose) }
+		}(),
 	}
 }
 

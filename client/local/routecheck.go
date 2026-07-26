@@ -22,7 +22,8 @@ var ErrRouteCheckReportUnavailable = errors.New("report pending")
 func (lc *Client) RouteCheckProbe(ctx context.Context) (*routecheck.Report, error) {
 	body, err := lc.send(ctx, "POST", "/localapi/v0/routecheck?probe=true", http.StatusOK, nil)
 	if err != nil {
-		if hs, ok := errors.AsType[httpStatusError](err); ok && hs.HTTPStatus == http.StatusNoContent {
+		var hs httpStatusError
+		if errors.As(err, &hs) && hs.HTTPStatus == http.StatusNoContent {
 			return nil, ErrRouteCheckReportUnavailable
 		}
 		return nil, fmt.Errorf("error %w: %s", err, body)
@@ -34,7 +35,8 @@ func (lc *Client) RouteCheckProbe(ctx context.Context) (*routecheck.Report, erro
 func (lc *Client) RouteCheck(ctx context.Context) (*routecheck.Report, error) {
 	body, err := lc.send(ctx, "POST", "/localapi/v0/routecheck", http.StatusOK, nil)
 	if err != nil {
-		if hs, ok := errors.AsType[httpStatusError](err); ok && hs.HTTPStatus == http.StatusNoContent {
+		var hs httpStatusError
+		if errors.As(err, &hs) && hs.HTTPStatus == http.StatusNoContent {
 			return nil, ErrRouteCheckReportUnavailable
 		}
 		return nil, fmt.Errorf("error %w: %s", err, body)

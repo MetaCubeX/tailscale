@@ -5,7 +5,6 @@ package controlclient
 
 import (
 	"bytes"
-	"cmp"
 	"context"
 	"crypto"
 	"crypto/sha256"
@@ -16,6 +15,8 @@ import (
 	"fmt"
 	"github.com/metacubex/http"
 	rand "github.com/metacubex/randv2"
+	"github.com/metacubex/tailscale/util/go120/cmp"
+	"github.com/metacubex/tailscale/util/go120/slices"
 	"github.com/metacubex/tls"
 	"io"
 	"log"
@@ -24,7 +25,6 @@ import (
 	"os"
 	"reflect"
 	"runtime"
-	"slices"
 	"strconv"
 	"strings"
 	"sync/atomic"
@@ -483,7 +483,8 @@ func (c *Direct) SetHostinfo(hi *tailcfg.Hostinfo) bool {
 	if hi == nil {
 		panic("nil Hostinfo")
 	}
-	hi = new(*hi)
+	hiCopy := *hi
+	hi = &hiCopy
 	hi.NetInfo = nil
 	c.mu.Lock()
 	defer c.mu.Unlock()
@@ -1647,7 +1648,7 @@ func (c *Direct) answerPing(pr *tailcfg.PingRequest) {
 		}
 		return
 	}
-	for t := range strings.SplitSeq(pr.Types, ",") {
+	for _, t := range strings.Split(pr.Types, ",") {
 		switch pt := tailcfg.PingType(t); pt {
 		case tailcfg.PingTSMP, tailcfg.PingDisco, tailcfg.PingICMP, tailcfg.PingPeerAPI:
 			go doPingerPing(c.logf, httpc, pr, c.pinger, pt)

@@ -43,6 +43,8 @@ var publishOnce sync.Once
 // Such operations should be wrapped in a timeout context.
 const reconfigTimeout = time.Second
 
+var errUnsupported = errors.New("unsupported")
+
 // Set when ts_enable_networkmanager.
 var (
 	optNewNMManager      feature.Hook[func(ifName string) (OSConfigurator, error)]
@@ -76,17 +78,17 @@ func NewOSConfigurator(logf logger.Logf, health *health.Tracker, bus *eventbus.B
 	if f, ok := optDBusPing.GetOk(); ok {
 		env.dbusPing = f
 	} else {
-		env.dbusPing = func(_, _ string) error { return errors.ErrUnsupported }
+		env.dbusPing = func(_, _ string) error { return errUnsupported }
 	}
 	if f, ok := optDBusReadString.GetOk(); ok {
 		env.dbusReadString = f
 	} else {
-		env.dbusReadString = func(_, _, _, _ string) (string, error) { return "", errors.ErrUnsupported }
+		env.dbusReadString = func(_, _, _, _ string) (string, error) { return "", errUnsupported }
 	}
 	if f, ok := optNMIsUsingResolved.GetOk(); ok {
 		env.nmIsUsingResolved = f
 	} else {
-		env.nmIsUsingResolved = func() error { return errors.ErrUnsupported }
+		env.nmIsUsingResolved = func() error { return errUnsupported }
 	}
 	env.nmVersionBetween, _ = optNMVersionBetween.GetOk() // GetOk to not panic if nil; unused if optNMIsUsingResolved returns an error
 	mode, err := dnsMode(logf, health, env)
@@ -380,7 +382,7 @@ func isLibnssResolveUsed(env newOSConfigEnv) error {
 	if err != nil {
 		return fmt.Errorf("reading /etc/resolv.conf: %w", err)
 	}
-	for line := range strings.SplitSeq(string(bs), "\n") {
+	for _, line := range strings.Split(string(bs), "\n") {
 		fields := strings.Fields(line)
 		if len(fields) < 2 || fields[0] != "hosts:" {
 			continue

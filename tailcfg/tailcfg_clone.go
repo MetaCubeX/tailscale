@@ -6,7 +6,7 @@
 package tailcfg
 
 import (
-	"maps"
+	"github.com/metacubex/tailscale/util/go120/maps"
 	"net/netip"
 	"time"
 
@@ -16,6 +16,14 @@ import (
 	"github.com/metacubex/tailscale/types/structs"
 	"github.com/metacubex/tailscale/types/tkatype"
 )
+
+func clonePtr[T any](p *T) *T {
+	if p == nil {
+		return nil
+	}
+	v := *p
+	return &v
+}
 
 // Clone makes a deep copy of User.
 // The result aliases no memory with the original.
@@ -52,10 +60,10 @@ func (src *Node) Clone() *Node {
 	dst.Tags = append(src.Tags[:0:0], src.Tags...)
 	dst.PrimaryRoutes = append(src.PrimaryRoutes[:0:0], src.PrimaryRoutes...)
 	if dst.LastSeen != nil {
-		dst.LastSeen = new(*src.LastSeen)
+		dst.LastSeen = clonePtr(src.LastSeen)
 	}
 	if dst.Online != nil {
-		dst.Online = new(*src.Online)
+		dst.Online = clonePtr(src.Online)
 	}
 	dst.Capabilities = append(src.Capabilities[:0:0], src.Capabilities...)
 	if dst.CapMap != nil {
@@ -65,10 +73,10 @@ func (src *Node) Clone() *Node {
 		}
 	}
 	if dst.SelfNodeV4MasqAddrForThisPeer != nil {
-		dst.SelfNodeV4MasqAddrForThisPeer = new(*src.SelfNodeV4MasqAddrForThisPeer)
+		dst.SelfNodeV4MasqAddrForThisPeer = clonePtr(src.SelfNodeV4MasqAddrForThisPeer)
 	}
 	if dst.SelfNodeV6MasqAddrForThisPeer != nil {
-		dst.SelfNodeV6MasqAddrForThisPeer = new(*src.SelfNodeV6MasqAddrForThisPeer)
+		dst.SelfNodeV6MasqAddrForThisPeer = clonePtr(src.SelfNodeV6MasqAddrForThisPeer)
 	}
 	if src.ExitNodeDNSResolvers != nil {
 		dst.ExitNodeDNSResolvers = make([]*dnstype.Resolver, len(src.ExitNodeDNSResolvers))
@@ -138,10 +146,10 @@ func (src *Hostinfo) Clone() *Hostinfo {
 	dst.NetInfo = src.NetInfo.Clone()
 	dst.SSH_HostKeys = append(src.SSH_HostKeys[:0:0], src.SSH_HostKeys...)
 	if dst.Location != nil {
-		dst.Location = new(*src.Location)
+		dst.Location = clonePtr(src.Location)
 	}
 	if dst.TPM != nil {
-		dst.TPM = new(*src.TPM)
+		dst.TPM = clonePtr(src.TPM)
 	}
 	return dst
 }
@@ -342,7 +350,7 @@ func (src *RegisterResponseAuth) Clone() *RegisterResponseAuth {
 	dst := new(RegisterResponseAuth)
 	*dst = *src
 	if dst.Oauth2Token != nil {
-		dst.Oauth2Token = new(*src.Oauth2Token)
+		dst.Oauth2Token = clonePtr(src.Oauth2Token)
 	}
 	return dst
 }
@@ -366,7 +374,7 @@ func (src *RegisterRequest) Clone() *RegisterRequest {
 	dst.Hostinfo = src.Hostinfo.Clone()
 	dst.NodeKeySignature = append(src.NodeKeySignature[:0:0], src.NodeKeySignature...)
 	if dst.Timestamp != nil {
-		dst.Timestamp = new(*src.Timestamp)
+		dst.Timestamp = clonePtr(src.Timestamp)
 	}
 	dst.DeviceCert = append(src.DeviceCert[:0:0], src.DeviceCert...)
 	dst.Signature = append(src.Signature[:0:0], src.Signature...)
@@ -424,7 +432,7 @@ func (src *DERPRegion) Clone() *DERPRegion {
 			if src.Nodes[i] == nil {
 				dst.Nodes[i] = nil
 			} else {
-				dst.Nodes[i] = new(*src.Nodes[i])
+				dst.Nodes[i] = clonePtr(src.Nodes[i])
 			}
 		}
 	}
@@ -508,7 +516,7 @@ func (src *SSHRule) Clone() *SSHRule {
 	dst := new(SSHRule)
 	*dst = *src
 	if dst.RuleExpires != nil {
-		dst.RuleExpires = new(*src.RuleExpires)
+		dst.RuleExpires = clonePtr(src.RuleExpires)
 	}
 	if src.Principals != nil {
 		dst.Principals = make([]*SSHPrincipal, len(src.Principals))
@@ -545,7 +553,7 @@ func (src *SSHAction) Clone() *SSHAction {
 	*dst = *src
 	dst.Recorders = append(src.Recorders[:0:0], src.Recorders...)
 	if dst.OnRecordingFailure != nil {
-		dst.OnRecordingFailure = new(*src.OnRecordingFailure)
+		dst.OnRecordingFailure = clonePtr(src.OnRecordingFailure)
 	}
 	return dst
 }

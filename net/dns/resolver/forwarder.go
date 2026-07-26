@@ -7,15 +7,15 @@ import (
 	"bytes"
 	"context"
 	"crypto/sha256"
-	"github.com/metacubex/tls"
 	"encoding/base64"
 	"encoding/binary"
 	"errors"
 	"fmt"
-	"io"
-	"maps"
-	"net"
 	"github.com/metacubex/http"
+	"github.com/metacubex/tailscale/util/go120/maps"
+	"github.com/metacubex/tls"
+	"io"
+	"net"
 	"net/netip"
 	"net/url"
 	"runtime"
@@ -25,7 +25,6 @@ import (
 	"sync/atomic"
 	"time"
 
-	dns "golang.org/x/net/dns/dnsmessage"
 	"github.com/metacubex/tailscale/control/controlknobs"
 	"github.com/metacubex/tailscale/envknob"
 	"github.com/metacubex/tailscale/feature"
@@ -48,6 +47,7 @@ import (
 	"github.com/metacubex/tailscale/util/mak"
 	"github.com/metacubex/tailscale/util/race"
 	"github.com/metacubex/tailscale/version"
+	dns "golang.org/x/net/dns/dnsmessage"
 )
 
 // headerBytes is the number of bytes in a DNS message header.
@@ -748,7 +748,8 @@ func (f *forwarder) send(ctx context.Context, fq *forwardQuery, rr resolverAndDe
 	}
 
 	// If we got a truncated UDP response, return that instead of an error.
-	if trErr, ok := errors.AsType[truncatedResponseError](err); ok {
+	var trErr truncatedResponseError
+	if ok := errors.As(err, &trErr); ok {
 		return trErr.res, nil
 	}
 	return nil, err
@@ -1301,7 +1302,8 @@ func (f *forwarder) forwardWithDestChan(ctx context.Context, query packet, respo
 					// available; otherwise synthesize a SERVFAIL response. Note the
 					// rcode guard: firstErr may be a REFUSED rcodeResponseError if it
 					// arrived before the SERVFAIL that set sawNonRefused.
-					if rcodeErr, ok := errors.AsType[rcodeResponseError](firstErr); ok && rcodeErr.rcode == dns.RCodeServerFailure {
+					var rcodeErr rcodeResponseError
+					if ok := errors.As(firstErr, &rcodeErr); ok && rcodeErr.rcode == dns.RCodeServerFailure {
 						res = packet{rcodeErr.res, query.family, query.addr}
 					} else {
 						r, err := servfailResponse(query)
@@ -1314,7 +1316,8 @@ func (f *forwarder) forwardWithDestChan(ctx context.Context, query packet, respo
 				} else {
 					// !sawNonRefused means every error was an rcodeResponseError with rcode REFUSED,
 					// so firstErr is guaranteed to wrap one.
-					rcodeErr, ok := errors.AsType[rcodeResponseError](firstErr)
+					var rcodeErr rcodeResponseError
+					ok := errors.As(firstErr, &rcodeErr)
 					if !ok {
 						f.logf("unexpected: all errors were REFUSED but firstErr is not rcodeResponseError: %v", firstErr)
 						return firstErr

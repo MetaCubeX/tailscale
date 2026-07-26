@@ -7,7 +7,7 @@ package logtail
 
 import (
 	"context"
-	"iter"
+	"github.com/metacubex/tailscale/util/go120/iter"
 	"time"
 
 	tslogger "github.com/metacubex/tailscale/types/logger"

@@ -7,23 +7,25 @@
 package netmapcache
 
 import (
-	"cmp"
 	"context"
 	"crypto/sha256"
 	"encoding/hex"
 	"errors"
 	"fmt"
 	"io/fs"
-	"iter"
 	"os"
 	"path/filepath"
-	"slices"
 	"strings"
 	"time"
 
 	"github.com/metacubex/tailscale/feature/buildfeatures"
 	"github.com/metacubex/tailscale/tailcfg"
 	"github.com/metacubex/tailscale/types/netmap"
+	"github.com/metacubex/tailscale/types/views"
+	"github.com/metacubex/tailscale/util/go120/cmp"
+	"github.com/metacubex/tailscale/util/go120/iter"
+	"github.com/metacubex/tailscale/util/go120/maps"
+	"github.com/metacubex/tailscale/util/go120/slices"
 	"github.com/metacubex/tailscale/util/jsonv1"
 	"github.com/metacubex/tailscale/util/mak"
 	"github.com/metacubex/tailscale/util/set"
@@ -106,10 +108,10 @@ func (c *Cache) writeJSON(ctx context.Context, key cacheKey, v any) error {
 
 func (c *Cache) removeUnwantedKeys(ctx context.Context) error {
 	var errs []error
-	for key, err := range c.store.List(ctx, "") {
+	c.store.List(ctx, "")(func(key string, err error) bool {
 		if err != nil {
 			errs = append(errs, err)
-			break
+			return false
 		}
 		ckey := cacheKey(key)
 		if !c.wantKeys.Contains(ckey) {
@@ -118,7 +120,8 @@ func (c *Cache) removeUnwantedKeys(ctx context.Context) error {
 			}
 			delete(c.lastWrote, ckey) // even if removal failed, we don't want it
 		}
-	}
+		return true
+	})
 	return errors.Join(errs...)
 }
 
@@ -223,7 +226,7 @@ func (c *Cache) Store(ctx context.Context, nm *netmap.NetworkMap) error {
 	// keep track of which storage keys we actually touch during the store.
 	// This is used by c.removeUnwantedKeys to clean up keys that are no longer
 	// referenced after peers and/or profiles are removed from nm.
-	clear(c.wantKeys)
+	maps.Clear(c.wantKeys)
 	if err := c.updateSelfOnly(ctx, nm); err != nil {
 		return err
 	}
@@ -340,12 +343,14 @@ func (c *Cache) Load(ctx context.Context) (*netmap.NetworkMap, error) {
 	if s := nm.SelfNode; s.Valid() {
 		nm.NodeKey = s.Key()
 		nm.AllCaps = make(set.Set[tailcfg.NodeCapability])
-		for _, c := range s.Capabilities().All() {
+		s.Capabilities().All()(func(_ int, c tailcfg.NodeCapability) bool {
 			nm.AllCaps.Add(c)
-		}
-		for c := range s.CapMap().All() {
+			return true
+		})
+		s.CapMap().All()(func(c tailcfg.NodeCapability, _ views.Slice[tailcfg.RawMessage]) bool {
 			nm.AllCaps.Add(c)
-		}
+			return true
+		})
 	}
 
 	// Unmarshal the contents of each specified cache entry directly into the
@@ -370,26 +375,39 @@ func (c *Cache) Load(ctx context.Context) (*netmap.NetworkMap, error) {
 		return nil, err
 	}
 
-	for key, err := range c.store.List(ctx, string(peerKeyPrefix)) {
+	var listErr error
+	c.store.List(ctx, string(peerKeyPrefix))(func(key string, err error) bool {
 		if err != nil {
-			return nil, err
+			listErr = err
+			return false
 		}
 		var peer tailcfg.NodeView
 		if err := c.readJSON(ctx, cacheKey(key), &netmapNode{Node: &peer}); err != nil {
-			return nil, err
+			listErr = err
+			return false
 		}
 		nm.Peers = append(nm.Peers, peer)
+		return true
+	})
+	if listErr != nil {
+		return nil, listErr
 	}
 	slices.SortFunc(nm.Peers, func(a, b tailcfg.NodeView) int { return cmp.Compare(a.ID(), b.ID()) })
-	for key, err := range c.store.List(ctx, string(userKeyPrefix)) {
+	c.store.List(ctx, string(userKeyPrefix))(func(key string, err error) bool {
 		if err != nil {
-			return nil, err
+			listErr = err
+			return false
 		}
 		var up tailcfg.UserProfileView
 		if err := c.readJSON(ctx, cacheKey(key), &netmapUserProfile{UserProfile: &up}); err != nil {
-			return nil, err
+			listErr = err
+			return false
 		}
 		mak.Set(&nm.UserProfiles, up.ID(), up)
+		return true
+	})
+	if listErr != nil {
+		return nil, listErr
 	}
 	if err := c.readJSON(ctx, sshPolicyKey, &netmapSSH{SSHPolicy: &nm.SSHPolicy}); err != nil {
 		return nil, err

@@ -4,10 +4,10 @@
 package dnscache
 
 import (
-	"cmp"
 	"encoding/binary"
 	"errors"
 	"fmt"
+	"github.com/metacubex/tailscale/util/go120/cmp"
 	"io"
 	"sync"
 	"time"

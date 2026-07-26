@@ -6,8 +6,8 @@
 package groupmember
 
 import (
+	"github.com/metacubex/tailscale/util/go120/slices"
 	"os/user"
-	"slices"
 )
 
 // IsMemberOfGroup reports whether the provided user is a member of

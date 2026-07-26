@@ -5,17 +5,17 @@ package ipn
 
 import (
 	"bytes"
-	"cmp"
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/metacubex/tailscale/util/go120/cmp"
+	"github.com/metacubex/tailscale/util/go120/slices"
 	"log"
 	"net/netip"
 	"os"
 	"path/filepath"
 	"reflect"
 	"runtime"
-	"slices"
 	"strings"
 	"time"
 
@@ -443,7 +443,9 @@ func applyPrefsEdits(src, dst reflect.Value, mask map[string]reflect.Value) {
 
 func maskFields(v reflect.Value) map[string]reflect.Value {
 	mask := make(map[string]reflect.Value)
-	for sf, fv := range v.Fields() {
+	t := v.Type()
+	for i := 0; i < v.NumField(); i++ {
+		sf, fv := t.Field(i), v.Field(i)
 		if !strings.HasSuffix(sf.Name, "Set") {
 			continue
 		}

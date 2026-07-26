@@ -7,8 +7,8 @@ package lineiter
 import (
 	"bufio"
 	"bytes"
+	"github.com/metacubex/tailscale/util/go120/iter"
 	"io"
-	"iter"
 	"os"
 
 	"github.com/metacubex/tailscale/types/result"

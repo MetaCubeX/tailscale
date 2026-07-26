@@ -4,9 +4,9 @@
 package ipnauth
 
 import (
-	"cmp"
 	"context"
 	"errors"
+	"github.com/metacubex/tailscale/util/go120/cmp"
 
 	"github.com/metacubex/tailscale/ipn"
 )

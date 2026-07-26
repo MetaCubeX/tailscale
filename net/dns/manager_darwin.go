@@ -6,13 +6,14 @@ package dns
 import (
 	"bytes"
 	"fmt"
+	"io"
 	"io/fs"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"strconv"
 	"strings"
 
-	"go4.org/mem"
 	"github.com/metacubex/tailscale/control/controlknobs"
 	"github.com/metacubex/tailscale/health"
 	"github.com/metacubex/tailscale/net/dns/resolvconffile"
@@ -21,6 +22,8 @@ import (
 	"github.com/metacubex/tailscale/util/eventbus"
 	"github.com/metacubex/tailscale/util/mak"
 	"github.com/metacubex/tailscale/util/syspolicy/policyclient"
+	"go4.org/mem"
+	"golang.org/x/sys/unix"
 )
 
 // NewOSConfigurator creates a new OS configurator.
@@ -81,7 +84,7 @@ func (c *darwinConfigurator) SetDNS(cfg OSConfig) error {
 		return err
 	}
 
-	root, err := os.OpenRoot(c.resolverDir)
+	root, err := os.Open(c.resolverDir)
 	if err != nil {
 		return err
 	}
@@ -102,7 +105,7 @@ func (c *darwinConfigurator) SetDNS(cfg OSConfig) error {
 			sbuf.WriteString(string(d.WithoutTrailingDot()))
 		}
 		sbuf.WriteString("\n")
-		if err := root.WriteFile(searchFile, sbuf.Bytes(), 0644); err != nil {
+		if err := writeFileAt(root, searchFile, sbuf.Bytes(), 0644); err != nil {
 			return err
 		}
 	}
@@ -116,7 +119,7 @@ func (c *darwinConfigurator) SetDNS(cfg OSConfig) error {
 			return fmt.Errorf("invalid resolver domain %q: must not contain slashes or colons", fileBase)
 		}
 
-		if err := root.WriteFile(fileBase, buf.Bytes(), 0644); err != nil {
+		if err := writeFileAt(root, fileBase, buf.Bytes(), 0644); err != nil {
 			return err
 		}
 	}
@@ -221,6 +224,40 @@ func isValidResolverFileName(name string) bool {
 	return true
 }
 
+func openFileAt(root *os.File, name string, flags int, perm fs.FileMode) (*os.File, error) {
+	if !filepath.IsLocal(name) {
+		return nil, fmt.Errorf("path %q is not local", name)
+	}
+	fd, err := unix.Openat(int(root.Fd()), name, flags|unix.O_CLOEXEC|unix.O_NOFOLLOW, uint32(perm.Perm()))
+	if err != nil {
+		return nil, os.NewSyscallError("openat", err)
+	}
+	return os.NewFile(uintptr(fd), name), nil
+}
+
+func writeFileAt(root *os.File, name string, data []byte, perm fs.FileMode) (retErr error) {
+	f, err := openFileAt(root, name, unix.O_WRONLY|unix.O_CREAT|unix.O_TRUNC, perm)
+	if err != nil {
+		return err
+	}
+	defer func() {
+		if err := f.Close(); retErr == nil {
+			retErr = err
+		}
+	}()
+	_, err = f.Write(data)
+	return err
+}
+
+func readFileAt(root *os.File, name string) ([]byte, error) {
+	f, err := openFileAt(root, name, unix.O_RDONLY, 0)
+	if err != nil {
+		return nil, err
+	}
+	defer f.Close()
+	return io.ReadAll(f)
+}
+
 // GetBaseConfig returns the current OS DNS configuration, extracting it from /etc/resolv.conf.
 // We should really be using the SystemConfiguration framework to get this information, as this
 // is not a stable public API, and is provided mostly as a compatibility effort with Unix
@@ -258,7 +295,7 @@ const macResolverFileHeader = "# Added by tailscaled\n"
 // removeResolverFiles deletes all files in /etc/resolver for which the shouldDelete
 // func returns true.
 func (c *darwinConfigurator) removeResolverFiles(shouldDelete func(domain string) bool) error {
-	root, err := os.OpenRoot(c.resolverDir)
+	root, err := os.Open(c.resolverDir)
 	if os.IsNotExist(err) {
 		return nil
 	}
@@ -267,7 +304,7 @@ func (c *darwinConfigurator) removeResolverFiles(shouldDelete func(domain string
 	}
 	defer root.Close()
 
-	dents, err := fs.ReadDir(root.FS(), ".")
+	dents, err := root.ReadDir(-1)
 	if err != nil {
 		return err
 	}
@@ -279,7 +316,7 @@ func (c *darwinConfigurator) removeResolverFiles(shouldDelete func(domain string
 		if !shouldDelete(name) {
 			continue
 		}
-		contents, err := root.ReadFile(name)
+		contents, err := readFileAt(root, name)
 		if err != nil {
 			if os.IsNotExist(err) { // race?
 				continue
@@ -289,7 +326,7 @@ func (c *darwinConfigurator) removeResolverFiles(shouldDelete func(domain string
 		if !mem.HasPrefix(mem.B(contents), mem.S(macResolverFileHeader)) {
 			continue
 		}
-		if err := root.Remove(name); err != nil {
+		if err := unix.Unlinkat(int(root.Fd()), name, 0); err != nil {
 			return err
 		}
 	}

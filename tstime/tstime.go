@@ -198,7 +198,6 @@ func (StdClock) Since(t time.Time) time.Duration {
 type GoDuration struct{ time.Duration }
 
 var (
-	_ encoding.TextAppender    = (*GoDuration)(nil)
 	_ encoding.TextMarshaler   = (*GoDuration)(nil)
 	_ encoding.TextUnmarshaler = (*GoDuration)(nil)
 )

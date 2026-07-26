@@ -8,12 +8,12 @@ package ipnlocal
 import (
 	"errors"
 	"fmt"
-	"io"
-	"iter"
 	"github.com/metacubex/http"
+	"github.com/metacubex/tailscale/util/go120/iter"
+	"github.com/metacubex/tailscale/util/go120/slices"
+	"io"
 	"net/netip"
 	"os"
-	"slices"
 
 	"github.com/metacubex/tailscale/drive"
 	"github.com/metacubex/tailscale/ipn"
@@ -99,7 +99,7 @@ func (b *LocalBackend) driveSetShareLocked(share *drive.Share) (views.SliceView[
 
 	addedShare := false
 	var shares []*drive.Share
-	for _, existing := range existingShares.All() {
+	existingShares.All()(func(_ int, existing drive.ShareView) bool {
 		if existing.Name() != share.Name {
 			if !addedShare && existing.Name() > share.Name {
 				// Add share in order
@@ -108,7 +108,8 @@ func (b *LocalBackend) driveSetShareLocked(share *drive.Share) (views.SliceView[
 			}
 			shares = append(shares, existing.AsStruct())
 		}
-	}
+		return true
+	})
 	if !addedShare {
 		shares = append(shares, share)
 	}
@@ -156,10 +157,12 @@ func (b *LocalBackend) driveRenameShareLocked(oldName, newName string) (views.Sl
 	}
 
 	found := false
+	var loopErr error
 	var shares []*drive.Share
-	for _, existing := range existingShares.All() {
+	existingShares.All()(func(_ int, existing drive.ShareView) bool {
 		if existing.Name() == newName {
-			return existingShares, os.ErrExist
+			loopErr = os.ErrExist
+			return false
 		}
 		if existing.Name() == oldName {
 			share := existing.AsStruct()
@@ -169,6 +172,10 @@ func (b *LocalBackend) driveRenameShareLocked(oldName, newName string) (views.Sl
 		} else {
 			shares = append(shares, existing.AsStruct())
 		}
+		return true
+	})
+	if loopErr != nil {
+		return existingShares, loopErr
 	}
 
 	if !found {
@@ -217,13 +224,14 @@ func (b *LocalBackend) driveRemoveShareLocked(name string) (views.SliceView[*dri
 
 	found := false
 	var shares []*drive.Share
-	for _, existing := range existingShares.All() {
+	existingShares.All()(func(_ int, existing drive.ShareView) bool {
 		if existing.Name() != name {
 			shares = append(shares, existing.AsStruct())
 		} else {
 			found = true
 		}
-	}
+		return true
+	})
 
 	if !found {
 		return existingShares, os.ErrNotExist
@@ -263,7 +271,7 @@ func (b *LocalBackend) driveNotifyShares(shares views.SliceView[*drive.Share, dr
 
 	// Ensures shares is not nil to distinguish "no shares" from "not notifying shares"
 	if shares.IsNil() {
-		shares = views.SliceOfViews(make([]*drive.Share, 0))
+		shares = views.SliceOfViews[*drive.Share, drive.ShareView](make([]*drive.Share, 0))
 	}
 	b.send(ipn.Notify{DriveShares: shares})
 }
@@ -290,7 +298,7 @@ func driveShareViewsEqual(a *views.SliceView[*drive.Share, drive.ShareView], b v
 		return false
 	}
 
-	for i := range a.Len() {
+	for i := 0; i < a.Len(); i++ {
 		if !drive.ShareViewsEqual(a.At(i), b.At(i)) {
 			return false
 		}

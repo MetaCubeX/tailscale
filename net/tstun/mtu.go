@@ -132,7 +132,7 @@ func WireToTUNMTU(w WireMTU) TUNMTU {
 // 3. If TS_DEBUG_ENABLE_PMTUD is not set, the Safe MTU
 func DefaultTUNMTU() TUNMTU {
 	if m, ok := envknob.LookupUintSized("TS_DEBUG_MTU", 10, 32); ok {
-		return min(TUNMTU(m), maxTUNMTU)
+		return minTUNMTU(TUNMTU(m), maxTUNMTU)
 	}
 
 	debugPMTUD, _ := envknob.LookupBool("TS_DEBUG_ENABLE_PMTUD")
@@ -146,6 +146,13 @@ func DefaultTUNMTU() TUNMTU {
 	}
 
 	return safeTUNMTU
+}
+
+func minTUNMTU(a, b TUNMTU) TUNMTU {
+	if a < b {
+		return a
+	}
+	return b
 }
 
 // SafeWireMTU returns the wire MTU that is safe to use if we have no

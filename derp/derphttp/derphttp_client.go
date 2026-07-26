@@ -11,16 +11,16 @@ package derphttp
 
 import (
 	"bufio"
-	"cmp"
 	"context"
 	"crypto/rand"
-	"github.com/metacubex/tls"
 	"crypto/x509"
 	"errors"
 	"fmt"
+	"github.com/metacubex/http"
+	"github.com/metacubex/tailscale/util/go120/cmp"
+	"github.com/metacubex/tls"
 	"io"
 	"net"
-	"github.com/metacubex/http"
 	"net/netip"
 	"net/url"
 	"runtime"
@@ -28,7 +28,6 @@ import (
 	"sync"
 	"time"
 
-	"go4.org/mem"
 	"github.com/metacubex/tailscale/derp"
 	"github.com/metacubex/tailscale/derp/derpconst"
 	"github.com/metacubex/tailscale/envknob"
@@ -46,6 +45,7 @@ import (
 	"github.com/metacubex/tailscale/tstime"
 	"github.com/metacubex/tailscale/types/key"
 	"github.com/metacubex/tailscale/types/logger"
+	"go4.org/mem"
 )
 
 // Client is a DERP-over-HTTP client.

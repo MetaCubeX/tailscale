@@ -4,7 +4,7 @@
 package set
 
 import (
-	"slices"
+	"github.com/metacubex/tailscale/util/go120/slices"
 
 	"github.com/metacubex/tailscale/types/views"
 )
@@ -67,7 +67,8 @@ func (ss *Slice[T]) Add(vs ...T) {
 
 // AddSlice adds all elements in vs to the set.
 func (ss *Slice[T]) AddSlice(vs views.Slice[T]) {
-	for _, v := range vs.All() {
+	vs.All()(func(_ int, v T) bool {
 		ss.Add(v)
-	}
+		return true
+	})
 }

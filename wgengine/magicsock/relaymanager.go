@@ -918,7 +918,7 @@ func (r *relayManager) handshakeServerEndpoint(work *relayHandshakeWork) {
 	// detached and independent of 'BindLifetime' to prevent relay server
 	// (mis)configuration from negatively impacting client resource usage.
 	const maxHandshakeLifetime = time.Second * 30
-	timer := time.NewTimer(min(work.se.BindLifetime.Duration, maxHandshakeLifetime))
+	timer := time.NewTimer(minDuration(work.se.BindLifetime.Duration, maxHandshakeLifetime))
 	defer timer.Stop()
 
 	// Limit the number of pings we will transmit. Inbound pings trigger
@@ -1020,6 +1020,13 @@ func (r *relayManager) handshakeServerEndpoint(work *relayHandshakeWork) {
 			return
 		}
 	}
+}
+
+func minDuration(a, b time.Duration) time.Duration {
+	if a < b {
+		return a
+	}
+	return b
 }
 
 const allocateUDPRelayEndpointRequestTimeout = time.Second * 10

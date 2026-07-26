@@ -16,9 +16,9 @@ import (
 	"unicode/utf16"
 	"unsafe"
 
+	"github.com/metacubex/tailscale/types/logger"
 	"github.com/metacubex/tailscale/util/wingoes"
 	"golang.org/x/sys/windows"
-	"github.com/metacubex/tailscale/types/logger"
 )
 
 var (
@@ -461,7 +461,9 @@ func (rps RestartableProcesses) Close() error {
 	for _, v := range rps {
 		v.Close()
 	}
-	clear(rps)
+	for pid := range rps {
+		delete(rps, pid)
+	}
 	return nil
 }
 
@@ -508,7 +510,7 @@ func (rps RestartableProcesses) Terminate(logf logger.Logf, exitCode uint32, tim
 	for len(handles) > 0 {
 		// WaitForMultipleObjects can only wait on _MAXIMUM_WAIT_OBJECTS handles per
 		// call, so we batch them as necessary.
-		count := uint32(min(len(handles), _MAXIMUM_WAIT_OBJECTS))
+		count := uint32(minInt(len(handles), _MAXIMUM_WAIT_OBJECTS))
 		waitCode, err := windows.WaitForMultipleObjects(handles[:count], true, millis)
 		if err != nil {
 			errs = append(errs, fmt.Errorf("waiting on terminated process handles: %w", err))
@@ -540,6 +542,13 @@ func (rps RestartableProcesses) Terminate(logf logger.Logf, exitCode uint32, tim
 		return errors.Join(errs...)
 	}
 	return nil
+}
+
+func minInt(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
 }
 
 type terminationError struct {

@@ -9,16 +9,16 @@ import (
 	"crypto/ecdsa"
 	"crypto/elliptic"
 	"crypto/rand"
-	"github.com/metacubex/tls"
 	"crypto/x509"
 	"encoding/json"
 	"encoding/pem"
 	"errors"
 	"fmt"
-	"log"
 	randv2 "github.com/metacubex/randv2"
+	"github.com/metacubex/tailscale/util/go120/slices"
+	"github.com/metacubex/tls"
+	"log"
 	"net"
-	"slices"
 	"strings"
 	"time"
 
@@ -429,12 +429,12 @@ func (e *extension) ensureAccount(ctx context.Context, ac *xacme.Client, logf lo
 }
 
 type acmeCertIssueArgs struct {
-	cs            certStore          // certificate and ACME account storage
-	logf          logger.Logf        // logs ACME progress and failures
-	traceACME     func(any)          // optional hook for logging ACME messages
-	domain        string             // certificate domain being issued
+	cs            certStore           // certificate and ACME account storage
+	logf          logger.Logf         // logs ACME progress and failures
+	traceACME     func(any)           // optional hook for logging ACME messages
+	domain        string              // certificate domain being issued
 	opts          []xacme.OrderOption // ACME order options
-	challengeType acmeChallengeType  // challenge type to fulfill
+	challengeType acmeChallengeType   // challenge type to fulfill
 }
 
 func (args acmeCertIssueArgs) baseDomain() string { return strings.TrimPrefix(args.domain, "*.") }

@@ -195,7 +195,7 @@ type Subscriber[T any] struct {
 }
 
 func newSubscriber[T any](r *subscribeState, logf logger.Logf) *Subscriber[T] {
-	core := newSubscriberCore(r, logf, reflect.TypeFor[T]())
+	core := newSubscriberCore(r, logf, reflect.TypeOf((*T)(nil)).Elem())
 	s := &Subscriber[T]{
 		core: core,
 		read: make(chan T),
@@ -355,7 +355,7 @@ type subscriberCore struct {
 }
 
 func newSubscriberFunc[T any](r *subscribeState, f func(T), logf logger.Logf) *SubscriberFunc[T] {
-	core := newSubscriberCore(r, logf, reflect.TypeFor[T]())
+	core := newSubscriberCore(r, logf, reflect.TypeOf((*T)(nil)).Elem())
 	// The dispatch closure is the only piece that intrinsically
 	// needs T: it performs the type assertion on the head queue
 	// value and forwards the unboxed value to the user callback.

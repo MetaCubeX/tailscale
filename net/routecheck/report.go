@@ -4,11 +4,11 @@
 package routecheck
 
 import (
-	"cmp"
-	"iter"
-	"maps"
+	"github.com/metacubex/tailscale/util/go120/cmp"
+	"github.com/metacubex/tailscale/util/go120/iter"
+	"github.com/metacubex/tailscale/util/go120/maps"
+	"github.com/metacubex/tailscale/util/go120/slices"
 	"net/netip"
-	"slices"
 	"time"
 
 	jsonv2 "github.com/metacubex/jsonv2"
@@ -19,6 +19,7 @@ import (
 	"github.com/metacubex/tailscale/util/clientmetric"
 	"github.com/metacubex/tailscale/util/jsonv1"
 	"github.com/metacubex/tailscale/util/mak"
+	"go4.org/netipx"
 )
 
 var (
@@ -166,7 +167,7 @@ type RoutablePrefixes map[netip.Prefix][]Node
 // ordered by the network prefix as described in [netip.Prefix.Compare].
 func (rt RoutablePrefixes) Sorted() iter.Seq2[netip.Prefix, []Node] {
 	return func(yield func(netip.Prefix, []Node) bool) {
-		prefixes := slices.SortedFunc(maps.Keys(rt), netip.Prefix.Compare)
+		prefixes := slices.SortedFunc(maps.Keys(rt), netipx.ComparePrefix)
 		for _, p := range prefixes {
 			if !yield(p, rt[p]) {
 				return

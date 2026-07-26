@@ -6,13 +6,13 @@ package magicsock
 import (
 	"bufio"
 	"context"
-	"github.com/metacubex/tls"
 	"fmt"
-	"maps"
+	"github.com/metacubex/tailscale/util/go120/maps"
+	"github.com/metacubex/tailscale/util/go120/slices"
+	"github.com/metacubex/tls"
 	"net"
 	"net/netip"
 	"reflect"
-	"slices"
 	"time"
 	"unsafe"
 

@@ -220,7 +220,9 @@ func (k *Knobs) AsDebugJSON() map[string]any {
 	}
 	ret := map[string]any{}
 	rv := reflect.ValueOf(k).Elem() // of *k
-	for sf, fv := range rv.Fields() {
+	for i := 0; i < rv.NumField(); i++ {
+		sf := rv.Type().Field(i)
+		fv := rv.Field(i)
 		switch v := fv.Addr().Interface().(type) {
 		case *atomic.Bool:
 			ret[sf.Name] = v.Load()

@@ -139,20 +139,20 @@ package tsnet
 import (
 	"context"
 	crand "crypto/rand"
-	"github.com/metacubex/tls"
 	"encoding/hex"
 	"errors"
 	"fmt"
+	"github.com/metacubex/http"
+	"github.com/metacubex/tailscale/util/go120/slices"
+	"github.com/metacubex/tls"
 	"io"
 	"log"
 	"math"
 	"net"
-	"github.com/metacubex/http"
 	"net/netip"
 	"os"
 	"path/filepath"
 	"runtime"
-	"slices"
 	"strconv"
 	"strings"
 	"sync"
@@ -627,7 +627,9 @@ func (s *Server) close() {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 	var wg sync.WaitGroup
-	wg.Go(func() {
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
 		// Perform a best-effort final flush.
 		if s.logtail != nil {
 			s.logtail.Shutdown(ctx)
@@ -635,12 +637,14 @@ func (s *Server) close() {
 		if s.logbuffer != nil {
 			s.logbuffer.Close()
 		}
-	})
-	wg.Go(func() {
+	}()
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
 		if s.localAPIServer != nil {
 			s.localAPIServer.Shutdown(ctx)
 		}
-	})
+	}()
 
 	if s.shutdownCancel != nil {
 		s.shutdownCancel()
@@ -696,7 +700,8 @@ func (s *Server) TailscaleIPs() (ip4, ip6 netip.Addr) {
 		return
 	}
 	addrs := nm.GetAddresses()
-	for _, addr := range addrs.All() {
+	for i := 0; i < addrs.Len(); i++ {
+		addr := addrs.At(i)
 		ip := addr.Addr()
 		if ip.Is6() {
 			ip6 = ip
@@ -1788,7 +1793,8 @@ func (s *Server) decrementServiceAdvertisementLocked(name tailcfg.ServiceName) e
 			return nil
 		}
 		newAdvertised := make([]string, 0, advertised.Len()-1)
-		for _, svc := range advertised.All() {
+		for i := 0; i < advertised.Len(); i++ {
+			svc := advertised.At(i)
 			if svc == name.String() {
 				continue
 			}

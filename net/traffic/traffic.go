@@ -6,12 +6,12 @@
 package traffic
 
 import (
-	"cmp"
 	"encoding/binary"
+	"github.com/metacubex/tailscale/util/go120/cmp"
+	"github.com/metacubex/tailscale/util/go120/iter"
+	"github.com/metacubex/tailscale/util/go120/maps"
+	"github.com/metacubex/tailscale/util/go120/slices"
 	"hash/fnv"
-	"iter"
-	"maps"
-	"slices"
 
 	"github.com/metacubex/tailscale/tailcfg"
 	"github.com/metacubex/tailscale/util/mak"

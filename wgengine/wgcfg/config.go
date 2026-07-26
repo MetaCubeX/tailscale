@@ -5,8 +5,8 @@
 package wgcfg
 
 import (
+	"github.com/metacubex/tailscale/util/go120/slices"
 	"net/netip"
-	"slices"
 
 	"github.com/metacubex/tailscale/types/key"
 )

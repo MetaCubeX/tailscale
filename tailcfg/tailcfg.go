@@ -9,14 +9,14 @@ package tailcfg
 
 import (
 	"bytes"
-	"cmp"
 	"encoding/json"
 	"errors"
 	"fmt"
-	"maps"
+	"github.com/metacubex/tailscale/util/go120/cmp"
+	"github.com/metacubex/tailscale/util/go120/maps"
+	"github.com/metacubex/tailscale/util/go120/slices"
 	"net/netip"
 	"reflect"
-	"slices"
 	"strconv"
 	"strings"
 	"time"
@@ -1629,7 +1629,7 @@ type NodeCapMap map[NodeCapability][]RawMessage
 
 // Equal reports whether c and c2 are equal.
 func (c NodeCapMap) Equal(c2 NodeCapMap) bool {
-	return maps.EqualFunc(c, c2, slices.Equal)
+	return maps.EqualFunc(c, c2, func(a, b []RawMessage) bool { return slices.Equal(a, b) })
 }
 
 // UnmarshalNodeCapJSON unmarshals each JSON value in cm[cap] as T.
@@ -1648,12 +1648,18 @@ func UnmarshalNodeCapViewJSON[T any](cm views.MapSlice[NodeCapability, RawMessag
 		return nil, nil
 	}
 	out := make([]T, 0, vals.Len())
-	for _, v := range vals.All() {
+	var retErr error
+	vals.All()(func(_ int, v RawMessage) bool {
 		var t T
 		if err := json.Unmarshal([]byte(v), &t); err != nil {
-			return nil, err
+			retErr = err
+			return false
 		}
 		out = append(out, t)
+		return true
+	})
+	if retErr != nil {
+		return nil, retErr
 	}
 	return out, nil
 }
@@ -1690,12 +1696,18 @@ func UnmarshalCapViewJSON[T any](cm views.MapSlice[PeerCapability, RawMessage], 
 		return nil, nil
 	}
 	out := make([]T, 0, vals.Len())
-	for _, v := range vals.All() {
+	var retErr error
+	vals.All()(func(_ int, v RawMessage) bool {
 		var t T
 		if err := json.Unmarshal([]byte(v), &t); err != nil {
-			return nil, err
+			retErr = err
+			return false
 		}
 		out = append(out, t)
+		return true
+	})
+	if retErr != nil {
+		return nil, retErr
 	}
 	return out, nil
 }

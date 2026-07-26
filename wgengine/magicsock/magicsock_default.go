@@ -6,11 +6,10 @@
 package magicsock
 
 import (
-	"errors"
 	"fmt"
 	"io"
 )
 
 func (c *Conn) listenRawDisco(family string) (io.Closer, error) {
-	return nil, fmt.Errorf("raw disco listening not supported on this OS: %w", errors.ErrUnsupported)
+	return nil, fmt.Errorf("raw disco listening not supported on this OS: %w", errUnsupported)
 }

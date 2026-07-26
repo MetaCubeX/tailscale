@@ -5,7 +5,7 @@ package ipn
 
 import (
 	"fmt"
-	"slices"
+	"github.com/metacubex/tailscale/util/go120/slices"
 	"strconv"
 	"strings"
 	"time"

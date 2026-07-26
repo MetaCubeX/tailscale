@@ -9,8 +9,8 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"maps"
 	"github.com/metacubex/http"
+	"github.com/metacubex/tailscale/util/go120/maps"
 	"os"
 	"runtime"
 	"sort"
@@ -170,7 +170,9 @@ func (t *Tracker) awaitEventClientDone(ec *eventbus.Client) {
 		timer.Stop()
 	}
 	t.timer.Stop()
-	clear(t.pendingVisibleTimers)
+	for k := range t.pendingVisibleTimers {
+		delete(t.pendingVisibleTimers, k)
+	}
 }
 
 func (t *Tracker) now() time.Time {

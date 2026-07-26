@@ -12,13 +12,15 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/metacubex/http"
 	"io"
 	"math/big"
-	"github.com/metacubex/http"
 	"runtime/debug"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/metacubex/tailscale/util/go120/cmp"
 )
 
 // retryTimer encapsulates common logic for retrying unsuccessful requests.
@@ -86,7 +88,7 @@ func defaultBackoff(n int, r *http.Request, res *http.Response) time.Duration {
 		n = 30
 	}
 	d := time.Duration(1<<uint(n-1))*time.Second + jitter
-	return min(d, maxVal)
+	return cmp.Min(d, maxVal)
 }
 
 // retryAfter parses a Retry-After HTTP header value,

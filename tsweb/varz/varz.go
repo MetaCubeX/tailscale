@@ -6,11 +6,11 @@ package varz
 
 import (
 	"bufio"
-	"cmp"
 	"expvar"
 	"fmt"
-	"io"
 	"github.com/metacubex/http"
+	"github.com/metacubex/tailscale/util/go120/cmp"
+	"io"
 	"os"
 	"path/filepath"
 	"reflect"
@@ -23,11 +23,11 @@ import (
 	"unicode"
 	"unicode/utf8"
 
-	"golang.org/x/exp/constraints"
 	"github.com/metacubex/tailscale/metrics"
 	"github.com/metacubex/tailscale/syncs"
 	"github.com/metacubex/tailscale/types/logger"
 	"github.com/metacubex/tailscale/version"
+	"golang.org/x/exp/constraints"
 )
 
 // StaticStringVar returns a new expvar.Var that always returns s.
@@ -53,12 +53,12 @@ func init() {
 // nodeBootTime returns the machine's boot time in Unix seconds,
 // as reported by the "btime" line of Linux's /proc/stat.
 // It returns 0 if unavailable, such as on non-Linux systems.
-var nodeBootTime = sync.OnceValue(func() int64 {
+var nodeBootTime = syncs.OnceValue(func() int64 {
 	stat, err := os.ReadFile("/proc/stat")
 	if err != nil {
 		return 0
 	}
-	for line := range strings.Lines(string(stat)) {
+	for _, line := range strings.Split(string(stat), "\n") {
 		if rest, ok := strings.CutPrefix(line, "btime "); ok {
 			sec, err := strconv.ParseInt(strings.TrimSpace(rest), 10, 64)
 			if err != nil {
@@ -354,7 +354,7 @@ func ExpvarDoHandler(expvarDoFunc func(f func(expvar.KeyValue))) func(http.Respo
 	}
 }
 
-var binaryName = sync.OnceValue(func() string {
+var binaryName = syncs.OnceValue(func() string {
 	exe, err := os.Executable()
 	if err != nil {
 		return ""
@@ -396,19 +396,19 @@ func writeMemstat[V constraints.Integer | constraints.Float](bw *bufio.Writer, t
 	bw.WriteByte(' ')
 	rt := reflect.TypeOf(v)
 	switch {
-	case rt == reflect.TypeFor[int]() ||
-		rt == reflect.TypeFor[uint]() ||
-		rt == reflect.TypeFor[int8]() ||
-		rt == reflect.TypeFor[uint8]() ||
-		rt == reflect.TypeFor[int16]() ||
-		rt == reflect.TypeFor[uint16]() ||
-		rt == reflect.TypeFor[int32]() ||
-		rt == reflect.TypeFor[uint32]() ||
-		rt == reflect.TypeFor[int64]() ||
-		rt == reflect.TypeFor[uint64]() ||
-		rt == reflect.TypeFor[uintptr]():
+	case rt == reflect.TypeOf((*int)(nil)).Elem() ||
+		rt == reflect.TypeOf((*uint)(nil)).Elem() ||
+		rt == reflect.TypeOf((*int8)(nil)).Elem() ||
+		rt == reflect.TypeOf((*uint8)(nil)).Elem() ||
+		rt == reflect.TypeOf((*int16)(nil)).Elem() ||
+		rt == reflect.TypeOf((*uint16)(nil)).Elem() ||
+		rt == reflect.TypeOf((*int32)(nil)).Elem() ||
+		rt == reflect.TypeOf((*uint32)(nil)).Elem() ||
+		rt == reflect.TypeOf((*int64)(nil)).Elem() ||
+		rt == reflect.TypeOf((*uint64)(nil)).Elem() ||
+		rt == reflect.TypeOf((*uintptr)(nil)).Elem():
 		bw.Write(strconv.AppendInt(bw.AvailableBuffer(), int64(v), 10))
-	case rt == reflect.TypeFor[float32]() || rt == reflect.TypeFor[float64]():
+	case rt == reflect.TypeOf((*float32)(nil)).Elem() || rt == reflect.TypeOf((*float64)(nil)).Elem():
 		bw.Write(strconv.AppendFloat(bw.AvailableBuffer(), float64(v), 'f', -1, 64))
 	}
 	bw.WriteByte('\n')
@@ -445,7 +445,8 @@ func structTypeSortedFields(t reflect.Type) []sortedStructField {
 		return v.([]sortedStructField)
 	}
 	fields := make([]sortedStructField, 0, t.NumField())
-	for sf := range t.Fields() {
+	for i := 0; i < t.NumField(); i++ {
+		sf := t.Field(i)
 		name := sf.Name
 		if v := sf.Tag.Get("json"); v != "" {
 			v, _, _ = strings.Cut(v, ",")

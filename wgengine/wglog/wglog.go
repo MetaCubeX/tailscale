@@ -12,6 +12,7 @@ import (
 	"github.com/metacubex/tailscale-wireguard-go/device"
 	"github.com/metacubex/tailscale/envknob"
 	"github.com/metacubex/tailscale/types/logger"
+	"github.com/metacubex/tailscale/util/go120/maps"
 	"github.com/metacubex/tailscale/util/mak"
 )
 
@@ -154,6 +155,6 @@ func (x *Logger) peerStringFor(wgString string) (tsString string, ok bool) {
 // logging.
 func (x *Logger) Invalidate() {
 	x.mu.Lock()
-	clear(x.cache)
+	maps.Clear(x.cache)
 	x.mu.Unlock()
 }

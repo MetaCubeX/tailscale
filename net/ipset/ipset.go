@@ -75,9 +75,10 @@ func NewContainsIPFunc(addrs views.Slice[netip.Prefix]) func(ip netip.Addr) bool
 		pathForTest("bart")
 		// Built a bart table.
 		t := &bart.Lite{}
-		for _, p := range addrs.All() {
+		addrs.All()(func(_ int, p netip.Prefix) bool {
 			t.Insert(p)
-		}
+			return true
+		})
 		return t.Contains
 	}
 	// Fast paths for 1 and 2 IPs:
@@ -92,8 +93,9 @@ func NewContainsIPFunc(addrs views.Slice[netip.Prefix]) func(ip netip.Addr) bool
 	// General case:
 	pathForTest("ip-map")
 	m := set.Set[netip.Addr]{}
-	for _, p := range addrs.All() {
+	addrs.All()(func(_ int, p netip.Prefix) bool {
 		m.Add(p.Addr())
-	}
+		return true
+	})
 	return ipInMap(m)
 }

@@ -4,8 +4,8 @@
 package set
 
 import (
-	"iter"
-	"maps"
+	"github.com/metacubex/tailscale/util/go120/iter"
+	"github.com/metacubex/tailscale/util/go120/maps"
 
 	"github.com/metacubex/tailscale/types/structs"
 )

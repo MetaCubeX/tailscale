@@ -8,8 +8,8 @@
 package main
 
 import (
-	"cmp"
 	"fmt"
+	"github.com/metacubex/tailscale/util/go120/cmp"
 	"os"
 	"strings"
 

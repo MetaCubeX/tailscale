@@ -8,8 +8,8 @@ package metrics
 import (
 	"expvar"
 	"fmt"
+	"github.com/metacubex/tailscale/util/go120/slices"
 	"io"
-	"slices"
 	"strings"
 
 	"github.com/metacubex/tailscale/syncs"

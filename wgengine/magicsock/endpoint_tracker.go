@@ -4,8 +4,8 @@
 package magicsock
 
 import (
+	"github.com/metacubex/tailscale/util/go120/slices"
 	"net/netip"
-	"slices"
 	"time"
 
 	"github.com/metacubex/tailscale/syncs"
@@ -184,7 +184,7 @@ func (et *endpointTracker) extendLocked(ep tailcfg.Endpoint, until time.Time) {
 	for i, entry := range *epHeap {
 		if entry.endpoint == ep {
 			entry.until = until
-			heap.Fix(epHeap, i)
+			heap.Fix[*endpointTrackerEntry](epHeap, i)
 			return
 		}
 	}
@@ -213,14 +213,14 @@ func (et *endpointTracker) addLocked(now time.Time, ep tailcfg.Endpoint, until t
 	if !found {
 		// Add address to heap; either the endpoint is new, or the heap
 		// was newly-created and thus empty.
-		heap.Push(epHeap, &endpointTrackerEntry{endpoint: ep, until: until})
+		heap.Push[*endpointTrackerEntry](epHeap, &endpointTrackerEntry{endpoint: ep, until: until})
 	}
 
 	// Now that we've added everything, pop from our heap until we're below
 	// the limit. This is a min-heap, so popping removes the lowest (and
 	// thus oldest) endpoint.
 	for epHeap.Len() > endpointTrackerMaxPerAddr {
-		heap.Pop(epHeap)
+		heap.Pop[*endpointTrackerEntry](epHeap)
 	}
 }
 
@@ -234,7 +234,7 @@ func (et *endpointTracker) removeExpiredLocked(now time.Time) {
 		for epHeap.Len() > 0 {
 			minElem := epHeap.Min()
 			if now.After(minElem.until) {
-				heap.Pop(epHeap)
+				heap.Pop[*endpointTrackerEntry](epHeap)
 			} else {
 				break
 			}

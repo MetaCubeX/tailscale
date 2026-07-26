@@ -7,15 +7,16 @@ package ipnlocal
 
 import (
 	"bufio"
-	"cmp"
 	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"github.com/metacubex/http"
 	rand "github.com/metacubex/randv2"
+	"github.com/metacubex/tailscale/util/go120/cmp"
+	"github.com/metacubex/tailscale/util/go120/maps"
+	"github.com/metacubex/tailscale/util/go120/slices"
 	"io"
-	"maps"
 	"math"
 	"net"
 	"net/netip"
@@ -24,7 +25,6 @@ import (
 	"path/filepath"
 	"reflect"
 	"runtime"
-	"slices"
 	"strconv"
 	"strings"
 	"sync"
@@ -1478,7 +1478,7 @@ func (b *LocalBackend) updateStatusLocked(sb *ipnstate.StatusBuilder) {
 	var tailscaleIPs []netip.Addr
 	if nm != nil {
 		addrs := nm.GetAddresses()
-		for i := range addrs.Len() {
+		for i := 0; i < addrs.Len(); i++ {
 			if addr := addrs.At(i); addr.IsSingleIP() {
 				sb.AddTailscaleIP(addr.Addr())
 				tailscaleIPs = append(tailscaleIPs, addr.Addr())
@@ -1502,10 +1502,11 @@ func (b *LocalBackend) updateStatusLocked(sb *ipnstate.StatusBuilder) {
 					ss.Capabilities = make([]tailcfg.NodeCapability, 1, cm.Len()+1)
 					ss.Capabilities[0] = "HTTPS://TAILSCALE.COM/s/DEPRECATED-NODE-CAPS#see-https://github.com/tailscale/tailscale/issues/11508"
 					ss.CapMap = make(tailcfg.NodeCapMap, sn.CapMap().Len())
-					for k, v := range cm.All() {
+					cm.All()(func(k tailcfg.NodeCapability, v views.Slice[tailcfg.RawMessage]) bool {
 						ss.CapMap[k] = v.AsSlice()
 						ss.Capabilities = append(ss.Capabilities, k)
-					}
+						return true
+					})
 					slices.Sort(ss.Capabilities[1:])
 				}
 			}
@@ -1551,7 +1552,7 @@ func (b *LocalBackend) populatePeerStatusLocked(sb *ipnstate.StatusBuilder) {
 	blankHostinfo := new(tailcfg.Hostinfo).View()
 	for _, p := range cn.Peers() {
 		tailscaleIPs := make([]netip.Addr, 0, p.Addresses().Len())
-		for i := range p.Addresses().Len() {
+		for i := 0; i < p.Addresses().Len(); i++ {
 			addr := p.Addresses().At(i)
 			if addr.IsSingleIP() && tsaddr.IsTailscaleIP(addr.Addr()) {
 				tailscaleIPs = append(tailscaleIPs, addr.Addr())
@@ -1582,9 +1583,10 @@ func (b *LocalBackend) populatePeerStatusLocked(sb *ipnstate.StatusBuilder) {
 		}
 		if cm := p.CapMap(); cm.Len() > 0 {
 			ps.CapMap = make(tailcfg.NodeCapMap, cm.Len())
-			for k, v := range cm.All() {
+			cm.All()(func(k tailcfg.NodeCapability, v views.Slice[tailcfg.RawMessage]) bool {
 				ps.CapMap[k] = v.AsSlice()
-			}
+				return true
+			})
 		}
 		peerStatusFromNode(ps, p)
 
@@ -1944,7 +1946,8 @@ func (b *LocalBackend) setControlClientStatusLocked(c controlclient.Client, st c
 			b.logf("Failed to save new controlclient state: %v", err)
 		}
 
-		b.sendToLocked(ipn.Notify{Prefs: new(prefs.View())}, allClients)
+		prefsView := prefs.View()
+		b.sendToLocked(ipn.Notify{Prefs: &prefsView}, allClients)
 	}
 
 	// initTKALocked is dependent on CurrentProfile.ID, which is initialized
@@ -3233,8 +3236,8 @@ func (b *LocalBackend) startLocked(opts ipn.Options) error {
 	if fs, ok := b.sys.DriveForRemote.GetOK(); ok {
 		currentShares := b.pm.CurrentPrefs().DriveShares()
 		var shares []*drive.Share
-		for _, share := range currentShares.All() {
-			shares = append(shares, share.AsStruct())
+		for i := 0; i < currentShares.Len(); i++ {
+			shares = append(shares, currentShares.At(i).AsStruct())
 		}
 		fs.SetShares(shares)
 	}
@@ -3350,7 +3353,7 @@ func (b *LocalBackend) updateFilterLocked(prefs ipn.PrefsView) {
 	logNetsB.RemovePrefix(tsaddr.ChromeOSVMRange())
 	if haveNetmap {
 		addrs = netMap.GetAddresses()
-		for i := range addrs.Len() {
+		for i := 0; i < addrs.Len(); i++ {
 			localNetsB.AddPrefix(addrs.At(i))
 		}
 		packetFilter = cn.PacketFilter()
@@ -3368,7 +3371,9 @@ func (b *LocalBackend) updateFilterLocked(prefs ipn.PrefsView) {
 	}
 	if prefs.Valid() {
 		if buildfeatures.HasAdvertiseRoutes {
-			for _, r := range prefs.AdvertiseRoutes().All() {
+			routes := prefs.AdvertiseRoutes()
+			for i := 0; i < routes.Len(); i++ {
+				r := routes.At(i)
 				if r.Bits() == 0 {
 					// When offering a default route to the world, we
 					// filter out locally reachable LANs, so that the
@@ -3472,8 +3477,9 @@ func packetFilterPermitsUnlockedNodes(peers map[tailcfg.NodeID]tailcfg.NodeView,
 			continue
 		}
 		numUnlocked++
-		for _, pfx := range p.AllowedIPs().All() { // not only addresses!
-			b.AddPrefix(pfx)
+		allowedIPs := p.AllowedIPs()
+		for i := 0; i < allowedIPs.Len(); i++ { // not only addresses!
+			b.AddPrefix(allowedIPs.At(i))
 		}
 	}
 	if numUnlocked == 0 {
@@ -3731,13 +3737,16 @@ func (b *LocalBackend) WatchNotificationsAs(ctx context.Context, actor ipnauth.A
 		ini = &ipn.Notify{Version: version.Long()}
 		if mask&ipn.NotifyInitialState != 0 {
 			ini.SessionID = sessionID
-			ini.State = new(b.state)
+			state := b.state
+			ini.State = &state
 			if b.state == ipn.NeedsLogin && b.authURL != "" {
-				ini.BrowseToURL = new(b.authURL)
+				authURL := b.authURL
+				ini.BrowseToURL = &authURL
 			}
 		}
 		if mask&ipn.NotifyInitialPrefs != 0 {
-			ini.Prefs = new(b.sanitizedPrefsLocked())
+			prefs := b.sanitizedPrefsLocked()
+			ini.Prefs = &prefs
 		}
 		if mask&ipn.NotifyInitialNetMap != 0 {
 			if nm := cn.NetMap(); nm != nil && nm.SelfNode.Valid() {
@@ -4027,7 +4036,8 @@ func (b *LocalBackend) sendTo(n ipn.Notify, recipient notificationTarget) {
 // back into LocalBackend from their notification callback.
 func (b *LocalBackend) sendToLocked(n ipn.Notify, recipient notificationTarget) {
 	if n.Prefs != nil {
-		n.Prefs = new(stripKeysFromPrefs(*n.Prefs))
+		prefs := stripKeysFromPrefs(*n.Prefs)
+		n.Prefs = &prefs
 	}
 	if n.Version == "" {
 		n.Version = version.Long()
@@ -5217,7 +5227,8 @@ func (b *LocalBackend) changeDisablesExitNodeLocked(prefs ipn.PrefsView, change 
 
 	// First, apply the adjustments to a copy of the changes,
 	// e.g., clear AutoExitNode if ExitNodeID is set.
-	tmpChange := new(*change)
+	tmpChangeValue := *change
+	tmpChange := &tmpChangeValue
 	tmpChange.Prefs = *change.Prefs.Clone()
 	b.adjustEditPrefsLocked(prefs, tmpChange)
 
@@ -6399,7 +6410,8 @@ func (b *LocalBackend) initPeerAPIListenerLocked() {
 
 	isNetstack := b.sys.IsNetstack()
 	peerAPIPorts := make(map[netip.Addr]int)
-	for i, a := range addrs.All() {
+	for i := 0; i < addrs.Len(); i++ {
+		a := addrs.At(i)
 		var ln net.Listener
 		var err error
 		skipListen := i > 0 && isNetstack
@@ -6769,8 +6781,8 @@ func (b *LocalBackend) enterStateLocked(newState ipn.State) {
 		if feature.CanSystemdStatus {
 			var addrStrs []string
 			addrs := netMap.GetAddresses()
-			for _, p := range addrs.All() {
-				addrStrs = append(addrStrs, p.Addr().String())
+			for i := 0; i < addrs.Len(); i++ {
+				addrStrs = append(addrStrs, addrs.At(i).Addr().String())
 			}
 			feature.SystemdStatus("Connected; %s; %s", activeLogin, strings.Join(addrStrs, " "))
 		}
@@ -7179,7 +7191,8 @@ func (b *LocalBackend) resolveExitNodeLocked() (changed bool) {
 		b.goTracker.Go(b.doSetHostinfoFilterServices)
 	}
 
-	b.sendToLocked(ipn.Notify{Prefs: new(prefs.View())}, allClients)
+	prefsView := prefs.View()
+	b.sendToLocked(ipn.Notify{Prefs: &prefsView}, allClients)
 	return true
 }
 
@@ -7363,7 +7376,9 @@ func (b *LocalBackend) setNetMapLocked(nm *netmap.NetworkMap) {
 			b.metrics.approvedRoutes.Set(0)
 		} else if nm.SelfNode.Valid() {
 			var approved float64
-			for _, route := range nm.SelfNode.AllowedIPs().All() {
+			routes := nm.SelfNode.AllowedIPs()
+			for i := 0; i < routes.Len(); i++ {
+				route := routes.At(i)
 				if !views.SliceContains(nm.SelfNode.Addresses(), route) && !tsaddr.IsExitRoute(route) {
 					approved++
 				}
@@ -7613,7 +7628,8 @@ func peerAPIPorts(peer tailcfg.NodeView) (p4, p6 uint16) {
 		return
 	}
 	svcs := peer.Hostinfo().Services()
-	for _, s := range svcs.All() {
+	for i := 0; i < svcs.Len(); i++ {
+		s := svcs.At(i)
 		switch s.Proto {
 		case tailcfg.PeerAPI4:
 			p4 = s.Port
@@ -7726,7 +7742,7 @@ func (b *LocalBackend) OfferingExitNode() bool {
 	}
 	var def4, def6 bool
 	ar := b.pm.CurrentPrefs().AdvertiseRoutes()
-	for i := range ar.Len() {
+	for i := 0; i < ar.Len(); i++ {
 		r := ar.At(i)
 		if r.Bits() != 0 {
 			continue
@@ -7855,8 +7871,8 @@ func wireguardExitNodeDNSResolvers(nm *netmap.NetworkMap, peers map[tailcfg.Node
 				resolvers := p.ExitNodeDNSResolvers()
 				if !resolvers.IsNil() && resolvers.Len() > 0 {
 					copies := make([]*dnstype.Resolver, resolvers.Len())
-					for i, r := range resolvers.All() {
-						copies[i] = r.AsStruct()
+					for i := 0; i < resolvers.Len(); i++ {
+						copies[i] = resolvers.At(i).AsStruct()
 					}
 					return copies, true
 				}
@@ -7878,7 +7894,8 @@ func peerCanProxyDNS(p tailcfg.NodeView) bool {
 	// If p.Cap is not populated (e.g. older control server), then do the old
 	// thing of searching through services.
 	services := p.Hostinfo().Services()
-	for _, s := range services.All() {
+	for i := 0; i < services.Len(); i++ {
+		s := services.At(i)
 		if s.Proto == tailcfg.PeerAPIDNS && s.Port >= 1 {
 			return true
 		}
@@ -8202,7 +8219,7 @@ func (b *LocalBackend) handleQuad100Port80Conn(w http.ResponseWriter, r *http.Re
 		return
 	}
 	io.WriteString(w, "<p>Local addresses:</p><ul>\n")
-	for i := range addrs.Len() {
+	for i := 0; i < addrs.Len(); i++ {
 		fmt.Fprintf(w, "<li>%v</li>\n", addrs.At(i).Addr())
 	}
 	io.WriteString(w, "</ul>\n")
@@ -9018,7 +9035,7 @@ func randomRegion(regions views.Slice[int]) int {
 // present, otherwise a uniformly random node will be selected.
 func randomNode(nodes views.Slice[tailcfg.NodeView], prefer tailcfg.StableNodeID) tailcfg.NodeView {
 	if !prefer.IsZero() {
-		for i := range nodes.Len() {
+		for i := 0; i < nodes.Len(); i++ {
 			nv := nodes.At(i)
 			if nv.StableID() == prefer {
 				return nv

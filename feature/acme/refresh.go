@@ -11,6 +11,7 @@ import (
 	"github.com/metacubex/tailscale/envknob"
 	"github.com/metacubex/tailscale/ipn"
 	"github.com/metacubex/tailscale/ipn/ipnlocal"
+	"github.com/metacubex/tailscale/tailcfg"
 	"github.com/metacubex/tailscale/util/set"
 )
 
@@ -97,21 +98,25 @@ func (e *extension) refreshApplicableCerts(ctx context.Context, b *ipnlocal.Loca
 		}
 		want.Add(host)
 	}
-	for hp := range sc.Webs() {
+	sc.Webs()(func(hp ipn.HostPort, _ ipn.WebServerConfigView) bool {
 		host, _, err := net.SplitHostPort(string(hp))
 		if err != nil {
-			continue
+			return true
 		}
 		consider(host)
-	}
-	for _, tcp := range sc.TCPs() {
+		return true
+	})
+	sc.TCPs()(func(_ uint16, tcp ipn.TCPPortHandlerView) bool {
 		consider(tcp.TerminateTLS())
-	}
-	for _, svc := range sc.Services().All() {
-		for _, tcp := range svc.TCP().All() {
+		return true
+	})
+	sc.Services().All()(func(_ tailcfg.ServiceName, svc ipn.ServiceConfigView) bool {
+		svc.TCP().All()(func(_ uint16, tcp ipn.TCPPortHandlerView) bool {
 			consider(tcp.TerminateTLS())
-		}
-	}
+			return true
+		})
+		return true
+	})
 	if want.Len() == 0 {
 		return
 	}
@@ -135,20 +140,33 @@ func serveConfigUsesACMECerts(sc ipn.ServeConfigView) bool {
 	if !sc.Valid() {
 		return false
 	}
-	for range sc.Webs() {
+	usesCerts := false
+	sc.Webs()(func(ipn.HostPort, ipn.WebServerConfigView) bool {
+		usesCerts = true
+		return false
+	})
+	if usesCerts {
 		return true
 	}
-	for _, tcp := range sc.TCPs() {
+	sc.TCPs()(func(_ uint16, tcp ipn.TCPPortHandlerView) bool {
 		if tcp.TerminateTLS() != "" {
-			return true
+			usesCerts = true
+			return false
 		}
+		return true
+	})
+	if usesCerts {
+		return true
 	}
-	for _, svc := range sc.Services().All() {
-		for _, tcp := range svc.TCP().All() {
+	sc.Services().All()(func(_ tailcfg.ServiceName, svc ipn.ServiceConfigView) bool {
+		svc.TCP().All()(func(_ uint16, tcp ipn.TCPPortHandlerView) bool {
 			if tcp.TerminateTLS() != "" {
-				return true
+				usesCerts = true
+				return false
 			}
-		}
-	}
-	return false
+			return true
+		})
+		return !usesCerts
+	})
+	return usesCerts
 }

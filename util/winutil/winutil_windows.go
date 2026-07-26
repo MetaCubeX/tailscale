@@ -14,11 +14,13 @@ import (
 	"path/filepath"
 	"reflect"
 	"runtime"
+	"strconv"
 	"strings"
 	"syscall"
 	"time"
 	"unsafe"
 
+	"github.com/metacubex/tailscale/util/go120/cmp"
 	"golang.org/x/exp/constraints"
 	"golang.org/x/sys/windows"
 	"golang.org/x/sys/windows/registry"
@@ -576,20 +578,25 @@ func lookupPseudoUser(uid string) (*user.User, error) {
 		return nil, err
 	}
 
-	// We're looking for SIDs "S-1-5-x" where 17 <= x <= 20.
-	// This is checking for the "5"
-	if sid.IdentifierAuthority() != windows.SECURITY_NT_AUTHORITY {
+	// We're looking for SIDs "S-1-5-x" where 17 <= x <= 20. Parse the
+	// canonical text instead of using the x/sys SID accessors, which return
+	// pointers into system memory that older Go race builds reject via checkptr.
+	parts := strings.Split(sid.String(), "-")
+	if len(parts) < 3 || parts[0] != "S" || parts[1] != "1" || parts[2] != "5" {
 		return nil, fmt.Errorf(`SID %q does not use "NT AUTHORITY"`, uid)
 	}
 
 	// This is ensuring that there is only one sub-authority.
 	// In other words, only one value after the "5".
-	if sid.SubAuthorityCount() != 1 {
+	if len(parts) != 4 {
 		return nil, fmt.Errorf("SID %q should have only one subauthority", uid)
 	}
 
 	// Get that sub-authority value (this is "x" above) and check it.
-	rid := sid.SubAuthority(0)
+	rid, err := strconv.ParseUint(parts[3], 10, 32)
+	if err != nil {
+		return nil, fmt.Errorf("invalid SID %q: %w", uid, err)
+	}
 	if rid < 17 || rid > 20 {
 		return nil, fmt.Errorf("SID %q does not represent a known pseudo-user", uid)
 	}
@@ -698,10 +705,10 @@ func AllocateContiguousBuffer[T any, BU BufUnit](values ...[]BU) (t *T, tLenByte
 	}
 
 	// Get the sizes of T and BU, then compute a preferred alignment for T.
-	tT := reflect.TypeFor[T]()
+	tT := reflect.TypeOf((*T)(nil)).Elem()
 	szT := tT.Size()
 	szBU := int(unsafe.Sizeof(BU(0)))
-	alignment := max(tT.Align(), szBU)
+	alignment := cmp.Max(tT.Align(), szBU)
 
 	// Our buffers for values will start at the next szBU boundary.
 	tLenBytes = alignUp(uint32(szT), szBU)
@@ -738,7 +745,7 @@ func AllocateContiguousBuffer[T any, BU BufUnit](values ...[]BU) (t *T, tLenByte
 	slcs = make([][]BU, 0, len(values))
 
 	// Use the limits of the buffer area after t to construct a slice representing the remaining buffer.
-	firstValuePtr := unsafe.Pointer(uintptr(pt) + uintptr(firstValueOffset))
+	firstValuePtr := unsafe.Add(pt, firstValueOffset)
 	buf := unsafe.Slice((*BU)(firstValuePtr), (tLenBytes-firstValueOffset)/uint32(szBU))
 
 	// Copy each value into the buffer and record a slice describing each value's limits into slcs.

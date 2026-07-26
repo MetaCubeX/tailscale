@@ -216,7 +216,7 @@ func getDecoder(opts ...Option) decoder {
 		zopts := [...]zstd.DOption{
 			// Set concurrency=1 to ensure synchronous operation.
 			zstd.WithDecoderConcurrency(1),
-			zstd.WithDecoderMaxMemory(1 << min(max(10, dopts.maxSizeLog2), 63)),
+			zstd.WithDecoderMaxMemory(1 << minInt(maxInt(10, int(dopts.maxSizeLog2)), 63)),
 			zstd.IgnoreChecksum(!dopts.checksum),
 			zstd.WithDecoderLowmem(dopts.lowMemory),
 			nil, // reserved for zstd.WithDecoderMaxWindow
@@ -229,6 +229,20 @@ func getDecoder(opts ...Option) decoder {
 		dec = must.Get(zstd.NewReader(nil, zopts[:len(zopts)-noopts]...))
 	}
 	return decoder{pool, dec, maxSize}
+}
+
+func minInt(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
+}
+
+func maxInt(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
 }
 
 func putDecoder(d decoder) { d.pool.Put(d.Decoder) }

@@ -7,8 +7,8 @@ import (
 	"bufio"
 	"errors"
 	"fmt"
+	"github.com/metacubex/tailscale/util/go120/slices"
 	"net/netip"
-	"slices"
 	"strings"
 
 	"github.com/metacubex/tailscale/feature/buildfeatures"

@@ -9,22 +9,20 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/metacubex/http"
+	"github.com/metacubex/tailscale/util/go120/slices"
 	"hash/crc32"
 	"html"
 	"io"
 	"net"
-	"github.com/metacubex/http"
 	"net/netip"
 	"os"
 	"runtime"
-	"slices"
 	"strconv"
 	"strings"
 	"sync"
 	"time"
 
-	"golang.org/x/net/dns/dnsmessage"
-	"golang.org/x/net/http/httpguts"
 	"github.com/metacubex/tailscale/envknob"
 	"github.com/metacubex/tailscale/feature"
 	"github.com/metacubex/tailscale/feature/buildfeatures"
@@ -39,6 +37,8 @@ import (
 	"github.com/metacubex/tailscale/types/views"
 	"github.com/metacubex/tailscale/util/clientmetric"
 	"github.com/metacubex/tailscale/wgengine/filter"
+	"golang.org/x/net/dns/dnsmessage"
+	"golang.org/x/net/http/httpguts"
 )
 
 // initListenConfig, if non-nil, is called during peerAPIListener setup.  It is used only
@@ -103,7 +103,7 @@ func (s *peerAPIServer) listen(ip netip.Addr, tunIfIndex int) (ln net.Listener, 
 	// deterministic that people will bake this into clients.
 	// We try a few times just in case something's already
 	// listening on that port (on all interfaces, probably).
-	for try := range uint8(5) {
+	for try := uint8(0); try < 5; try++ {
 		a16 := ip.As16()
 		hashData := a16[len(a16)-3:]
 		hashData[0] += try
@@ -998,7 +998,8 @@ func peerAPIBase(nm *netmap.NetworkMap, peer tailcfg.NodeView) string {
 
 	var have4, have6 bool
 	addrs := nm.GetAddresses()
-	for _, a := range addrs.All() {
+	for i := 0; i < addrs.Len(); i++ {
+		a := addrs.At(i)
 		if !a.IsSingleIP() {
 			continue
 		}

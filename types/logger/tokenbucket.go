@@ -5,6 +5,8 @@ package logger
 
 import (
 	"time"
+
+	"github.com/metacubex/tailscale/util/go120/cmp"
 )
 
 // tokenBucket is a simple token bucket style rate limiter.
@@ -43,7 +45,7 @@ func (tb *tokenBucket) Get() bool {
 }
 
 func (tb *tokenBucket) Refund(n int) {
-	tb.remaining = min(tb.remaining+n, tb.max)
+	tb.remaining = cmp.Min(tb.remaining+n, tb.max)
 }
 
 func (tb *tokenBucket) AdvanceTo(t time.Time) {

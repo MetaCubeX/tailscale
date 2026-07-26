@@ -20,7 +20,6 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/metacubex/tailscale-wireguard-go/conn"
 	"github.com/metacubex/gvisor/pkg/refs"
 	"github.com/metacubex/gvisor/pkg/tcpip"
 	"github.com/metacubex/gvisor/pkg/tcpip/adapters/gonet"
@@ -32,6 +31,7 @@ import (
 	"github.com/metacubex/gvisor/pkg/tcpip/transport/tcp"
 	"github.com/metacubex/gvisor/pkg/tcpip/transport/udp"
 	"github.com/metacubex/gvisor/pkg/waiter"
+	"github.com/metacubex/tailscale-wireguard-go/conn"
 	"github.com/metacubex/tailscale/envknob"
 	"github.com/metacubex/tailscale/feature/buildfeatures"
 	"github.com/metacubex/tailscale/ipn/ipnlocal"
@@ -473,14 +473,15 @@ func init() {
 	// endpoint, and name collisions will result in Prometheus scraping errors.
 	clientmetric.NewCounterFunc("netstack_tcp_forward_dropped_attempts", func() int64 {
 		var total uint64
-		for ns := range stacksForMetrics.Keys() {
+		stacksForMetrics.Keys()(func(ns *Impl) bool {
 			delta := ns.ipstack.Stats().TCP.ForwardMaxInFlightDrop.Value()
 			if total+delta > math.MaxInt64 {
 				total = math.MaxInt64
-				break
+				return false
 			}
 			total += delta
-		}
+			return true
+		})
 		return int64(total)
 	})
 }
@@ -646,9 +647,11 @@ func (ns *Impl) Start(b LocalBackend) error {
 	udpFwd := udp.NewForwarder(ns.ipstack, ns.acceptUDPNoICMP)
 	ns.ipstack.SetTransportProtocolHandler(tcp.ProtocolNumber, ns.wrapTCPProtocolHandler(tcpFwd.HandlePacket))
 	ns.ipstack.SetTransportProtocolHandler(udp.ProtocolNumber, ns.wrapUDPProtocolHandler(udpFwd.HandlePacket))
-	ns.injectWG.Go(func() {
+	ns.injectWG.Add(1)
+	go func() {
+		defer ns.injectWG.Done()
 		ns.inject()
-	})
+	}()
 	if ns.ready.Swap(true) {
 		panic("already started")
 	}
@@ -737,11 +740,15 @@ func (ns *Impl) UpdateNetstackIPs(nm *netmap.NetworkMap) {
 	newPfx := make(map[netip.Prefix]bool)
 
 	if selfNode.Valid() {
-		for _, p := range selfNode.Addresses().All() {
+		addrs := selfNode.Addresses()
+		for i := 0; i < addrs.Len(); i++ {
+			p := addrs.At(i)
 			newPfx[p] = true
 		}
 		if ns.ProcessSubnets {
-			for _, p := range selfNode.AllowedIPs().All() {
+			allowedIPs := selfNode.AllowedIPs()
+			for i := 0; i < allowedIPs.Len(); i++ {
+				p := allowedIPs.At(i)
 				newPfx[p] = true
 			}
 		}
@@ -822,8 +829,8 @@ func (ns *Impl) UpdateActiveVIPServices(activeServices views.Slice[string]) {
 	ns.mu.Lock()
 	defer ns.mu.Unlock()
 	activeServicesSet := make(set.Set[tailcfg.ServiceName], activeServices.Len())
-	for _, s := range activeServices.All() {
-		activeServicesSet.Add(tailcfg.AsServiceName(s))
+	for i := 0; i < activeServices.Len(); i++ {
+		activeServicesSet.Add(tailcfg.AsServiceName(activeServices.At(i)))
 	}
 	ns.atomicActiveVIPServices.Store(activeServicesSet)
 }
@@ -1816,7 +1823,7 @@ func (ns *Impl) forwardTCP(getClient func(...tcpip.SettableSocketOption) *gonet.
 		}
 	}()
 	// Wait for both ends of the connection to close.
-	for range 2 {
+	for i := 0; i < 2; i++ {
 		err = <-connClosed
 		if err != nil {
 			ns.logf("proxy connection closed with error: %v", err)

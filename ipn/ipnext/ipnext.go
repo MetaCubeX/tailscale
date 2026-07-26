@@ -9,7 +9,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"iter"
+	"github.com/metacubex/tailscale/util/go120/iter"
 	"net/netip"
 
 	"github.com/metacubex/tailscale/control/controlclient"

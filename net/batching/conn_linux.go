@@ -4,7 +4,6 @@
 package batching
 
 import (
-	"encoding/binary"
 	"errors"
 	"fmt"
 	"net"
@@ -17,9 +16,6 @@ import (
 	"time"
 	"unsafe"
 
-	"golang.org/x/net/ipv4"
-	"golang.org/x/net/ipv6"
-	"golang.org/x/sys/unix"
 	"github.com/metacubex/tailscale/control/controlknobs"
 	"github.com/metacubex/tailscale/envknob"
 	"github.com/metacubex/tailscale/hostinfo"
@@ -27,6 +23,9 @@ import (
 	"github.com/metacubex/tailscale/net/packet"
 	"github.com/metacubex/tailscale/types/nettype"
 	"github.com/metacubex/tailscale/util/clientmetric"
+	"golang.org/x/net/ipv4"
+	"golang.org/x/net/ipv6"
+	"golang.org/x/sys/unix"
 )
 
 // xnetBatchReaderWriter defines the batching i/o methods of
@@ -432,7 +431,7 @@ func getRXQOverflowsFromControl(control []byte) (uint32, error) {
 		return 0, err
 	}
 	if len(data) >= 4 {
-		return binary.NativeEndian.Uint32(data), nil
+		return nativeEndian.Uint32(data), nil
 	}
 	return 0, nil
 }
@@ -549,7 +548,7 @@ func getGSOSizeFromControl(control []byte) (int, error) {
 		return 0, err
 	}
 	if len(data) >= 2 {
-		return int(binary.NativeEndian.Uint16(data)), nil
+		return int(nativeEndian.Uint16(data)), nil
 	}
 	return 0, nil
 }
@@ -571,7 +570,7 @@ func setGSOSizeInControl(control *[]byte, gsoSize uint16) {
 	hdr.Level = unix.SOL_UDP
 	hdr.Type = unix.UDP_SEGMENT
 	hdr.SetLen(unix.CmsgLen(2))
-	binary.NativeEndian.PutUint16((*control)[unix.SizeofCmsghdr:], gsoSize)
+	nativeEndian.PutUint16((*control)[unix.SizeofCmsghdr:], gsoSize)
 	*control = (*control)[:unix.CmsgSpace(2)]
 }
 

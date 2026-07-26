@@ -6,11 +6,11 @@ package netmon
 import (
 	"bytes"
 	"fmt"
-	"net"
 	"github.com/metacubex/http"
+	"github.com/metacubex/tailscale/util/go120/slices"
+	"net"
 	"net/netip"
 	"runtime"
-	"slices"
 	"sort"
 	"strings"
 

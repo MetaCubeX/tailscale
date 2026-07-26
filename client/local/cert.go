@@ -7,10 +7,10 @@ package local
 
 import (
 	"context"
-	"github.com/metacubex/tls"
 	"errors"
 	"fmt"
 	"github.com/metacubex/http"
+	"github.com/metacubex/tls"
 	"net/url"
 	"strconv"
 	"strings"
@@ -117,7 +117,8 @@ func (lc *Client) CertPair(ctx context.Context, domain string) (certPEM, keyPEM 
 func (lc *Client) CertPairWithValidity(ctx context.Context, domain string, minValidity time.Duration) (certPEM, keyPEM []byte, err error) {
 	res, err := lc.send(ctx, "GET", fmt.Sprintf("/localapi/v0/cert/%s?type=pair&min_validity=%s", domain, minValidity), 200, nil)
 	if err != nil {
-		if hse, ok := errors.AsType[httpStatusError](err); ok && hse.HTTPStatus == http.StatusTooManyRequests {
+		var hse httpStatusError
+		if errors.As(err, &hse) && hse.HTTPStatus == http.StatusTooManyRequests {
 			return nil, nil, rateLimitedError{
 				retryAfter: retryAfterFromHeader(hse.Header),
 				underlying: err,

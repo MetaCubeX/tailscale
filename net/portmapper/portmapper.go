@@ -9,15 +9,14 @@ import (
 	"context"
 	"encoding/binary"
 	"fmt"
+	"github.com/metacubex/http"
+	"github.com/metacubex/tailscale/util/go120/slices"
 	"io"
 	"net"
-	"github.com/metacubex/http"
 	"net/netip"
-	"slices"
 	"sync/atomic"
 	"time"
 
-	"go4.org/mem"
 	"github.com/metacubex/tailscale/envknob"
 	"github.com/metacubex/tailscale/feature/buildfeatures"
 	"github.com/metacubex/tailscale/net/netaddr"
@@ -31,6 +30,7 @@ import (
 	"github.com/metacubex/tailscale/types/nettype"
 	"github.com/metacubex/tailscale/util/clientmetric"
 	"github.com/metacubex/tailscale/util/eventbus"
+	"go4.org/mem"
 )
 
 var (

@@ -6,8 +6,8 @@ package set
 
 import (
 	"encoding/json"
-	"iter"
-	"maps"
+	"github.com/metacubex/tailscale/util/go120/iter"
+	"github.com/metacubex/tailscale/util/go120/maps"
 	"reflect"
 	"sort"
 )
@@ -44,9 +44,10 @@ func (s Set[T]) Add(e T) { s[e] = struct{}{} }
 
 // AddSeq adds each element of es to s.
 func (s Set[T]) AddSeq(es iter.Seq[T]) {
-	for e := range es {
+	es(func(e T) bool {
 		s.Add(e)
-	}
+		return true
+	})
 }
 
 // AddSlice adds each element of es to s.
@@ -78,7 +79,7 @@ func (s Set[T]) Slice() []T {
 	for k := range s {
 		es = append(es, k)
 	}
-	if f := genOrderedSwapper(reflect.TypeFor[T]()); f != nil {
+	if f := genOrderedSwapper(reflect.TypeOf((*T)(nil)).Elem()); f != nil {
 		sort.Slice(es, f(reflect.ValueOf(es)))
 	}
 	return es
@@ -122,9 +123,10 @@ func (s Set[T]) Delete(e T) { delete(s, e) }
 
 // DeleteSeq removes all elements in es from the set.
 func (s Set[T]) DeleteSeq(es iter.Seq[T]) {
-	for e := range es {
+	es(func(e T) bool {
 		s.Delete(e)
-	}
+		return true
+	})
 }
 
 // DeleteSlice removes all elements in es from the set.

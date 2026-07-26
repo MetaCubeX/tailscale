@@ -18,10 +18,10 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
+	"github.com/metacubex/tailscale/util/go120/slices"
 	"io"
 	"log"
 	"net"
-	"slices"
 	"strconv"
 	"time"
 

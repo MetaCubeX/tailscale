@@ -6,16 +6,16 @@ package netcheck
 
 import (
 	"bufio"
-	"cmp"
 	"context"
-	"github.com/metacubex/tls"
 	"errors"
 	"fmt"
+	"github.com/metacubex/http"
+	"github.com/metacubex/tailscale/util/go120/cmp"
+	"github.com/metacubex/tailscale/util/go120/maps"
+	"github.com/metacubex/tls"
 	"io"
 	"log"
-	"maps"
 	"net"
-	"github.com/metacubex/http"
 	"net/netip"
 	"runtime"
 	"sort"
@@ -537,7 +537,7 @@ func makeProbePlanInitial(dm *tailcfg.DERPMap, ifState *netmon.State) (plan prob
 
 		var p4 []probe
 		var p6 []probe
-		for try := range 3 {
+		for try := 0; try < 3; try++ {
 			n := reg.Nodes[try%len(reg.Nodes)]
 			delay := time.Duration(try) * defaultInitialRetransmitTime
 			if n.IPv4 != "none" && ((ifState.HaveV4 && nodeMight4(n)) || n.IsTestNode()) {
@@ -978,11 +978,13 @@ func (c *Client) GetReport(ctx context.Context, dm *tailcfg.DERPMap, opts *GetRe
 				// need to close the underlying Pinger after a timeout
 				// or when all ICMP probes are done, regardless of
 				// whether the HTTPS probes have finished.
-				wg.Go(func() {
+				wg.Add(1)
+				go func() {
+					defer wg.Done()
 					if err := c.measureAllICMPLatency(ctx, rs, need); err != nil {
 						c.logf("[v1] measureAllICMPLatency: %v", err)
 					}
-				})
+				}()
 			}
 			wg.Add(len(need))
 			c.logf("netcheck: UDP is blocked, trying HTTPS")
@@ -1073,7 +1075,9 @@ func (c *Client) runHTTPOnlyChecks(ctx context.Context, last *Report, rs *report
 		if len(rg.Nodes) == 0 {
 			continue
 		}
-		wg.Go(func() {
+		wg.Add(1)
+		go func(rg *tailcfg.DERPRegion) {
+			defer wg.Done()
 			node := rg.Nodes[0]
 			req, _ := http.NewRequestWithContext(ctx, "HEAD", "https://"+node.HostName+"/derp/probe", nil)
 			// One warm-up one to get HTTP connection set
@@ -1098,7 +1102,7 @@ func (c *Client) runHTTPOnlyChecks(ctx context.Context, last *Report, rs *report
 			}
 			d := c.timeNow().Sub(t0)
 			rs.addNodeLatency(node, netip.AddrPort{}, d)
-		})
+		}(rg)
 	}
 	wg.Wait()
 	return nil

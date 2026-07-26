@@ -20,13 +20,13 @@
 package controlhttp
 
 import (
-	"cmp"
 	"context"
 	"encoding/base64"
 	"errors"
 	"fmt"
 	"github.com/metacubex/http"
 	"github.com/metacubex/http/httptrace"
+	"github.com/metacubex/tailscale/util/go120/cmp"
 	"github.com/metacubex/tls"
 	"io"
 	"net"

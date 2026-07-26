@@ -5,16 +5,16 @@ package ts2021
 
 import (
 	"bytes"
-	"cmp"
 	"context"
 	"crypto/x509"
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/metacubex/http"
+	"github.com/metacubex/tailscale/util/go120/cmp"
 	"log"
 	"math"
 	"net"
-	"github.com/metacubex/http"
 	"net/netip"
 	"net/url"
 	"sync"

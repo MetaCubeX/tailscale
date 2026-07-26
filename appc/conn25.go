@@ -4,9 +4,9 @@
 package appc
 
 import (
-	"cmp"
 	"fmt"
-	"slices"
+	"github.com/metacubex/tailscale/util/go120/cmp"
+	"github.com/metacubex/tailscale/util/go120/slices"
 	"strings"
 
 	"github.com/metacubex/tailscale/ipn/ipnext"
@@ -44,12 +44,15 @@ func PickConnector(nb ipnext.NodeBackend, app appctype.Conn25Attr) []tailcfg.Nod
 		if !isPeerEligibleConnector(n) {
 			return false
 		}
-		for _, t := range n.Tags().All() {
+		matched := false
+		n.Tags().All()(func(_ int, t string) bool {
 			if appTagsSet.Contains(t) {
-				return true
+				matched = true
+				return false
 			}
-		}
-		return false
+			return true
+		})
+		return matched
 	})
 	sortByPreference(matches)
 	return matches

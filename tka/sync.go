@@ -100,7 +100,7 @@ func (a *Authority) SyncOffer(storage Chonk) (SyncOffer, error) {
 		skipAmount uint64  = ancestorsSkipStart
 		curs       AUMHash = a.Head()
 	)
-	for i := range uint64(maxSyncHeadIntersectionIter) {
+	for i := uint64(0); i < uint64(maxSyncHeadIntersectionIter); i++ {
 		if i > 0 && (i%skipAmount) == 0 {
 			out.Ancestors = append(out.Ancestors, curs)
 			skipAmount = skipAmount << ancestorsSkipShift
@@ -172,7 +172,7 @@ func computeSyncIntersection(storage Chonk, localOffer, remoteOffer SyncOffer) (
 
 	if hasRemoteHead {
 		curs := localOffer.Head
-		for range maxSyncHeadIntersectionIter {
+		for i := 0; i < maxSyncHeadIntersectionIter; i++ {
 			parent, err := storage.AUM(curs)
 			if err != nil {
 				if err != os.ErrNotExist {

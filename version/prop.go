@@ -9,8 +9,8 @@ import (
 	"runtime"
 	"strconv"
 	"strings"
-	"sync"
 
+	"github.com/metacubex/tailscale/syncs"
 	"github.com/metacubex/tailscale/tailcfg"
 	"github.com/metacubex/tailscale/types/lazy"
 )
@@ -248,7 +248,7 @@ func osVariant() string {
 	return ""
 }
 
-var isDev = sync.OnceValue(func() bool {
+var isDev = syncs.OnceValue(func() bool {
 	return strings.Contains(Short(), "-dev")
 })
 

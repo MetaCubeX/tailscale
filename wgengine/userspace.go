@@ -9,11 +9,11 @@ import (
 	"crypto/x509"
 	"errors"
 	"fmt"
+	"github.com/metacubex/tailscale/util/go120/slices"
 	"io"
 	"math"
 	"net/netip"
 	"runtime"
-	"slices"
 	"sync"
 	"sync/atomic"
 	"time"
@@ -21,7 +21,6 @@ import (
 	"github.com/metacubex/bart"
 	"github.com/metacubex/tailscale-wireguard-go/device"
 	"github.com/metacubex/tailscale-wireguard-go/tun"
-	"go4.org/mem"
 	"github.com/metacubex/tailscale/control/controlknobs"
 	"github.com/metacubex/tailscale/drive"
 	"github.com/metacubex/tailscale/envknob"
@@ -63,6 +62,7 @@ import (
 	"github.com/metacubex/tailscale/wgengine/wgcfg"
 	"github.com/metacubex/tailscale/wgengine/wgint"
 	"github.com/metacubex/tailscale/wgengine/wglog"
+	"go4.org/mem"
 )
 
 type userspaceEngine struct {
@@ -1291,10 +1291,15 @@ func (e *userspaceEngine) mySelfIPMatchingFamily(dst netip.Addr) (src netip.Addr
 	if addrs.Len() == 0 {
 		return zero, errors.New("no self address")
 	}
-	for _, p := range addrs.All() {
+	addrs.All()(func(_ int, p netip.Prefix) bool {
 		if p.IsSingleIP() && p.Addr().BitLen() == dst.BitLen() {
-			return p.Addr(), nil
+			src = p.Addr()
+			return false
 		}
+		return true
+	})
+	if src.IsValid() {
+		return src, nil
 	}
 	return zero, errors.New("no self address matching address family")
 }

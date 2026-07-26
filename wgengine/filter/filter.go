@@ -6,12 +6,11 @@ package filter
 
 import (
 	"fmt"
+	"github.com/metacubex/tailscale/util/go120/slices"
 	"net/netip"
-	"slices"
 	"sync"
 	"time"
 
-	"go4.org/netipx"
 	"github.com/metacubex/tailscale/envknob"
 	"github.com/metacubex/tailscale/net/flowtrack"
 	"github.com/metacubex/tailscale/net/ipset"
@@ -26,6 +25,7 @@ import (
 	"github.com/metacubex/tailscale/util/slicesx"
 	"github.com/metacubex/tailscale/util/usermetric"
 	"github.com/metacubex/tailscale/wgengine/filter/filtertype"
+	"go4.org/netipx"
 )
 
 // Filter is a stateful packet filter.

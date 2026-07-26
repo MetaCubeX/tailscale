@@ -6,25 +6,24 @@ package localapi
 
 import (
 	"bytes"
-	"cmp"
 	"context"
 	"crypto/subtle"
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/metacubex/http"
+	"github.com/metacubex/tailscale/util/go120/cmp"
+	"github.com/metacubex/tailscale/util/go120/slices"
 	"io"
 	"net"
-	"github.com/metacubex/http"
 	"net/netip"
 	"net/url"
 	"runtime"
-	"slices"
 	"strconv"
 	"strings"
 	"sync"
 	"time"
 
-	"golang.org/x/net/dns/dnsmessage"
 	"github.com/metacubex/tailscale/client/tailscale/apitype"
 	"github.com/metacubex/tailscale/envknob"
 	"github.com/metacubex/tailscale/feature"
@@ -54,6 +53,7 @@ import (
 	"github.com/metacubex/tailscale/util/syspolicy/pkey"
 	"github.com/metacubex/tailscale/version"
 	"github.com/metacubex/tailscale/wgengine/magicsock"
+	"golang.org/x/net/dns/dnsmessage"
 )
 
 var (
@@ -870,10 +870,12 @@ func InUseOtherUserIPNStream(w http.ResponseWriter, r *http.Request, err error) 
 	if r.Method != httpm.GET || r.URL.Path != "/localapi/v0/watch-ipn-bus" {
 		return false
 	}
+	state := ipn.InUseOtherUser
+	errMessage := err.Error()
 	js, err := json.Marshal(&ipn.Notify{
 		Version:    version.Long(),
-		State:      new(ipn.InUseOtherUser),
-		ErrMessage: new(err.Error()),
+		State:      &state,
+		ErrMessage: &errMessage,
 	})
 	if err != nil {
 		return false

@@ -5,9 +5,9 @@ package eventbus
 
 import (
 	"context"
+	"github.com/metacubex/tailscale/util/go120/slices"
 	"log"
 	"reflect"
-	"slices"
 
 	"github.com/metacubex/tailscale/syncs"
 	"github.com/metacubex/tailscale/types/logger"
@@ -154,7 +154,7 @@ func (b *Bus) pump(ctx context.Context) {
 
 			if b.routeDebug.active() {
 				clients := make([]*Client, len(dests))
-				for i := range len(dests) {
+				for i := 0; i < len(dests); i++ {
 					clients[i] = dests[i].client
 				}
 				b.routeDebug.run(RoutedEvent{

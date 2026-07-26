@@ -151,7 +151,8 @@ func NewClient(ctx context.Context, logf logger.Logf, nb NodeBackender, nm NetMa
 
 		needsRefresh: make(chan struct{}, 1), // debounce using buffer of 1
 	}
-	c.hasNetMap.Store(new(make(chan struct{})))
+	firstNetMap := make(chan struct{})
+	c.hasNetMap.Store(&firstNetMap)
 	return c, nil
 }
 
@@ -169,7 +170,8 @@ func (c *Client) NotifyNetMapAvailable() {
 		}
 
 		if nextCh == nil {
-			nextCh = new(make(chan struct{})) // prepare for next non-nil netmap
+			next := make(chan struct{}) // prepare for next non-nil netmap
+			nextCh = &next
 		}
 		if c.hasNetMap.CompareAndSwap(ch, nextCh) {
 			close(*ch)

@@ -358,7 +358,8 @@ func (c *Auto) authRoutine() {
 		if err != nil {
 			c.direct.health.SetAuthRoutineInError(err)
 			report(err, f)
-			if rle, ok := errors.AsType[*rateLimitError](err); ok {
+			var rle *rateLimitError
+			if ok := errors.As(err, &rle); ok {
 				c.logf("authRoutine: %s", rle)
 				select {
 				case <-ctx.Done():

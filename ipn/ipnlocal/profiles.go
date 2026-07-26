@@ -4,15 +4,15 @@
 package ipnlocal
 
 import (
-	"cmp"
 	"crypto"
 	"crypto/rand"
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/metacubex/tailscale/util/go120/cmp"
+	"github.com/metacubex/tailscale/util/go120/slices"
 	"io"
 	"runtime"
-	"slices"
 	"strings"
 
 	"github.com/metacubex/tailscale/envknob"

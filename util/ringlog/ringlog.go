@@ -50,7 +50,7 @@ func (rb *RingLog[T]) GetAll() []T {
 	rb.mu.Lock()
 	defer rb.mu.Unlock()
 	out := make([]T, len(rb.buf))
-	for i := range len(rb.buf) {
+	for i := 0; i < len(rb.buf); i++ {
 		x := (rb.pos + i) % rb.max
 		out[i] = rb.buf[x]
 	}
