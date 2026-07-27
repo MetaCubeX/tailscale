@@ -63,6 +63,11 @@ import (
 
 const debugPackets = false
 
+// activeNetworkReconcileInterval bounds how long active netstack traffic can
+// use network state made stale by a lost OS notification. Unlike netmon's
+// offline reconciliation, this does no work while netstack is idle.
+const activeNetworkReconcileInterval = time.Minute
+
 // If non-zero, these override the values returned from the corresponding
 // functions, below. They are accessed atomically because background
 // goroutines in the gVisor TCP stack read them while test cleanup
@@ -1053,6 +1058,7 @@ func (ns *Impl) getInjectInboundBuffsSizes() (buffs [][]byte, sizes []int) {
 // them to the correct path.
 func (ns *Impl) inject() {
 	inboundBuffs, inboundBuffsSizes := ns.getInjectInboundBuffsSizes()
+	lastNetworkReconcile := time.Now()
 	for {
 		pkt := ns.linkEP.ReadContext(ns.ctx)
 		if pkt == nil {
@@ -1062,6 +1068,15 @@ func (ns *Impl) inject() {
 			}
 			ns.logf("[v2] ReadContext-for-write = ok=false")
 			continue
+		}
+		now := time.Now()
+		if now.Sub(lastNetworkReconcile) >= activeNetworkReconcileInterval {
+			if ns.dialer != nil {
+				if mon := ns.dialer.NetMon(); mon != nil {
+					mon.Poll()
+				}
+			}
+			lastNetworkReconcile = now
 		}
 
 		if debugPackets {

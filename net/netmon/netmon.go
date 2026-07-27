@@ -32,6 +32,11 @@ import (
 // us check the wall time sooner than this.
 const pollWallTimeInterval = 15 * time.Second
 
+// Network change notifications are hints, not a reliable source of truth.
+// Reconcile while offline so a recovered network becomes usable promptly,
+// even when an OS notification is lost.
+const networkDownReconcileInterval = pollWallTimeInterval
+
 // majorTimeJumpThreshold is the minimum sleep duration that warrants
 // treating a time jump as a major event requiring socket rebinding,
 // even if the interface state appears unchanged. After a long sleep,
@@ -89,6 +94,8 @@ type Monitor struct {
 	wallTimer    *time.Timer // nil until Started; re-armed AfterFunc per tick
 	lastWall     time.Time
 	jumpDuration time.Duration // wall-clock time elapsed during detected time jump; 0 if no time jump observed since reset
+
+	lastReconcile time.Time
 }
 
 // ChangeFunc is a callback function registered with Monitor that's called when the
@@ -385,6 +392,7 @@ func New(bus *eventbus.Bus, logf logger.Logf) (*Monitor, error) {
 		return nil, err
 	}
 	m.ifState = st
+	m.lastReconcile = time.Now()
 
 	m.om, err = newOSMon(bus, logf, m)
 	if err != nil {
@@ -638,6 +646,7 @@ var (
 func (m *Monitor) handlePotentialChange(newState *State, forceCallbacks bool) {
 	m.mu.Lock()
 	defer m.mu.Unlock()
+	m.lastReconcile = time.Now()
 	oldState := m.ifState
 	timeJumped := shouldMonitorTimeJump && m.checkWallTimeAdvanceLocked()
 	if !timeJumped && !forceCallbacks && oldState.Equal(newState) {
@@ -709,6 +718,9 @@ func (m *Monitor) pollWallTime() {
 	}
 	if m.checkWallTimeAdvanceLocked() {
 		m.InjectEvent()
+	} else if (m.ifState == nil || !m.ifState.AnyInterfaceUp()) &&
+		time.Since(m.lastReconcile) >= networkDownReconcileInterval {
+		m.Poll()
 	}
 	m.wallTimer.Reset(pollWallTimeInterval)
 }
