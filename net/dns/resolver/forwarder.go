@@ -628,8 +628,9 @@ var (
 //
 // send expects the reply to have the same txid as txidOut.
 func (f *forwarder) send(ctx context.Context, fq *forwardQuery, rr resolverAndDelay) (ret []byte, err error) {
+	var id uint64
 	if f.verboseFwd {
-		id := forwarderCount.Add(1)
+		id = forwarderCount.Add(1)
 		domain, typ, _ := nameFromQuery(fq.packet)
 		f.logf("forwarder.send(%q, %d, %v, %d) from %v [%d] ...", rr.name.Addr, fq.txid, typ, len(domain), fq.src, id)
 		defer func() {
@@ -692,7 +693,12 @@ func (f *forwarder) send(ctx context.Context, fq *forwardQuery, rr resolverAndDe
 		}
 	}()
 
-	firstUDP := func(ctx context.Context) ([]byte, error) {
+	firstUDP := func(ctx context.Context) (ret []byte, err error) {
+		if f.verboseFwd {
+			defer func() {
+				f.logf("forwarder.sendUDP(%q) [%d] = %v, %v", rr.name.Addr, id, len(ret), err)
+			}()
+		}
 		resp, err := f.sendUDP(ctx, fq, rr)
 		if err != nil {
 			return nil, err
@@ -724,7 +730,12 @@ func (f *forwarder) send(ctx context.Context, fq *forwardQuery, rr resolverAndDe
 		explicitRetry.Store(true)
 		return nil, truncatedResponseError{resp}
 	}
-	thenTCP := func(ctx context.Context) ([]byte, error) {
+	thenTCP := func(ctx context.Context) (ret []byte, err error) {
+		if f.verboseFwd {
+			defer func() {
+				f.logf("forwarder.sendTCP(%q) [%d] = %v, %v", rr.name.Addr, id, len(ret), err)
+			}()
+		}
 		// If we're skipping the TCP fallback, then wait until the
 		// context is canceled and return that error (i.e. not
 		// returning anything).
