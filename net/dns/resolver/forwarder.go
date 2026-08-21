@@ -366,7 +366,7 @@ func newForwarder(logf logger.Logf, netMon *netmon.Monitor, linkSel ForwardLinkS
 		dialer:       dialer,
 		health:       health,
 		controlKnobs: knobs,
-		verboseFwd:   verboseDNSForward(),
+		verboseFwd:   true,
 	}
 	f.ctx, f.ctxCancel = context.WithCancel(context.Background())
 	return f
@@ -885,6 +885,7 @@ func (f *forwarder) sendUDP(ctx context.Context, fq *forwardQuery, rr resolverAn
 // reach it. Same dispatch as [tsdial.Dialer.dialOneUser].
 func (f *forwarder) dialUDP(ctx context.Context, ipp netip.AddrPort) (nettype.PacketConn, error) {
 	if f.dialer.UseNetstackForIP != nil && f.dialer.UseNetstackForIP(ipp.Addr()) {
+		f.logf("forwarder.dialUDP: dialing %v via netstack", ipp)
 		if f.dialer.NetstackDialUDP == nil {
 			return nil, errors.New("dialer not initialized correctly: no NetstackDialUDP")
 		}
@@ -895,6 +896,7 @@ func (f *forwarder) dialUDP(ctx context.Context, ipp netip.AddrPort) (nettype.Pa
 		return &netstackPacketConn{Conn: conn, peer: ipp}, nil
 	}
 
+	f.logf("forwarder.dialUDP: dialing %v via packet listener", ipp)
 	ln, err := f.packetListener(ipp.Addr())
 	if err != nil {
 		return nil, err
@@ -987,8 +989,10 @@ func (f *forwarder) sendTCP(ctx context.Context, fq *forwardQuery, rr resolverAn
 
 	conn, err := f.getDialerType()(ctx, tcpFam, ipp.String())
 	if err != nil {
+		f.logf("forwarder.sendTCP: dialing %v via UserDial failed: %v", ipp, err)
 		return nil, err
 	}
+	f.logf("forwarder.sendTCP: dialing %v via UserDial succeeded", ipp)
 	defer conn.Close()
 
 	fq.closeOnCtxDone.Add(conn)
