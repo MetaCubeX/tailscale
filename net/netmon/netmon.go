@@ -402,6 +402,7 @@ func New(bus *eventbus.Bus, logf logger.Logf) (*Monitor, error) {
 		return nil, errors.New("newOSMon returned nil, nil")
 	}
 
+	registerLiveMonitor(m)
 	return m, nil
 }
 
@@ -521,6 +522,7 @@ func (m *Monitor) Close() error {
 	}
 	m.closed = true
 	close(m.stop)
+	unregisterLiveMonitor(m)
 
 	if m.wallTimer != nil {
 		m.wallTimer.Stop()
